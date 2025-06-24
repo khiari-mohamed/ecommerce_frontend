@@ -1,49 +1,154 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { updateQuickView } from "@/redux/features/quickView-slice";
 import { addItemToCart } from "@/redux/features/cart-slice";
 import { addItemToWishlist } from "@/redux/features/wishlist-slice";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch } from "@/redux/store"; 
 import Link from "next/link";
 import Image from "next/image";
+import { formatCurrency } from "@/lib/formattedPrice";
+import ProductBrandAroma from "@/components/product/ProductBrandAroma";
+import StarRating from "../../components/Common/StarRating";
 
 const SingleGridItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
-
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    console.log("Product:", item.designation, "cover:", item.cover);
+  }, [item.designation, item.cover]);
+
+  function normalizeImageUrl(url?: string): string {
+    if (!url || typeof url !== "string" || url.trim() === "") return "/placeholder.svg";
+    if (url.startsWith("http://") || url.startsWith("https://")) return url;
+    if (url.startsWith("/")) return url;
+    return "/" + url;
+  }
+
+  // Helper to get all normalized image URLs for thumbnails/previews
+  const getAllImageUrls = () => {
+    // Prefer cover, then mainImage, then others
+    const main = normalizeImageUrl(item.cover || item.mainImage?.url);
+    const others = (item.images || [])
+      .map(img => normalizeImageUrl(img.url))
+      .filter(url => url !== main); // avoid duplicate
+    return [main, ...others];
+  };
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
-    dispatch(updateQuickView({ ...item }));
+    const allImgs = getAllImageUrls();
+    dispatch(updateQuickView({ 
+      ...item,
+      title: item.designation,
+      discountedPrice: item.price,
+      price: item.oldPrice || item.price,
+      imgs: {
+        thumbnails: allImgs,
+        previews: allImgs
+      },
+      reviews: item.reviews?.length || 0
+    }));
   };
 
   // add to cart
   const handleAddToCart = () => {
+    const mainImg = normalizeImageUrl(item.mainImage?.url);
     dispatch(
       addItemToCart({
         ...item,
         quantity: 1,
+        title: item.designation,
+        discountedPrice: item.price,
+        price: item.oldPrice || item.price,
+        imgs: {
+          thumbnails: [mainImg],
+          previews: [mainImg]
+        },
+        image: ""
       })
     );
   };
 
   const handleItemToWishList = () => {
+    const mainImg = normalizeImageUrl(item.mainImage?.url);
     dispatch(
       addItemToWishlist({
         ...item,
         status: "available",
         quantity: 1,
+        title: item.designation,
+        discountedPrice: item.price,
+        price: item.oldPrice || item.price,
+        imgs: {
+          thumbnails: [mainImg],
+          previews: [mainImg]
+        }
       })
     );
+  };
+
+  const reviewsCount = item.reviews?.length || 0;
+  const averageRating = reviewsCount > 0 
+  ? item.reviews!.reduce((sum, review) => sum + parseInt(String(review.stars), 10), 0) / reviewsCount
+  : 0;
+
+  // Render star ratings based on average rating
+  const renderStars = () => {
+    const stars = [];
+    const fullStars = Math.floor(averageRating);
+    const hasHalfStar = averageRating % 1 >= 0.5;
+
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        stars.push(
+          <Image
+            key={i}
+            src="/images/icons/icon-star.svg"
+            alt="full star"
+            width={15}
+            height={15}
+          />
+        );
+      } else if (i === fullStars && hasHalfStar) {
+        stars.push(
+          <Image
+            key={i}
+            src="/images/icons/icon-star-half.svg"
+            alt="half star"
+            width={15}
+            height={15}
+          />
+        );
+      } else {
+        stars.push(
+          <Image
+            key={i}
+            src="/images/icons/icon-star-empty.svg"
+            alt="empty star"
+            width={15}
+            height={15}
+          />
+        );
+      }
+    }
+    return stars;
   };
 
   return (
     <div className="group">
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-white shadow-1 min-h-[270px] mb-4">
-        <Image src={item.imgs.previews[0]} alt="" width={250} height={250} />
+       <Image
+  src={item.cover ? "/" + item.cover.replace(/^\/+/, "") : "/placeholder.svg"}
+  alt={item.designation || item.title || "Product image"}
+  width={250}
+  height={250}
+  className="object-contain h-full"
+  priority={false}
+/>
 
         <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
           <button
@@ -55,6 +160,7 @@ const SingleGridItem = ({ item }: { item: Product }) => {
             aria-label="button for quick view"
             className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"
           >
+            {/* ...SVG omitted for brevity... */}
             <svg
               className="fill-current"
               width="16"
@@ -91,6 +197,7 @@ const SingleGridItem = ({ item }: { item: Product }) => {
             id="favOne"
             className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"
           >
+            {/* ...SVG omitted for brevity... */}
             <svg
               className="fill-current"
               width="16"
@@ -111,49 +218,20 @@ const SingleGridItem = ({ item }: { item: Product }) => {
       </div>
 
       <div className="flex items-center gap-2.5 mb-2">
-        <div className="flex items-center gap-1">
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-        </div>
-
-        <p className="text-custom-sm">({item.reviews})</p>
-      </div>
-
-      <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
-        <Link href="/shop-details"> {item.title} </Link>
+  <StarRating rating={averageRating} />
+  <p className="text-custom-sm">({reviewsCount})</p>
+</div>
+     
+      <ProductBrandAroma brandId={item.brand?.['_id'] || item.brand || ""} />
+            <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
+        <Link href={`/shop-details/${item.slug}`}>{item.designation}</Link>
       </h3>
 
       <span className="flex items-center gap-2 font-medium text-lg">
-        <span className="text-dark">${item.discountedPrice}</span>
-        <span className="text-dark-4 line-through">${item.price}</span>
+        <span className="text-dark">{formatCurrency(item.price)}</span>
+        {item.oldPrice && (
+          <span className="text-dark-4 line-through">{formatCurrency(item.oldPrice)}</span>
+        )}
       </span>
     </div>
   );

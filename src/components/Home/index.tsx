@@ -7,17 +7,25 @@ import BestSeller from "./BestSeller";
 import CounDown from "./Countdown";
 import Testimonials from "./Testimonials";
 import Newsletter from "../Common/Newsletter";
+import MusculationProducts from "./MusculationProducts";
+import VenteFlash from "@/components/Home/VenteFlash";
+import PacksSection from "./PacksSection/PacksSection";
+import BrandSection from "@/components/Home/BrandSection";
 
 const Home = () => {
   return (
     <main>
       <Hero />
       <Categories />
+      <VenteFlash />
       <NewArrival />
       <PromoBanner />
       <BestSeller />
       <CounDown />
+       <PacksSection />
+      <MusculationProducts />
       <Testimonials />
+      <BrandSection />
       <Newsletter />
     </main>
   );

@@ -6,97 +6,74 @@ import Image from "next/image";
 const Hero = () => {
   return (
     <section className="overflow-hidden pb-10 lg:pb-12.5 xl:pb-15 pt-57.5 sm:pt-45 lg:pt-30 xl:pt-51.5 bg-[#E5EAF4]">
-      <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-        <div className="flex flex-wrap gap-5">
-          <div className="xl:max-w-[757px] w-full">
-            <div className="relative z-1 rounded-[10px] bg-white overflow-hidden">
-              {/* <!-- bg shapes --> */}
-              <Image
-                src="/images/hero/hero-bg.png"
-                alt="hero bg shapes"
-                className="absolute right-0 bottom-0 -z-1"
-                width={534}
-                height={520}
-              />
+      {/* Full-width Carousel */}
+      <div className="mb-5 rounded-none sm:rounded-[10px] bg-white overflow-hidden shadow-sm">
+        <HeroCarousel />
+      </div>
 
-              <HeroCarousel />
+      {/* Wider Promo Boxes Container (90% width) */}
+      <div className="w-[90%] mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Promo Box 1 */}
+          <div className="relative rounded-[10px] bg-white p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow h-[220px] sm:h-[280px]">
+            <div className="flex h-full flex-col sm:flex-row items-center gap-6">
+              <div className="flex-1 flex flex-col justify-center h-full">
+                <h2 className="font-semibold text-dark text-xl sm:text-2xl mb-4">
+                  <a href="#">MICRONIZED CREATINE POWDER – 317G</a>
+                </h2>
+                <div className="mt-auto">
+                  <p className="font-medium text-dark-4 text-sm sm:text-base mb-2">
+                    offre à durée limitée!
+                  </p>
+                  <span className="flex items-center gap-3">
+                    <span className="font-medium text-heading-4 text-red">179dt</span>
+                    <span className="font-medium text-xl text-dark-4 line-through">200dt</span>
+                  </span>
+                </div>
+              </div>
+              <div className="w-40 sm:w-48 h-full flex items-center">
+                <Image
+                  src="/images/hero/crmono.webp"
+                  alt="creatine micronized"
+                  width={180}
+                  height={230}
+                  className="object-contain h-full"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="xl:max-w-[393px] w-full">
-            <div className="flex flex-col sm:flex-row xl:flex-col gap-5">
-              <div className="w-full relative rounded-[10px] bg-white p-4 sm:p-7.5">
-                <div className="flex items-center gap-14">
-                  <div>
-                    <h2 className="max-w-[153px] font-semibold text-dark text-xl mb-20">
-                      <a href="#"> iPhone 14 Plus & 14 Pro Max </a>
-                    </h2>
-
-                    <div>
-                      <p className="font-medium text-dark-4 text-custom-sm mb-1.5">
-                        limited time offer
-                      </p>
-                      <span className="flex items-center gap-3">
-                        <span className="font-medium text-heading-5 text-red">
-                          $699
-                        </span>
-                        <span className="font-medium text-2xl text-dark-4 line-through">
-                          $999
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Image
-                      src="/images/hero/hero-02.png"
-                      alt="mobile image"
-                      width={123}
-                      height={161}
-                    />
-                  </div>
+          {/* Promo Box 2 */}
+          <div className="relative rounded-[10px] bg-white p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow h-[220px] sm:h-[280px]">
+            <div className="flex h-full flex-col sm:flex-row items-center gap-6">
+              <div className="flex-1 flex flex-col justify-center h-full">
+                <h2 className="font-semibold text-dark text-xl sm:text-2xl mb-4">
+                  <a href="#">HARD MASS GAINER - 7Kg</a>
+                </h2>
+                <div className="mt-auto">
+                  <p className="font-medium text-dark-4 text-sm sm:text-base mb-2">
+                    offre à durée limitée!
+                  </p>
+                  <span className="flex items-center gap-3">
+                    <span className="font-medium text-heading-4 text-red">245dt</span>
+                    <span className="font-medium text-xl text-dark-4 line-through">280dt</span>
+                  </span>
                 </div>
               </div>
-              <div className="w-full relative rounded-[10px] bg-white p-4 sm:p-7.5">
-                <div className="flex items-center gap-14">
-                  <div>
-                    <h2 className="max-w-[153px] font-semibold text-dark text-xl mb-20">
-                      <a href="#"> Wireless Headphone </a>
-                    </h2>
-
-                    <div>
-                      <p className="font-medium text-dark-4 text-custom-sm mb-1.5">
-                        limited time offer
-                      </p>
-                      <span className="flex items-center gap-3">
-                        <span className="font-medium text-heading-5 text-red">
-                          $699
-                        </span>
-                        <span className="font-medium text-2xl text-dark-4 line-through">
-                          $999
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Image
-                      src="/images/hero/hero-01.png"
-                      alt="mobile image"
-                      width={123}
-                      height={161}
-                    />
-                  </div>
-                </div>
+              <div className="w-40 sm:w-48 h-full flex items-center">
+                <Image
+                  src="/images/hero/mg.webp"
+                  alt="HARD MASS GAINER"
+                  width={180}
+                  height={230}
+                  className="object-contain h-full"
+                />
               </div>
-
-              
             </div>
           </div>
         </div>
       </div>
 
-      {/* <!-- Hero features --> */}
       <HeroFeature />
     </section>
   );

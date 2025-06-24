@@ -3,27 +3,78 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import CustomSelect from "./CustomSelect";
 import { menuData } from "./menuData";
+
+// Brand type for dropdown
+interface BrandNav {
+  _id: string;
+  slug: string;
+  designation_fr: string;
+  logo: string;
+}
 import Dropdown from "./Dropdown";
 import { useAppSelector } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import Image from "next/image";
+import { ThemeToggle } from "../Common/ThemeToggle";
+import axios from "@/lib/axios";
+import { useRouter } from "next/navigation"; // Add this import
+
+interface Subcategory {
+  _id: string;
+  slug: string;
+  name: string;
+}
+
+interface Category {
+  _id: string;
+  slug: string;
+  name: string;
+  subcategories?: Subcategory[];
+}
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<{ name: string; slug: string }[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
   const { openCartModal } = useCartModalContext();
 
   const product = useAppSelector((state) => state.cartReducer.items);
   const totalPrice = useSelector(selectTotalPrice);
+  const router = useRouter();
+
+  // Categories and subcategories state
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+
+  // Brands state for nav dropdown
+  const [brands, setBrands] = useState<BrandNav[]>([]);
+  const [loadingBrands, setLoadingBrands] = useState(true);
+
+  // Fetch brands for nav
+  useEffect(() => {
+    async function fetchBrands() {
+      try {
+        const res = await axios.get("/brands");
+        setBrands(res.data || []);
+      } catch {
+        setBrands([]);
+      } finally {
+        setLoadingBrands(false);
+      }
+    }
+    fetchBrands();
+  }, []);
 
   const handleOpenCartModal = () => {
     openCartModal();
   };
 
-  // Sticky menu
+  // Sticky menu handler
   const handleStickyMenu = () => {
     if (window.scrollY >= 80) {
       setStickyMenu(true);
@@ -34,18 +85,77 @@ const Header = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", handleStickyMenu);
-  });
+    return () => {
+      window.removeEventListener("scroll", handleStickyMenu);
+    };
+  }, []);
+
+  // Fetch categories and subcategories
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        // Adjust the endpoint as per your backend
+        const res = await axios.get("/categories?populate=subcategories");
+        // Assuming the backend returns subcategories nested in each category
+        setCategories(res.data.data || []);
+      } catch (error) {
+        setCategories([]);
+      } finally {
+        setLoadingCategories(false);
+      }
+    }
+    fetchCategories();
+  }, []);
 
   const options = [
-    { label: "All Categories", value: "0" },
-    { label: "Desktop", value: "1" },
-    { label: "Laptop", value: "2" },
-    { label: "Monitor", value: "3" },
-    { label: "Phone", value: "4" },
-    { label: "Watch", value: "5" },
-    { label: "Mouse", value: "6" },
-    { label: "Tablet", value: "7" },
+    { label: "Toutes catégories", value: "" },
+    { label: "Acides Aminés", value: "complements-alimentaires" },
+    { label: "Perte de Poids", value: "perte-de-poids" },
+    { label: "Prise de Masse", value: "prise-de-masse" },
+    { label: "Protéines", value: "proteines" },
+    { label: "Pre, Intra & Post Workout", value: "pre-intra-post-workout" },
+    { label: "Vêtements et Accessoires", value: "vetements-accessoires" },
   ];
+
+  // Fetch autocomplete suggestions
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    setLoadingSuggestions(true);
+    const timeout = setTimeout(async () => {
+      try {
+        const res = await axios.get(`/products/autocomplete?query=${encodeURIComponent(searchQuery.trim())}`);
+        setSuggestions(res.data || []);
+        setShowSuggestions(true);
+      } catch {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      } finally {
+        setLoadingSuggestions(false);
+      }
+    }, 300); // debounce
+    return () => clearTimeout(timeout);
+  }, [searchQuery]);
+
+  // Handle suggestion click
+  const handleSuggestionClick = (suggestion: { name: string; slug: string }) => {
+  if (!suggestion.slug) return;
+  setSearchQuery(suggestion.name || "");
+  setShowSuggestions(false);
+  router.push(`/produits/${suggestion.slug}`); // <-- Fix here!
+};
+
+  // Handle search submit
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+      setShowSuggestions(false);
+    }
+  };
 
   return (
     <header
@@ -64,37 +174,40 @@ const Header = () => {
           <div className="xl:w-auto flex-col sm:flex-row w-full flex sm:justify-between sm:items-center gap-5 sm:gap-10">
             <Link className="flex-shrink-0" href="/">
               <Image
-                src="/images/logo/logo.svg"
+                src="/images/logo/logo.png"
                 alt="Logo"
                 width={219}
                 height={36}
               />
             </Link>
 
-            <div className="max-w-[475px] w-full">
-              <form>
+            <div className="max-w-[475px] w-full relative">
+              <form onSubmit={handleSearch} autoComplete="off">
                 <div className="flex items-center">
                   <CustomSelect options={options} />
 
                   <div className="relative max-w-[333px] sm:min-w-[333px] w-full">
-                    {/* <!-- divider --> */}
                     <span className="absolute left-0 top-1/2 -translate-y-1/2 inline-block w-px h-5.5 bg-gray-4"></span>
                     <input
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      value={searchQuery}
+                      value={searchQuery ?? ""} // fallback to empty string
                       type="search"
                       name="search"
                       id="search"
-                      placeholder="I am shopping for..."
+                      placeholder="je fais des emplettes pour..."
                       autoComplete="off"
                       className="custom-search w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
+                      onFocus={() => searchQuery && setShowSuggestions(true)}
+                      onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
                     />
 
                     <button
                       id="search-btn"
                       aria-label="Search"
                       className="flex items-center justify-center absolute right-3 top-1/2 -translate-y-1/2 ease-in duration-200 hover:text-blue"
+                      type="submit"
                     >
+                      {/* ...svg... */}
                       <svg
                         className="fill-current"
                         width="18"
@@ -109,15 +222,41 @@ const Header = () => {
                         />
                       </svg>
                     </button>
+                    {/* Autocomplete Suggestions Dropdown */}
+                    {showSuggestions && (
+                      <ul className="absolute left-0 top-full z-50 w-full bg-white border border-gray-3 rounded-b shadow-lg max-h-60 overflow-y-auto">
+                        {loadingSuggestions ? (
+                          <li className="px-4 py-2 text-gray-500">Chargement...</li>
+                        ) : suggestions.length === 0 ? (
+                          <li className="px-4 py-2 text-gray-400">Aucune suggestion</li>
+                        ) : (
+                          suggestions.map((suggestion, idx) => (
+                            <li
+                              key={idx}
+                              className="px-4 py-2 cursor-pointer hover:bg-gray-2"
+                              onMouseDown={() => handleSuggestionClick(suggestion)}
+                            >
+                              {suggestion.name || "Produit sans nom"}
+                            </li>
+                          ))
+                        )}
+                      </ul>
+                    )}
                   </div>
                 </div>
               </form>
             </div>
           </div>
 
+          {/* Adding Theme Toggle */}
+          <div className="flex items-center gap-4 ml-4">
+            <ThemeToggle />
+          </div>
+
           {/* <!-- header top right --> */}
           <div className="flex w-full lg:w-auto items-center gap-7.5">
             <div className="hidden xl:flex items-center gap-3.5">
+              {/* ...support icon and text... */}
               <svg
                 width="24"
                 height="24"
@@ -125,6 +264,7 @@ const Header = () => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
+                {/* ...svg paths... */}
                 <path
                   fillRule="evenodd"
                   clipRule="evenodd"
@@ -142,14 +282,13 @@ const Header = () => {
                   fill="#3C50E0"
                 />
               </svg>
-
               <div>
                 <span className="block text-2xs text-dark-4 uppercase">
                   24/7 SUPPORT
                 </span>
-                <p className="font-medium text-custom-sm text-dark">
-                  (+965) 7492-3477
-                </p>
+          <p className="font-medium text-custom-sm text-dark whitespace-nowrap">
+  73 200 169
+</p>
               </div>
             </div>
 
@@ -159,6 +298,7 @@ const Header = () => {
             <div className="flex w-full lg:w-auto justify-between items-center gap-5">
               <div className="flex items-center gap-5">
                 <Link href="/signin" className="flex items-center gap-2.5">
+                  {/* ...sign in icon and text... */}
                   <svg
                     width="24"
                     height="24"
@@ -166,6 +306,7 @@ const Header = () => {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
+                    {/* ...svg paths... */}
                     <path
                       fillRule="evenodd"
                       clipRule="evenodd"
@@ -179,13 +320,12 @@ const Header = () => {
                       fill="#3C50E0"
                     />
                   </svg>
-
                   <div>
                     <span className="block text-2xs text-dark-4 uppercase">
-                      account
+                      compte
                     </span>
                     <p className="font-medium text-custom-sm text-dark">
-                      Sign In
+                      SignIn
                     </p>
                   </div>
                 </Link>
@@ -195,6 +335,7 @@ const Header = () => {
                   className="flex items-center gap-2.5"
                 >
                   <span className="inline-block relative">
+                    {/* ...cart icon... */}
                     <svg
                       width="24"
                       height="24"
@@ -202,6 +343,7 @@ const Header = () => {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
+                      {/* ...svg paths... */}
                       <path
                         d="M15.5433 9.5172C15.829 9.21725 15.8174 8.74252 15.5174 8.45686C15.2175 8.17119 14.7428 8.18277 14.4571 8.48272L12.1431 10.9125L11.5433 10.2827C11.2576 9.98277 10.7829 9.97119 10.483 10.2569C10.183 10.5425 10.1714 11.0173 10.4571 11.3172L11.6 12.5172C11.7415 12.6658 11.9378 12.75 12.1431 12.75C12.3483 12.75 12.5446 12.6658 12.6862 12.5172L15.5433 9.5172Z"
                         fill="#3C50E0"
@@ -225,19 +367,17 @@ const Header = () => {
                         fill="#3C50E0"
                       />
                     </svg>
-
                     <span className="flex items-center justify-center font-medium text-2xs absolute -right-2 -top-2.5 bg-blue w-4.5 h-4.5 rounded-full text-white">
                       {product.length}
                     </span>
                   </span>
-
                   <div>
                     <span className="block text-2xs text-dark-4 uppercase">
                       cart
                     </span>
                     <p className="font-medium text-custom-sm text-dark">
-                      ${totalPrice}
-                    </p>
+  {Number(totalPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+</p>
                   </div>
                 </button>
               </div>
@@ -246,7 +386,7 @@ const Header = () => {
               <button
                 id="Toggle"
                 aria-label="Toggler"
-                className="xl:hidden block"
+                className="xl:hidden block "
                 onClick={() => setNavigationOpen(!navigationOpen)}
               >
                 <span className="block relative cursor-pointer w-5.5 h-5.5">
@@ -302,16 +442,101 @@ const Header = () => {
               {/* <!-- Main Nav Start --> */}
               <nav>
                 <ul className="flex xl:items-center flex-col xl:flex-row gap-5 xl:gap-6">
+                  {/* Dynamic Categories and Subcategories */}
+                  {loadingCategories ? (
+                    <li>Chargement...</li>
+                  ) : (
+                    categories.map((category) => (
+                      <li key={category._id} className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full">
+                        <Link
+                          href={`/categories/${category.slug}`}
+                          className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center gap-1.5 capitalize ${
+                            stickyMenu ? "xl:py-4" : "xl:py-6"
+                          }`}
+                        >
+                          {category.name}
+                          {category.subcategories && category.subcategories.length > 0 && (
+                            <svg
+                              className="fill-current cursor-pointer"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M2.95363 5.67461C3.13334 5.46495 3.44899 5.44067 3.65866 5.62038L7.99993 9.34147L12.3412 5.62038C12.5509 5.44067 12.8665 5.46495 13.0462 5.67461C13.2259 5.88428 13.2017 6.19993 12.992 6.37964L8.32532 10.3796C8.13808 10.5401 7.86178 10.5401 7.67453 10.3796L3.00787 6.37964C2.7982 6.19993 2.77392 5.88428 2.95363 5.67461Z"
+                                fill=""
+                              />
+                            </svg>
+                          )}
+                        </Link>
+                        {/* Subcategories Dropdown */}
+                        {category.subcategories && category.subcategories.length > 0 && (
+                          <ul className="dropdown absolute left-0 top-full mt-2 bg-white shadow-lg rounded-md min-w-[180px] z-50 hidden group-hover:flex flex-col">
+                            {category.subcategories.map((subcat) => (
+                              <li key={subcat._id}>
+                                <Link
+                                  href={`/subcategories/${subcat.slug}`}
+                                  className="block px-4 py-2 text-custom-sm hover:text-blue hover:bg-gray-1"
+                                >
+                                  {subcat.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))
+                  )}
+                  {/* Brands Dropdown Nav */}
+                  <li className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full">
+                    <span
+                      className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center gap-1.5 capitalize cursor-pointer ${stickyMenu ? "xl:py-4" : "xl:py-6"}`}
+                    >
+                      <svg className="w-5 h-5 mr-1 text-blue" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M16 17l-4 4m0 0l-4-4m4 4V3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      Marques
+                      <svg className="ml-1 w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </span>
+                    {/* Dropdown grid */}
+                    <div className="dropdown absolute left-0 top-full mt-2 bg-white shadow-2xl rounded-xl min-w-[320px] z-50 hidden group-hover:grid grid-cols-2 md:grid-cols-3 gap-4 p-4 border border-gray-3 animate-fade-in">
+                      {loadingBrands ? (
+                        <div className="col-span-full text-center py-4 text-gray-400">Chargement...</div>
+                      ) : brands.length === 0 ? (
+                        <div className="col-span-full text-center py-4 text-gray-400">Aucune marque</div>
+                      ) : (
+                        brands.map((brand) => (
+                          <Link
+                            key={brand._id}
+                            href={`/brands/${brand.slug}`} // <-- FIXED: use slug, not designation_fr
+                            className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-blue/10 transition group"
+                          >
+                            <Image
+                              src={`/images/brand/${brand.logo}`}
+                              alt={brand.designation_fr}
+                              width={60}
+                              height={60}
+                              className="object-contain rounded-full shadow-md border border-gray-200 bg-white grayscale group-hover:grayscale-0 group-hover:scale-110 transition"
+                            />
+                            <span className="text-xs font-semibold text-center text-dark group-hover:text-blue truncate w-20">{brand.designation_fr}</span>
+                          </Link>
+                        ))
+                      )}
+                    </div>
+                  </li>
+                  {/* Other static menus from menuData */}
                   {menuData.map((menuItem, i) =>
                     menuItem.submenu ? (
                       <Dropdown
-                        key={i}
+                        key={`static-${i}`}
                         menuItem={menuItem}
                         stickyMenu={stickyMenu}
                       />
                     ) : (
                       <li
-                        key={i}
+                        key={`static-${i}`}
                         className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full "
                       >
                         <Link

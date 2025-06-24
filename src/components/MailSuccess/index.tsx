@@ -11,16 +11,15 @@ const MailSuccess = () => {
           <div className="bg-white rounded-xl shadow-1 px-4 py-10 sm:py-15 lg:py-20 xl:py-25">
             <div className="text-center">
               <h2 className="font-bold text-blue text-4xl lg:text-[45px] lg:leading-[57px] mb-5">
-                Successful!
+              Réussie!
               </h2>
 
               <h3 className="font-medium text-dark text-xl sm:text-2xl mb-3">
-                Your message sent successfully
+              Votre message a été envoyé avec succès
               </h3>
 
               <p className="max-w-[491px] w-full mx-auto mb-7.5">
-                Thank you so much for your message. We check e-mail frequently
-                and will try our best to respond to your inquiry.
+              Merci beaucoup pour votre message. Nous consultons régulièrement nos e-mails et ferons de notre mieux pour répondre à votre demande.
               </p>
 
               <Link
@@ -40,7 +39,7 @@ const MailSuccess = () => {
                     fill=""
                   />
                 </svg>
-                Back to Home
+                Retour à l'accueil
               </Link>
             </div>
           </div>

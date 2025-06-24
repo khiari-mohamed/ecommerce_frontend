@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { Product } from "@/types/product";
+import { Aroma } from "@/types/aroma";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { updateQuickView } from "@/redux/features/quickView-slice";
 import { addItemToCart } from "@/redux/features/cart-slice";
@@ -11,9 +12,32 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import Link from "next/link";
 
-const ProductItem = ({ item }: { item: Product }) => {
-  const { openModal } = useModalContext();
 
+interface ProductItemProps {
+  item: Product;
+  aromas?: Aroma[]; // Pass the full aromas array as a prop
+}
+
+const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
+  // Fetch aromas if not provided as prop
+  const [aromas, setAromas] = React.useState<Aroma[]>(aromasProp);
+  React.useEffect(() => {
+    if (!aromasProp.length) {
+      fetch("/api/aromas")
+        .then((res) => res.json())
+        .then((data) => {
+          if (Array.isArray(data)) {
+            setAromas(data);
+          } else if (data && Array.isArray(data.aromas)) {
+            setAromas(data.aromas);
+          } else {
+            setAromas([]);
+          }
+        })
+        .catch(() => setAromas([]));
+    }
+  }, [aromasProp]);
+  const { openModal } = useModalContext();
   const dispatch = useDispatch<AppDispatch>();
 
   // update the QuickView state
@@ -27,6 +51,7 @@ const ProductItem = ({ item }: { item: Product }) => {
       addItemToCart({
         ...item,
         quantity: 1,
+        image: ""
       })
     );
   };
@@ -45,10 +70,43 @@ const ProductItem = ({ item }: { item: Product }) => {
     dispatch(updateproductDetails({ ...item }));
   };
 
+ // Helper to get valid image source
+  const getValidImageSrc = (src?: string): string => {
+    if (!src || typeof src !== "string" || src.trim() === "") {
+      return "/images/placeholder.png";
+    }
+    let cleanSrc = src.trim().replace(/\\\\/g, "/").replace(/\\/g, "/");
+
+    // If it's an absolute localhost URL, convert to relative
+    if (cleanSrc.startsWith("http://localhost") || cleanSrc.startsWith("https://localhost")) {
+      // Extract the path after the host
+      const url = new URL(cleanSrc);
+      cleanSrc = url.pathname;
+    }
+
+    // If it's still an absolute URL (external), return as is (but you must configure the domain in next.config.js)
+    if (cleanSrc.startsWith("http")) {
+      return cleanSrc;
+    }
+
+    // Ensure it starts with a slash
+    if (!cleanSrc.startsWith("/")) {
+      cleanSrc = "/" + cleanSrc;
+    }
+    return cleanSrc;
+  };
+  // Get the main image source with fallbacks
+  const imageSrc = getValidImageSrc(
+    item.imgs?.previews?.[0] || 
+    item.imgs?.thumbnails?.[0] ||
+    item.cover || 
+    item.mainImage?.url
+  );
+
   return (
     <div className="group">
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-[#F6F7FB] min-h-[270px] mb-4">
-        <Image src={item.imgs.previews[0]} alt="" width={250} height={250} />
+        <Image src={imageSrc} alt={item.title || item.designation || ""} width={250} height={250} />
 
         <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
           <button
@@ -60,6 +118,7 @@ const ProductItem = ({ item }: { item: Product }) => {
             aria-label="button for quick view"
             className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"
           >
+            {/* ...SVG omitted for brevity... */}
             <svg
               className="fill-current"
               width="16"
@@ -96,6 +155,7 @@ const ProductItem = ({ item }: { item: Product }) => {
             id="favOne"
             className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"
           >
+            {/* ...SVG omitted for brevity... */}
             <svg
               className="fill-current"
               width="16"
@@ -149,19 +209,25 @@ const ProductItem = ({ item }: { item: Product }) => {
           />
         </div>
 
-        <p className="text-custom-sm">({item.reviews})</p>
+        <p className="text-custom-sm">({item.reviews?.length || 0})</p>
       </div>
 
       <h3
         className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5"
         onClick={() => handleProductDetails()}
       >
-        <Link href="/shop-details"> {item.title} </Link>
+        <Link href={`/product-details?id=${item._id || item.id}`}>{item.title || item.designation || item.designation || "Produit"}</Link>
       </h3>
 
+      
+
       <span className="flex items-center gap-2 font-medium text-lg">
-        <span className="text-dark">${item.discountedPrice}</span>
-        <span className="text-dark-4 line-through">${item.price}</span>
+        <span className="text-dark">
+          {Number(item.discountedPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+        </span>
+        <span className="text-dark-4 line-through">
+          {Number(item.price).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+        </span>
       </span>
     </div>
   );

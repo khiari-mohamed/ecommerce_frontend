@@ -1,138 +1,101 @@
-import React, { useState } from "react";
+import React from "react";
 import OrderActions from "./OrderActions";
 import OrderModal from "./OrderModal";
 
-const SingleOrder = ({ orderItem, smallView }: any) => {
-  const [showDetails, setShowDetails] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
+interface SingleOrderProps {
+  orderItem: any;
+  asCard?: boolean;
+  smallView?: boolean;
+  onShowDetails?: () => void;
+  onShowEdit?: () => void;
+}
 
-  const toggleDetails = () => {
-    setShowDetails(!showDetails);
-  };
+function formatStatus(status: string) {
+  if (!status) return "";
+  return status.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+}
 
-  const toggleEdit = () => {
-    setShowEdit(!showEdit);
-  };
+function formatDate(dateStr: string) {
+  if (!dateStr) return "";
+  const date = new Date(dateStr.replace(" ", "T"));
+  return date.toLocaleDateString("fr-TN", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
 
-  const toggleModal = (status: boolean) => {
-    setShowDetails(status);
-    setShowEdit(status);
-  };
+const SingleOrder: React.FC<SingleOrderProps> = ({
+  orderItem,
+  asCard,
+  onShowDetails,
+  onShowEdit,
+}) => {
+  const orderId = orderItem?._id || orderItem?.id || "N/A";
+  const createdAt = orderItem?.created_at || orderItem?.createdAt || "N/A";
+  const status = orderItem?.etat || orderItem?.status || "N/A";
+  const rawTotal = orderItem?.prix_ttc || orderItem?.totalTTC || orderItem?.total || "N/A";
+  const title =
+    orderItem?.title ||
+    orderItem?.nom ||
+    orderItem?.prenom ||
+    orderItem?.description ||
+    "Order";
+  const total =
+    rawTotal !== "N/A"
+      ? `${Number(rawTotal).toLocaleString("fr-TN")} DT`
+      : "N/A";
 
-  return (
-    <>
-      {!smallView && (
-        <div className="items-center justify-between border-t border-gray-3 py-5 px-7.5 hidden md:flex">
-          <div className="min-w-[111px]">
-            <p className="text-custom-sm text-red">
-              #{orderItem.orderId.slice(-8)}
-            </p>
-          </div>
-          <div className="min-w-[175px]">
-            <p className="text-custom-sm text-dark">{orderItem.createdAt}</p>
-          </div>
+  let statusClass = "text-gray-500 bg-gray-100";
+  if (status === "livrée" || status === "delivered") {
+    statusClass = "text-green-600 bg-green-100";
+  } else if (status === "annulée" || status === "cancelled" || status === "on-hold") {
+    statusClass = "text-red-600 bg-red-100";
+  } else if (status === "en cours" || status === "processing" || status === "nouvelle_commande") {
+    statusClass = "text-yellow-600 bg-yellow-100";
+  }
 
-          <div className="min-w-[128px]">
-            <p
-              className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${
-                orderItem.status === "delivered"
-                  ? "text-green bg-green-light-6"
-                  : orderItem.status === "on-hold"
-                  ? "text-red bg-red-light-6"
-                  : orderItem.status === "processing"
-                  ? "text-yellow bg-yellow-light-4"
-                  : "Unknown Status"
-              }`}
-            >
-              {orderItem.status}
-            </p>
-          </div>
-
-          <div className="min-w-[213px]">
-            <p className="text-custom-sm text-dark">{orderItem.title}</p>
-          </div>
-
-          <div className="min-w-[113px]">
-            <p className="text-custom-sm text-dark">{orderItem.total}</p>
-          </div>
-
-          <div className="flex gap-5 items-center">
-            <OrderActions
-              toggleDetails={toggleDetails}
-              toggleEdit={toggleEdit}
-            />
-          </div>
-        </div>
-      )}
-
-      {smallView && (
-        <div className="block md:hidden">
-          <div className="py-4.5 px-7.5">
-            <div className="">
-              <p className="text-custom-sm text-dark">
-                <span className="font-bold pr-2"> Order:</span> #
-                {orderItem.orderId.slice(-8)}
-              </p>
-            </div>
-            <div className="">
-              <p className="text-custom-sm text-dark">
-                <span className="font-bold pr-2">Date:</span>{" "}
-                {orderItem.createdAt}
-              </p>
-            </div>
-
-            <div className="">
-              <p className="text-custom-sm text-dark">
-                <span className="font-bold pr-2">Status:</span>{" "}
-                <span
-                  className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${
-                    orderItem.status === "delivered"
-                      ? "text-green bg-green-light-6"
-                      : orderItem.status === "on-hold"
-                      ? "text-red bg-red-light-6"
-                      : orderItem.status === "processing"
-                      ? "text-yellow bg-yellow-light-4"
-                      : "Unknown Status"
-                  }`}
-                >
-                  {orderItem.status}
-                </span>
-              </p>
-            </div>
-
-            <div className="">
-              <p className="text-custom-sm text-dark">
-                <span className="font-bold pr-2">Title:</span> {orderItem.title}
-              </p>
-            </div>
-
-            <div className="">
-              <p className="text-custom-sm text-dark">
-                <span className="font-bold pr-2">Total:</span> $
-                {orderItem.total}
-              </p>
-            </div>
-
-            <div className="">
-              <p className="text-custom-sm text-dark flex items-center">
-                <span className="font-bold pr-2">Actions:</span>{" "}
-                <OrderActions
-                  toggleDetails={toggleDetails}
-                  toggleEdit={toggleEdit}
-                />
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <OrderModal
-        showDetails={showDetails}
-        showEdit={showEdit}
-        toggleModal={toggleModal}
-        order={orderItem}
+  // Render as table row or card
+  return asCard ? (
+    <div className="border rounded-lg p-4 mb-4 bg-white shadow">
+      <div className="font-semibold text-purple-700 mb-2">
+        #{String(orderId).slice(-8)}
+      </div>
+      <div className="text-gray-700 mb-2">{formatDate(createdAt)}</div>
+      <div className="mb-2">
+        <span className={`text-xs font-bold py-1 px-3 rounded-full ${statusClass}`}>
+          {formatStatus(status)}
+        </span>
+      </div>
+      <div className="text-gray-900 mb-2">{title}</div>
+      <div className="font-bold text-purple-700 mb-2">{total}</div>
+      <OrderActions
+        toggleDetails={onShowDetails}
+        toggleEdit={onShowEdit}
       />
-    </>
+    </div>
+  ) : (
+    <tr className="hover:bg-gray-50 transition">
+      <td className="px-6 py-4 font-semibold text-purple-700">
+        #{String(orderId).slice(-8)}
+      </td>
+      <td className="px-6 py-4 text-gray-700">{formatDate(createdAt)}</td>
+      <td className="px-6 py-4">
+        <span className={`text-xs font-bold py-1 px-3 rounded-full ${statusClass}`}>
+          {formatStatus(status)}
+        </span>
+      </td>
+      <td className="px-6 py-4 text-gray-900">{title}</td>
+      <td className="px-6 py-4 font-bold text-purple-700">{total}</td>
+      <td className="px-6 py-4">
+        <OrderActions
+          toggleDetails={onShowDetails}
+          toggleEdit={onShowEdit}
+        />
+      </td>
+    </tr>
   );
 };
 

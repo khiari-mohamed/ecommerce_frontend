@@ -1,17 +1,35 @@
+// src/components/ShopDetails/RecentlyViewd/index.tsx
 "use client";
 import React from "react";
-import shopData from "@/components/Shop/shopData";
-import ProductItem from "@/components/Common/ProductItem";
-import Image from "next/image";
-import Link from "next/link";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useCallback, useRef } from "react";
 import "swiper/css/navigation";
 import "swiper/css";
+import Image from "next/image";
+import Link from "next/link";
+import ProductItem from "@/components/Common/ProductItem";
+import { useAppSelector } from "@/redux/store";
+import { getRelatedProducts } from "@/services/products";
+import { useState, useEffect } from 'react';
+import { Product } from '@/types/product';
+
 
 const RecentlyViewdItems = () => {
   const sliderRef = useRef(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const currentProduct = useAppSelector((state) => state.productDetailsReducer.value);
+
+  useEffect(() => {
+    const fetchRelatedProducts = async () => {
+      if (currentProduct?.category && typeof currentProduct.category === 'object' && currentProduct.category._id) {
+        const products = await getRelatedProducts(currentProduct.category._id);
+        setRelatedProducts(products);
+      }
+    };
+    // ...
+    
+    fetchRelatedProducts();
+  }, [currentProduct]);
 
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return;
@@ -27,7 +45,6 @@ const RecentlyViewdItems = () => {
     <section className="overflow-hidden pt-17.5">
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0 pb-15 border-b border-gray-3">
         <div className="swiper categories-carousel common-carousel">
-          {/* <!-- section title --> */}
           <div className="mb-10 flex items-center justify-between">
             <div>
               <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
@@ -40,12 +57,13 @@ const RecentlyViewdItems = () => {
                 Categories
               </span>
               <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
-                Browse by Category
+              Browse by Category
               </h2>
             </div>
 
             <div className="flex items-center gap-3">
               <button onClick={handlePrev} className="swiper-button-prev">
+                {/* Previous SVG icon */}
                 <svg
                   className="fill-current"
                   width="24"
@@ -62,8 +80,8 @@ const RecentlyViewdItems = () => {
                   />
                 </svg>
               </button>
-
               <button onClick={handleNext} className="swiper-button-next">
+                {/* Next SVG icon */}
                 <svg
                   className="fill-current"
                   width="24"
@@ -89,7 +107,7 @@ const RecentlyViewdItems = () => {
             spaceBetween={20}
             className="justify-between"
           >
-            {shopData.map((item, key) => (
+            {relatedProducts.map((item, key) => (
               <SwiperSlide key={key}>
                 <ProductItem item={item} />
               </SwiperSlide>

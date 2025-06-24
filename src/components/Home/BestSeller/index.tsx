@@ -1,10 +1,40 @@
-import React from "react";
-import SingleItem from "./SingleItem";
+"use client";
+import React, { useEffect, useState } from "react";
+import ProductItem from "@/components/Common/ProductItem";
 import Image from "next/image";
 import Link from "next/link";
-import shopData from "@/components/Shop/shopData";
+import { getTopProductsFeature } from "@/services/products";
+import type { Product } from "@/types/product";
+
 
 const BestSeller = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getTopProductsFeature()
+      .then((data) => { 
+        console.log("Raw data from getTopProductsFeature:", data);
+        // Map API fields to expected ProductItem fields, similar to promotions page
+        const mapped = data.map((item) => {
+          console.log("Processing item:", item);
+          return {
+            ...item,
+            title: item.title || item.designation || item.designation || "",
+            cover: item.cover || item.mainImage?.url || "",
+            // Ensure proper image structure
+            imgs: item.imgs || {
+              thumbnails: item.mainImage?.url ? [item.mainImage.url] : [],
+              previews: item.mainImage?.url ? [item.mainImage.url] : []
+            }
+          };
+        });
+        console.log("Mapped products:", mapped);
+        setProducts(mapped);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <section className="overflow-hidden">
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -18,32 +48,36 @@ const BestSeller = () => {
                 width={17}
                 height={17}
               />
-              This Month
+              Ce mois-ci
             </span>
             <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
-              Best Sellers
+            Meilleures ventes
             </h2>
-          </div>
+          </div>  
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7.5">
-          {/* <!-- Best Sellers item --> */}
-          {shopData.slice(1, 7).map((item, key) => (
-            <SingleItem item={item} key={key} />
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-7.5 gap-y-9">
+          {loading ? (
+            <div className="col-span-4 flex justify-center items-center py-10">
+              <span>Chargement...</span>
+            </div>
+          ) : (
+            products.map((item, key) => (
+              <ProductItem item={item} key={key} />
+            ))
+          )}
         </div>
-
         <div className="text-center mt-12.5">
           <Link
             href="/shop-without-sidebar"
             className="inline-flex font-medium text-custom-sm py-3 px-7 sm:px-12.5 rounded-md border-gray-3 border bg-gray-1 text-dark ease-out duration-200 hover:bg-dark hover:text-white hover:border-transparent"
           >
-            View All
+            Tout voir
           </Link>
         </div>
       </div>
     </section>
-  );
+  ); 
 };
 
 export default BestSeller;

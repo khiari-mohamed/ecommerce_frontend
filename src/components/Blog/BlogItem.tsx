@@ -1,50 +1,90 @@
 import React from "react";
-import { BlogItem } from "@/types/blogItem";
+import type { Blog } from "@/services/blog.service";
 import Image from "next/image";
 import Link from "next/link";
 
-const BlogItem = ({ blog }: { blog: BlogItem }) => {
+const BLOG_IMAGE_BASE = "/uploads/";
+
+const BlogItem = ({ blog }: { blog: Blog }) => {
+  // Determine image URL from blog.cover (string or object)
+  let imageUrl = "";
+
+  if (blog.cover) {
+    if (typeof blog.cover === "string") {
+      // Remove any leading slashes
+      const cleanCover = blog.cover.replace(/^\/+/, "");
+      imageUrl = blog.cover.startsWith("http")
+        ? blog.cover
+        : BLOG_IMAGE_BASE + cleanCover;
+    } else if (blog.cover.url) {
+      const cleanCoverUrl = blog.cover.url.replace(/^\/+/, "");
+      imageUrl = blog.cover.url.startsWith("http")
+        ? blog.cover.url
+        : BLOG_IMAGE_BASE + cleanCoverUrl;
+    }
+  }
+
+  // Fallback image if none provided
+  if (!imageUrl) {
+    imageUrl = "/images/blog/blog-01.jpg";
+  }
+
+  // Debug: log the cover and the final imageUrl
+  if (typeof window !== "undefined") {
+    console.log("Blog cover:", blog.cover, "Image URL:", imageUrl);
+  }
+
+  // Format date from created_at or createdAt
+  const date = blog.created_at
+    ? new Date(blog.created_at).toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    : blog.createdAt
+    ? new Date(blog.createdAt).toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    : "No date";
+
+  const views = (blog as any).views ?? 0;
+  const title = blog.designation_fr || blog.title || "";
+  const imageAlt = blog.alt_cover || title || "blog";
+  const description =
+    blog.description_cover || blog.meta_description_fr || blog.meta || "";
+
   return (
     <div className="shadow-1 bg-white rounded-xl px-4 sm:px-5 pt-5 pb-4">
-      <Link href="/blogs/blog-details" className="rounded-md overflow-hidden">
+      <Link href={`/blogs/${blog.slug}`} className="rounded-md overflow-hidden">
         <Image
-          src={blog.img}
-          alt="blog"
+          src={imageUrl}
+          alt={imageAlt}
+          title={description}
           className="rounded-md w-full"
           width={330}
           height={210}
         />
       </Link>
-
       <div className="mt-5.5">
         <span className="flex items-center gap-3 mb-2.5">
-          <a
-            href="#"
-            className="text-custom-sm ease-out duration-200 hover:text-blue"
-          >
-            {blog.date}
-          </a>
-
-          {/* <!-- divider --> */}
+          <span className="text-custom-sm ease-out duration-200 hover:text-blue">
+            {date}
+          </span>
           <span className="block w-px h-4 bg-gray-4"></span>
-
-          <a
-            href="#"
-            className="text-custom-sm ease-out duration-200 hover:text-blue"
-          >
-            {blog.views} Views
-          </a>
+          <span className="text-custom-sm ease-out duration-200 hover:text-blue">
+            {views} Views
+          </span>
         </span>
-
         <h2 className="font-medium text-dark text-lg sm:text-xl ease-out duration-200 mb-4 hover:text-blue">
-          <Link href="/blogs/blog-details">{blog.title}</Link>
+          <Link href={`/blogs/${blog.slug}`}>{title}</Link>
         </h2>
-
         <Link
-          href="/blogs/blog-details"
+          href={`/blogs/${blog.slug}`}
           className="text-custom-sm inline-flex items-center gap-2 py-2 ease-out duration-200 hover:text-blue"
         >
-          Read More
+          En savoir plus
           <svg
             className="fill-current"
             width="18"

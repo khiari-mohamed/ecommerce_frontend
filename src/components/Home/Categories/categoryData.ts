@@ -1,44 +1,34 @@
-const data = [
+const categoryData = [
   {
-    title: "Televisions",
-    id: 1,
-    img: "/images/categories/categories-01.png",
+    title: "ACIDES AMINES",
+    id: "1",
+    img: "/images/categories/AcidesAmines.png",
   },
   {
-    title: "Laptop & PC",
-    id: 2,
-    img: "/images/categories/categories-02.png",
+    title: "PERTE DE POIDS",
+    id: "2",
+    img: "/images/categories/PerteDuPoids.png",
   },
   {
-    title: "Mobile & Tablets",
-    id: 3,
-    img: "/images/categories/categories-03.png",
+    title: "PRISE DE MASSE",
+    id: "3",
+    img: "/images/categories/PriseMasses.png",
   },
   {
-    title: "Games & Videos",
-    id: 4,
-    img: "/images/categories/categories-04.png",
+    title: "PROTEINES",
+    id: "4",
+    img: "/images/categories/Proteines.png",
   },
   {
-    title: "Home Appliances",
-    id: 5,
-    img: "/images/categories/categories-05.png",
+    title: "PRE, INTRA & POST WORKOUT",
+    id: "5",
+    img: "/images/categories/PostWorkout.png",
   },
   {
-    title: "Health & Sports",
-    id: 6,
-    img: "/images/categories/categories-06.png",
-  },
-  {
-    title: "Watches",
-    id: 7,
-    img: "/images/categories/categories-07.png",
-  },
-  {
-    title: "Televisions",
-    id: 8,
-    img: "/images/categories/categories-04.png",
+    title: "VETEMENTS ET ACCESSOIRES",
+    id: "6",
+    img: "/images/categories/VetAccess.png",
   },
 ];
 
-export default data;
+export default categoryData;

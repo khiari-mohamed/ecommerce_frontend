@@ -1,4 +1,20 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
 
-module.exports = nextConfig;
+    async rewrites() {
+        return [
+          {
+            source: '/admin/:path*', // What users see in URL
+            destination: "/admin-dashboard/app/:path*", // Where files actually are
+          },
+        ];
+      },
+};
+
+
+module.exports = {
+  ...nextConfig,
+  images: {
+    domains: ["localhost"],
+  },
+};

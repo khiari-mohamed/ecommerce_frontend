@@ -1,0 +1,162 @@
+
+"use client";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+
+const fadeInVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.8, ease: "easeOut" }
+  }
+};
+
+const fadeFromLeftVariants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: { duration: 0.8, ease: "easeOut" }
+  }
+};
+
+const buttonVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.6, delay: 0.3, ease: "easeOut" }
+  },
+  hover: {
+    scale: 1.05,
+    transition: { duration: 0.2 }
+  }
+};
+
+// Add your images here
+const images = [
+  "/img/v2.jpg",
+  "/img/v3.jpg",
+  "/img/v4.jpg",
+  "/img/vv7.jpg",
+
+];
+
+const IMAGE_CHANGE_INTERVAL = 4000; // 3 seconds
+const FADE_DURATION = 1.2; // seconds
+
+const MusculationProducts = () => {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setCurrent((prev) => (prev + 1) % images.length);
+    }, IMAGE_CHANGE_INTERVAL);
+    return () => clearTimeout(timeout);
+  }, [current]);
+
+  return (
+    <div className="w-full mt-24">
+      {/* Section Header */}
+      <div className="w-full mx-auto max-w-screen-2xl">
+        <motion.div
+          className="max-w-screen-xl px-4 mx-auto md:px-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h3
+            variants={fadeInVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            className="text-[28px] text-center text-white uppercase font-extrabold mb-4"
+            style={{ fontFamily: 'Montserrat, sans-serif' }}
+          >
+            Materiel de Musculation
+          </motion.h3>
+        </motion.div>
+      </div>
+
+      {/* Banner Image Section */}
+      <div className="relative w-screen h-[60vh] md:h-[70vh] overflow-hidden left-[50%] right-[50%] mx-[-50vw]">
+        {/* Crossfade Images */}
+        <AnimatePresence>
+          {images.map((src, idx) =>
+            idx === current ? (
+              <motion.div
+                key={src}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: FADE_DURATION, ease: "easeInOut" }}
+                className="absolute inset-0 w-full h-full"
+                style={{ zIndex: 1 }}
+              >
+                <Image
+                  src={src}
+                  fill
+                  priority
+                  className="object-cover w-full"
+                  alt="Équipement de musculation et fitness"
+                  sizes="100vw"
+                />
+              </motion.div>
+            ) : null
+          )}
+        </AnimatePresence>
+
+        {/* Gradient Overlay and Content */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/75 to-black/40 z-10">
+          <div className="absolute inset-0 flex flex-col items-start justify-center p-8 text-white max-w-8xl md:p-16 lg:p-24">
+            <motion.h2
+              variants={fadeInVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              className="mb-4 text-2xl font-extrabold text-left uppercase md:text-3xl lg:text-5xl"
+              style={{ fontFamily: 'Oswald, sans-serif' }}
+            >
+              Matériel de Musculation
+            </motion.h2>
+            <motion.p
+              variants={fadeFromLeftVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.5 }}
+              className="max-w-4xl mb-8 text-lg text-left text-gray-300 md:text-xl lg:text-2xl"
+            >
+              Découvrez notre gamme complète de matériel musculation, fitness et
+              cardio pour équiper votre salle de sport. Atteignez vos objectifs
+              avec des équipements de qualité professionnelle, adaptés à tous
+              les niveaux. Performance, endurance et force, tout commence ici !
+            </motion.p>
+            <motion.div
+              variants={buttonVariants}
+              initial="hidden"
+              whileInView="visible"
+              whileHover="hover"
+              viewport={{ once: true, amount: 0.5 }}
+            >
+              <Link href="/musculation-products">
+                <button
+                  className="inline-flex font-medium text-white text-custom-sm rounded-md bg-dark py-3 px-9 ease-out duration-200 hover:bg-blue mt-10"
+                >
+                  <span className="text-sm font-medium md:text-base">
+                    Discover more
+                  </span>
+                </button>
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MusculationProducts;

@@ -9,6 +9,7 @@ import Image from "next/image";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { resetQuickView } from "@/redux/features/quickView-slice";
 import { updateproductDetails } from "@/redux/features/product-details";
+import { getValidImageSrc } from "@/utils/imageUtils"; // 1. Import
 
 const QuickViewModal = () => {
   const { isModalOpen, closeModal } = useModalContext();
@@ -31,10 +32,23 @@ const QuickViewModal = () => {
 
   // add to cart
   const handleAddToCart = () => {
+    const imageSrc = getValidImageSrc(
+      (product?.imgs?.thumbnails && product.imgs.thumbnails.length > 0
+        ? product.imgs.thumbnails[activePreview]
+        : product?.imgs?.previews && product.imgs.previews.length > 0
+        ? product.imgs.previews[activePreview]
+        : product?.cover
+        ? product.cover
+        : product?.mainImage?.url
+        ? product.mainImage.url
+        : undefined)
+    );
+
     dispatch(
       addItemToCart({
         ...product,
         quantity,
+        image: imageSrc,
       })
     );
 
@@ -94,7 +108,17 @@ const QuickViewModal = () => {
             <div className="max-w-[526px] w-full">
               <div className="flex gap-5">
                 <div className="flex flex-col gap-5">
-                  {product.imgs.thumbnails?.map((img, key) => (
+                  {(
+                    (product?.imgs?.thumbnails && product.imgs.thumbnails.length > 0
+                      ? product.imgs.thumbnails
+                      : product?.imgs?.previews && product.imgs.previews.length > 0
+                      ? product.imgs.previews
+                      : product?.cover
+                      ? [product.cover]
+                      : product?.mainImage?.url
+                      ? [product.mainImage.url]
+                      : [])
+                  ).map((img, key) => (
                     <button
                       onClick={() => setActivePreview(key)}
                       key={key}
@@ -103,7 +127,7 @@ const QuickViewModal = () => {
                       }`}
                     >
                       <Image
-                        src={img || ""}
+                        src={getValidImageSrc(img)}
                         alt="thumbnail"
                         width={61}
                         height={61}
@@ -136,9 +160,19 @@ const QuickViewModal = () => {
                         />
                       </svg>
                     </button>
-
                     <Image
-                      src={product?.imgs?.previews?.[activePreview]}
+                      src={getValidImageSrc(
+                        (product?.imgs?.thumbnails && product.imgs.thumbnails.length > 0
+                          ? product.imgs.thumbnails[activePreview]
+                          : product?.imgs?.previews && product.imgs.previews.length > 0
+                          ? product.imgs.previews[activePreview]
+                          : product?.cover
+                          ? product.cover
+                          : product?.mainImage?.url
+                          ? product.mainImage.url
+                          : undefined
+                        )
+                      )}
                       alt="products-details"
                       width={400}
                       height={400}
@@ -149,9 +183,30 @@ const QuickViewModal = () => {
             </div>
 
             <div className="max-w-[445px] w-full">
-              <span className="inline-block text-custom-xs font-medium text-white py-1 px-3 bg-green mb-6.5">
-                SALE 20% OFF
-              </span>
+              {/* Dynamic Discount Label */}
+              {(() => {
+                // Helper to generate a pseudo-random but fixed discount per product
+                function getFixedDiscount(product) {
+                  // Use id, title, or fallback to 0
+                  const key = product?.id || product?.title || 0;
+                  if (!key) return 0;
+                  // Simple hash function
+                  let hash = 0;
+                  const str = String(key);
+                  for (let i = 0; i < str.length; i++) {
+                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                  }
+                  // Range 7-25
+                  const discount = 7 + (Math.abs(hash) % 19); // 7 to 25
+                  return discount;
+                }
+                const discount = getFixedDiscount(product);
+                return (
+                  <span className="inline-block text-custom-xs font-medium text-white py-1 px-3 bg-green mb-6.5">
+                    SOLDES {discount}% DE RÉDUCTION
+                  </span>
+                );
+              })()}
 
               <h3 className="font-semibold text-xl xl:text-heading-5 text-dark mb-4">
                 {product.title}
@@ -268,8 +323,8 @@ const QuickViewModal = () => {
                   </div>
 
                   <span>
-                    <span className="font-medium text-dark"> 4.7 Rating </span>
-                    <span className="text-dark-2"> (5 reviews) </span>
+                    <span className="font-medium text-dark"> Note de 4,7 </span>
+                    <span className="text-dark-2"> (5 avis) </span>
                   </span>
                 </div>
 
@@ -302,30 +357,38 @@ const QuickViewModal = () => {
                 </div>
               </div>
 
-              <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has.
-              </p>
-
               <div className="flex flex-wrap justify-between gap-5 mt-6 mb-7.5">
                 <div>
-                  <h4 className="font-semibold text-lg text-dark mb-3.5">
-                    Price
-                  </h4>
-
                   <span className="flex items-center gap-2">
                     <span className="font-semibold text-dark text-xl xl:text-heading-4">
-                      ${product.discountedPrice}
+                      {Number(product.discountedPrice).toLocaleString("fr-TN", {
+                        style: "currency",
+                        currency: "TND",
+                      })}
                     </span>
                     <span className="font-medium text-dark-4 text-lg xl:text-2xl line-through">
-                      ${product.price}
+                      {Number(product.price).toLocaleString("fr-TN", {
+                        style: "currency",
+                        currency: "TND",
+                      })}
                     </span>
                   </span>
                 </div>
 
+                {product?.meta_description_fr ? (
+                  <div
+                    className="mb-4"
+                    dangerouslySetInnerHTML={{ __html: product.meta_description_fr }}
+                  />
+                ) : (
+                  <p className="mb-4">
+                    Découvrez notre sélection de compléments protéinés de haute qualité, idéals pour soutenir la croissance musculaire, la récupération et la performance sportive. Nos produits sont adaptés aussi bien aux débutants qu’aux athlètes confirmés.
+                  </p>
+                )}
+
                 <div>
                   <h4 className="font-semibold text-lg text-dark mb-3.5">
-                    Quantity
+                    Quantité
                   </h4>
 
                   <div className="flex items-center gap-3">
@@ -397,7 +460,7 @@ const QuickViewModal = () => {
                   className={`inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark
                   `}
                 >
-                  Add to Cart
+                  Ajouter au panier
                 </button>
 
                 <button
@@ -415,10 +478,166 @@ const QuickViewModal = () => {
                       fillRule="evenodd"
                       clipRule="evenodd"
                       d="M4.68698 3.68688C3.30449 4.31882 2.29169 5.82191 2.29169 7.6143C2.29169 9.44546 3.04103 10.8569 4.11526 12.0665C5.00062 13.0635 6.07238 13.8897 7.11763 14.6956C7.36588 14.8869 7.61265 15.0772 7.85506 15.2683C8.29342 15.6139 8.68445 15.9172 9.06136 16.1374C9.43847 16.3578 9.74202 16.4584 10 16.4584C10.258 16.4584 10.5616 16.3578 10.9387 16.1374C11.3156 15.9172 11.7066 15.6139 12.145 15.2683C12.3874 15.0772 12.6342 14.8869 12.8824 14.6956C13.9277 13.8897 14.9994 13.0635 15.8848 12.0665C16.959 10.8569 17.7084 9.44546 17.7084 7.6143C17.7084 5.82191 16.6955 4.31882 15.3131 3.68688C13.97 3.07295 12.1653 3.23553 10.4503 5.01733C10.3325 5.13974 10.1699 5.20891 10 5.20891C9.83012 5.20891 9.66754 5.13974 9.54972 5.01733C7.83474 3.23553 6.03008 3.07295 4.68698 3.68688ZM10 3.71573C8.07331 1.99192 5.91582 1.75077 4.16732 2.55002C2.32061 3.39415 1.04169 5.35424 1.04169 7.6143C1.04169 9.83557 1.9671 11.5301 3.18062 12.8966C4.15241 13.9908 5.34187 14.9067 6.39237 15.7155C6.63051 15.8989 6.8615 16.0767 7.0812 16.2499C7.50807 16.5864 7.96631 16.9453 8.43071 17.2166C8.8949 17.4879 9.42469 17.7084 10 17.7084C10.5754 17.7084 11.1051 17.4879 11.5693 17.2166C12.0337 16.9453 12.492 16.5864 12.9188 16.2499C13.1385 16.0767 13.3695 15.8989 13.6077 15.7155C14.6582 14.9067 15.8476 13.9908 16.8194 12.8966C18.0329 11.5301 18.9584 9.83557 18.9584 7.6143C18.9584 5.35424 17.6794 3.39415 15.8327 2.55002C14.0842 1.75077 11.9267 1.99192 10 3.71573Z"
-                      fill=""
                     />
                   </svg>
-                  Add to Wishlist
+                  ajouter a la Wishlist
+                </button>
+              </div>
+              {/* Social Share & Copy Link */}
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                {/* Facebook */}
+                <button
+                  aria-label="Partager sur Facebook"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-blue-600 hover:text-white transition-all duration-150"
+                  onClick={() => {
+                    window.open(
+                      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                        window.location.href
+                      )}`,
+                      "_blank",
+                      "noopener,noreferrer"
+                    );
+                  }}
+                >
+                  <svg
+                    width="22"
+                    height="22"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0" />
+                  </svg>
+                </button>
+                {/* Twitter */}
+                <button
+                  aria-label="Partager sur Twitter"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-blue-400 hover:text-white transition-all duration-150"
+                  onClick={() => {
+                    window.open(
+                      `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                        window.location.href
+                      )}`,
+                      "_blank",
+                      "noopener,noreferrer"
+                    );
+                  }}
+                >
+                  <svg
+                    width="22"
+                    height="22"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M24 4.557a9.83 9.83 0 0 1-2.828.775 4.932 4.932 0 0 0 2.165-2.724c-.951.564-2.005.974-3.127 1.195a4.916 4.916 0 0 0-8.38 4.482C7.691 8.095 4.066 6.13 1.64 3.161c-.542.929-.856 2.01-.857 3.17 0 2.188 1.115 4.117 2.823 5.254a4.904 4.904 0 0 1-2.229-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.936 4.936 0 0 1-2.224.084c.627 1.956 2.444 3.377 4.6 3.417A9.867 9.867 0 0 1 0 21.543a13.94 13.94 0 0 0 7.548 2.209c9.058 0 14.009-7.496 14.009-13.986 0-.21-.005-.423-.015-.634A9.936 9.936 0 0 0 24 4.557z" />
+                  </svg>
+                </button>
+                {/* WhatsApp */}
+                <button
+                  aria-label="Partager sur WhatsApp"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-green-500 hover:text-white transition-all duration-150"
+                  onClick={() => {
+                    window.open(
+                      `https://api.whatsapp.com/send?text=${encodeURIComponent(
+                        window.location.href
+                      )}`,
+                      "_blank",
+                      "noopener,noreferrer"
+                    );
+                  }}
+                >
+                  <svg
+                    width="22"
+                    height="22"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.363.709.306 1.262.489 1.694.626.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.617h-.001a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.991c-.003 5.451-4.437 9.885-9.888 9.885m8.413-18.297A11.815 11.815 0 0 0 12.05.001C5.495.001.001 5.495 0 12.049c0 2.124.557 4.199 1.615 6.032L.057 23.944a1.001 1.001 0 0 0 1.212 1.212l5.814-1.557a11.96 11.96 0 0 0 5.006 1.104h.005c6.554 0 11.848-5.393 11.85-11.947a11.821 11.821 0 0 0-3.482-8.627" />
+                  </svg>
+                </button>
+                {/* LinkedIn */}
+                <button
+                  aria-label="Partager sur LinkedIn"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-blue-700 hover:text-white transition-all duration-150"
+                  onClick={() => {
+                    window.open(
+                      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                        window.location.href
+                      )}`,
+                      "_blank",
+                      "noopener,noreferrer"
+                    );
+                  }}
+                >
+                  <svg
+                    width="22"
+                    height="22"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.025-3.063-1.868-3.063-1.868 0-2.154 1.459-2.154 2.967v5.7h-3v-10h2.881v1.367h.041c.401-.761 1.379-1.563 2.841-1.563 3.039 0 3.6 2.001 3.6 4.601v5.595z" />
+                  </svg>
+                </button>
+                {/* Reddit */}
+                <button
+                  aria-label="Partager sur Reddit"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-orange-500 hover:text-white transition-all duration-150"
+                  onClick={() => {
+                    window.open(
+                      `https://www.reddit.com/submit?url=${encodeURIComponent(
+                        window.location.href
+                      )}`,
+                      "_blank",
+                      "noopener,noreferrer"
+                    );
+                  }}
+                >
+                  <svg
+                    width="22"
+                    height="22"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M24 12c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 6.627 5.373 12 12 12s12-5.373 12-12zm-17.25 2.25c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm8.5 0c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm-4.25 2.25c0 1.104 2.239 2 5 2s5-.896 5-2v-1h-10v1zm10.5-2.25c0-2.485-2.015-4.5-4.5-4.5s-4.5 2.015-4.5 4.5h9zm-9.5-2.25c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm8.5 0c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm-4.25-2.25c0-1.104-2.239-2-5-2s-5 .896-5 2v1h10v-1zm-10.5 2.25c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5h-9zm9.5-2.25c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm8.5 0c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm-4.25-2.25c0-1.104-2.239-2-5-2s-5 .896-5 2v1h10v-1zm-10.5 2.25c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5h-9zm9.5-2.25c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm8.5 0c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75z" />
+                  </svg>
+                </button>
+                {/* Instagram (opens profile, as Instagram does not support direct share links) */}
+                <button
+                  aria-label="Voir sur Instagram"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-pink-500 hover:text-white transition-all duration-150"
+                  onClick={() => {
+                    window.open(
+                      `https://www.instagram.com/`,
+                      "_blank",
+                      "noopener,noreferrer"
+                    );
+                  }}
+                >
+                  <svg
+                    width="22"
+                    height="22"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.974.974 1.246 2.241 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.974-2.241 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.974-.974-1.246-2.241-1.308-3.608C2.175 15.647 2.163 15.267 2.163 12s.012-3.584.07-4.85c.059-1.281.292-2.393 1.272-3.373.98-.98 2.092-1.213 3.373-1.272C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.013 7.052.072 5.771.131 4.659.363 3.678 1.344c-.98.98-1.213 2.092-1.272 3.373C2.013 8.332 2 8.741 2 12c0 3.259.013 3.668.072 4.948.059 1.281.292 2.393 1.272 3.373.98.98 2.092 1.213 3.373 1.272C8.332 23.987 8.741 24 12 24s3.668-.013 4.948-.072c1.281-.059 2.393-.292 3.373-1.272.98-.98 1.213-2.092 1.272-3.373.059-1.28.072-1.689.072-4.948 0-3.259-.013-3.668-.072-4.948-.059-1.281-.292-2.393-1.272-3.373-.98-.98-2.092-1.213-3.373-1.272C15.668.013 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998 3.999 3.999 0 0 1 0 7.998zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+                  </svg>
+                </button>
+                {/* Copy Link */}
+                <button
+                  aria-label="Copier le lien"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-gray-300 transition-all duration-150"
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    alert("Lien copié !");
+                  }}
+                >
+                  <svg
+                    width="22"
+                    height="22"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M3.9 12c0-2.24 1.82-4.06 4.06-4.06h4.06V6.06H7.96A5.94 5.94 0 0 0 2 12c0 3.28 2.68 5.94 5.96 5.94h4.06v-1.88H7.96A4.06 4.06 0 0 1 3.9 12zm3.06.94h10.08v-1.88H6.96v1.88zm6.08-7.88v1.88h4.06A4.06 4.06 0 0 1 21.1 12c0 2.24-1.82 4.06-4.06 4.06h-4.06v1.88h4.06A5.94 5.94 0 0 0 22 12c0-3.28-2.68-5.94-5.96-5.94h-4.06z" />
+                </svg>
                 </button>
               </div>
             </div>

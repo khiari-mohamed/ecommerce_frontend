@@ -1,3 +1,4 @@
+
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
@@ -15,6 +16,8 @@ type CartItem = {
     thumbnails: string[];
     previews: string[];
   };
+  type?: string;
+  image: string; // <-- Add this line for the main image used in cart
 };
 
 const initialState: InitialState = {
@@ -26,22 +29,24 @@ export const cart = createSlice({
   initialState,
   reducers: {
     addItemToCart: (state, action: PayloadAction<CartItem>) => {
-      const { id, title, price, quantity, discountedPrice, imgs } =
-        action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
-
-      if (existingItem) {
-        existingItem.quantity += quantity;
-      } else {
-        state.items.push({
-          id,
-          title,
-          price,
-          quantity,
-          discountedPrice,
-          imgs,
-        });
-      }
+    const { id, title, price, quantity, discountedPrice, imgs, type, image } =
+    action.payload;
+    const existingItem = state.items.find((item) => item.id === id);
+    
+    if (existingItem) {
+    existingItem.quantity += quantity;
+    } else {
+    state.items.push({
+    id,
+    title,
+    price,
+    quantity,
+    discountedPrice,
+    imgs,
+    type,
+    image, // <-- Add this line
+    });
+    }
     },
     removeItemFromCart: (state, action: PayloadAction<number>) => {
       const itemId = action.payload;

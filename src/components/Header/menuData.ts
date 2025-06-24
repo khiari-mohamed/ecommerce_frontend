@@ -1,17 +1,62 @@
+
 import { Menu } from "@/types/Menu";
 
 export const menuData: Menu[] = [
   {
     id: 1,
-    title: "Popular",
+    title: "Packs",
     newTab: false,
-    path: "/",
+    path: "/packs",
+  },
+  {
+    id: 99,
+    title: "Promotions",
+    newTab: false,
+    path: "/promotions",
   },
   {
     id: 2,
-    title: "Shop",
+    title: "Boutique",
     newTab: false,
     path: "/shop-with-sidebar",
+    submenu: [
+      {
+        id: 21,
+        title: "Boutique avec barre latérale",
+        newTab: false,
+        path: "/shop-with-sidebar",
+      },
+      {
+        id: 22,
+        title: "Boutique sans barre latérale",
+        newTab: false,
+        path: "/shop-without-sidebar",
+      },
+      {
+        id: 23,
+        title: "Détails du produit",
+        newTab: false,
+        path: "/shop-details",
+      },
+      {
+        id: 24,
+        title: "Panier",
+        newTab: false,
+        path: "/cart",
+      },
+      {
+        id: 25,
+        title: "Paiement",
+        newTab: false,
+        path: "/checkout",
+      },
+      {
+        id: 26,
+        title: "Liste de souhaits",
+        newTab: false,
+        path: "/wishlist",
+      }
+    ],
   },
   {
     id: 3,
@@ -21,55 +66,55 @@ export const menuData: Menu[] = [
   },
   {
     id: 6,
-    title: "pages",
+    title: "Pages",
     newTab: false,
     path: "/",
     submenu: [
       {
         id: 61,
-        title: "Shop With Sidebar",
+        title: "Boutique avec barre latérale",
         newTab: false,
         path: "/shop-with-sidebar",
       },
       {
         id: 62,
-        title: "Shop Without Sidebar",
+        title: "Boutique sans barre latérale",
         newTab: false,
         path: "/shop-without-sidebar",
       },
       {
         id: 64,
-        title: "Checkout",
+        title: "Paiement",
         newTab: false,
         path: "/checkout",
       },
       {
         id: 65,
-        title: "Cart",
+        title: "Panier",
         newTab: false,
         path: "/cart",
       },
       {
         id: 66,
-        title: "Wishlist",
+        title: "Liste de souhaits",
         newTab: false,
         path: "/wishlist",
       },
       {
         id: 67,
-        title: "Sign in",
+        title: "Se connecter",
         newTab: false,
         path: "/signin",
       },
       {
         id: 68,
-        title: "Sign up",
+        title: "S'inscrire",
         newTab: false,
         path: "/signup",
       },
       {
         id: 69,
-        title: "My Account",
+        title: "Mon compte",
         newTab: false,
         path: "/my-account",
       },
@@ -81,13 +126,13 @@ export const menuData: Menu[] = [
       },
       {
         id: 62,
-        title: "Error",
+        title: "Erreur",
         newTab: false,
         path: "/error",
       },
       {
         id: 63,
-        title: "Mail Success",
+        title: "Mail envoyé",
         newTab: false,
         path: "/mail-success",
       },
@@ -95,31 +140,31 @@ export const menuData: Menu[] = [
   },
   {
     id: 7,
-    title: "blogs",
+    title: "Blogs",
     newTab: false,
     path: "/",
     submenu: [
       {
         id: 71,
-        title: "Blog Grid with sidebar",
+        title: "Blog grille avec barre latérale",
         newTab: false,
         path: "/blogs/blog-grid-with-sidebar",
       },
       {
         id: 72,
-        title: "Blog Grid",
+        title: "Blog grille",
         newTab: false,
         path: "/blogs/blog-grid",
       },
       {
         id: 73,
-        title: "Blog details with sidebar",
+        title: "Détails du blog avec barre latérale",
         newTab: false,
         path: "/blogs/blog-details-with-sidebar",
       },
       {
         id: 74,
-        title: "Blog details",
+        title: "Détails du blog",
         newTab: false,
         path: "/blogs/blog-details",
       },

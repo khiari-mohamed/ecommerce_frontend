@@ -1,15 +1,37 @@
+
 "use client";
+import { useState, useEffect } from "react";
+import { getCategories } from "@/services/categories";
+import { Category } from "@/types/category";
+import { Product } from "@/types/product";
+import { SubCategory } from "@/types/subcategory";
+import Skeleton from "react-loading-skeleton";
 
-import { useState } from "react";
+interface CategoryDropdownProps {
+  selectedCategories: string[];
+  onCategorySelect: (id: string) => void;
+  products: Product[];
+  subcategories: SubCategory[];
+}
 
-const CategoryItem = ({ category }) => {
-  const [selected, setSelected] = useState(false);
+const CategoryItem = ({
+  category,
+  selected,
+  onSelect,
+  productCount,
+}: {
+  category: Category;
+  selected: boolean;
+  onSelect: (id: string) => void;
+  productCount: number;
+}) => {
   return (
     <button
+      type="button"
       className={`${
         selected && "text-blue"
-      } group flex items-center justify-between ease-out duration-200 hover:text-blue `}
-      onClick={() => setSelected(!selected)}
+      } group flex items-center justify-between ease-out duration-200 hover:text-blue w-full`}
+      onClick={() => onSelect(category._id)}
     >
       <div className="flex items-center gap-2">
         <div
@@ -34,31 +56,66 @@ const CategoryItem = ({ category }) => {
             />
           </svg>
         </div>
-
-        <span>{category.name}</span>
+        <span className="text-left">{category.designation}</span>
       </div>
-
       <span
         className={`${
           selected ? "text-white bg-blue" : "bg-gray-2"
         } inline-flex rounded-[30px] text-custom-xs px-2 ease-out duration-200 group-hover:text-white group-hover:bg-blue`}
       >
-        {category.products}
+        {productCount}
       </span>
     </button>
   );
 };
 
-const CategoryDropdown = ({ categories }) => {
+const CategoryDropdown = ({
+  selectedCategories = [],
+  onCategorySelect,
+  products,
+  subcategories,
+}: CategoryDropdownProps) => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (err) {
+        setError("Failed to load categories");
+        console.error("Failed to fetch categories:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Helper: get all subcategory ids for a category (robust string compare)
+  const getSubcategoryIdsForCategory = (category: Category) =>
+    subcategories
+      .filter((subcat) => String(subcat.categorie_id) === String(category.id))
+      .map((subcat) => String(subcat.id));
+
+  // Helper: count products for a category via subcategories (robust string compare)
+  const getProductCountForCategory = (category: Category) => {
+    const subcategoryIds = getSubcategoryIdsForCategory(category);
+    return products.filter(
+      (prod) =>
+        prod.sous_categorie_id &&
+        subcategoryIds.includes(String(prod.sous_categorie_id))
+    ).length;
+  };
 
   return (
     <div className="bg-white shadow-1 rounded-lg">
       <div
-        onClick={(e) => {
-          e.preventDefault();
-          setToggleDropdown(!toggleDropdown);
-        }}
+        onClick={() => setToggleDropdown(!toggleDropdown)}
         className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5 ${
           toggleDropdown && "shadow-filter"
         }`}
@@ -88,16 +145,34 @@ const CategoryDropdown = ({ categories }) => {
         </button>
       </div>
 
-      {/* dropdown && 'shadow-filter */}
-      {/* <!-- dropdown menu --> */}
       <div
         className={`flex-col gap-3 py-6 pl-6 pr-5.5 ${
           toggleDropdown ? "flex" : "hidden"
         }`}
       >
-        {categories.map((category, key) => (
-          <CategoryItem key={key} category={category} />
-        ))}
+        {loading ? (
+          [...Array(5)].map((_, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <Skeleton width={16} height={16} circle />
+              <Skeleton width={100} height={16} />
+              <Skeleton width={30} height={16} className="ml-auto" />
+            </div>
+          ))
+        ) : error ? (
+          <div className="text-red-500 text-sm">{error}</div>
+        ) : categories.length === 0 ? (
+          <div className="text-gray-500 text-sm">No categories found</div>
+        ) : (
+          categories.map((category) => (
+            <CategoryItem
+              key={category._id}
+              category={category}
+              selected={selectedCategories.includes(category._id)}
+              onSelect={onCategorySelect}
+              productCount={getProductCountForCategory(category)}
+            />
+          ))
+        )}
       </div>
     </div>
   );

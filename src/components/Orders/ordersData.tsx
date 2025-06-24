@@ -1,4 +1,4 @@
-const ordersData = [
+/*const ordersData = [
   {
     orderId: "234c56",
     createdAt: "18th May, 2022",
@@ -23,3 +23,4 @@ const ordersData = [
 ];
 
 export default ordersData;
+*/

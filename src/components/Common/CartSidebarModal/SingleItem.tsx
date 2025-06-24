@@ -3,6 +3,13 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import Image from "next/image";
 
+// Helper to ensure image src is valid for Next.js
+const getSafeImageSrc = (src: string | undefined) => {
+  if (!src) return "/default-product.jpg";
+  if (src.startsWith("/") || src.startsWith("http")) return src;
+  return "/" + src;
+};
+
 const SingleItem = ({ item, removeItemFromCart }) => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -10,18 +17,35 @@ const SingleItem = ({ item, removeItemFromCart }) => {
     dispatch(removeItemFromCart(item.id));
   };
 
+  // Safely get the image src for the product in the cart
+  const imgSrc = getSafeImageSrc(
+    item.image ||
+    (item.cover ? (typeof item.cover === "string" ? item.cover : undefined) : undefined) ||
+    item.mainImage?.url ||
+    item.imgs?.previews?.[0] ||
+    item.imgs?.thumbnails?.[0] ||
+    undefined
+  );
+
   return (
     <div className="flex items-center justify-between gap-5">
       <div className="w-full flex items-center gap-6">
         <div className="flex items-center justify-center rounded-[10px] bg-gray-3 max-w-[90px] w-full h-22.5">
-          <Image src={item.imgs?.thumbnails[0]} alt="product" width={100} height={100} />
+          <Image
+            src={imgSrc}
+            alt="product"
+            width={100}
+            height={100}
+          />
         </div>
 
         <div>
           <h3 className="font-medium text-dark mb-1 ease-out duration-200 hover:text-blue">
             <a href="#"> {item.title} </a>
           </h3>
-          <p className="text-custom-sm">Price: ${item.discountedPrice}</p>
+          <p className="text-custom-sm">
+                Prix: {Number(item.discountedPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+              </p>
         </div>
       </div>
 

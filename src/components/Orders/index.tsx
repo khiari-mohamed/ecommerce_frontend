@@ -1,69 +1,79 @@
 import React, { useEffect, useState } from "react";
 import SingleOrder from "./SingleOrder";
-import ordersData from "./ordersData";
+import OrderModal from "./OrderModal";
 
-const Orders = () => {
-  const [orders, setOrders] = useState<any>([]);
+interface SingleOrderProps {
+  orderItem: any;
+  onShowDetails: () => void;
+  onShowEdit: () => void;
+  // other props if any
+}
 
-  useEffect(() => {
-    fetch(`/api/order`)
-      .then((res) => res.json())
-      .then((data) => {
-        setOrders(data.orders);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+interface OrdersProps {
+  orders: any[];
+}
+
+const Orders: React.FC<OrdersProps> = ({ orders }) => {
+  // Modal state
+  const [modalOrder, setModalOrder] = useState<any>(null);
+  const [showDetails, setShowDetails] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+
+  // Handlers to open modal from SingleOrder
+  const handleShowDetails = (order: any) => {
+    setModalOrder(order);
+    setShowDetails(true);
+    setShowEdit(false);
+  };
+  const handleShowEdit = (order: any) => {
+    setModalOrder(order);
+    setShowEdit(true);
+    setShowDetails(false);
+  };
+  const handleCloseModal = () => {
+    setShowDetails(false);
+    setShowEdit(false);
+    setModalOrder(null);
+  };
 
   return (
-    <>
-      <div className="w-full overflow-x-auto">
-        <div className="min-w-[770px]">
-          {/* <!-- order item --> */}
-          {ordersData.length > 0 && (
-            <div className="items-center justify-between py-4.5 px-7.5 hidden md:flex ">
-              <div className="min-w-[111px]">
-                <p className="text-custom-sm text-dark">Order</p>
-              </div>
-              <div className="min-w-[175px]">
-                <p className="text-custom-sm text-dark">Date</p>
-              </div>
-
-              <div className="min-w-[128px]">
-                <p className="text-custom-sm text-dark">Status</p>
-              </div>
-
-              <div className="min-w-[213px]">
-                <p className="text-custom-sm text-dark">Title</p>
-              </div>
-
-              <div className="min-w-[113px]">
-                <p className="text-custom-sm text-dark">Total</p>
-              </div>
-
-              <div className="min-w-[113px]">
-                <p className="text-custom-sm text-dark">Action</p>
-              </div>
-            </div>
-          )}
-          {ordersData.length > 0 ? (
-            ordersData.map((orderItem, key) => (
-              <SingleOrder key={key} orderItem={orderItem} smallView={false} />
+    <div className="w-full overflow-x-auto force-orders-table">
+      <table className="min-w-full bg-white border border-gray-200 rounded-xl">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Order</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Date</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Status</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Title</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Total</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders.length > 0 ? (
+            orders.map((orderItem, key) => (
+              <SingleOrder
+                key={orderItem._id || key}
+                orderItem={orderItem}
+                onShowDetails={() => handleShowDetails(orderItem)}
+                onShowEdit={() => handleShowEdit(orderItem)}
+              />
             ))
           ) : (
-            <p className="py-9.5 px-4 sm:px-7.5 xl:px-10">
-              You don&apos;t have any orders!
-            </p>
+            <tr>
+              <td colSpan={6} className="text-center py-8">You don't have any orders!</td>
+            </tr>
           )}
-        </div>
-
-        {ordersData.length > 0 &&
-          ordersData.map((orderItem, key) => (
-            <SingleOrder key={key} orderItem={orderItem} smallView={true} />
-          ))}
-      </div>
-    </>
+        </tbody>
+      </table>
+      {/* Render modal outside the table */}
+      <OrderModal
+        showDetails={showDetails}
+        showEdit={showEdit}
+        toggleModal={handleCloseModal}
+        order={modalOrder}
+      />
+    </div>
   );
 };
 

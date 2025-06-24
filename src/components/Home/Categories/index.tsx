@@ -1,15 +1,19 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef, useEffect } from "react";
-import data from "./categoryData";
-import Image from "next/image";
-
-// Import Swiper styles
+import { useCallback, useRef, useEffect, useState } from "react";
 import "swiper/css/navigation";
 import "swiper/css";
 import SingleItem from "./SingleItem";
+import { getCategories } from "@/services/categories";
+import { Category } from "@/types/category";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import categoryData from './categoryData';
 
 const Categories = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const sliderRef = useRef(null);
 
   const handlePrev = useCallback(() => {
@@ -23,18 +27,95 @@ const Categories = () => {
   }, []);
 
   useEffect(() => {
-    if (sliderRef.current) {
-      sliderRef.current.swiper.init();
-    }
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        
+        // Merge static data with database data
+        const mergedData = data.map((dbCategory: Category) => {
+          const staticCategory = categoryData.find(
+            (staticCat) => staticCat.id === dbCategory.id.toString()
+          );
+
+          return {
+            ...dbCategory,
+            // Use static title if available, otherwise fall back to designation_fr or designation
+            title: staticCategory?.title || dbCategory.designation_fr || dbCategory.designation,
+            // Use static image if available, otherwise use database image
+            image: {
+              url: staticCategory?.img || dbCategory.image?.url || '',
+              img_id: dbCategory.image?.img_id || ''
+            }
+          };
+        });
+
+        setCategories(mergedData);
+      } catch (err) {
+        setError("Failed to load categories");
+        console.error("Failed to fetch categories:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
   }, []);
+
+  if (loading) {
+    return (
+      <section className="overflow-hidden pt-17.5">
+        <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0 pb-15 border-b border-gray-3">
+          <div className="mb-10 flex items-center justify-between">
+            <div>
+              <Skeleton width={150} height={25} />
+              <Skeleton width={200} height={30} />
+            </div>
+            <div className="flex items-center gap-3">
+              <Skeleton circle width={40} height={40} />
+              <Skeleton circle width={40} height={40} />
+            </div>
+          </div>
+          <div className="flex gap-4">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="flex flex-col items-center">
+                <Skeleton circle width={130} height={130} />
+                <Skeleton width={80} height={20} className="mt-4" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="overflow-hidden pt-17.5">
+        <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0 pb-15 border-b border-gray-3">
+          <div className="text-red-500 text-center py-10">{error}</div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!categories.length) {
+    return (
+      <section className="overflow-hidden pt-17.5">
+        <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0 pb-15 border-b border-gray-3">
+          <div className="text-gray-500 text-center py-10">No categories found</div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="overflow-hidden pt-17.5">
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0 pb-15 border-b border-gray-3">
         <div className="swiper categories-carousel common-carousel">
-          {/* <!-- section title --> */}
           <div className="mb-10 flex items-center justify-between">
             <div>
+              <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
+              <div>
               <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
                 <svg
                   width="20"
@@ -70,46 +151,62 @@ const Categories = () => {
                     </clipPath>
                   </defs>
                 </svg>
-                Categories
+              </span>
+              </div>
+                catégories
               </span>
               <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
-                Browse by Category
+              Parcourir par catégorie
               </h2>
             </div>
 
             <div className="flex items-center gap-3">
               <button onClick={handlePrev} className="swiper-button-prev">
                 <svg
-                  className="fill-current"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M15.4881 4.43057C15.8026 4.70014 15.839 5.17361 15.5694 5.48811L9.98781 12L15.5694 18.5119C15.839 18.8264 15.8026 19.2999 15.4881 19.5695C15.1736 19.839 14.7001 19.8026 14.4306 19.4881L8.43056 12.4881C8.18981 12.2072 8.18981 11.7928 8.43056 11.5119L14.4306 4.51192C14.7001 4.19743 15.1736 4.161 15.4881 4.43057Z"
-                    fill=""
+                    d="M16.875 10H3.125"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M8.75 4.375L3.125 10L8.75 15.625"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </button>
 
               <button onClick={handleNext} className="swiper-button-next">
                 <svg
-                  className="fill-current"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M8.51192 4.43057C8.82641 4.161 9.29989 4.19743 9.56946 4.51192L15.5695 11.5119C15.8102 11.7928 15.8102 12.2072 15.5695 12.4881L9.56946 19.4881C9.29989 19.8026 8.82641 19.839 8.51192 19.5695C8.19743 19.2999 8.161 18.8264 8.43057 18.5119L14.0122 12L8.43057 5.48811C8.161 5.17361 8.19743 4.70014 8.51192 4.43057Z"
-                    fill=""
+                    d="M3.125 10H16.875"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M11.25 4.375L16.875 10L11.25 15.625"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </button>
@@ -120,23 +217,14 @@ const Categories = () => {
             ref={sliderRef}
             slidesPerView={6}
             breakpoints={{
-              // when window width is >= 640px
-              0: {
-                slidesPerView: 2,
-              },
-              1000: {
-                slidesPerView: 4,
-                // spaceBetween: 4,
-              },
-              // when window width is >= 768px
-              1200: {
-                slidesPerView: 6,
-              },
+              0: { slidesPerView: 2 },
+              1000: { slidesPerView: 4 },
+              1200: { slidesPerView: 6 },
             }}
           >
-            {data.map((item, key) => (
-              <SwiperSlide key={key}>
-                <SingleItem item={item} />
+            {categories.map((category) => (
+              <SwiperSlide key={category._id}>
+                <SingleItem item={category} />
               </SwiperSlide>
             ))}
           </Swiper>

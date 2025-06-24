@@ -1,6 +1,6 @@
+
 "use client";
 import React from "react";
-
 import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { updateQuickView } from "@/redux/features/quickView-slice";
@@ -10,14 +10,41 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import Link from "next/link";
 import Image from "next/image";
+import { formatCurrency } from "@/lib/formattedPrice";
+import ProductBrandAroma from "@/components/product/ProductBrandAroma";
+import StarRating from "@/components/Common/StarRating";
 
 const SingleListItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
   const dispatch = useDispatch<AppDispatch>();
 
+  
   // update the QuickView state
   const handleQuickViewUpdate = () => {
-    dispatch(updateQuickView({ ...item }));
+    // Normalize image URLs similar to SingleGridItem
+    function normalizeImageUrl(url?: string): string {
+      if (!url || typeof url !== "string" || url.trim() === "") return "/placeholder.svg";
+      if (url.startsWith("http://") || url.startsWith("https://")) return url;
+      if (url.startsWith("/")) return url;
+      return "/" + url;
+    }
+    const main = normalizeImageUrl(item.mainImage?.url || item.cover);
+    const others = (item.images || [])
+      .map(img => normalizeImageUrl(img.url))
+      .filter(url => url !== main);
+    const allImgs = [main, ...others];
+    dispatch(updateQuickView({
+      ...item,
+      title: item.designation,
+      discountedPrice: item.price,
+      price: item.oldPrice || item.price,
+      cover: item.cover,
+      imgs: {
+        thumbnails: allImgs,
+        previews: allImgs
+      },
+      reviews: item.reviews?.length || 0
+    }));
   };
 
   // add to cart
@@ -26,6 +53,7 @@ const SingleListItem = ({ item }: { item: Product }) => {
       addItemToCart({
         ...item,
         quantity: 1,
+        image: ""
       })
     );
   };
@@ -40,11 +68,23 @@ const SingleListItem = ({ item }: { item: Product }) => {
     );
   };
 
+  const reviewsCount = item.reviews?.length || 0;
+  const averageRating = reviewsCount > 0 
+  ? item.reviews!.reduce((sum, review) => sum + parseInt(String(review.stars), 10), 0) / reviewsCount
+  : 0;
+
   return (
     <div className="group rounded-lg bg-white shadow-1">
       <div className="flex">
         <div className="shadow-list relative overflow-hidden flex items-center justify-center max-w-[270px] w-full sm:min-h-[270px] p-4">
-          <Image src={item.imgs.previews[0]} alt="" width={250} height={250} />
+          <Image
+            src={item.cover ? "/" + item.cover.replace(/^\/+/, "") : "/placeholder.svg"}
+            alt={item.designation || item.title || "Product image"}
+            width={250}
+            height={250}
+            className="object-contain h-full"
+            priority={false}
+          />
 
           <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
             <button
@@ -111,51 +151,23 @@ const SingleListItem = ({ item }: { item: Product }) => {
 
         <div className="w-full flex flex-col gap-5 sm:flex-row sm:items-center justify-center sm:justify-between py-5 px-4 sm:px-7.5 lg:pl-11 lg:pr-12">
           <div>
-            <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
-              <Link href="/shop-details"> {item.title} </Link>
+            {/* Brand and Aromas */}
+            <ProductBrandAroma brandId={item.brand?.['_id'] || item.brand || ""} />
+                        <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
+              <Link href={`/shop-details/${item.slug}`}>{item.designation}</Link>
             </h3>
 
             <span className="flex items-center gap-2 font-medium text-lg">
-              <span className="text-dark">${item.discountedPrice}</span>
-              <span className="text-dark-4 line-through">${item.price}</span>
+              <span className="text-dark">{formatCurrency(item.discountedPrice ?? item.price)}</span>
+              {item.oldPrice && (
+                <span className="text-dark-4 line-through">{formatCurrency(item.oldPrice)}</span>
+              )}
             </span>
           </div>
 
           <div className="flex items-center gap-2.5 mb-2">
-            <div className="flex items-center gap-1">
-              <Image
-                src="/images/icons/icon-star.svg"
-                alt="star icon"
-                width={15}
-                height={15}
-              />
-              <Image
-                src="/images/icons/icon-star.svg"
-                alt="star icon"
-                width={15}
-                height={15}
-              />
-              <Image
-                src="/images/icons/icon-star.svg"
-                alt="star icon"
-                width={15}
-                height={15}
-              />
-              <Image
-                src="/images/icons/icon-star.svg"
-                alt="star icon"
-                width={15}
-                height={15}
-              />
-              <Image
-                src="/images/icons/icon-star.svg"
-                alt="star icon"
-                width={15}
-                height={15}
-              />
-            </div>
-
-            <p className="text-custom-sm">({item.reviews})</p>
+            <StarRating rating={averageRating} />
+            <p className="text-custom-sm">({reviewsCount})</p>
           </div>
         </div>
       </div>

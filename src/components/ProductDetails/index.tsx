@@ -98,8 +98,9 @@ const ProductDetails = () => {
 
   const tabs = [
     { id: "tabOne", title: "Description" },
-    { id: "tabTwo", title: "Additional Information" },
-    { id: "tabThree", title: "Reviews" },
+    { id: "tabNutrition", title: "Nutrition Fact" },
+    { id: "tabQuestions", title: "Questions" },
+    { id: "tabThree", title: "Avis" },
   ];
 
   const imageCandidates = [
@@ -272,15 +273,29 @@ const ProductDetails = () => {
                 </div>
               </div>
               <h3 className="font-medium text-custom-1 mb-4.5">
-                <span className="text-sm sm:text-base text-dark">
-                  Prix: {product.currency || "$"}{product.price}
-                </span>
-                {product.oldPrice && (
-                  <span className="line-through ml-2">
-                    {product.currency || "$"}{product.oldPrice}
-                  </span>
-                )}
+              <span className="text-sm sm:text-base text-dark">
+              Prix: {product.oldPrice && product.oldPrice > product.price ? (
+              <>
+              <span className="mr-2">{product.oldPrice} {product.currency || "TND"}</span>
+              <span className="line-through font-bold text-blue-700">{product.price} {product.currency || "TND"}</span>
+              </>
+              ) : (
+              <>
+              <span className="line-through font-bold text-blue-700">{product.price} {product.currency || "TND"}</span>
+              {product.oldPrice && product.oldPrice < product.price && (
+              <span className="mr-2">{product.oldPrice} {product.currency || "TND"}</span>
+              )}
+              </>
+              )}
+              </span>
               </h3>
+              {product.meta_description_fr ? (
+              <div className="mb-4" dangerouslySetInnerHTML={{ __html: product.meta_description_fr }} />
+              ) : (
+              <p className="mb-4">
+              Découvrez notre sélection de compléments protéinés de haute qualité, idéals pour soutenir la croissance musculaire, la récupération et la performance sportive. Nos produits sont adaptés aussi bien aux débutants qu’aux athlètes confirmés.
+              </p>
+              )}
               <ul className="flex flex-col gap-2">
                 <li className="flex items-center gap-2.5">
                   <svg
@@ -555,41 +570,47 @@ const ProductDetails = () => {
             <div className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${activeTab === "tabOne" ? "flex" : "hidden"}`}>
               <div className="max-w-[670px] w-full">
                 <h2 className="font-medium text-2xl text-dark mb-7">Caractéristiques:</h2>
-                <p className="mb-6" dangerouslySetInnerHTML={{ __html: product.description || "No description available." }} />
+                <p className="mb-6" dangerouslySetInnerHTML={{ __html: product.description || "Aucune description disponible." }} />
                 {product.features?.length ? (
-                  <ul className="list-disc ml-5">
-                    {product.features.map((feature, idx) => (
-                      <li key={idx}>{feature}</li>
-                    ))}
-                  </ul>
+                <ul className="list-disc ml-5">
+                {product.features.map((feature, idx) => (
+                <li key={idx}>{feature}</li>
+                ))}
+                </ul>
                 ) : null}
-              </div>
-              <div className="max-w-[447px] w-full">
+                </div>
+                <div className="max-w-[447px] w-full">
                 <h2 className="font-medium text-2xl text-dark mb-7">Marque et détails :</h2>
-                <p className="mb-6">{product.brand || "See label for brand."}</p>
+                <p className="mb-6">{product.brand || "voir l'étiquette pour la marque."}</p>
                 {product.smallDescription ? (
                   <div className="mb-6" dangerouslySetInnerHTML={{ __html: product.smallDescription }} />
                 ) : (
-                  <p className="mb-6">See label for brand.</p>
+                  <p className="mb-6">voir l'étiquette pour la marque.</p>
                 )}
               </div>
             </div>
           </div>
-          {/* Additional Information */}
+          {/* Nutrition Fact Tab */}
           <div>
-            <div className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === "tabTwo" ? "block" : "hidden"}`}>
-              <div className="text-dark">
-                <strong>Catégorie:</strong>{" "}
-                {typeof product.category === "string" ? product.category : product.category?.designation}
-                <br />
-                <strong>Sous-catégories:</strong>{" "}
-                {product.subCategory && product.subCategory.map((sc) => (typeof sc === "string" ? sc : sc.designation)).join(", ")}
-                <br />
-                <strong>Type:</strong> {product.type}
-              </div>
+            <div className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === "tabNutrition" ? "block" : "hidden"}`}>
+              {product.nutrition_values ? (
+                <div dangerouslySetInnerHTML={{ __html: product.nutrition_values }} />
+              ) : (
+                <div>Aucune information nutritionnelle disponible.</div>
+              )}
             </div>
           </div>
-          {/* Reviews */}
+          {/* Questions Tab */}
+          <div>
+            <div className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === "tabQuestions" ? "block" : "hidden"}`}>
+              {product.questions ? (
+                <div dangerouslySetInnerHTML={{ __html: product.questions }} />
+              ) : (
+                <div>Aucune question disponible.</div>
+              )}
+            </div>
+          </div>
+                    {/* Reviews */}
           <div>
             <div className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${activeTab === "tabThree" ? "flex" : "hidden"}`}>
               <div className="max-w-[570px] w-full">

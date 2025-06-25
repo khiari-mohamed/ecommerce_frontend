@@ -60,6 +60,8 @@ export type Product = {
   aggregateRating?: number; // parse from note or aggregateRating
   promoExpirationDate?: Date; // from promo_expiration_date
   createdAt?: Date | string;
+nutrition_values?: string;
+questions?: string;
 };
 
 export interface FlashSaleProduct extends Product {

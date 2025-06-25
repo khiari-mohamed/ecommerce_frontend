@@ -47,8 +47,10 @@ function normalizeProduct(raw: any): Product {
     features: raw.features || [],
     aroma_ids: raw.aroma_ids || [],
     brand: raw.brand || "",
-    smallDescription: raw.smallDescription || raw.meta_description_fr || "",
-    description: raw.description || "",
+    //smallDescription: raw.smallDescription || raw.meta_description_fr || "",
+    smallDescription: raw.smallDescription || raw.description_cover || "",
+    //description: raw.description || "",
+    description: raw.description || raw.description_fr || "",
     meta_description_fr: raw.meta_description_fr || "",
     category: raw.category || "",
     subCategory: raw.subCategory || [],
@@ -77,6 +79,10 @@ function normalizeProduct(raw: any): Product {
     promoExpirationDate: raw.promoExpirationDate ?? raw.promo_expiration_date ?? undefined,
     sous_categorie_id: raw.sous_categorie_id ?? raw.sousCategorieId ?? raw.subCategoryId ?? "",
     cover: raw.cover || raw.mainImage?.url || "",
+
+    
+    nutrition_values: raw.nutrition_values || "",
+questions: raw.questions || "",
   };
 }
 // Helper function to transform images with ID support

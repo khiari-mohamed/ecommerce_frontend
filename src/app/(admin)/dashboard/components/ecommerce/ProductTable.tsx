@@ -175,6 +175,40 @@ const ProductTable: React.FC<ProductTableProps> = ({
       ),
     },
     {
+      key: "promo",
+      label: "Promo",
+      render: (_value, row) =>
+        row.promo ? (
+          <Badge color="blue">{row.promo} DT</Badge>
+        ) : (
+          <span style={{ color: '#aaa' }}>—</span>
+        ),
+    },
+    {
+      key: "aroma_ids",
+      label: "Flavors/Aromas",
+      render: (_value, row) =>
+        Array.isArray(row.aroma_ids) && row.aroma_ids.length > 0 ? (
+          <span>
+            {row.aroma_ids.join(", ")}
+          </span>
+        ) : (
+          <span style={{ color: '#aaa' }}>—</span>
+        ),
+    },
+    {
+      key: "nutrition_meta",
+      label: "Info",
+      render: (_value, row) => (
+        <span>
+          {row.nutrition_values ? <Badge color="green">N</Badge> : null}
+          {row.questions ? <Badge color="yellow">Q</Badge> : null}
+          {row.meta_description_fr || row.meta || row.content_seo ? <Badge color="green">SEO</Badge> : null}
+          {!(row.nutrition_values || row.questions || row.meta_description_fr || row.meta || row.content_seo) && <span style={{ color: '#aaa' }}>—</span>}
+        </span>
+      ),
+    },
+    {
       key: "aggregateRating",
       label: "Rating",
       render: (value, row) => {

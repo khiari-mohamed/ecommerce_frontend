@@ -133,6 +133,29 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElemen
           value={form.brand}
           onChange={handleChange}
         />
+        <label>
+          Flavors / Aromas
+          <select
+            name="aroma_ids"
+            multiple
+            value={form.aroma_ids || []}
+            onChange={e => {
+              const options = Array.from(e.target.selectedOptions, option => option.value);
+              setForm((prev: any) => ({ ...prev, aroma_ids: options }));
+            }}
+            style={{ minHeight: 60 }}
+          >
+            {/* TODO: Replace with dynamic aroma options */}
+            <option value="citron">Citron</option>
+            <option value="cassis">Cassis</option>
+            <option value="fraise">Fraise</option>
+            <option value="banane">Banane</option>
+            <option value="ananas">Ananas</option>
+            <option value="chocolat">Chocolat</option>
+            <option value="vanilla">Vanilla</option>
+            {/* Add more as needed */}
+          </select>
+        </label>
         <TextArea
           label="Short Description"
           name="smallDescription"
@@ -255,6 +278,15 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElemen
           <input type="number" name="note" value={form.note || ""} onChange={handleChange} />
         </label>
         <label>
+          Aggregate Rating
+          <input type="number" name="aggregateRating" value={form.aggregateRating || ""} onChange={handleChange} min="0" max="5" step="0.1" />
+        </label>
+        <div style={{ margin: '8px 0' }}>
+          <a href="/dashboard/review" target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'underline' }}>
+            Manage Reviews for this Product
+          </a>
+        </div>
+        <label>
           Meta Description (FR)
           <textarea name="meta_description_fr" value={form.meta_description_fr || ""} onChange={handleChange} />
         </label>
@@ -269,6 +301,10 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElemen
         <label>
           Meta
           <input type="text" name="meta" value={form.meta || ""} onChange={handleChange} />
+        </label>
+        <label>
+          Content SEO
+          <textarea name="content_seo" value={form.content_seo || ""} onChange={handleChange} />
         </label>
         <label>
           Nutrition Values

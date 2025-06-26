@@ -17,6 +17,12 @@ export type Review = {
 };
 
 export type Product = {
+  zone4: any;
+  zone3: any;
+  zone2: any;
+  zone1: any;
+  content_seo: string;
+  meta: string;
   aroma_ids: string[];
    designation_fr?: string;  // Changed to optional
   promo?: number;           // Changed to optional
@@ -62,6 +68,30 @@ export type Product = {
   createdAt?: Date | string;
 nutrition_values?: string;
 questions?: string;
+//new niggas to make sure lkolhom mawjoudin 
+sousCategorieId?: string; // sous_categorie_id
+designationFr?: string; // designation_fr
+prixHt?: string | number | null; // prix_ht
+promoHt?: string | number | null; // promo_ht
+descriptionFr?: string; // description_fr
+publier?: string; // publier
+createdBy?: string | null; // created_by
+updatedBy?: string | null; // updated_by
+updatedAt?: string; // updated_at
+codeProduct?: string; // code_product
+pack?: string; // pack
+brandId?: string; // brand_id
+newProduct?: string; // new_product
+bestSeller?: string; // best_seller
+note?: string | number; // note
+metaDescriptionFr?: string; // meta_description_fr
+altCover?: string; // alt_cover
+descriptionCover?: string; // description_cover
+contentSeo?: string; // content_seo
+review?: any; // review (if you want to store review object/array)
+nutritionValues?: string | null; // nutrition_values
+aromaIds?: string[]; // aroma_ids (array of string)
+
 };
 
 export interface FlashSaleProduct extends Product {

@@ -39,6 +39,7 @@ const navLinks = [
   { name: "Blogs", icon: <Folder size={20} />, href: "/dashboard/blogs" },
   { name: "Vente Flash", icon: <Zap size={20} />, href: "/dashboard/vente-flash" },
   { name: "Brands", icon: <Folder size={20} />, href: "/dashboard/brands" },
+  { name: "aromas", icon: <Star size={20} />, href: "/dashboard/flavors" },
    { name: "Clients", icon: <User size={20} />, href: "/dashboard/clients" },
   { name: "Newsletter", icon: <Mail size={20} />, href: "/dashboard/newsletter" },
   //chart page 

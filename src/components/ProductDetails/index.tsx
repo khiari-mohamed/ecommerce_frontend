@@ -34,6 +34,7 @@ function getValidImageSrc(src?: string): string {
 
 // Define ProductReview type locally
 type ProductReview = {
+  user_id: any;
   userAvatar?: string;
   userName?: string;
   createdAt?: string;
@@ -137,13 +138,19 @@ const ProductDetails = () => {
   const types = (product as any)?.types || ["Powder", "Capsule"];
 
   if (loading) {
-    return <div className="flex justify-center items-center min-h-[400px]">Chargement...</div>;
+  return <div className="flex justify-center items-center min-h-[400px]">Chargement...</div>;
   }
-
-  if (!product || !product.title) {
-    return <div>Product not found.</div>;
+  
+  let priceA = 0, priceB = 0, oldPrice = 0, promoPrice = 0, hasDiscount = false, discount = 0;
+  if (product) {
+  priceA = Number(product.prix);
+  priceB = Number(product.promo);
+  oldPrice = priceA > priceB ? priceA : priceB;
+  promoPrice = priceA > priceB ? priceB : priceA;
+  hasDiscount = priceA !== priceB;
+  discount = hasDiscount ? Math.round(100 - (promoPrice / oldPrice) * 100) : 0;
   }
-
+  
   return (
     <>
       <Breadcrumb title={"Product Details"} pages={["product details"]} />
@@ -213,14 +220,14 @@ const ProductDetails = () => {
             </div>
             <div className="max-w-[539px] w-full">
               <div className="flex items-center justify-between mb-3">
-                <h2 className="font-semibold text-xl sm:text-2xl xl:text-custom-3 text-dark">
-                  {product.title}
-                </h2>
-                {product.discountPercentage && (
-                  <div className="inline-flex font-medium text-custom-sm text-white bg-blue rounded py-0.5 px-2.5">
-                    {product.discountPercentage}% OFF
-                  </div>
-                )}
+              <h2 className="font-semibold text-xl sm:text-2xl xl:text-custom-3 text-dark">
+              {product.title}
+              </h2>
+              {hasDiscount && discount > 0 && (
+              <div className="inline-flex font-medium text-custom-sm text-white bg-blue rounded py-0.5 px-2.5">
+              {discount}% OFF
+              </div>
+              )}
               </div>
               
               <ProductBrandAroma brandId={typeof product.brand === "string" ? product.brand : (product.brand as any)._id || ""} />
@@ -371,11 +378,30 @@ const ProductDetails = () => {
   })()
 )}
                   {/* Size */}
+                  {hasDiscount && discount > 0 && (
+                  <div className="flex items-center gap-2.5 text-sm text-blue-700 mb-2">
+                  <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  >
+                  <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M10.0003 1.04169C5.05277 1.04169 1.04199 5.05247 1.04199 10C1.04199 14.9476 5.05277 18.9584 10.0003 18.9584C14.9479 18.9584 18.9587 14.9476 18.9587 10C18.9587 5.05247 14.9479 1.04169 10.0003 1.04169ZM2.29199 10C2.29199 5.74283 5.74313 2.29169 10.0003 2.29169C14.2575 2.29169 17.7087 5.74283 17.7087 10C17.7087 14.2572 14.2575 17.7084 10.0003 17.7084C5.74313 17.7084 2.29199 14.2572 2.29199 10Z"
+                  fill="#3C50E0"
+                  />
+                  </svg>
+                  {discount}% Off
+                  </div>
+                  )}
                   <div className="flex items-center gap-4">
-                    <div className="min-w-[65px]">
-                      <h4 className="font-medium text-dark">Size:</h4>
-                    </div>
-                    <div className="flex items-center gap-2.5">
+                  <div className="min-w-[65px]">
+                  <h4 className="font-medium text-dark">Size:</h4>
+                  </div>
+                  <div className="flex items-center gap-2.5">
                       {sizes.map((size: string, key: number) => (
                         <label key={key} htmlFor={`size-${size}`} className="cursor-pointer select-none flex items-center">
                           <input type="radio" name="size" id={`size-${size}`} className="sr-only" checked={activeSize === size} onChange={() => setActiveSize(size)} />
@@ -631,16 +657,16 @@ const ProductDetails = () => {
                               />
                             </div>
                             <div>
-                              <h3 className="font-medium text-dark">{review.userName || "Anonymous"}</h3>
+                              <h3 className="font-medium text-dark">{review.user_id ? `Utilisateur #${review.user_id}` : "Anonymous"}</h3>
                               <p className="text-custom-sm">{review.createdAt ? new Date(review.createdAt).toLocaleDateString() : ""}</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-1">
-                            {[...Array(5)].map((_, i) => (
-                              <span key={i} className={`cursor-pointer ${i < (review.rating || 0) ? "text-[#FBB040]" : "text-gray-5"}`}>
-                                <svg className="fill-current" width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.6604 5.90785L9.97461 5.18335L7.85178 0.732874C7.69645 0.422375 7.28224 0.422375 7.12691 0.732874L5.00407 5.20923L0.344191 5.90785C0.0076444 5.9596 -0.121797 6.39947 0.137085 6.63235L3.52844 10.1255L2.72591 15.0158C2.67413 15.3522 3.01068 15.6368 3.32134 15.4298L7.54112 13.1269L11.735 15.4298C12.0198 15.5851 12.3822 15.3263 12.3046 15.0158L11.502 10.1255L14.8934 6.63235C15.1005 6.39947 14.9969 5.9596 14.6604 5.90785Z" fill=""/></svg>
-                              </span>
-                            ))}
+                          {[...Array(5)].map((_, i) => (
+                          <span key={i} className={`cursor-pointer ${i < (parseInt(review.stars, 10) || 0) ? "text-[#FBB040]" : "text-gray-5"}`}>
+                          <svg className="fill-current" width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.6604 5.90785L9.97461 5.18335L7.85178 0.732874C7.69645 0.422375 7.28224 0.422375 7.12691 0.732874L5.00407 5.20923L0.344191 5.90785C0.0076444 5.9596 -0.121797 6.39947 0.137085 6.63235L3.52844 10.1255L2.72591 15.0158C2.67413 15.3522 3.01068 15.6368 3.32134 15.4298L7.54112 13.1269L11.735 15.4298C12.0198 15.5851 12.3822 15.3263 12.3046 15.0158L11.502 10.1255L14.8934 6.63235C15.1005 6.39947 14.9969 5.9596 14.6604 5.90785Z" fill=""/></svg>
+                          </span>
+                          ))}
                           </div>
                         </div>
                         <p className="text-dark mt-6">{review.comment}</p>
@@ -689,7 +715,7 @@ const ProductDetails = () => {
                 </form>
               </div>
             </div>
-          </div>
+          </div>  
         </div>
       </section>
       <RecentlyViewdItems />

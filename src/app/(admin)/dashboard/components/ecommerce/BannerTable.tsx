@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Banner } from "@/types/banner";
 import Button from "../ui/Button";
@@ -8,9 +7,15 @@ interface BannerTableProps {
   banners: Banner[];
   onEdit: (banner: Banner) => void;
   onDelete: (banner: Banner) => void;
+  onView: (banner: Banner) => void;
 }
 
-const BannerTable: React.FC<BannerTableProps> = ({ banners, onEdit, onDelete }) => (
+const BannerTable: React.FC<BannerTableProps> = ({
+  banners,
+  onEdit,
+  onDelete,
+  onView,
+}) => (
   <div className="overflow-x-auto">
     <table className="min-w-full bg-white border rounded">
       <thead>
@@ -59,6 +64,9 @@ const BannerTable: React.FC<BannerTableProps> = ({ banners, onEdit, onDelete }) 
                 )}
               </td>
               <td className="px-4 py-2 flex gap-2">
+                <Button variant="outline" size="sm" onClick={() => onView(banner)}>
+                  Voir
+                </Button>
                 <Button variant="secondary" size="sm" onClick={() => onEdit(banner)}>
                   Modifier
                 </Button>

@@ -6,9 +6,10 @@ import "../../styles/dashboard.css";
 interface BannerEditModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (banner: Banner) => void;
-  banner: Banner | null;
+  onSubmit: (banner: Partial<Banner>) => void;
+  banner: Partial<Banner> | null;
 }
+
 
 const BannerEditModal: React.FC<BannerEditModalProps> = ({
   open,

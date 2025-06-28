@@ -14,6 +14,7 @@ import Toast from "../ui/Toast";
 import { formatDate } from "../../utils/formatDate";
 import { fetchCategories } from "../../utils/fetchCategories";
 import "../../styles/dashboard.css";
+import type { Category } from "@/types/category";
 
 interface ProductTableProps {
   onEdit: (product: Product | null) => void;
@@ -28,21 +29,36 @@ const ProductTable: React.FC<ProductTableProps> = ({
   onToggleStatus,
   onView,
 }) => {
+  console.log("ProductTable mounted");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState<any>(null);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("");
-  const [categories, setCategories] = useState<{ _id: string; designation: string }[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
+  console.log("categories in render:", categories);
+
   // Fetch categories for filter
-  useEffect(() => {
-    fetchCategories().then(setCategories);
-  }, []);
+ // Fetch categories for filter
+useEffect(() => {
+  fetchCategories().then((data) => {
+    const mapped = data.map((cat: any) => ({
+      _id: cat._id,
+      slug: cat.slug || "",
+      designation: cat.designation,
+      designation_fr: cat.designation_fr,
+      title: cat.title,
+      // ...add any other fields you want to preserve
+    }));
+    console.log("Fetched categories (mapped):", mapped);
+    setCategories(mapped);
+  });
+}, []);
 
   // Fetch products
   const fetchProducts = () => {
@@ -282,7 +298,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
             <option value="">All Categories</option>
             {categories.map((cat) => (
               <option key={cat._id} value={cat._id}>
-                {cat.designation}
+                {cat.designation_fr || cat.designation || cat.title}
               </option>
             ))}
           </select>

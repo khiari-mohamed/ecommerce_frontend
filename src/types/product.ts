@@ -24,7 +24,7 @@ export type Product = {
   content_seo: string;
   meta: string;
   aroma_ids: string[];
-   designation_fr?: string;  // Changed to optional
+  designation_fr?: string;  // Changed to optional
   promo?: number;           // Changed to optional
   prix?: number;            // Changed to optional
   gallery?: boolean;

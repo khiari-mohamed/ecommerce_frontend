@@ -79,10 +79,16 @@ function normalizeProduct(raw: any): Product {
     promoExpirationDate: raw.promoExpirationDate ?? raw.promo_expiration_date ?? undefined,
     sous_categorie_id: raw.sous_categorie_id ?? raw.sousCategorieId ?? raw.subCategoryId ?? "",
     cover: raw.cover || raw.mainImage?.url || "",
-
-    
     nutrition_values: raw.nutrition_values || "",
 questions: raw.questions || "",
+
+zone1: raw.zone1 || "",
+zone2: raw.zone2 || "",
+zone3: raw.zone3 || "",
+zone4: raw.zone4 || "",
+content_seo: raw.content_seo || raw.contentSeo || "",
+meta: raw.meta || "",
+pack: raw.pack || "",
   };
 }
 // Helper function to transform images with ID support

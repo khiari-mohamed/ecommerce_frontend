@@ -13,7 +13,7 @@ interface OrdersProps {
   orders: any[];
 }
 
-const Orders: React.FC<OrdersProps> = ({ orders }) => {
+const Orders: React.FC<OrdersProps> = ({ orders = [] }) => {
   // Modal state
   const [modalOrder, setModalOrder] = useState<any>(null);
   const [showDetails, setShowDetails] = useState(false);
@@ -50,7 +50,7 @@ const Orders: React.FC<OrdersProps> = ({ orders }) => {
           </tr>
         </thead>
         <tbody>
-          {orders.length > 0 ? (
+          {Array.isArray(orders) && orders.length > 0 ? (
             orders.map((orderItem, key) => (
               <SingleOrder
                 key={orderItem._id || key}

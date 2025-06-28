@@ -186,7 +186,7 @@ const ShopDetails = () => {
   // Tabs
   const tabs = [
     { id: "tabOne", title: "Description" },
-    { id: "tabNutrition", title: "Nutrition Fact" },
+    { id: "tabNutrition", title: "Valeurs nutritionnelles" },
     { id: "tabQuestions", title: "Questions" },
     { id: "tabThree", title: "Avis" },
   ];
@@ -232,7 +232,7 @@ const ShopDetails = () => {
   if (!slug) {
     return (
       <>
-        <Breadcrumb title={"Shop Details"} pages={["shop details"]} />
+        <Breadcrumb title={"détails de la boutique"} pages={["shop details"]} />
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0 py-10">
           <h1 className="text-2xl font-bold mb-8">Tous les Packs</h1>
           {loadingAll ? (
@@ -430,7 +430,7 @@ const ShopDetails = () => {
                         </defs>
                       </svg>
                       <span className="text-green">
-                        {product.inStock ? "In Stock" : "Out of Stock"}
+                        {product.inStock ? "EN Stock" : "Rupture de Stock"}
                       </span>
                     </div>
                   </div>
@@ -474,7 +474,6 @@ const ShopDetails = () => {
                           fill="#3C50E0"
                         />
                       </svg>
-                      Livraison gratuite non disponible, livraison disponible
                     </li>
                     <li className="flex items-center gap-2.5">
                       {/* Promo icon */}

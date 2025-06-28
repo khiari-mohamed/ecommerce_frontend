@@ -34,7 +34,7 @@ export default function OrdersDemoClient() {
           <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-purple-700">
             Orders (Full List)
           </h2>
-          <Orders />
+          <Orders orders={[]} />
         </section>
 
         <section className="bg-white rounded-xl shadow-md p-6">

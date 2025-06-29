@@ -541,11 +541,14 @@ const Header = () => {
                       >
                         <Link
                           href={menuItem.path}
-                          className={`hover:text-blue text-custom-sm font-medium text-dark flex ${
+                          className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center ${
                             stickyMenu ? "xl:py-4" : "xl:py-6"
                           }`}
                         >
                           {menuItem.title}
+                          {menuItem.showBadge && (
+          <span className="intense-flashing-badge">Limitée!</span>
+        )}
                         </Link>
                       </li>
                     )

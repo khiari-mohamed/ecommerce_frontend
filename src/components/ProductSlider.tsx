@@ -67,18 +67,18 @@ export default function ProductSlider({ products }: { products: any[] }) {
               boxShadow: "0 4px 14px rgba(0, 0, 0, 0.08)",
             }}
           >
-            <ProductItem
-              item={{
-                ...product,
-                mainImage: { url: getProductImage(product) },
-                imgs: {
-                  previews: [getProductImage(product)],
-                },
-                title: product.designation_fr || product.designation,
-                discountedPrice: product.price,
-                reviews: product.reviews || 0,
-              }}
-            />
+           <ProductItem
+  item={{
+    ...product,
+    mainImage: { url: getProductImage(product) },
+    imgs: {
+      previews: [getProductImage(product)],
+    },
+    title: product.title || product.designation_fr || product.designation || "Produit",
+    discountedPrice: product.price,
+    reviews: product.reviews || 0,
+  }}
+/>
           </div>
         ))}
       </div>

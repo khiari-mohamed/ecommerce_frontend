@@ -14,23 +14,7 @@ const BestSeller = () => {
   useEffect(() => {
     getTopProductsFeature()
       .then((data) => { 
-        console.log("Raw data from getTopProductsFeature:", data);
-        // Map API fields to expected ProductItem fields, similar to promotions page
-        const mapped = data.map((item) => {
-          console.log("Processing item:", item);
-          return {
-            ...item,
-            title: item.title || item.designation || item.designation || "",
-            cover: item.cover || item.mainImage?.url || "",
-            // Ensure proper image structure
-            imgs: item.imgs || {
-              thumbnails: item.mainImage?.url ? [item.mainImage.url] : [],
-              previews: item.mainImage?.url ? [item.mainImage.url] : []
-            }
-          };
-        });
-        console.log("Mapped products:", mapped);
-        setProducts(mapped);
+        setProducts(data);
       })
       .finally(() => setLoading(false));
   }, []);

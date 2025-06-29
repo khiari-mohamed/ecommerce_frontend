@@ -93,9 +93,11 @@ const SingleItem = ({ item }: { item: Product }) => {
               <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
               <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
             </div>
-            <p className="text-custom-sm">
-              ({Math.floor(Math.random() * 10) + 1})
-            </p>
+           <p className="text-custom-sm">
+  {(item.reviews?.length && item.reviews.length > 0)
+    ? item.reviews.length
+    : Math.floor(Math.random() * 90) + 10}
+</p>
           </div>
 
           <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">

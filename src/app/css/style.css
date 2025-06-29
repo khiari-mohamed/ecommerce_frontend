@@ -417,3 +417,32 @@
     }
 
     
+
+    /*badge for the promotion*/
+
+    /* Alternative more intense flash */
+@keyframes intenseFlash {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.8;
+    transform: scale(1.05);
+    background-color: #ea580c; /* orange-600 */
+  }
+}
+
+.intense-flashing-badge {
+  animation: intenseFlash 1s infinite;
+  background-color: #f97316;
+  color: white;
+  border-radius: 9999px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.65rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
+  display: inline-block;
+  vertical-align: middle;
+  box-shadow: 0 0 5px rgba(249, 115, 22, 0.5);
+}

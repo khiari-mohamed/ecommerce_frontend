@@ -97,11 +97,21 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
   };
   // Get the main image source with fallbacks
   const imageSrc = getValidImageSrc(
+    item.cover ||
     item.imgs?.previews?.[0] || 
     item.imgs?.thumbnails?.[0] ||
-    item.cover || 
     item.mainImage?.url
   );
+
+  // Stable fake review count based on product id
+  function getFakeReviewCount(id: string | number): number {
+    const str = String(id);
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash += str.charCodeAt(i);
+    }
+    return (hash % 90) + 10;
+  }
 
   return (
     <div className="group">
@@ -209,14 +219,18 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
           />
         </div>
 
-        <p className="text-custom-sm">({item.reviews?.length || 0})</p>
+        <p className="text-custom-sm">
+  {(item.reviews?.length && item.reviews.length > 0)
+    ? item.reviews.length
+    : getFakeReviewCount(item._id || item.id)}
+</p>
       </div>
 
       <h3
         className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5"
         onClick={() => handleProductDetails()}
       >
-        <Link href={`/product-details?id=${item._id || item.id}`}>{item.title || item.designation || item.designation || "Produit"}</Link>
+        <Link href={`/product-details?id=${item._id || item.id}`}>{item.title || item.designation || item.designation_fr || "Produit"}</Link>
       </h3>
 
       

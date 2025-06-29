@@ -75,9 +75,21 @@ export default function DonutChartOne({
     animation: { duration: 1200, easing: "easeOutElastic" },
   };
 
+  const isEmpty =
+  !data ||
+  !Array.isArray(data) ||
+  data.length === 0 ||
+  data.every((v) => !v);
+  
   return (
-    <div className="donutchartone-root">
-      <Doughnut data={chartData} options={options} />
-    </div>
+  <div className="donutchartone-root">
+  {isEmpty ? (
+  <div className="text-center text-gray-500 py-12">
+  <span>Aucune donnée de graphique disponible.</span>
+  </div>
+  ) : (
+  <Doughnut data={chartData} options={options} />
+  )}
+  </div>
   );
-}
+  }

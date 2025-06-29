@@ -7,7 +7,8 @@ import {
   fetchPromoCodeStats,
   fetchSalesByCountry,
 } from "../utils/fetchAnalytics";
-import WorldMapChart from "../components/charts/WorldMapChart";
+import dynamic from "next/dynamic";
+const WorldMapChart = dynamic(() => import("../components/charts/WorldMapChart"), { ssr: false });
 import RevenueOverTimeChart from "../components/analytics/RevenueOverTimeChart";
 import YearOverYearChart from "../components/analytics/YearOverYearChart";
 import CategoryPerformanceChart from "../components/analytics/CategoryPerformanceChart";
@@ -21,61 +22,70 @@ const AnalyticsPage: React.FC = () => {
   const [promoCodeStats, setPromoCodeStats] = useState<{ code: string; usageCount: number; totalDiscount: number }[]>([]);
   const [salesByCountry, setSalesByCountry] = useState<{ country: string; sales: number; orders: number }[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     Promise.all([
       fetchRevenueOverTime(),
       fetchYearOverYear(),
       fetchCategoryPerformance(),
       fetchPromoCodeStats(),
       fetchSalesByCountry(),
-    ]).then(
-      ([
-        revenueOverTimeData,
-        yearOverYearData,
-        categoryPerformanceData,
-        promoCodeStatsData,
-        salesByCountryData,
-      ]) => {
-        const mappedRevenue = (revenueOverTimeData || []).map((d: any) => ({
-          date: d.label,
-          revenue: d.totalRevenue,
-        }));
-        console.log("RevenueOverTime API raw:", revenueOverTimeData);
-        console.log("RevenueOverTime mapped:", mappedRevenue);
-        setRevenueOverTime(mappedRevenue);
-        setYearOverYear(
-          yearOverYearData?.data
-            ? yearOverYearData.data
-            : [
-                { year: "N-1", revenue: yearOverYearData.previousMonth || yearOverYearData.lastYear || 0 },
-                { year: "N", revenue: yearOverYearData.currentMonth || yearOverYearData.currentYear || 0 },
-              ]
-        );
-        setCategoryPerformance(
-          (categoryPerformanceData?.data || categoryPerformanceData || []).map((d: any) => ({
-            name: d.name || d.category || d._id || "",
-            totalSales: d.totalSales || d.count || 0,
-          }))
-        );
-        setPromoCodeStats(
-          (promoCodeStatsData?.data || promoCodeStatsData || []).map((d: any) => ({
-            code: d.code || d._id || "",
-            usageCount: d.usageCount || d.count || 0,
-            totalDiscount: d.totalDiscount || d.discount || 0,
-          }))
-        );
-        setSalesByCountry(
-          (salesByCountryData?.data || salesByCountryData || []).map((d: any) => ({
-            country: d.country || "Inconnu",
-            sales: d.sales || 0,
-            orders: d.orders || 0,
-          }))
-        );
+    ])
+      .then(
+        ([
+          revenueOverTimeData,
+          yearOverYearData,
+          categoryPerformanceData,
+          promoCodeStatsData,
+          salesByCountryData,
+        ]) => {
+          const mappedRevenue = (revenueOverTimeData || []).map((d: any) => ({
+            date: d.label,
+            revenue: d.totalRevenue,
+          }));
+          console.log("RevenueOverTime API raw:", revenueOverTimeData);
+          console.log("RevenueOverTime mapped:", mappedRevenue);
+          setRevenueOverTime(mappedRevenue);
+          if (yearOverYearData?.currentYear && yearOverYearData?.previousYear) {
+          setYearOverYear([
+          { year: `${yearOverYearData.previousYear.year}`, revenue: yearOverYearData.previousYear.total },
+          { year: `${yearOverYearData.currentYear.year}`, revenue: yearOverYearData.currentYear.total },
+          ]);
+          } else if (Array.isArray(yearOverYearData?.data)) {
+          setYearOverYear(yearOverYearData.data);
+          } else {
+          setYearOverYear([]);
+          }
+          setCategoryPerformance(
+  (categoryPerformanceData?.data || categoryPerformanceData || []).map((d: any) => ({
+    name: d.categoryName || d.name || d.category || d._id || "",
+    totalSales: d.totalSold || d.totalSales || d.count || 0,
+  }))
+);
+          setPromoCodeStats(
+            (promoCodeStatsData?.data || promoCodeStatsData || []).map((d: any) => ({
+              code: d.code || d._id || "",
+              usageCount: d.usageCount || d.count || 0,
+              totalDiscount: d.totalDiscount || d.discount || 0,
+            }))
+          );
+          setSalesByCountry(
+            (salesByCountryData?.data || salesByCountryData || []).map((d: any) => ({
+              country: d.country || "Inconnu",
+              sales: d.sales || 0,
+              orders: d.orders || 0,
+            }))
+          );
+          setLoading(false);
+        }
+      )
+      .catch((err) => {
+        setError(err?.message || "Erreur lors du chargement des statistiques.");
         setLoading(false);
-      }
-    );
+      });
   }, []);
 
   if (loading) {
@@ -86,6 +96,20 @@ const AnalyticsPage: React.FC = () => {
           <path className="opacity-75" fill="#7c3aed" d="M4 12a8 8 0 018-8v8z" />
         </svg>
         <span className="text-lg text-purple-700 font-bold">Chargement des statistiques...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-100">
+        <span className="text-lg text-red-700 font-bold mb-4">{error}</span>
+        <button
+          className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+          onClick={() => window.location.reload()}
+        >
+          Réessayer
+        </button>
       </div>
     );
   }

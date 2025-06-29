@@ -37,57 +37,46 @@ async function fetchAnalytics<T = any>(
 // Specific analytics fetchers using the generic function
 
 export async function fetchRevenueOverTime(params = {}) {
-  try {
-    const res = await axios.get(`${BASE_URL}/revenue-over-time`, { params });
-    let data = res.data;
-    // Transform to expected format: [{ label, totalRevenue, orderCount }]
-    if (!Array.isArray(data) || data.length === 0) {
-      // Fallback to synthetic data
-      data = [
-        { label: "Jan", totalRevenue: 1200, orderCount: 30 },
-        { label: "Feb", totalRevenue: 1500, orderCount: 40 },
-        { label: "Mar", totalRevenue: 1800, orderCount: 50 },
-        { label: "Apr", totalRevenue: 1100, orderCount: 25 },
-        { label: "May", totalRevenue: 2100, orderCount: 60 },
-        { label: "Jun", totalRevenue: 1700, orderCount: 45 },
-        { label: "Jul", totalRevenue: 2000, orderCount: 55 },
-        { label: "Aug", totalRevenue: 2200, orderCount: 65 },
-        { label: "Sep", totalRevenue: 1600, orderCount: 35 },
-        { label: "Oct", totalRevenue: 1900, orderCount: 48 },
-        { label: "Nov", totalRevenue: 2500, orderCount: 70 },
-        { label: "Dec", totalRevenue: 3000, orderCount: 90 },
-      ];
-    } else {
-      // Try to map/transform API data to expected format
-      data = data.map((d, i) => ({
-        label: d.label || d.month || d.date || d._id || `M${i+1}`,
-        totalRevenue: d.totalRevenue || d.revenue || d.value || d.total || 0,
-        orderCount: d.orderCount || d.orders || d.users || d.count || 0,
-      }));
-    }
-    console.log("API salesData (transformed):", data);
-    return data;
-  } catch (e) {
-    // Fallback to synthetic data on error
-    return [
-      { label: "Jan", totalRevenue: 1200, orderCount: 30 },
-      { label: "Feb", totalRevenue: 1500, orderCount: 40 },
-      { label: "Mar", totalRevenue: 1800, orderCount: 50 },
-      { label: "Apr", totalRevenue: 1100, orderCount: 25 },
-      { label: "May", totalRevenue: 2100, orderCount: 60 },
-      { label: "Jun", totalRevenue: 1700, orderCount: 45 },
-      { label: "Jul", totalRevenue: 2000, orderCount: 55 },
-      { label: "Aug", totalRevenue: 2200, orderCount: 65 },
-      { label: "Sep", totalRevenue: 1600, orderCount: 35 },
-      { label: "Oct", totalRevenue: 1900, orderCount: 48 },
-      { label: "Nov", totalRevenue: 2500, orderCount: 70 },
-      { label: "Dec", totalRevenue: 3000, orderCount: 90 },
-    ];
-  }
+  const res = await axios.get(`${BASE_URL}/revenue-over-time`, { params });
+  let data = res.data;
+  if (!Array.isArray(data)) data = [];
+  return data.map((d: any, i: number) => ({
+    label: d.label || d.month || d.date || d._id || `M${i+1}`,
+    totalRevenue: d.totalRevenue || d.revenue || d.value || d.total || 0,
+    orderCount: d.orderCount || d.orders || d.users || d.count || 0,
+  }));
 }
 
 export function fetchYearOverYear(params = {}, config = {}) {
   return fetchAnalytics("year-over-year", params, config);
+}
+
+export function fetchMonthlyEvolution(params = {}, config = {}) {
+  return fetchAnalytics("monthly-evolution", params, config);
+}
+
+export function fetchMostSoldProduct(params = {}, config = {}) {
+  return fetchAnalytics("most-sold", params, config);
+}
+
+export function fetchBestDayForProduct(productId: string, params = {}, config = {}) {
+  return fetchAnalytics(`best-day/${productId}`, params, config);
+}
+
+export function fetchHighestRevenueDay(params = {}, config = {}) {
+  return fetchAnalytics("highest-revenue-day", params, config);
+}
+
+export function fetchRevenueByBrand(params = {}, config = {}) {
+  return fetchAnalytics("revenue-by-brand", params, config);
+}
+
+export function fetchTopProducts(params = {}, config = {}) {
+  return fetchAnalytics("top-products", params, config);
+}
+
+export function fetchOrdersByCategory(params = {}, config = {}) {
+  return fetchAnalytics("orders-by-category", params, config);
 }
 
 export function fetchCategoryPerformance(params = {}, config = {}) {
@@ -102,7 +91,26 @@ export function fetchSalesByCountry(params = {}, config = {}) {
   return fetchAnalytics("sales-by-country", params, config);
 }
 
-// Optionally: add a generic fetcher for any analytics endpoint
+export function fetchMargins(params = {}, config = {}) {
+  return fetchAnalytics("margins", params, config);
+}
+
+export function fetchFilterSales(params = {}, config = {}) {
+  return fetchAnalytics("filter-sales", params, config);
+}
+
+export function fetchSalesByBrand(params = {}, config = {}) {
+  return fetchAnalytics("sales-by-brand", params, config);
+}
+
+export function fetchDailySales(params = {}, config = {}) {
+  return fetchAnalytics("daily-sales", params, config);
+}
+
+export function fetchRecentActivity(params = {}, config = {}) {
+  return fetchAnalytics("recent-activity", params, config);
+}
+
 export { fetchAnalytics };
 
 /**

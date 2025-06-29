@@ -16,76 +16,33 @@ import "../../styles/dashboard.css";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-const data: ChartData<"line"> = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-  datasets: [
-    {
-      label: "Revenue",
-      data: [12000, 15000, 14000, 17000, 20000, 18000, 22000],
-      fill: true,
-      borderColor: "rgba(59,130,246,1)", // blue-500
-      backgroundColor: "rgba(59,130,246,0.15)",
-      tension: 0.4,
-      pointBackgroundColor: "rgba(59,130,246,1)",
-      pointBorderColor: "#fff",
-      pointRadius: 6,
-      pointHoverRadius: 9,
-    },
-  ],
-};
+interface AreaChartOneProps {
+  data: ChartData<"line">;
+  options?: ChartOptions<"line">;
+}
 
-const options: ChartOptions<"line"> = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      enabled: true,
-      backgroundColor: "#312e81",
-      titleColor: "#fff",
-      bodyColor: "#fff",
-      borderColor: "#818cf8",
-      borderWidth: 1,
-      padding: 12,
-      displayColors: false,
-      callbacks: {
-        title: (items) => `Month: ${items[0].label}`,
-        label: (item) => `Revenue: $${item.formattedValue}`,
-      },
-    },
-  },
-  animation: {
-    duration: 1200,
-    easing: "easeOutElastic",
-  },
-  scales: {
-    x: {
-      grid: {
-        display: false,
-      },
-      ticks: {
-        color: "#64748b",
-        font: { weight: "bold" },
-      },
-    },
-    y: {
-      beginAtZero: true,
-      grid: {
-        color: "#e0e7ef",
-      },
-      ticks: {
-        color: "#64748b",
-        font: { weight: "bold" },
-      },
-    },
-  },
-};
+export default function AreaChartOne({ data, options }: AreaChartOneProps) {
+  const isEmpty =
+    !data ||
+    !data.labels ||
+    (Array.isArray(data.labels) && data.labels.length === 0) ||
+    !data.datasets ||
+    data.datasets.length === 0 ||
+    data.datasets.every(ds =>
+      !ds.data ||
+      (Array.isArray(ds.data) && ds.data.length === 0) ||
+      (Array.isArray(ds.data) && ds.data.every((v: any) => !v))
+    );
 
-export default function AreaChartOne() {
   return (
     <div className="areachartone-root">
-      <Line data={data} options={options} />
+      {isEmpty ? (
+        <div className="text-center text-gray-500 py-12">
+          <span>Aucune donnée de graphique disponible.</span>
+        </div>
+      ) : (
+        <Line data={data} options={options} />
+      )}
     </div>
   );
 }

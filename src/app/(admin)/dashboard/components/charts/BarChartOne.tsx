@@ -60,13 +60,31 @@ export default function BarChartOne({ data }: BarChartOneProps) {
     delay: 100,
   });
 
+  const isEmpty =
+    !data ||
+    !data.labels ||
+    (Array.isArray(data.labels) && data.labels.length === 0) ||
+    !data.datasets ||
+    data.datasets.length === 0 ||
+    data.datasets.every(ds =>
+      !ds.data ||
+      (Array.isArray(ds.data) && ds.data.length === 0) ||
+      (Array.isArray(ds.data) && ds.data.every((v: any) => !v))
+    );
+
   return (
     <div className="dashboard-bar-or-line-chart-root">
       {React.createElement(
         animated.div,
         { style: spring },
         <div className="dashboard-bar-or-line-chart-inner">
-          <Bar data={data} options={options} />
+          {isEmpty ? (
+            <div className="text-center text-gray-500 py-12">
+              <span>Aucune donnée de graphique disponible.</span>
+            </div>
+          ) : (
+            <Bar data={data} options={options} />
+          )}
         </div>
       )}
     </div>

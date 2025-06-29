@@ -23,6 +23,7 @@ export default function DashboardCharts({ dateRange, currency }: DashboardCharts
   const [activeTab, setActiveTab] = useState("bar");
   const [salesData, setSalesData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Transform API data to Chart.js format
   function getBarChartData() {
@@ -63,12 +64,16 @@ export default function DashboardCharts({ dateRange, currency }: DashboardCharts
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     fetchRevenueOverTime({ range: dateRange })
       .then((data) => {
         setSalesData(data || []);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        setError(err?.message || "Erreur lors du chargement des statistiques.");
+        setLoading(false);
+      });
   }, [dateRange]);
 
   // Dummy export handler
@@ -164,23 +169,25 @@ export default function DashboardCharts({ dateRange, currency }: DashboardCharts
       </div>
       {/* Chart Area */}
       <div
-        style={{
-          minHeight: 320,
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
+      style={{
+      minHeight: 320,
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+      }}
       >
-        {loading ? (
-          <div>Loading chart...</div>
-        ) : getBarChartData().labels.length === 0 ? (
-          <div>No data available for this period.</div>
-        ) : activeTab === "bar" ? (
-          <BarChartOne data={getBarChartData()} currency={currency} />
-        ) : (
-          <LineChartOne data={getLineChartData()} currency={currency} />
-        )}
+      {loading ? (
+      <div>Loading chart...</div>
+      ) : error ? (
+      <div style={{ color: "#dc2626", fontWeight: 600 }}>{error}</div>
+      ) : getBarChartData().labels.length === 0 ? (
+      <div>No data available for this period.</div>
+      ) : activeTab === "bar" ? (
+      <BarChartOne data={getBarChartData()} currency={currency} />
+      ) : (
+      <LineChartOne data={getLineChartData()} currency={currency} />
+      )}
       </div>
     </div>
   );

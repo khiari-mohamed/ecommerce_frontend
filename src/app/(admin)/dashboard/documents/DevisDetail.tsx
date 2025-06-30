@@ -6,6 +6,7 @@ import orderService from "@/services/orders";
 import toast from "react-hot-toast";
 import { useReactToPrint } from "react-to-print";
 import "../styles/dashboard.css";
+import "../styles/devis.css";
 
 const COMPANY = {
   logo: "/images/logo/logo.png",
@@ -37,14 +38,21 @@ const DevisDetail: React.FC<DevisDetailProps> = ({ id, onClose }) => {
   const [error, setError] = useState<string | null>(null);
 
 const handlePrint = useReactToPrint({
-  // @ts-expect-error: content is not in the old type, but works at runtime
-  content: () => printRef.current,
-  documentTitle: `Devis_${devis?.numero_devis || devis?.numero || id}`,
-  pageStyle: `
-    @page { size: auto; margin: 10mm; }
-    body { -webkit-print-color-adjust: exact; }
-  `,
-  onAfterPrint: () => toast.success("Devis imprimé avec succès")
+contentRef: printRef,
+documentTitle: `Devis_${devis?.numero_devis || devis?.numero || id}`,
+pageStyle: `
+ @page { size: A4; margin: 10mm; }
+    body { 
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      width: 100% !important;
+      margin: 0 !important;
+    }
+    .document-print-area {
+      padding: 15mm;
+    }
+`,
+onAfterPrint: () => toast.success("Devis imprimé avec succès")
 });
 
   useEffect(() => {
@@ -239,8 +247,9 @@ const handlePrint = useReactToPrint({
       </div>
 
       {/* Printable content */}
-      <div ref={printRef} className="devis-document-print-area">
-        <div className="devis-document-root max-w-2xl mx-auto bg-white p-6">
+      <main ref={printRef} className="document-print-area bg-white py-8 px-1 font-sans print:py-0 print:px-0">
+        <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-6 relative border border-blue-200
+                print:max-w-full print:w-full print:mx-0 print:p-0 print:border-none print:rounded-none print:shadow-none">
           {/* Header */}
           <div className="flex justify-between items-start mb-4">
             <div className="flex flex-col items-start">
@@ -387,16 +396,22 @@ const handlePrint = useReactToPrint({
             &copy; {new Date().getFullYear()} {COMPANY.name}. Tous droits réservés.
           </div>
         </div>
-      </div>
+      </main>
 
       {/* Non-printable action buttons */}
       <div className="mt-4 flex gap-2 no-print">
         <button
-          onClick={handlePrint}
-          className="px-4 py-2 bg-orange-500 text-white rounded shadow hover:bg-orange-600"
-        >
-          Imprimer / Exporter PDF
-        </button>
+  onClick={() => {
+    if (!printRef.current) {
+      toast.error("Rien à imprimer !");
+      return;
+    }
+    handlePrint();
+  }}
+  className="px-4 py-2 bg-orange-500 text-white rounded shadow hover:bg-orange-600"
+>
+  Imprimer / Exporter PDF
+</button>
         <button 
           onClick={onClose} 
           className="px-4 py-2 bg-gray-200 text-gray-700 rounded"

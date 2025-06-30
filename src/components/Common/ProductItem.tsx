@@ -116,6 +116,12 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
   return (
     <div className="group">
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-[#F6F7FB] min-h-[270px] mb-4">
+        {/* Discount badge */}
+        {item.price > item.discountedPrice && (
+          <span className="intense-flashing-badge absolute top-2 left-2 z-10 text-xs px-2 py-0.5">
+            -{Math.round(((item.price - item.discountedPrice) / item.price) * 100)}%
+          </span>
+        )}
         <Image src={imageSrc} alt={item.title || item.designation || ""} width={250} height={250} />
 
         <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">

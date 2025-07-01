@@ -1,6 +1,7 @@
 import React, { forwardRef } from "react";
 import n2words from "n2words";
 import "../styles/print.css";
+import Image from "next/image";
 
 const COMPANY = {
   logo: "/images/logo/logo.png",
@@ -68,7 +69,7 @@ const FactureBoutiqueDocument = forwardRef(({ order, printRef }: { order: any, p
         {/* Header */}
         <div className="flex justify-between items-start mb-4">
           <div className="flex flex-col items-start">
-            <img src={COMPANY.logo} alt="Logo" className="h-12 mb-1" />
+            <Image src={COMPANY.logo} alt="Logo" width={100} height={40} className="h-12 mb-1" />
             <div className="text-[11px] text-gray-700 leading-tight">
               <div className="mb-0.5">{COMPANY.email}</div>
               <div className="mb-0.5">{COMPANY.address}</div>
@@ -227,4 +228,5 @@ const FactureBoutiqueDocument = forwardRef(({ order, printRef }: { order: any, p
   );
 });
 
+FactureBoutiqueDocument.displayName = "FactureBoutiqueDocument";
 export default FactureBoutiqueDocument;

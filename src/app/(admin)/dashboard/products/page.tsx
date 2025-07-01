@@ -86,7 +86,7 @@ const ProductsPage: React.FC = () => {
       <div className="products-page-header">
         <h1 className="products-page-title">Products</h1>
         <p className="products-page-subtitle">
-          Manage your store's products. Add, edit, view, or remove products as needed.
+          Manage your stores products. Add, edit, view, or remove products as needed.
         </p>
       </div>
       <BulkImportExport

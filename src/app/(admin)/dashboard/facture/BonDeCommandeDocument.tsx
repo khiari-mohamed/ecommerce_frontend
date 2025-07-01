@@ -227,4 +227,5 @@ const BonDeCommandeDocument = forwardRef(({ order, printRef }: { order: any, pri
   );
 });
 
+BonDeCommandeDocument.displayName = "BonDeCommandeDocument";
 export default BonDeCommandeDocument;

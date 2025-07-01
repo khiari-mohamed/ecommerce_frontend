@@ -15,9 +15,12 @@ export default async function SubcategoryPage({
 }: {
   params?: { slug: string } | Promise<{ slug: string }>;
 }) {
-  const resolvedParams = params && typeof (params as Promise<any>).then === "function"
-    ? await params
-    : params;
+  let resolvedParams: { slug: string } | undefined;
+  if (params && typeof (params as Promise<any>).then === "function") {
+    resolvedParams = await params as { slug: string };
+  } else {
+    resolvedParams = params as { slug: string } | undefined;
+  }
   const slug = resolvedParams?.slug;
 
   let product: MusculationProduct | null = null;

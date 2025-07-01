@@ -5,7 +5,7 @@ import { Product } from "@/types/product";
 const staticShopData: Product[] = [
   {
     title: "MASS GAINER 7KG - WARRIORS",
-    reviews: 15,
+    reviews: [],
     price: 260.0,
     discountedPrice: 239.0,
     currency: "DT",
@@ -27,11 +27,20 @@ const staticShopData: Product[] = [
     images: [
       { url: "/images/products/1.webp" },
       { url: "/images/products/1.webp" }
-    ]
+    ],
+    zone1: 0,
+    zone2: 0,
+    zone3: 0,
+    zone4: 0,
+    // Add the required fields with default/empty values:
+    content_seo: "",
+    meta: "", // <-- fix here
+    aroma_ids: [],
+    type: "",
   },
   {
     title: "NITRO TECH RIPPED – 1.8 KG MUSCLETECH",
-    reviews: 5,
+    reviews: [],
     price: 280.0,
     discountedPrice: 239.0,
     currency: "DT",
@@ -53,11 +62,19 @@ const staticShopData: Product[] = [
     images: [
       { url: "/images/products/p2.webp" },
       { url: "/images/products/p2.webp" }
-    ]
+    ],
+    zone1: 0,
+    zone2: 0,
+    zone3: 0,
+    zone4: 0,
+    content_seo: "",
+    meta: "",
+    aroma_ids: [],
+    type: "",
   },
   {
     title: "SERIOUS MASS – 5,45 KG",
-    reviews: 5,
+    reviews: [],
     price: 400.0,
     discountedPrice: 349.0,
     currency: "DT",
@@ -79,11 +96,19 @@ const staticShopData: Product[] = [
     images: [
       { url: "/images/products/p3.webp" },
       { url: "/images/products/p3.webp" }
-    ]
+    ],
+    zone1: 0,
+    zone2: 0,
+    zone3: 0,
+    zone4: 0,
+    content_seo: "",
+     meta: "",
+    aroma_ids: [],
+    type: "",
   },
   {
     title: "100% WHEY GOLD STANDARD – 2.27KG",
-    reviews: 6,
+    reviews: [],
     price: 350.0,
     discountedPrice: 329.0,
     currency: "DT",
@@ -105,11 +130,19 @@ const staticShopData: Product[] = [
     images: [
       { url: "/images/products/p4.webp" },
       { url: "/images/products/p4.webp" }
-    ]
+    ],
+    zone1: 0,
+    zone2: 0,
+    zone3: 0,
+    zone4: 0,
+    content_seo: "",
+     meta: "",
+    aroma_ids: [],
+    type: "",
   },
   {
     title: "REAL ISOLATE – 1,8 KG",
-    reviews: 3,
+    reviews: [],
     price: 320.0,
     discountedPrice: 289.0,
     currency: "DT",
@@ -131,11 +164,19 @@ const staticShopData: Product[] = [
     images: [
       { url: "/images/products/p5.webp" },
       { url: "/images/products/p5.webp" }
-    ]
+    ],
+    zone1: 0,
+    zone2: 0,
+    zone3: 0,
+    zone4: 0,
+    content_seo: "",
+     meta: "",
+    aroma_ids: [],
+    type: "",
   },
   {
     title: "REAL MASS – 6.8 KG",
-    reviews: 15,
+    reviews: [],
     price: 260.0,
     discountedPrice: 239.0,
     currency: "DT",
@@ -157,11 +198,19 @@ const staticShopData: Product[] = [
     images: [
       { url: "/images/products/p6.webp" },
       { url: "/images/products/p6.webp" }
-    ]
+    ],
+    zone1: 0,
+    zone2: 0,
+    zone3: 0,
+    zone4: 0,
+    content_seo: "",
+     meta: "",
+    aroma_ids: [],
+    type: "",
   },
   {
     title: "WHEY 80 – 2,25 KG",
-    reviews: 15,
+    reviews: [],
     price: 260.0,
     discountedPrice: 239.0,
     currency: "DT",
@@ -183,11 +232,19 @@ const staticShopData: Product[] = [
     images: [
       { url: "/images/products/p7.webp" },
       { url: "/images/products/p7.webp" }
-    ]
+    ],
+    zone1: 0,
+    zone2: 0,
+    zone3: 0,
+    zone4: 0,
+    content_seo: "",
+     meta: "",
+    aroma_ids: [],
+    type: "",
   },
   {
     title: "OPTI-MEN - 90TABS",
-    reviews: 15,
+    reviews: [],
     price: 150.0,
     discountedPrice: 119.0,
     currency: "DT",
@@ -209,7 +266,15 @@ const staticShopData: Product[] = [
     images: [
       { url: "/images/products/p8.png" },
       { url: "/images/products/p8.png" }
-    ]
+    ],
+    zone1: 0,
+    zone2: 0,
+    zone3: 0,
+    zone4: 0,
+    content_seo: "",
+     meta: "",
+    aroma_ids: [],
+    type: "",
   },
 ];
 
@@ -223,20 +288,34 @@ let dynamicShopData: Product[] = [];
 export const setShopData = (products: Product[]) => {
   dynamicShopData = products.map(product => ({
     ...product,
-    // Map API product structure to our expected structure
     title: product.designation || product.title,
     discountedPrice: product.price,
     price: product.oldPrice || product.price,
     reviews: product.reviews?.map(review => ({
-      userId: review.userId,
-      userName: review.userName,
-      rating: review.rating,
-      comment: review.comment,
-      createdAt: review.createdAt,
+      _id: review._id || "",
+      id: review.id || "",
+      user_id: review.user_id || review.user_id || "",
+      product_id: review.product_id || product._id || "",
+      stars: typeof review.stars === "number"
+        ? review.stars
+        : typeof review.stars === "string"
+          ? Number(review.stars)
+          : typeof review.rating === "number"
+            ? review.rating
+            : 0,
+      comment: review.comment || "",
+      createdAt: review.createdAt || "",
+      updatedAt: review.updatedAt || "",
+      userName: review.userName || review.user_name || "",
+      rating: review.rating ?? (typeof review.stars === "number" ? review.stars : Number(review.stars)) ?? 0,
+      publier: typeof review.publier === "boolean"
+        ? review.publier.toString()
+        : review.publier ?? "true",
+      created_at: review.created_at ?? review.createdAt ?? "",
+      updated_at: review.updated_at ?? review.updatedAt ?? "",
     })) || [],
     id: parseInt(product._id) || 0,
     currency: "DT",
-    // Ensure images structure matches our static data
     imgs: {
       thumbnails: [product.mainImage.url, ...(product.images?.map(img => img.url) || [])],
       previews: [product.mainImage.url, ...(product.images?.map(img => img.url) || [])]
@@ -246,7 +325,15 @@ export const setShopData = (products: Product[]) => {
     designation: product.designation,
     slug: product.slug,
     mainImage: product.mainImage,
-    images: product.images || []
+    images: product.images || [],
+    zone1: product.zone1 ?? 0,
+    zone2: product.zone2 ?? 0,
+    zone3: product.zone3 ?? 0,
+    zone4: product.zone4 ?? 0,
+    content_seo: product.content_seo ?? "",
+    meta: product.meta ?? "",
+    aroma_ids: product.aroma_ids ?? [],
+    type: product.type ?? "",
   }));
 };
 /**

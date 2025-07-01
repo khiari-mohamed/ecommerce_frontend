@@ -1,7 +1,6 @@
-
 "use client";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, easeOut } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,7 +9,7 @@ const fadeInVariants = {
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.8, ease: "easeOut" }
+    transition: { duration: 0.8, ease: easeOut }
   }
 };
 
@@ -19,7 +18,7 @@ const fadeFromLeftVariants = {
   visible: { 
     opacity: 1, 
     x: 0,
-    transition: { duration: 0.8, ease: "easeOut" }
+    transition: { duration: 0.8, ease: easeOut }
   }
 };
 
@@ -28,7 +27,7 @@ const buttonVariants = {
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.6, delay: 0.3, ease: "easeOut" }
+    transition: { duration: 0.6, delay: 0.3, ease: easeOut }
   },
   hover: {
     scale: 1.05,

@@ -1,7 +1,7 @@
 import axios from '@/lib/axios';
 import { isAxiosError } from 'axios';
 import { Category } from '@/types/category';
-
+export type { Category } from '@/types/category';
 export const getCategories = async (): Promise<Category[]> => {
   try {
     const { data } = await axios.get('/categories');

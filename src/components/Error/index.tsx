@@ -24,7 +24,7 @@ const Error = () => {
               </h2>
 
               <p className="max-w-[410px] w-full mx-auto mb-7.5">
-              La page que vous recherchiez semble avoir été déplacée, supprimée ou n'existe pas.
+              La page que vous recherchiez semble avoir été déplacée, supprimée ou nexiste pas.
               </p>
 
               <Link
@@ -44,7 +44,7 @@ const Error = () => {
                     fill=""
                   />
                 </svg>
-                Retour à l'accueil
+                Retour à laccueil
               </Link>
             </div>
           </div>

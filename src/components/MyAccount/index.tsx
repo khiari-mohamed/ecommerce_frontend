@@ -317,7 +317,7 @@ const MyAccount = () => {
                 activeTab === "downloads" ? "block" : "hidden"
               }`}
             >
-              <p>vous n'avez&apos; aucun téléchargement</p>
+              <p>vous navez&apos; aucun téléchargement</p>
             </div>
             {/* <!-- downloads tab content end -->
 

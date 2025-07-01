@@ -459,7 +459,7 @@ const ProductDetails = () => {
                           image: imageSrc,
                         })
                       );
-                      router.push("/cart"); // or "/panier" if that's your cart route
+                      router.push("/cart"); // or "/panier" if thats your cart route
                     }}
                     className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
                   >
@@ -610,7 +610,7 @@ const ProductDetails = () => {
                 {product?.smallDescription ? (
                 <div className="mb-6" dangerouslySetInnerHTML={{ __html: product?.smallDescription }} />
                 ) : (
-                <p className="mb-6">voir l'étiquette pour la marque.</p>
+                <p className="mb-6">voir létiquette pour la marque.</p>
                 )}
               </div>
             </div>

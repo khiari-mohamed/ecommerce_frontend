@@ -187,7 +187,7 @@ export default function ProductDetailPage() {
   />
   ) : (
   <div className="w-[400px] h-[400px] flex items-center justify-center bg-gray-100 text-gray-400 border rounded-lg">
-  Pas d'image
+  Pas dimage
   </div>
   )}
   </div>

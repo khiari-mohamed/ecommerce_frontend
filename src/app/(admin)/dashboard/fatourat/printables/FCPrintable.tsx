@@ -103,7 +103,7 @@ const FCPrintable = ({ order }) => {
           </div>
           <div style={{ fontSize: 13, color: "#222" }}>
             <div style={{ marginBottom: 2 }}>
-              <span style={{ color: "#888" }}>Date d'émission :</span> {dateFacture}
+              <span style={{ color: "#888" }}>Date démission :</span> {dateFacture}
             </div>
             <div style={{ marginBottom: 2 }}>
               <span style={{ color: "#888" }}>N° :</span> <span style={{ fontWeight: 700 }}>{order.numero}</span>

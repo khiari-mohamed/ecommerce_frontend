@@ -292,7 +292,7 @@ const FloatingActions = ({ onHome, setPreviewDoc }) => {
             onClick={() => { setOpen(false); onHome(); }}
             className="w-full px-4 py-2 rounded-lg font-semibold transition hover:bg-gray-100 text-gray-700 border border-gray-200"
           >
-            Retour à l'accueil
+            Retour à laccueil
           </button>
           <button
             onClick={() => { setOpen(false); setPreviewDoc("facture-boutique"); setTimeout(() => window.print(), 100); }}

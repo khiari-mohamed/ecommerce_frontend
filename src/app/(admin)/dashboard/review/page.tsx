@@ -57,7 +57,7 @@ const DashboardReviewPage = () => {
               <tr>
                 <th>Produit</th>
                 <th>Note moyenne</th>
-                <th>Nombre d'avis</th>
+                <th>Nombre davis</th>
                 <th>Avis</th>
               </tr>
             </thead>

@@ -39,7 +39,7 @@ const MailSuccess = () => {
                     fill=""
                   />
                 </svg>
-                Retour à l'accueil
+                Retour à laccueil
               </Link>
             </div>
           </div>

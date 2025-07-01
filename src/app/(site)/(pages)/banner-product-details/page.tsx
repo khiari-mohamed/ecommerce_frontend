@@ -310,7 +310,7 @@ const BannerProductDetails = () => {
                 {smallDescription ? (
                   <div className="mb-6" dangerouslySetInnerHTML={{ __html: smallDescription }} />
                 ) : (
-                  <p className="mb-6">voir l'étiquette pour la marque.</p>
+                  <p className="mb-6">voir létiquette pour la marque.</p>
                 )}
               </div>
             </div>

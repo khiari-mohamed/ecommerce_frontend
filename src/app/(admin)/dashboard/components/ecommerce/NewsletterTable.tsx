@@ -38,7 +38,7 @@ const NewsletterTable: React.FC<NewsletterTableProps> = ({
         <thead>
           <tr>
             <th>Email</th>
-            <th>Date d'inscription</th>
+            <th>Date dinscription</th>
             <th>Actions</th>
           </tr>
         </thead>

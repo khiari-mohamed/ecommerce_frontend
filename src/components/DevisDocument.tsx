@@ -83,7 +83,7 @@ const DevisDocument = ({ order, printRef }) => {
               DEVIS
             </span>
             <span className="text-[11px] text-gray-500 mt-2">
-              Date d'émission : {dateEmission}
+              Date démission : {dateEmission}
             </span>
             <span className="text-[11px] text-gray-500">
               N° : <span className="font-semibold">{order.numero_devis || order.numero}</span>

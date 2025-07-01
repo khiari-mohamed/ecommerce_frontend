@@ -94,7 +94,7 @@ const FactureDocument = (props) => {
               FACTURE
             </span>
             <span className="text-[11px] text-gray-500 mt-2">
-              Date d'émission : {dateEmission}
+              Date démission : {dateEmission}
             </span>
             <span className="text-[11px] text-gray-500">
               N° : <span className="font-semibold">{order.numero}</span>
@@ -219,7 +219,7 @@ const FactureDocument = (props) => {
             Conditions de paiement : {order.conditions_paiement || "30 jours, virement bancaire"}
           </div>
           <div>
-            Pénalités de retard : {order.penalites_retard || "En cas de non-paiement à l'échéance, des pénalités seront appliquées conformément à la législation en vigueur."}
+            Pénalités de retard : {order.penalites_retard || "En cas de non-paiement à léchéance, des pénalités seront appliquées conformément à la législation en vigueur."}
           </div>
         </div>
         {/* Footer with RIB and copyright */}

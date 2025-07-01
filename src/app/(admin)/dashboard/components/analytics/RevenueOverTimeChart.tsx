@@ -10,10 +10,10 @@ const RevenueOverTimeChart: React.FC<RevenueOverTimeProps> = ({ data }) => {
 
   return (
     <div className="analytics-chart-container">
-      <h2 className="text-lg font-bold mb-4 text-purple-700">Évolution du chiffre d'affaires</h2>
+      <h2 className="text-lg font-bold mb-4 text-purple-700">Évolution du chiffre daffaires</h2>
       {isEmpty ? (
         <div className="text-center text-gray-500 py-12">
-          <span>Aucune donnée de chiffre d'affaires disponible.</span>
+          <span>Aucune donnée de chiffre daffaires disponible.</span>
         </div>
       ) : (
         <ResponsiveContainer width="100%" height={300}>

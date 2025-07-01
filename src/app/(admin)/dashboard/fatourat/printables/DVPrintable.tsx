@@ -102,7 +102,7 @@ const client = {
           </div>
           <div style={{ fontSize: 13, color: "#222" }}>
             <div style={{ marginBottom: 2 }}>
-              <span style={{ color: "#888" }}>Date d'émission :</span> {dateEmission}
+              <span style={{ color: "#888" }}>Date démission :</span> {dateEmission}
             </div>
             <div style={{ marginBottom: 2 }}>
               <span style={{ color: "#888" }}>N° :</span> <span style={{ fontWeight: 700 }}>{order.numero_devis || order.numero}</span>

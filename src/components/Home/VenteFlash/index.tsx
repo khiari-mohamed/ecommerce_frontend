@@ -317,7 +317,7 @@ const VenteFlash = () => {
             marginTop: "-50px"
           }}
         >
-          Voir l'offre
+          Voir loffre
         </a>
       )}
     </>

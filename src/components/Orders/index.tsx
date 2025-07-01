@@ -61,7 +61,7 @@ const Orders: React.FC<OrdersProps> = ({ orders = [] }) => {
             ))
           ) : (
             <tr>
-              <td colSpan={6} className="text-center py-8">You don't have any orders!</td>
+              <td colSpan={6} className="text-center py-8">You dont have any orders!</td>
             </tr>
           )}
         </tbody>

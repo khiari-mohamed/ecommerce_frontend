@@ -172,7 +172,7 @@ onAfterPrint: () => toast.success("Devis imprimé avec succès")
                 />
               </div>
               <div className="flex-1">
-                <label className="block text-xs font-semibold mb-1">Date d'émission</label>
+                <label className="block text-xs font-semibold mb-1">Date démission</label>
                 <input
                   type="datetime-local"
                   className="border px-2 py-1 rounded w-full"
@@ -234,7 +234,7 @@ onAfterPrint: () => toast.success("Devis imprimé avec succès")
         ) : (
           <div className="mb-6">
             <div><b>Numéro Devis:</b> {devis.numero_devis || devis.numero}</div>
-            <div><b>Date d'émission:</b> {dateEmission}</div>
+            <div><b>Date démission:</b> {dateEmission}</div>
             <div><b>Validité:</b> {devis.validite_devis || "30 jours"}</div>
             <div><b>Client:</b> {client.prenom} {client.nom} ({client.email})</div>
             <button
@@ -268,7 +268,7 @@ onAfterPrint: () => toast.success("Devis imprimé avec succès")
                 DEVIS
               </span>
               <span className="text-[11px] text-gray-500 mt-2">
-                Date d'émission : {dateEmission}
+                Date démission : {dateEmission}
               </span>
               <span className="text-[11px] text-gray-500">
                 N° : <span className="font-semibold">{devis.numero_devis || devis.numero}</span>

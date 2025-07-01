@@ -8,7 +8,7 @@ import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useSearchParams } from "next/navigation";
 import type { Product } from "@/types/product";
 
-// Define ProductReview type locally since it's not exported from "@/types/product"
+// Define ProductReview type locally since its not exported from "@/types/product"
 type ProductReview = {
   user_id: any;
   userAvatar?: string;
@@ -664,7 +664,7 @@ const ShopDetails = () => {
                               image: imageSrc,
                             })
                           );
-                          router.push("/cart"); // or "/panier" if that's your cart route
+                          router.push("/cart"); // or "/panier" if thats your cart route
                         }}
                         className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
                       >
@@ -848,11 +848,11 @@ const ShopDetails = () => {
                     <h2 className="font-medium text-2xl text-dark mb-7">
                     Marque et détails :
                     </h2>
-                    <p className="mb-6">{product.brand || "voir l'étiquette pour la marque."}</p>
+                    <p className="mb-6">{product.brand || "voir létiquette pour la marque."}</p>
                     {product.smallDescription ? (
                     <div className="mb-6" dangerouslySetInnerHTML={{ __html: product.smallDescription }} />
                     ) : (
-                    <p className="mb-6">voir l'étiquette pour la marque.</p>
+                    <p className="mb-6">voir létiquette pour la marque.</p>
                     )}
                   </div>
                 </div>

@@ -3,11 +3,12 @@ import { Metadata } from "next";
 import axios from "@/lib/axios";
 import BrandProductGrid from "./BrandProductsGrid";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Brand {
   _id: string;
   id: string;
-  slug: string; // <-- Use slug field
+  slug: string;
   designation_fr: string;
   logo: string;
   description_fr?: string;
@@ -17,11 +18,11 @@ interface BrandPageProps {
   params: { slug: string };
 }
 
-export async function generateMetadata(props: BrandPageProps): Promise<Metadata> {
-  const { params } = props;
+export async function generateMetadata({ params }: BrandPageProps): Promise<Metadata> {
   try {
-    // Use slug field for lookup
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(params.slug)}`);
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(params.slug)}`
+    );
     const brand: Brand | undefined = res.data?.[0];
     if (!brand) return {};
     return {
@@ -36,16 +37,18 @@ export async function generateMetadata(props: BrandPageProps): Promise<Metadata>
   }
 }
 
-export default async function BrandPage(props: BrandPageProps) {
-  const { params } = props;
+export default async function BrandPage({ params }: BrandPageProps) {
   let brand: Brand | null = null;
   let products: any[] = [];
   try {
-    // Use slug field for lookup
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(params.slug)}`);
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(params.slug)}`
+    );
     brand = res.data?.[0] || null;
     if (brand) {
-      const prodRes = await axios.get(`/products?brand=${brand.id}`);
+      const prodRes = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/products?brand=${brand.id}`
+      );
       products = Array.isArray(prodRes.data?.data?.products) ? prodRes.data.data.products : [];
     }
   } catch {
@@ -60,13 +63,14 @@ export default async function BrandPage(props: BrandPageProps) {
   return (
     <main className="max-w-4xl mx-auto py-10 px-4">
       <div className="flex flex-col items-center">
-        <img
+        <Image
           src={`/images/brand/${brand.logo}`}
           alt={brand.designation_fr}
+          width={128}
+          height={128}
           className="w-32 h-32 object-contain mb-4"
         />
         <h1 className="text-3xl font-bold mb-2">
-          {/* Use slug field in the link */}
           <Link href={`/brands/${encodeURIComponent(brand.slug)}`}>
             {brand.designation_fr}
           </Link>

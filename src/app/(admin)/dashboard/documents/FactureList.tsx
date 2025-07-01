@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "@/lib/axios";
 import FactureDetail from "./FactureDetail";
 import "../styles/dashboard.css";
+import "../styles/print.css";
 
 type FactureType = "client" | "boutique" | "bon-commande";
 interface Facture {

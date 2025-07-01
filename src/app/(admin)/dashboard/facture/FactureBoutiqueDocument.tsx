@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import n2words from "n2words";
-import "./facture.css";
+import "../styles/print.css";
 
 const COMPANY = {
   logo: "/images/logo/logo.png",

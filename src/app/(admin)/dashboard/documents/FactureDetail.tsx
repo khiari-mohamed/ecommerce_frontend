@@ -5,6 +5,7 @@ import FactureDocument from "@/components/FactureDocument";
 import orderService from "@/services/orders";
 import toast from "react-hot-toast";
 import "../styles/dashboard.css"; // Adjust path as needed
+import "../styles/print.css";
 
 const DOC_TYPES = [
   { key: "facture", label: "Facture Client" },

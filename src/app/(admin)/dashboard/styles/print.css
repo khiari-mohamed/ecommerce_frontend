@@ -1,0 +1,176 @@
+/* Robust Print Styles for All Dashboard Documents */
+
+@media print {
+  html, body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-shadow: none !important;
+    color-adjust: exact !important;
+    font-family: 'Inter', 'Arial', sans-serif !important;
+    font-size: 12px !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm 0 10mm 0;
+  }
+
+  /* Hide all non-printable UI */
+  .no-print,
+  .bon-modal-overlay,
+  .facture-modal-overlay,
+  .facture-detail-modal-overlay,
+  .devis-modal-overlay,
+  .bonlivraison-detail-modal-overlay {
+    display: none !important;
+  }
+
+  /* Remove modal backgrounds and overlays */
+  .bon-modal-content,
+  .facture-modal-content,
+  .facture-detail-modal-content,
+  .devis-modal-content,
+  .bonlivraison-detail-modal-content {
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    position: static !important;
+  }
+
+  /* Main document area: full width, no centering, no border-radius, no shadow */
+  .document-print-area,
+  .bonlivraison-document-print-area,
+  .facture-document-print-area,
+  .devis-detail-container,
+  .facture-detail-root,
+  .facture-table-root {
+    background: #fff !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-height: auto !important;
+    position: static !important;
+  }
+
+  /* Remove all box shadows and border radii from children */
+  .max-w-2xl,
+  .rounded-2xl,
+  .shadow-2xl,
+  .rounded,
+  .rounded-lg,
+  .shadow,
+  .border,
+  .p-6,
+  .p-4,
+  .p-1 {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Remove extra spacing and center the document on the page */
+  .mx-auto,
+  .my-6,
+  .mb-4,
+  .mt-4,
+  .mb-6,
+  .mt-6,
+  .ml-2,
+  .ml-4,
+  .mr-2,
+  .gap-4,
+  .gap-2,
+  .space-y-1,
+  .space-y-2 {
+    margin: 0 !important;
+    gap: 0 !important;
+  }
+
+  /* Table styles: ensure tables use full width and break cleanly */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: avoid !important;
+    background: #fff !important;
+  }
+  th, td {
+    border: 1px solid #bbb !important;
+    padding: 4px 6px !important;
+    color: #222 !important;
+    background: #fff !important;
+    font-size: 12px !important;
+  }
+  thead { display: table-header-group !important; }
+  tfoot { display: table-footer-group !important; }
+
+  /* Remove hover and background effects */
+  tr, th, td {
+    background: #fff !important;
+    box-shadow: none !important;
+  }
+  tr:hover {
+    background: #fff !important;
+  }
+
+  /* Hide all action/close/print buttons */
+  button,
+  .bon-modal-close,
+  .facture-modal-close,
+  .facture-modal-close-btn,
+  .devis-modal-close-btn {
+    display: none !important;
+  }
+
+  /* Hide scrollbars */
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Prevent page breaks inside main document containers */
+  .document-print-area,
+  .bonlivraison-document-print-area,
+  .facture-document-print-area,
+  .devis-detail-container,
+  .facture-detail-root,
+  .facture-table-root {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Avoid page breaks inside tables and important blocks */
+  table, tr, td, th, thead, tbody, tfoot {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Print QR codes and images at full quality */
+  img, svg, canvas {
+    max-width: 100% !important;
+    height: auto !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Always print background colors and images */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+}

@@ -1,4 +1,3 @@
-
 import { QRCode } from "react-qrcode-logo";
 
 const COMPANY = {
@@ -14,25 +13,25 @@ const ORANGE = "#FF4301";
 const BonLivraisonDocument = ({ order, printRef }) => {
   const cart = Array.isArray(order.cart) ? order.cart : [];
   const client = {
-    nom: order.nom,
-    prenom: order.prenom,
-    adresse1: order.adresse1,
-    adresse2: order.adresse2,
-    ville: order.ville,
-    code_postale: order.code_postale,
-    pays: order.pays,
-    email: order.email,
-    phone: order.phone,
+    nom: order.nom || "",
+    prenom: order.prenom || "",
+    adresse1: order.adresse1 || "",
+    adresse2: order.adresse2 || "",
+    ville: order.ville || "",
+    code_postale: order.code_postale || "",
+    pays: order.pays || "",
+    email: order.email || "",
+    phone: order.phone || "",
   };
   const delivery = {
-    nom: order.livraison_nom,
-    prenom: order.livraison_prenom,
-    adresse1: order.livraison_adresse1,
-    adresse2: order.livraison_adresse2,
-    ville: order.livraison_ville,
-    code_postale: order.livraison_code_postale,
-    pays: order.livraison_pays,
-    phone: order.livraison_phone,
+    nom: order.livraison_nom || "",
+    prenom: order.livraison_prenom || "",
+    adresse1: order.livraison_adresse1 || "",
+    adresse2: order.livraison_adresse2 || "",
+    ville: order.livraison_ville || "",
+    code_postale: order.livraison_code_postale || "",
+    pays: order.livraison_pays || "",
+    phone: order.livraison_phone || "",
   };
   const dateCommande = order.created_at
     ? new Date(order.created_at).toLocaleDateString("fr-FR")

@@ -6,7 +6,7 @@ const COMPANY = {
   name: "sobitas",
   nif: "1234567A",
   rc: "B123456789",
-  email: "contact@protein.tn",
+  email: "contact@protein.tn",  
   address: "Rue Ribat, 4000 Sousse Tunisie",
   tel: "+216 73 200 169"
 };
@@ -17,8 +17,17 @@ function numberToFrenchWords(n: number): string {
   return n2words(n, { lang: "fr" });
 }
 
-const FactureDocument = ({ order, printRef }) => {
-  const cart = Array.isArray(order.cart) ? order.cart : [];
+const FactureDocument = (props) => {
+  const { order, printRef } = props || {};
+  if (!order) return null;
+  const cart =
+    Array.isArray(order.cart) && order.cart.length > 0
+      ? order.cart
+      : Array.isArray(order.products) && order.products.length > 0
+      ? order.products
+      : Array.isArray(order.items) && order.items.length > 0
+      ? order.items
+      : [];
   const totalHT = Number(order.prix_ht || 0);
   // TVA is always 19% of totalHT
   const totalTVA = totalHT * 0.19;

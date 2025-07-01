@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { useReactToPrint } from "react-to-print";
 import "../styles/dashboard.css";
 import "../styles/devis.css";
+import "../styles/print.css";
 
 const COMPANY = {
   logo: "/images/logo/logo.png",

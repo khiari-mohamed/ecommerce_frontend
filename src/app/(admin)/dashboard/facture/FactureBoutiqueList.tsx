@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { fetchOrders } from "@/services/orders";
 import FactureBoutiqueDocument from "./FactureBoutiqueDocument";
 import FactureModal from "./FactureModal";
-import "./facture.css";
+import "../styles/print.css";
 
 const FactureBoutiqueList = () => {
   const [orders, setOrders] = useState<any[]>([]);

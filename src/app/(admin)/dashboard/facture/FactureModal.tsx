@@ -1,5 +1,5 @@
 import React from "react";
-import "./facture.css";
+import "../styles/print.css";
 
 interface FactureModalProps {
   open: boolean;

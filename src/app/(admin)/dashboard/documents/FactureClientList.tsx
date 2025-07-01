@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import orderService from "@/services/orders";
 import FactureClientDocument from "./FactureClientDocument";
 import "../styles/dashboard.css";
+import "../styles/print.css";
 
 const FactureClientList: React.FC = () => {
   const [factures, setFactures] = useState<any[]>([]);

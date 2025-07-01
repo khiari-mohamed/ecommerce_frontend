@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { fetchOrders } from "@/services/orders";
 import BonDeCommandeDocument from "./BonDeCommandeDocument";
 import BonDeCommandeModal from "./BonDeCommandeModal";
-import "./facture.css";
+import "../styles/print.css";
+
 
 const BonDeCommandeList = () => {
   const [orders, setOrders] = useState<any[]>([]);

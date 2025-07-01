@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import orderService from "@/services/orders";
 import BonLivraisonDetail from "./BonLivraisonDetail";
 import "../styles/dashboard.css"; // Adjust path as needed
+import "../styles/print.css";
 
 interface BonLivraison {
   id?: string;

@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/print.css";
 
 interface FactureClientDocumentProps {
   order: any;

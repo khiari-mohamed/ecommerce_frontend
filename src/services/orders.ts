@@ -3,7 +3,7 @@ const API_URL =
     ? `${process.env.NEXT_PUBLIC_API_URL}/commande`
     : "http://localhost:5000/commande";
 
-export async function fetchOrders() {
+export async function fetchOrders(p0: { type: string; }) {
   const res = await fetch(`${API_URL}`);
   if (!res.ok) throw new Error("Failed to fetch orders");
   return res.json();

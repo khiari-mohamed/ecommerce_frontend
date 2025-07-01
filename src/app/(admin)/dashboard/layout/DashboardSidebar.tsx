@@ -46,11 +46,13 @@ const navLinks = [
   { name: "Charts", icon: <BarChart2 size={20} />, href: "/dashboard/charts" },
   { name: "Testimonials", icon: <MessageSquare size={20} />, href: "/dashboard/testimonials" },
   { name: "Banners", icon: <ImageIcon size={20} />, href: "/dashboard/banners" },
-  { name: "Documents", icon: <FileText size={20} />, href: "/dashboard/documents" },
-  { name: "Factures & Bons de Commande", icon: <FileText size={20} />, href: "/dashboard/facture" },
+  { name: "Documents view", icon: <FileText size={20} />, href: "/dashboard/documents" },
+  { name: "Factures & Bons de Commande view", icon: <FileText size={20} />, href: "/dashboard/facture" },
+  //new corect dcument page 
+  { name: "Factures print", icon: <FileText size={20} />, href: "/dashboard/fatourat" },
   { name: "Reviews", icon: <Star size={20} />, href: "/dashboard/review" },
   { name: "Settings", icon: <Settings size={20} />, href: "/dashboard/pages/settings" },
-];
+  ];
 
 // Auth section links
 const authLinks = [

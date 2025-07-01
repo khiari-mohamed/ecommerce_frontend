@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import orderService from "@/services/orders";
 import DevisDetail from "./DevisDetail";
 import "../styles/dashboard.css";
+import "../styles/print.css";
 
 const DevisList: React.FC = () => {
   const [devis, setDevis] = useState<any[]>([]);

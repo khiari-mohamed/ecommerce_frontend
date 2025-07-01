@@ -2,7 +2,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { checkAuthStatus, loginUser, logoutUser, registerUser } from '@/helper/auth';
 import Cookies from "js-cookie";
-import { useAuthStore, useUser, useIsLoggedIn, useIsAuthLoading, useAuthActions } from '@/redux/authStore';
+import {
+  useAuthStore,
+  useUser,
+  useIsLoggedIn,
+  useIsAuthLoading,
+  useAuthActions,
+} from '@/redux/authstore'; // lowercase 's'
+
 
 const AuthContext = createContext(undefined);
 

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import "../styles/dashboard.css";
-import "./facture.css";
 import FactureBoutiqueList from "./FactureBoutiqueList";
 import BonDeCommandeList from "./BonDeCommandeList";
 

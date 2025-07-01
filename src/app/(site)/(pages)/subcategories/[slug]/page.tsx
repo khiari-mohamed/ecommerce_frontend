@@ -15,8 +15,13 @@ async function getSubCategoryBySlug(slug: string): Promise<SubCategory | null> {
   }
 }
 
-export default async function SubcategoryPage({ params }: { params: { slug: string } }) {
-  const subcategory = await getSubCategoryBySlug(params.slug);
+export default async function SubcategoryPage({
+  params,
+}: {
+  params?: { slug: string };
+}) {
+  const slug = params?.slug;
+  const subcategory = await getSubCategoryBySlug(slug);
 
   if (!subcategory) {
     notFound();

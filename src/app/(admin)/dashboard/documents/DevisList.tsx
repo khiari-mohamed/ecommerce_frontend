@@ -14,7 +14,7 @@ const DevisList: React.FC = () => {
   useEffect(() => {
     setLoading(true);
     orderService
-      .fetchOrders()
+      .fetchOrders( { type: "all" })
       .then((data) => {
         setDevis(data);
       })

@@ -32,7 +32,7 @@ const BonLivraisonList: React.FC = () => {
     setError(null);
 
     orderService
-      .fetchOrders()
+      .fetchOrders({ type: "all" }) // Replace "all" with the appropriate type if needed
       .then((data) => {
         if (!cancelled) {
           setBons(data); // Show all orders, no filter

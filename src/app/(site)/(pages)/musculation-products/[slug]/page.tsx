@@ -9,14 +9,16 @@ import { Review } from "@/types/reviews";
 
 const FALLBACK_IMAGE = "/placeholder.svg";
 
-interface MusculationProductPageProps {
-  params: {
-    slug: string;
-  };
-}
-
-export default async function MusculationProductPage({ params }: MusculationProductPageProps) {
-  const { slug } = params;
+// ✅ Only this now — NO "interface MusculationProductPageProps"
+export default async function SubcategoryPage({
+  params,
+}: {
+  params?: { slug: string } | Promise<{ slug: string }>;
+}) {
+  const resolvedParams = params && typeof (params as Promise<any>).then === "function"
+    ? await params
+    : params;
+  const slug = resolvedParams?.slug;
 
   let product: MusculationProduct | null = null;
   let reviews: Review[] = [];
@@ -28,8 +30,7 @@ export default async function MusculationProductPage({ params }: MusculationProd
       reviews = await getReviewsByProduct(product._id);
       if (reviews.length > 0) {
         averageRating =
-          reviews.reduce((acc, r) => acc + parseInt(r.stars, 10), 0) /
-          reviews.length;
+          reviews.reduce((acc, r) => acc + parseInt(r.stars, 10), 0) / reviews.length;
       }
     }
   } catch (e) {
@@ -48,6 +49,9 @@ export default async function MusculationProductPage({ params }: MusculationProd
   };
 
   return (
+    // ...rest of your JSX stays exactly the same
+  
+
     <div className="max-w-4xl mx-auto py-12 px-4">
       <div className="flex flex-col md:flex-row gap-8">
         <div className="flex-shrink-0 w-full md:w-1/2">
@@ -113,3 +117,4 @@ export default async function MusculationProductPage({ params }: MusculationProd
     </div>
   );
 }
+

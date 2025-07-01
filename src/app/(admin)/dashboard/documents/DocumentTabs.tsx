@@ -39,7 +39,7 @@ const FactureList: React.FC = () => {
     setError(null);
 
     orderService
-      .fetchOrders()
+      .fetchOrders({ type: "all" })
       .then((data) => {
         if (!cancelled) {
           // Map and normalize data

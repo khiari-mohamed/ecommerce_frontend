@@ -1,4 +1,3 @@
-
 "use client";
 import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -8,7 +7,13 @@ import Countdown from "@/components/Home/VenteFlash/Countdown";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const FALLBACK_IMAGE = "/static-flash/p8.png";
 
-export default function VenteFlashSlugPage({ params }: { params: { slug: string } }) {
+export default function VenteFlashSlugPage({
+  params,
+}: {
+  params?: { slug: string };
+}) {
+  const slug = params?.slug;
+
   const [flashSale, setFlashSale] = useState<any>(null);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +23,7 @@ export default function VenteFlashSlugPage({ params }: { params: { slug: string 
     async function fetchData() {
       try {
         // Fetch flash sale by slug
-        const res = await axios.get(`${API_URL}/vente-flash/slug/${params.slug}`);
+        const res = await axios.get(`${API_URL}/vente-flash/slug/${slug}`);
         if (!res.data) return notFound();
         setFlashSale(res.data);
 
@@ -38,7 +43,7 @@ export default function VenteFlashSlugPage({ params }: { params: { slug: string 
     }
     fetchData();
     // eslint-disable-next-line
-  }, [params.slug]);
+  }, [slug]);
 
   // Timer countdown effect
   useEffect(() => {

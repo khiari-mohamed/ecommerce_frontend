@@ -18,10 +18,19 @@ interface BrandPageProps {
   params: { slug: string };
 }
 
-export async function generateMetadata({ params }: BrandPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params?: { slug: string } | Promise<{ slug: string }> ;
+}): Promise<Metadata> {
+  const resolvedParams = params && typeof (params as Promise<any>).then === "function"
+    ? await params
+    : params;
+  const slug = resolvedParams?.slug;
+
   try {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(params.slug)}`
+      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(slug)}`
     );
     const brand: Brand | undefined = res.data?.[0];
     if (!brand) return {};
@@ -37,12 +46,21 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
   }
 }
 
-export default async function BrandPage({ params }: BrandPageProps) {
+export default async function BrandPage({
+  params,
+}: {
+  params?: { slug: string } | Promise<{ slug: string }> ;
+}) {
+  const resolvedParams = params && typeof (params as Promise<any>).then === "function"
+    ? await params
+    : params;
+  const slug = resolvedParams?.slug;
+
   let brand: Brand | null = null;
   let products: any[] = [];
   try {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(params.slug)}`
+      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(slug)}`
     );
     brand = res.data?.[0] || null;
     if (brand) {

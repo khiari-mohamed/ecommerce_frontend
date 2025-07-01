@@ -10,7 +10,7 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchOrders()
+    fetchOrders({ type: "all" })
       .then((data) => {
         setOrders(Array.isArray(data) ? data : []);
         setLoading(false);

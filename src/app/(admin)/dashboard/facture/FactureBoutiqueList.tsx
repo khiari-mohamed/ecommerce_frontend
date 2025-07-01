@@ -10,7 +10,7 @@ const FactureBoutiqueList = () => {
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
 
   useEffect(() => {
-    fetchOrders().then(setOrders);
+    fetchOrders({ type: "all" }).then(setOrders);
   }, []);
 
   return (

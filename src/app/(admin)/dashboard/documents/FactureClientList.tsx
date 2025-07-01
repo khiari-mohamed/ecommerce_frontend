@@ -16,7 +16,7 @@ const FactureClientList: React.FC = () => {
     setLoading(true);
     setError(null);
     orderService
-      .fetchOrders()
+      .fetchOrders({ type: "all" })
       .then((data) => {
         if (!cancelled) {
           let mapped = (data || []).map((f: any) => ({

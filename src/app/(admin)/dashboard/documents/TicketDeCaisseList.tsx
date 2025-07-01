@@ -12,7 +12,7 @@ const TicketDeCaisseList: React.FC = () => {
   useEffect(() => {
     setLoading(true);
     orderService
-      .fetchOrders()
+      .fetchOrders({ type: "all" })
       .then((data) => setCommandes(data))
       .catch(() => setCommandes([]))
       .finally(() => setLoading(false));

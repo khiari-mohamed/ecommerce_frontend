@@ -9,13 +9,13 @@ import { Review } from "@/types/reviews";
 
 const FALLBACK_IMAGE = "/placeholder.svg";
 
-interface PageProps {
+interface MusculationProductPageProps {
   params: {
     slug: string;
   };
 }
 
-export default async function MusculationProductPage({ params }: PageProps) {
+export default async function MusculationProductPage({ params }: MusculationProductPageProps) {
   const { slug } = params;
 
   let product: MusculationProduct | null = null;

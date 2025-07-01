@@ -21,7 +21,7 @@ export async function generateMetadata(props: BrandPageProps): Promise<Metadata>
   const { params } = props;
   try {
     // Use slug field for lookup
-    const res = await axios.get(`http://localhost:5000/brands?slug=${encodeURIComponent(params.slug)}`);
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(params.slug)}`);
     const brand: Brand | undefined = res.data?.[0];
     if (!brand) return {};
     return {
@@ -42,7 +42,7 @@ export default async function BrandPage(props: BrandPageProps) {
   let products: any[] = [];
   try {
     // Use slug field for lookup
-    const res = await axios.get(`http://localhost:5000/brands?slug=${encodeURIComponent(params.slug)}`);
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(params.slug)}`);
     brand = res.data?.[0] || null;
     if (brand) {
       const prodRes = await axios.get(`/products?brand=${brand.id}`);

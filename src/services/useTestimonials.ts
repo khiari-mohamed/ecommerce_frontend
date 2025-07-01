@@ -31,7 +31,7 @@ export function useTestimonials() {
     async function fetchTestimonials() {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:5000/reviews?publishedOnly=true");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/reviews?publishedOnly=true`);
         if (!res.ok) throw new Error("Network error");
         const data: ReviewApiResponse[] = await res.json();
 

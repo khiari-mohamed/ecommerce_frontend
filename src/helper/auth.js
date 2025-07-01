@@ -48,7 +48,7 @@ export const loginUser = async (email, password) => {
 // It also handles the case where the user already exists
 export const registerUser = async (data) => {
   try {
-    const res = await fetch("http://localhost:5000/users/register", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/users/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

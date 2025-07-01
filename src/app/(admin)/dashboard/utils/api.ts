@@ -1,5 +1,5 @@
 export async function loginAdmin(username: string, password: string) {
-  const res = await fetch("http://localhost:5000/admin/login", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/admin/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
@@ -16,7 +16,7 @@ export async function registerAdmin(username: string, password: string, role?: s
   if (typeof role === "string" && role.trim() !== "") {
     body.role = role;
   }
-  const res = await fetch("http://localhost:5000/admin/register", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/admin/register`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify(body),
@@ -58,7 +58,7 @@ export async function resetPassword(token: string, newPassword: string) {
 export async function logoutAdmin(token: string) {
   // If your backend expects a token in the URL or header, adjust accordingly.
   // Here, we assume a GET request with Bearer token in Authorization header.
-  const res = await fetch("http://localhost:5000/admin/logout/" + token, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/admin/logout/` + token, {
     method: "GET",
     headers: {
       "Authorization": `Bearer ${token}`,

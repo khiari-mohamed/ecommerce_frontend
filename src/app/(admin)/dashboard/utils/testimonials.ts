@@ -2,7 +2,7 @@ import { Testimonial } from "@/types/testimonial";
 
 /** Fetch all testimonials */
 export async function getAllTestimonials(): Promise<Testimonial[]> {
-  const res = await fetch("http://localhost:5000/reviews", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/reviews`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -21,7 +21,7 @@ export async function getAllTestimonials(): Promise<Testimonial[]> {
 
 /** Add a new testimonial */
 export async function addTestimonial(testimonial: Testimonial): Promise<void> {
-  const res = await fetch("http://localhost:5000/reviews", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/reviews`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -42,7 +42,7 @@ export async function addTestimonial(testimonial: Testimonial): Promise<void> {
 
 /** Approve a testimonial */
 export async function approveTestimonial(id: string): Promise<void> {
-  const res = await fetch(`http://localhost:5000/reviews/${id}/approve`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/reviews/${id}/approve`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ publier: 1 }),
@@ -55,7 +55,7 @@ export async function approveTestimonial(id: string): Promise<void> {
 
 /** Delete a testimonial */
 export async function deleteTestimonial(id: string): Promise<void> {
-  const res = await fetch(`http://localhost:5000/reviews/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/reviews/${id}`, {
     method: "DELETE",
   });
   if (!res.ok) {

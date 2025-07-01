@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/blogs';
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/blogs`;
 
 export interface Blog {
   _id: string;

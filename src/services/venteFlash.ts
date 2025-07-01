@@ -1,7 +1,7 @@
 import axios from "axios";
 import { VenteFlash } from "../types/venteFlash";
 
-const API_URL = "http://localhost:5000/vente-flash";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/vente-flash`;
 
 function normalizeVenteFlash(item: any): VenteFlash {
   return {

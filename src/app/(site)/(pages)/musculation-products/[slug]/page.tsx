@@ -9,7 +9,11 @@ import { Review } from "../../../../../types/reviews";
 
 const FALLBACK_IMAGE = "/placeholder.svg";
 
-export default async function MusculationProductPage(props: { params: { slug: string } }) {
+interface MusculationProductPageProps {
+  params: { slug: string };
+}
+
+export default async function MusculationProductPage(props: MusculationProductPageProps) {
   const { params } = props;
   const { slug } = params;
 

@@ -1,42 +1,3 @@
-import axios from "axios";
-
-// Helper to strip HTML tags for meta description
-function stripHtml(html) {
-  if (!html) return "";
-  return html.replace(/<[^>]*>?/gm, "").replace(/\s+/g, " ").trim();
-}
-
-export async function generateMetadata({ params }) {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL!;
-  try {
-    const res = await axios.get(`${API_URL}/products/slug/${params.slug}`);
-    const product = res.data?.product;
-    if (!product) return {};
-    const title = product.designation_fr || product.designation || "Produit";
-    const description = stripHtml(
-      product.meta_description_fr ||
-      product.description_cover ||
-      product.content_seo ||
-      product.description ||
-      ""
-    );
-    return {
-      title,
-      description,
-      openGraph: {
-        title,
-        description,
-        images: [
-          product.cover
-            ? `${API_URL.replace(/\\/g, "/").replace(/\/$/, "")}/${product.cover.replace(/^\/+/, "")}`
-            : undefined,
-        ],
-      },
-    };
-  } catch {
-    return {};
-  }
-}
 
 "use client";
 import { notFound, useParams } from "next/navigation";
@@ -48,6 +9,12 @@ import ReviewList from "@/components/Reviews/ReviewList";
 import { Review } from "@/types/reviews";
 import ProductFlavors from "@/components/product/ProductFlavors";
 import type { Aroma } from "@/types/aroma";
+import axios from "axios";
+// Helper to strip HTML tags for meta description
+function stripHtml(html) {
+  if (!html) return "";
+  return html.replace(/<[^>]*>?/gm, "").replace(/\s+/g, " ").trim();
+}
 
 function getProductImageUrl(product: any, apiUrl: string) {
   if (product?.mainImage?.url) {

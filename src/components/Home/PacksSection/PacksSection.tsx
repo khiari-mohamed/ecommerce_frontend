@@ -49,7 +49,7 @@ const PacksSection: React.FC = () => {
 
   return (
     <section className="packs-section my-12">
-      <div className="container">
+      <div className="container px-2 sm:px-4 lg:px-0">
         <h2 className="text-3xl font-extrabold mb-8 text-center gradient-text">Nos Packs Exclusifs</h2>
         <Swiper
           modules={[Navigation, Pagination]}
@@ -58,15 +58,17 @@ const PacksSection: React.FC = () => {
           navigation
           pagination={{ clickable: true }}
           breakpoints={{
-            640: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
+            0: { slidesPerView: 1 },
+            480: { slidesPerView: 1 },
+            640: { slidesPerView: 2 },
+            900: { slidesPerView: 3 },
+            1200: { slidesPerView: 4 },
           }}
         >
           {packs.map((pack, idx) => (
             <SwiperSlide key={pack._id}>
               <div className="bg-white rounded-xl shadow-xl p-6 flex flex-col items-center transition-transform hover:scale-105 hover:shadow-2xl duration-300">
-                <div className="w-44 h-44 relative mb-4 overflow-hidden rounded-lg border-4 border-orange-100 bg-gray-100">
+                <div className="w-40 h-40 sm:w-48 sm:h-48 lg:w-52 lg:h-52 relative mb-4 overflow-hidden rounded-lg border-4 border-orange-100 bg-gray-100">
                   <Image
                     src={getImageSrc(pack, idx)}
                     alt={pack.alt_cover || pack.designation_fr || `Pack ${idx + 1}`}

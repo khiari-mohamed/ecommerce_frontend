@@ -1,5 +1,6 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
 import { useCallback, useRef } from "react";
 import { useTestimonials } from '../../../services/useTestimonials';
 import Image from "next/image";
@@ -84,8 +85,10 @@ const Testimonials = () => {
             ) : (
               <Swiper
                 ref={sliderRef}
-                slidesPerView={3}
+                slidesPerView={4}
                 spaceBetween={20}
+                autoplay={{ delay: 2500, disableOnInteraction: false }}
+                modules={[Autoplay]}
                 breakpoints={{
                   0: {
                     slidesPerView: 1,
@@ -94,7 +97,7 @@ const Testimonials = () => {
                     slidesPerView: 2,
                   },
                   1200: {
-                    slidesPerView: 3,
+                    slidesPerView: 4,
                   },
                 }}
               >

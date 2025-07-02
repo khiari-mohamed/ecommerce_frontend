@@ -294,7 +294,7 @@ export const setShopData = (products: Product[]) => {
     reviews: product.reviews?.map(review => ({
       _id: review._id || "",
       id: review.id || "",
-      user_id: review.user_id || review.user_id || "",
+      user_id: review.user_id || "",
       product_id: review.product_id || product._id || "",
       stars: typeof review.stars === "number"
         ? review.stars
@@ -304,15 +304,14 @@ export const setShopData = (products: Product[]) => {
             ? review.rating
             : 0,
       comment: review.comment || "",
-      createdAt: review.createdAt || "",
-      updatedAt: review.updatedAt || "",
-      userName: review.userName || review.user_name || "",
       rating: review.rating ?? (typeof review.stars === "number" ? review.stars : Number(review.stars)) ?? 0,
       publier: typeof review.publier === "boolean"
-        ? review.publier.toString()
-        : review.publier ?? "true",
-      created_at: review.created_at ?? review.createdAt ?? "",
-      updated_at: review.updated_at ?? review.updatedAt ?? "",
+        ? String(review.publier)
+        : typeof review.publier === "string"
+          ? review.publier
+          : "true",
+      created_at: review.created_at ?? "",
+      updated_at: review.updated_at ?? "",
     })) || [],
     id: parseInt(product._id) || 0,
     currency: "DT",

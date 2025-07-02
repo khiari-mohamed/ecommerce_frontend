@@ -2,7 +2,6 @@ export interface VenteFlash {
   products(products: any): unknown;
   discount: string;
   endTime: string | number | Date;
-  endTime: any;
   _id: string;
   id?: string;
   designation_fr: string;

@@ -1,11 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../../../dashboard/context/AuthContext";
 import Link from "next/link";
 import "../../../dashboard/styles/dashboard.css";
 
-const DashboardResetPasswordPage = () => {
+// Move the main logic into a separate component
+const DashboardResetPasswordPageContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { resetPassword } = useAuth();
@@ -95,5 +96,11 @@ const DashboardResetPasswordPage = () => {
     </div>
   );
 };
+
+const DashboardResetPasswordPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <DashboardResetPasswordPageContent />
+  </Suspense>
+);
 
 export default DashboardResetPasswordPage;

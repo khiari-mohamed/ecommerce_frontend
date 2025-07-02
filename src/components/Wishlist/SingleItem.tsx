@@ -33,12 +33,12 @@ const SingleItem = ({ item }) => {
   }
 
   return (
-    <div className="flex items-center border-t border-gray-3 py-5 px-10" role="row">
-      <div className="min-w-[83px]">
+    <div className="flex flex-col sm:flex-row items-center border-t border-gray-3 py-4 sm:py-5 px-2 sm:px-4 md:px-8" role="row">
+      <div className="w-12 min-w-[48px] sm:min-w-[83px]">
         <button
           onClick={handleRemoveFromWishlist}
           aria-label="Supprimer le produit de la liste de souhaits"
-          className="flex items-center justify-center rounded-lg max-w-[38px] w-full h-9.5 bg-gray-2 border border-gray-3 ease-out duration-200 hover:bg-red-light-6 hover:border-red-light-4 hover:text-red"
+          className="flex items-center justify-center rounded-lg max-w-[32px] sm:max-w-[38px] w-full h-8 sm:h-9.5 bg-gray-2 border border-gray-3 ease-out duration-200 hover:bg-red-light-6 hover:border-red-light-4 hover:text-red"
         >
           <svg
             className="fill-current"
@@ -63,10 +63,10 @@ const SingleItem = ({ item }) => {
         </button>
       </div>
 
-      <div className="min-w-[387px]">
+      <div className="flex-1 min-w-[180px] sm:min-w-[250px] md:min-w-[320px] lg:min-w-[387px]">
         <div className="flex items-center justify-between gap-5">
-          <div className="w-full flex items-center gap-5.5">
-            <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[80px] w-full h-17.5">
+          <div className="w-full flex items-center gap-3 sm:gap-5.5">
+            <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[60px] sm:max-w-[80px] w-full h-14 sm:h-17.5">
               <Image
   src={
     item?.imgs?.thumbnails?.[0] ||
@@ -89,13 +89,13 @@ const SingleItem = ({ item }) => {
         </div>
       </div>
 
-      <div className="min-w-[205px]">
+      <div className="min-w-[100px] sm:min-w-[150px] md:min-w-[180px] lg:min-w-[205px]">
         <p className="text-dark">
           {Number(item.discountedPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
         </p>
       </div>
 
-      <div className="min-w-[265px]">
+      <div className="min-w-[120px] sm:min-w-[180px] md:min-w-[220px] lg:min-w-[265px]">
         <div className="flex items-center gap-1.5">
           <svg
             width="20"
@@ -128,7 +128,7 @@ const SingleItem = ({ item }) => {
         </div>
       </div>
 
-      <div className="min-w-[150px] flex justify-end">
+      <div className="min-w-[80px] sm:min-w-[120px] md:min-w-[150px] flex justify-end">
         <button
           onClick={handleAddToCart}
           className="inline-flex text-dark hover:text-white bg-gray-1 border border-gray-3 py-2.5 px-6 rounded-md ease-out duration-200 hover:bg-blue hover:border-gray-3 disabled:opacity-50 disabled:cursor-not-allowed"

@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import DashboardSidebar from "./layout/DashboardSidebar";
 import DashboardHeader from "./layout/DashboardHeader";
 import { AuthProvider } from "./context/AuthContext";
-import Script from "next/script"; 
+import Script from "next/script";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // For overlay click on mobile
+  const handleSidebarClose = () => setSidebarOpen(false);
+  const handleSidebarToggle = () => setSidebarOpen((v) => !v);
+
   return (
     <AuthProvider>
       {/* Google Analytics for dashboard */}
@@ -25,12 +31,24 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         }}
       />
       <div className="dashboard-layout">
-        <DashboardSidebar />
+        {/* Sidebar: always visible on desktop, toggled on mobile */}
+        <DashboardSidebar open={sidebarOpen} onClose={handleSidebarClose} />
+        {/* Overlay for mobile sidebar */}
+        {sidebarOpen && (
+          <div
+            className="dashboard-sidebar-overlay md:hidden"
+            onClick={handleSidebarClose}
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.35)",
+              zIndex: 40,
+            }}
+          />
+        )}
         <div className="dashboard-layout-main">
-          <DashboardHeader />
-          <main className="dashboard-layout-content">
-            {children}
-          </main>
+          <DashboardHeader onSidebarToggle={handleSidebarToggle} />
+          <main className="dashboard-layout-content">{children}</main>
         </div>
       </div>
     </AuthProvider>

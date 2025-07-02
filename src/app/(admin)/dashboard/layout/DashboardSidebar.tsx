@@ -62,17 +62,26 @@ const authLinks = [
   { name: "Reset Password", icon: <Unlock size={20} />, href: "/dashboard/auth/reset-password" },
 ];
 
-export default function DashboardSidebar() {
+export default function DashboardSidebar({ open, onClose }: { open?: boolean; onClose?: () => void }) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
 
   // Height of header (in px) - adjust if your header height changes!
   const HEADER_HEIGHT = 64;
 
+  // Mobile: slide in/out
+  const sidebarClass =
+    "dashboard-sidebar" +
+    (collapsed ? " dashboard-sidebar-collapsed" : "") +
+    (open ? " dashboard-sidebar-mobile-open" : " dashboard-sidebar-mobile-closed");
+
   return (
     <aside
-      className={`dashboard-sidebar${collapsed ? " dashboard-sidebar-collapsed" : ""}`}
-      style={{ top: HEADER_HEIGHT }}
+      className={sidebarClass}
+      style={{ top: HEADER_HEIGHT, zIndex: 50, transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1), width 0.3s cubic-bezier(0.4,0,0.2,1)" }}
+      tabIndex={-1}
+      aria-modal={open ? "true" : undefined}
+      role="dialog"
     >
       {/* Logo & Collapse Button */}
       <div className="dashboard-sidebar-header">
@@ -96,8 +105,16 @@ export default function DashboardSidebar() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5" />
           </svg>
         </button>
+        {/* Mobile close button */}
+        <button
+          className="dashboard-sidebar-mobile-close md:hidden"
+          aria-label="Close sidebar"
+          style={{ marginLeft: 8 }}
+          onClick={onClose}
+        >
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
       </div>
-
       {/* Navigation */}
       <nav className="dashboard-sidebar-nav">
         <ul className="dashboard-sidebar-nav-list">
@@ -124,17 +141,14 @@ export default function DashboardSidebar() {
               </li>
             );
           })}
-
           {/* Divider */}
           <li className="dashboard-sidebar-divider" style={{ margin: "1.5rem 0", borderTop: "1px solid #e5e7eb" }} />
-
           {/* Auth Section Label */}
           {!collapsed && (
             <li className="dashboard-sidebar-section-label" style={{ padding: "0.5rem 1.25rem", color: "#818cf8", fontWeight: 600, fontSize: "0.95rem" }}>
               Auth
             </li>
           )}
-
           {/* Auth Links */}
           {authLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -157,14 +171,13 @@ export default function DashboardSidebar() {
           })}
         </ul>
       </nav>
-
       {/* Footer (Logout or User) */}
       <div className="dashboard-sidebar-footer">
-  <Link href="/dashboard/auth/logout" className="dashboard-sidebar-logout">
-    <LogOut size={20} />
-    {!collapsed && <span>Logout</span>}
-  </Link>
-</div>
+        <Link href="/dashboard/auth/logout" className="dashboard-sidebar-logout">
+          <LogOut size={20} />
+          {!collapsed && <span>Logout</span>}
+        </Link>
+      </div>
     </aside>
   );
 }

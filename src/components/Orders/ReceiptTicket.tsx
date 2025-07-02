@@ -13,7 +13,7 @@ const ReceiptTicket: React.FC<ReceiptTicketProps> = ({ order }) => {
     const win = window.open('', '', 'height=600,width=400');
     if (win) {
       win.document.write('<html><head><title>Ticket de caisse</title>');
-      win.document.write('<style>body{font-family:monospace;} .receipt-ticket{width:320px;margin:0 auto;} .receipt-header{text-align:center;} .receipt-items{width:100%;border-collapse:collapse;} .receipt-items th,.receipt-items td{border-bottom:1px dashed #ccc;padding:4px 0;text-align:left;} .receipt-total{font-weight:bold;font-size:1.1em;} .receipt-footer{text-align:center;margin-top:1em;font-size:0.95em;color:#888;}</style>');
+      win.document.write('<style>body{font-family:monospace;} .receipt-ticket{width:320px;max-width:100vw;margin:0 auto;} @media (max-width:400px){.receipt-ticket{width:100% !important;}} .receipt-header{text-align:center;} .receipt-items{width:100%;border-collapse:collapse;} .receipt-items th,.receipt-items td{border-bottom:1px dashed #ccc;padding:4px 0;text-align:left;} .receipt-total{font-weight:bold;font-size:1.1em;} .receipt-footer{text-align:center;margin-top:1em;font-size:0.95em;color:#888;}</style>');
       win.document.write('</head><body>');
       win.document.write(printContents);
       win.document.write('</body></html>');
@@ -32,7 +32,7 @@ const ReceiptTicket: React.FC<ReceiptTicketProps> = ({ order }) => {
 
   return (
     <div>
-      <div ref={printRef} className="receipt-ticket" style={{ background: '#fff', padding: 16, borderRadius: 8, boxShadow: '0 2px 8px #eee', width: 320, margin: '0 auto' }}>
+      <div ref={printRef} className="receipt-ticket" style={{ background: '#fff', padding: 16, borderRadius: 8, boxShadow: '0 2px 8px #eee', width: '100%', maxWidth: 320, margin: '0 auto' }}>
         <div className="receipt-header">
           <h2>Ticket de caisse</h2>
           <div style={{ fontSize: '0.95em', marginBottom: 8 }}>Commande #{order?._id?.slice(-8) || 'N/A'}</div>

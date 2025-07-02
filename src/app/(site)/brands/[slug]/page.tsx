@@ -80,7 +80,7 @@ export default async function BrandPage({
           alt={brand.designation_fr}
           width={128}
           height={128}
-          className="w-32 h-32 object-contain mb-4"
+          className="w-24 h-24 md:w-32 md:h-32 object-contain mb-4"
         />
         <h1 className="text-3xl font-bold mb-2">
           <Link href={`/brands/${encodeURIComponent(brand.slug)}`}>

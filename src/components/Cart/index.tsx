@@ -18,35 +18,35 @@ const Cart = () => {
       </section>
       {/* <!-- ===== Breadcrumb Section End ===== --> */}
       {cartItems.length > 0 ? (
-        <section className="overflow-hidden py-20 bg-gray-2">
-          <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-            <div className="flex flex-wrap items-center justify-between gap-5 mb-7.5">
-              <h2 className="font-medium text-dark text-2xl">votre panier</h2>
+        <section className="overflow-hidden py-10 sm:py-16 md:py-20 bg-gray-2">
+          <div className="max-w-full md:max-w-3xl lg:max-w-5xl xl:max-w-[1170px] w-full mx-auto px-2 sm:px-4 md:px-8 xl:px-0">
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-5 mb-7.5">
+              <h2 className="font-medium text-dark text-xl sm:text-2xl">votre panier</h2>
               <button className="text-blue">Vider le panier</button>
             </div>
 
             <div className="bg-white rounded-[10px] shadow-1">
               <div className="w-full overflow-x-auto">
-                <div className="min-w-[1170px]">
+                <div className="min-w-full">
                   {/* <!-- table header --> */}
-                  <div className="flex items-center py-5.5 px-7.5">
-                    <div className="min-w-[400px]">
+                  <div className="flex flex-wrap items-center py-4 px-2 sm:px-4 md:px-7.5 text-xs sm:text-sm md:text-base">
+                    <div className="w-2/5 min-w-[120px] sm:min-w-[200px] md:min-w-[300px] lg:min-w-[400px]">
                       <p className="text-dark">Produit</p>
                     </div>
 
-                    <div className="min-w-[180px]">
+                    <div className="w-1/5 min-w-[80px] sm:min-w-[120px] md:min-w-[150px] lg:min-w-[180px]">
                       <p className="text-dark">Prix</p>
                     </div>
 
-                    <div className="min-w-[275px]">
+                    <div className="w-1/5 min-w-[100px] sm:min-w-[150px] md:min-w-[200px] lg:min-w-[275px]">
                       <p className="text-dark">Quantité</p>
                     </div>
 
-                    <div className="min-w-[200px]">
+                    <div className="w-1/5 min-w-[80px] sm:min-w-[120px] md:min-w-[150px] lg:min-w-[200px]">
                       <p className="text-dark">Sous-total</p>
                     </div>
 
-                    <div className="min-w-[50px]">
+                    <div className="w-10 min-w-[40px] sm:min-w-[50px] text-right">
                       <p className="text-dark text-right">Action</p>
                     </div>
                   </div>

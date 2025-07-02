@@ -18,10 +18,10 @@ const handleClearWishlist = () => {
   return (
     <>
       <Breadcrumb title={"Liste de souhaits"} pages={["Liste de souhaits"]} />
-      <section className="overflow-hidden py-20 bg-gray-2">
-        <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-          <div className="flex flex-wrap items-center justify-between gap-5 mb-7.5">
-            <h2 className="font-medium text-dark text-2xl">Votre liste de souhaits</h2>
+      <section className="overflow-hidden py-10 sm:py-16 md:py-20 bg-gray-2">
+        <div className="max-w-full md:max-w-3xl lg:max-w-5xl xl:max-w-[1170px] w-full mx-auto px-2 sm:px-4 md:px-8 xl:px-0">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-5 mb-7.5">
+            <h2 className="font-medium text-dark text-xl sm:text-2xl">Votre liste de souhaits</h2>
             {wishlistItems.length > 0 && (
               <button
                 className="text-blue"
@@ -34,20 +34,20 @@ const handleClearWishlist = () => {
           </div>
           <div className="bg-white rounded-[10px] shadow-1">
             <div className="w-full overflow-x-auto">
-              <div className="min-w-[1170px]">
+              <div className="min-w-full">
                 {/* Table header */}
-                <div className="flex items-center py-5.5 px-10">
-                  <div className="min-w-[83px]"></div>
-                  <div className="min-w-[387px]">
+                <div className="flex flex-col sm:flex-row items-center py-4 sm:py-5.5 px-2 sm:px-4 md:px-8">
+                  <div className="w-12 min-w-[48px] sm:min-w-[83px]"></div>
+                  <div className="flex-1 min-w-[120px] sm:min-w-[180px] md:min-w-[250px] lg:min-w-[387px]">
                     <p className="text-dark">Produit</p>
                   </div>
-                  <div className="min-w-[205px]">
+                  <div className="min-w-[100px] sm:min-w-[150px] md:min-w-[180px] lg:min-w-[205px]">
                     <p className="text-dark">Prix unitaire</p>
                   </div>
-                  <div className="min-w-[265px]">
+                  <div className="min-w-[120px] sm:min-w-[180px] md:min-w-[220px] lg:min-w-[265px]">
                     <p className="text-dark">Statut du stock</p>
                   </div>
-                  <div className="min-w-[150px]">
+                  <div className="min-w-[80px] sm:min-w-[120px] md:min-w-[150px] text-right">
                     <p className="text-dark text-right">Action</p>
                   </div>
                 </div>

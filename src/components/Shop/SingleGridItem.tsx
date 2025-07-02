@@ -146,7 +146,7 @@ const SingleGridItem = ({ item }: { item: Product }) => {
   alt={item.designation || item.title || "Product image"}
   width={250}
   height={250}
-  className="object-contain h-full"
+  className="object-contain w-full max-w-full h-auto"
   priority={false}
 />
 

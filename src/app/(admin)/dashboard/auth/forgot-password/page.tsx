@@ -28,22 +28,20 @@ const DashboardForgotPasswordPage = () => {
   };
 
   return (
-    <div className="auth-bg flex min-h-screen items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-100 p-4">
       <form
         onSubmit={handleSubmit}
-        className="auth-card"
+        className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 sm:p-8 flex flex-col gap-4"
       >
-        <h2 className="auth-title">Forgot Password</h2>
-        {error && <div className="auth-error">{error}</div>}
-        {success && <div className="auth-success">{success}</div>}
-        <div className="auth-field">
-          <label htmlFor="email" className="auth-label">
-            Email
-          </label>
+        <h2 className="text-2xl font-bold text-center text-purple-700 mb-2">Forgot Password</h2>
+        {error && <div className="text-red-600 text-sm text-center mb-2">{error}</div>}
+        {success && <div className="text-green-600 text-sm text-center mb-2">{success}</div>}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="email" className="text-sm font-medium text-gray-700">Email</label>
           <input
             id="email"
             type="email"
-            className="auth-input"
+            className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 text-base"
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
@@ -52,13 +50,13 @@ const DashboardForgotPasswordPage = () => {
         </div>
         <button
           type="submit"
-          className="auth-button"
+          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded transition-colors duration-200 disabled:opacity-60"
           disabled={loading}
         >
           {loading ? "Sending..." : "Send Reset Link"}
         </button>
-        <div className="auth-links">
-          <Link href="/dashboard/auth/login" className="auth-link">
+        <div className="flex justify-center mt-2">
+          <Link href="/dashboard/auth/login" className="text-purple-600 hover:underline text-sm">
             Back to Login
           </Link>
         </div>

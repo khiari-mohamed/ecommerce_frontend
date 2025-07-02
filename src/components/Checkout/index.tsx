@@ -138,14 +138,14 @@ const Checkout = () => {
   return (
     <>
       <Breadcrumb title={"Paiement"} pages={["paiement"]} />
-      <section className="overflow-hidden py-20 bg-gray-2">
-        <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
+      <section className="overflow-hidden py-10 sm:py-16 md:py-20 bg-gray-2">
+        <div className="max-w-full md:max-w-3xl lg:max-w-5xl xl:max-w-[1170px] w-full mx-auto px-2 sm:px-4 md:px-8 xl:px-0">
           {/* Login is now OUTSIDE the main form */}
           <Login />
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-11">
               {/* <!-- Colonne gauche --> */}
-              <div className="lg:max-w-[670px] w-full">
+              <div className="w-full lg:max-w-[670px]">
                 <Billing value={billingInfo} onChange={setBillingInfo} />
                 <Shipping value={shippingInfo} onChange={setShippingInfo} />
                 <div className="bg-white shadow-1 rounded-[10px] p-4 sm:p-8.5 mt-7.5">
@@ -166,15 +166,15 @@ const Checkout = () => {
                 </div>
               </div>
               {/* <!-- Colonne droite --> */}
-              <div className="max-w-[455px] w-full">
+              <div className="w-full lg:max-w-[455px]">
                 <div className="bg-white shadow-1 rounded-[10px]">
                   <div className="border-b border-gray-3 py-5 px-4 sm:px-8.5">
-                    <h3 className="font-medium text-xl text-dark">
+                    <h3 className="font-medium text-lg sm:text-xl text-dark">
                       Votre commande
                     </h3>
                   </div>
                   <div className="pt-2.5 pb-8.5 px-4 sm:px-8.5">
-                    <div className="flex items-center justify-between py-5 border-b border-gray-3">
+                    <div className="flex items-center justify-between py-5 border-b border-gray-3 text-xs sm:text-base">
                       <div>
                         <h4 className="font-medium text-dark">Produit</h4>
                       </div>
@@ -187,7 +187,7 @@ const Checkout = () => {
                     {cart.map((item, idx) => (
                       <div
                         key={typeof item.id === "number" && Number.isFinite(item.id) ? `cart-item-${item.id}` : `cart-item-${idx}`}
-                        className="flex items-center justify-between py-5 border-b border-gray-3"
+                        className="flex items-center justify-between py-5 border-b border-gray-3 text-xs sm:text-base"
                       >
                         <div>
                           <p className="text-dark">{item.title}</p>
@@ -199,7 +199,7 @@ const Checkout = () => {
                         </div>
                       </div>
                     ))}
-                    <div className="flex items-center justify-between py-5 border-b border-gray-3">
+                    <div className="flex items-center justify-between py-5 border-b border-gray-3 text-xs sm:text-base">
                       <div>
                         <p className="text-dark">Frais de livraison</p>
                       </div>
@@ -209,7 +209,7 @@ const Checkout = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between pt-5">
+                    <div className="flex items-center justify-between pt-5 text-xs sm:text-base">
                       <div>
                         <p className="font-medium text-lg text-dark">Total</p>
                       </div>

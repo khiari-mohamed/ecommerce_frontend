@@ -170,19 +170,19 @@ const OrderInvoice = ({ order, printRef }) => {
         </div>
         {/* Totals: right side */}
         <div className="flex flex-col items-end space-y-1 mb-6 text-[12px]">
-          <div className="flex justify-between w-56">
+          <div className="flex justify-between w-full md:w-56">
             <span className="font-medium">Total HT :</span>
             <span>{totalHT.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
           </div>
-          <div className="flex justify-between w-56">
+          <div className="flex justify-between w-full md:w-56">
             <span className="font-medium">TVA (19%) :</span>
             <span>{totalTVA.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
           </div>
-          <div className="flex justify-between w-56">
+          <div className="flex justify-between w-full md:w-56">
             <span className="font-medium">TIMBRE :</span>
             <span>{totalTimbre.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
           </div>
-          <div className="flex justify-between w-56 pt-2" style={{ borderTop: `2px solid ${ORANGE}` }}>
+          <div className="flex justify-between w-full md:w-56 pt-2" style={{ borderTop: `2px solid ${ORANGE}` }}>
             <span className="font-bold">Total TTC :</span>
             <span className="font-bold">
               {totalTTC.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}

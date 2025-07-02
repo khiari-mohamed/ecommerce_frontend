@@ -186,7 +186,7 @@ export default function ProductDetailPage() {
   priority
   />
   ) : (
-  <div className="w-[400px] h-[400px] flex items-center justify-center bg-gray-100 text-gray-400 border rounded-lg">
+  <div className="w-full h-40 md:w-[400px] md:h-[400px] flex items-center justify-center bg-gray-100 text-gray-400 border rounded-lg">
   Pas dimage
   </div>
   )}

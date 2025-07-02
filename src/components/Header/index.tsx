@@ -41,6 +41,7 @@ const Header = () => {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
+  const [showBrandsDropdown, setShowBrandsDropdown] = useState(false);
   const { openCartModal } = useCartModalContext();
 
   const product = useAppSelector((state) => state.cartReducer.items);
@@ -284,7 +285,7 @@ const Header = () => {
               </svg>
               <div>
                 <span className="block text-2xs text-dark-4 uppercase">
-                  24/7 SUPPORT
+                  Assistance 24/7
                 </span>
           <p className="font-medium text-custom-sm text-dark whitespace-nowrap">
   73 200 169
@@ -325,7 +326,7 @@ const Header = () => {
                       compte
                     </span>
                     <p className="font-medium text-custom-sm text-dark">
-                      SignIn
+                      Se connecter
                     </p>
                   </div>
                 </Link>
@@ -373,7 +374,7 @@ const Header = () => {
                   </span>
                   <div>
                     <span className="block text-2xs text-dark-4 uppercase">
-                      cart
+                      Panier
                     </span>
                     <p className="font-medium text-custom-sm text-dark">
   {Number(totalPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
@@ -492,7 +493,11 @@ const Header = () => {
                     ))
                   )}
                   {/* Brands Dropdown Nav */}
-                  <li className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full">
+                  <li
+                    className="relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full"
+                    onMouseEnter={() => setShowBrandsDropdown(true)}
+                    onMouseLeave={() => setShowBrandsDropdown(false)}
+                  >
                     <span
                       className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center gap-1.5 capitalize cursor-pointer ${stickyMenu ? "xl:py-4" : "xl:py-6"}`}
                     >
@@ -501,30 +506,35 @@ const Header = () => {
                       <svg className="ml-1 w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     </span>
                     {/* Dropdown grid */}
-                    <div className="dropdown absolute left-0 top-full mt-2 bg-white shadow-2xl rounded-xl min-w-[320px] z-50 hidden group-hover:grid grid-cols-2 md:grid-cols-3 gap-4 p-4 border border-gray-3 animate-fade-in">
-                      {loadingBrands ? (
-                        <div className="col-span-full text-center py-4 text-gray-400">Chargement...</div>
-                      ) : brands.length === 0 ? (
-                        <div className="col-span-full text-center py-4 text-gray-400">Aucune marque</div>
-                      ) : (
-                        brands.map((brand) => (
-                          <Link
-                            key={brand._id}
-                            href={`/brands/${brand.slug}`} // <-- FIXED: use slug, not designation_fr
-                            className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-blue/10 transition group"
-                          >
-                            <Image
-                              src={`/images/brand/${brand.logo}`}
-                              alt={brand.designation_fr}
-                              width={60}
-                              height={60}
-                              className="object-contain rounded-full shadow-md border border-gray-200 bg-white grayscale group-hover:grayscale-0 group-hover:scale-110 transition"
-                            />
-                            <span className="text-xs font-semibold text-center text-dark group-hover:text-blue truncate w-20">{brand.designation_fr}</span>
-                          </Link>
-                        ))
-                      )}
-                    </div>
+                    {showBrandsDropdown && (
+                      <div className="dropdown absolute left-0 top-full mt-2 bg-white shadow-2xl rounded-xl min-w-[320px] z-50 grid grid-cols-2 md:grid-cols-3 gap-4 p-4 border border-gray-3 animate-fade-in"
+                        onMouseEnter={() => setShowBrandsDropdown(true)}
+                        onMouseLeave={() => setShowBrandsDropdown(false)}
+                      >
+                        {loadingBrands ? (
+                          <div className="col-span-full text-center py-4 text-gray-400">Chargement...</div>
+                        ) : brands.length === 0 ? (
+                          <div className="col-span-full text-center py-4 text-gray-400">Aucune marque</div>
+                        ) : (
+                          brands.map((brand) => (
+                            <Link
+                              key={brand._id}
+                              href={`/brands/${brand.slug}`}
+                              className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-blue/10 transition group"
+                            >
+                              <Image
+                                src={`/images/brand/${brand.logo}`}
+                                alt={brand.designation_fr}
+                                width={60}
+                                height={60}
+                                className="object-contain rounded-full shadow-md border border-gray-200 bg-white grayscale group-hover:grayscale-0 group-hover:scale-110 transition"
+                              />
+                              <span className="text-xs font-semibold text-center text-dark group-hover:text-blue truncate w-20">{brand.designation_fr}</span>
+                            </Link>
+                          ))
+                        )}
+                      </div>
+                    )}
                   </li>
                   {/* Other static menus from menuData */}
                   {menuData.map((menuItem, i) =>
@@ -584,7 +594,7 @@ const Header = () => {
                         fill=""
                       />
                     </svg>
-                    Recently Viewed
+                    Vu récemment
                   </a>
                 </li>
 
@@ -606,7 +616,7 @@ const Header = () => {
                         fill=""
                       />
                     </svg>
-                    Wishlist
+                    Liste de souhaits
                   </Link>
                 </li>
               </ul>

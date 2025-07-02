@@ -188,7 +188,8 @@ const ProductDetails = () => {
                     alt={product?.title || ""}
                     width={500}
                     height={500}
-                    className="object-cover w-full h-[400px] rounded"
+                    className="object-cover w-full max-w-full h-auto rounded"
+                    style={{ maxHeight: '400px' }}
                   />
                 </div>
               </div>
@@ -201,7 +202,7 @@ const ProductDetails = () => {
                       setPreviewImg(key); // Only update preview index
                     }}
                     key={key}
-                    className={`flex items-center justify-center w-15 sm:w-25 h-15 sm:h-25 overflow-hidden rounded-lg bg-gray-2 shadow-1 ease-out duration-200 border-2 hover:border-blue ${
+                    className={`flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 overflow-hidden rounded-lg bg-gray-2 shadow-1 ease-out duration-200 border-2 hover:border-blue ${
                       key === previewImg ? "border-blue" : "border-transparent"
                     }`}
                     tabIndex={0}
@@ -212,13 +213,13 @@ const ProductDetails = () => {
                       height={50}
                       src={getValidImageSrc(item)}
                       alt={`thumbnail ${key + 1}`}
-                      className="object-cover w-full h-full rounded"
+                      className="object-cover w-full max-w-full h-auto rounded"
                     />
                   </button>
                 ))}
               </div>
             </div>
-            <div className="max-w-[539px] w-full">
+            <div className="w-full max-w-xl">
               <div className="flex items-center justify-between mb-3">
               <h2 className="font-semibold text-xl sm:text-2xl xl:text-custom-3 text-dark">
               {product?.title || ""}
@@ -593,7 +594,7 @@ const ProductDetails = () => {
           {/* Description */}
           <div>
             <div className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${activeTab === "tabOne" ? "flex" : "hidden"}`}>
-              <div className="max-w-[670px] w-full">
+              <div className="w-full max-w-2xl">
                 <h2 className="font-medium text-2xl text-dark mb-7">Caractéristiques:</h2>
                 <p className="mb-6" dangerouslySetInnerHTML={{ __html: product?.description || "Aucune description disponible." }} />
                 {product?.features?.length ? (
@@ -604,7 +605,7 @@ const ProductDetails = () => {
                 </ul>
                 ) : null}
                 </div>
-                <div className="max-w-[447px] w-full">
+                <div className="w-full max-w-lg">
                 <h2 className="font-medium text-2xl text-dark mb-7">Marque et détails :</h2>
                 <p className="mb-6">{product?.brand || "voir l'étiquette pour la marque."}</p>
                 {product?.smallDescription ? (
@@ -638,7 +639,7 @@ const ProductDetails = () => {
                     {/* Reviews */}
           <div>
             <div className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${activeTab === "tabThree" ? "flex" : "hidden"}`}>
-              <div className="max-w-[570px] w-full">
+              <div className="w-full max-w-xl">
                 <h2 className="font-medium text-2xl text-dark mb-9">{reviewsCount} Avis {reviewsCount !== 1 ? "s" : ""} sur ce produit</h2>
                 <div className="flex flex-col gap-6">
                   {reviewsCount > 0 ? (
@@ -646,11 +647,11 @@ const ProductDetails = () => {
                       <div className="rounded-xl bg-white shadow-1 p-4 sm:p-6" key={idx}>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
-                            <div className="w-12.5 h-12.5 rounded-full overflow-hidden">
+                            <div className="w-12 h-12 rounded-full overflow-hidden">
                               <Image
                                 src={review.userAvatar || "/images/users/user-01.jpg"}
                                 alt="author"
-                                className="w-12.5 h-12.5 rounded-full overflow-hidden"
+                                className="w-full h-auto rounded-full overflow-hidden"
                                 width={50}
                                 height={50}
                               />
@@ -676,7 +677,7 @@ const ProductDetails = () => {
                   )}
                 </div>
               </div>
-              <div className="max-w-[550px] w-full">
+              <div className="w-full max-w-xl">
                 <form>
                   <h2 className="font-medium text-2xl text-dark mb-3.5">Ajouter un avis</h2>
                   <p className="mb-6">Votre adresse e-mail ne sera pas publiée. Les champs obligatoires sont indiqués. *</p>

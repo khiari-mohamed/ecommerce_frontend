@@ -115,7 +115,7 @@ export default function VenteFlashSlugPage({
                   : FALLBACK_IMAGE
               }
               alt={flashSale.designation_fr}
-              className="w-full max-w-xs h-64 object-contain rounded-lg shadow-md bg-white"
+              className="w-full max-w-xs h-40 md:h-64 object-contain rounded-lg shadow-md bg-white"
               onError={(e: any) => {
                 e.currentTarget.src = FALLBACK_IMAGE;
               }}

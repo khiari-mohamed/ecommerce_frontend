@@ -42,14 +42,14 @@ const AllProductsClient = () => {
   }, [brand]);
 
   return (
-    <div className="max-w-[1170px] mx-auto px-4 py-10">
-      <h1 className="text-2xl font-bold mb-6">
+    <div className="max-w-full md:max-w-3xl lg:max-w-5xl xl:max-w-[1170px] mx-auto px-2 sm:px-4 md:px-8 xl:px-0 py-6 sm:py-8 md:py-10">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
         {brand ? `Produits de la marque: ${brand}` : "Tous les produits"}
       </h1>
       {loading && <div>Chargement...</div>}
       {error && <div style={{ color: "red" }}>{error}</div>}
       {products.length === 0 && !loading && <div>Aucun produit trouvé.</div>}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {products.map(product => (
           <SingleGridItem item={product} key={product._id} />
         ))}

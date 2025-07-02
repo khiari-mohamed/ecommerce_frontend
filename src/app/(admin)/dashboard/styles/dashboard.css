@@ -1,6 +1,78 @@
 
 /* Only put custom styles here! */
 
+/* --- Responsive: Reviews Table --- */
+.dashboard-reviews-section {
+  width: 100%;
+  padding: 2rem 0;
+}
+.dashboard-reviews-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px 0 rgba(124, 58, 237, 0.08);
+  padding: 1.5rem 1rem;
+  margin-bottom: 2rem;
+}
+.dashboard-reviews-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+  background: #fff;
+}
+.dashboard-reviews-table th, .dashboard-reviews-table td {
+  padding: 0.7rem 0.7rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 1rem;
+  vertical-align: middle;
+}
+.dashboard-reviews-table th {
+  background: #f3f4f6;
+  font-weight: 700;
+  color: #7c3aed;
+}
+.dashboard-reviews-loader {
+  text-align: center;
+  color: #a1a1aa;
+  font-size: 1.1rem;
+  padding: 2rem 0;
+}
+.dashboard-reviews-empty {
+  color: #a1a1aa;
+  font-size: 0.98rem;
+}
+@media (max-width: 900px) {
+  .dashboard-reviews-table-wrapper {
+    padding: 1rem 0.5rem;
+  }
+  .dashboard-reviews-table {
+    min-width: 480px;
+    font-size: 0.98rem;
+  }
+  .dashboard-reviews-table th, .dashboard-reviews-table td {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.98rem;
+  }
+}
+@media (max-width: 600px) {
+  .dashboard-reviews-section {
+    padding: 0.5rem 0.1rem;
+  }
+  .dashboard-reviews-table-wrapper {
+    padding: 0.5rem 0.1rem;
+  }
+  .dashboard-reviews-table {
+    min-width: 320px;
+    font-size: 0.95rem;
+  }
+  .dashboard-reviews-table th, .dashboard-reviews-table td {
+    padding: 0.3rem 0.2rem;
+    font-size: 0.95rem;
+  }
+}
+
 /* --- Responsive: Clients Table --- */
 .tableContainer {
   width: 100%;

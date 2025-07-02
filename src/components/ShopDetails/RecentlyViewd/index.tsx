@@ -57,7 +57,7 @@ const RecentlyViewdItems = () => {
                 Categories
               </span>
               <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
-              Browse by Category
+              Parcourir par catégorie
               </h2>
             </div>
 

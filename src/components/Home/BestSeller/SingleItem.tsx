@@ -150,7 +150,7 @@ const SingleItem = ({ item }: { item: Product }) => {
               e.preventDefault();
               handleAddToCart();
             }}
-            aria-label="button for add to cart"
+            aria-label="button for Ajouter au panier"
             id="addCartOne"
             className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-white hover:bg-blue"
           >

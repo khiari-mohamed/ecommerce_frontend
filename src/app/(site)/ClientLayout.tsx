@@ -14,7 +14,9 @@ import PreviewSliderModal from "@/components/Common/PreviewSlider";
 import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
 import { AuthProvider } from "@/context/authContext";
+import { usePathname } from "next/navigation";
 
+const isHomePage = usePathname() === "/";
 
 export default function ClientLayout({
   children,
@@ -39,7 +41,7 @@ export default function ClientLayout({
                   <ModalProvider>
                     <PreviewSliderProvider>
                       <Header />
-                      <div style={{ paddingTop: '96px' }}>
+                    <div style={{ paddingTop: isHomePage ? 0 : "130px" }}>
                         {children}
                       </div>
                       <QuickViewModal />

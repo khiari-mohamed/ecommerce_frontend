@@ -42,6 +42,8 @@ const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
   const [showBrandsDropdown, setShowBrandsDropdown] = useState(false);
+  const [hideTopHeader, setHideTopHeader] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const { openCartModal } = useCartModalContext();
   // For mobile close button
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 1280;
@@ -77,13 +79,21 @@ const Header = () => {
     openCartModal();
   };
 
-  // Sticky menu handler
+  // Sticky menu handler with hide on scroll down, show on scroll up
   const handleStickyMenu = () => {
-    if (window.scrollY >= 80) {
+    const currentScrollY = window.scrollY;
+    if (currentScrollY >= 80) {
       setStickyMenu(true);
+      if (currentScrollY > lastScrollY && currentScrollY > 120) {
+        setHideTopHeader(true); // hide on scroll down
+      } else {
+        setHideTopHeader(false); // show on scroll up
+      }
     } else {
       setStickyMenu(false);
+      setHideTopHeader(false);
     }
+    setLastScrollY(currentScrollY);
     // Close mobile nav and dropdowns on scroll (mobile and desktop)
     setNavigationOpen(false);
     setShowBrandsDropdown(false);
@@ -95,7 +105,8 @@ const Header = () => {
     return () => {
       window.removeEventListener("scroll", handleStickyMenu);
     };
-  }, []);
+    // eslint-disable-next-line
+  }, [lastScrollY]);
 
   // Prevent body scroll when mobile nav is open
   useEffect(() => {
@@ -175,14 +186,13 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed left-0 top-0 w-full z-9999 bg-white transition-all ease-in-out duration-300 ${
-        stickyMenu && "shadow"
-      }`}
+      className="fixed left-0 top-0 w-full z-[9999] bg-white transition-all ease-in-out duration-300"
+      style={{ pointerEvents: navigationOpen ? 'auto' : undefined }}
     >
       {/* Top header: logo, search, login, cart, etc. */}
       <div
-        className={`max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 transition-transform duration-300 ease-in-out ${stickyMenu ? "-translate-y-full" : "translate-y-0"}`}
-        style={{ willChange: 'transform' }}
+        className={`max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 transition-transform duration-300 ease-in-out ${hideTopHeader ? "-translate-y-full" : "translate-y-0"} ${stickyMenu ? "shadow" : ""}`}
+        style={{ willChange: 'transform', zIndex: 10010, position: 'relative', background: 'white' }}
       >
         {/* <!-- header top start --> */}
         <div
@@ -458,15 +468,16 @@ const Header = () => {
       </div>
 
       {/* Bottom header: dropdown nav, always visible and sticky */}
-      <div className="border-t border-gray-3 bg-white sticky top-0 z-9999">
+      <div className="border-t border-gray-3 bg-white sticky top-0 z-[9998]" style={{ boxShadow: stickyMenu ? '0 2px 8px rgba(0,0,0,0.04)' : undefined }}>
         <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">
           <div className="flex items-center justify-between">
             {/* <!--=== Main Nav Start ===--> */}
             <div
               className={`w-[288px] absolute right-4 top-full xl:static xl:w-auto h-0 xl:h-auto invisible xl:visible xl:flex items-center justify-between ${
                 navigationOpen &&
-                `!visible bg-white shadow-lg border border-gray-3 !h-auto max-h-[400px] overflow-y-scroll rounded-md p-5`
+                `!visible bg-white shadow-lg border border-gray-3 !h-auto max-h-[400px] overflow-y-auto rounded-md p-5`
               } header-mobile-nav`}
+              style={{ zIndex: 10020, background: 'white' }}
             >
               {/* <!-- Main Nav Start --> */}
               <nav>
@@ -504,7 +515,7 @@ const Header = () => {
                         </Link>
                         {/* Subcategories Dropdown */}
                         {category.subcategories && category.subcategories.length > 0 && (
-                          <ul className="dropdown absolute left-0 top-full mt-2 bg-white shadow-lg rounded-md min-w-[180px] z-50 hidden group-hover:flex flex-col">
+                          <ul className="dropdown absolute left-0 top-full mt-2 bg-white shadow-lg rounded-md min-w-[180px] z-[10030] hidden group-hover:flex flex-col">
                             {category.subcategories.map((subcat) => (
                               <li key={subcat._id}>
                                 <Link
@@ -535,7 +546,7 @@ const Header = () => {
                     </span>
                     {/* Dropdown grid */}
                     {showBrandsDropdown && (
-                      <div className="dropdown absolute left-0 top-full mt-2 bg-white shadow-2xl rounded-xl min-w-[320px] z-50 grid grid-cols-2 md:grid-cols-3 gap-4 p-4 border border-gray-3 animate-fade-in"
+                      <div className="dropdown absolute left-0 top-full mt-2 bg-white shadow-2xl rounded-xl min-w-[320px] z-[10030] grid grid-cols-2 md:grid-cols-3 gap-4 p-4 border border-gray-3 animate-fade-in"
                         onMouseEnter={() => setShowBrandsDropdown(true)}
                         onMouseLeave={() => setShowBrandsDropdown(false)}
                       >

@@ -16,8 +16,6 @@ import PreLoader from "@/components/Common/PreLoader";
 import { AuthProvider } from "@/context/authContext";
 import { usePathname } from "next/navigation";
 
-const isHomePage = usePathname() === "/";
-
 export default function ClientLayout({
   children,
 }: {
@@ -28,6 +26,9 @@ export default function ClientLayout({
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
+
+  const pathname = usePathname();
+  const isHomePage = pathname === "/" || pathname === "/fr" || pathname === "/en";
 
   return (
     <>

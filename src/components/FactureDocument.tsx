@@ -1,5 +1,6 @@
 import { QRCode } from "react-qrcode-logo";
 import n2words from "n2words";
+import Image from "next/image";
 
 const COMPANY = {
   logo: "/images/logo/logo.png",
@@ -80,7 +81,7 @@ const FactureDocument = (props) => {
         {/* Header */}
         <div className="flex justify-between items-start mb-4">
           <div className="flex flex-col items-start">
-            <img src={COMPANY.logo} alt="Logo" className="h-12 mb-1" />
+            <Image src={COMPANY.logo} alt="Logo" width={48} height={48} className="h-12 mb-1" loading="lazy" />
             <div className="text-[11px] text-gray-700 leading-tight">
               <div className="mb-0.5 font-bold">{COMPANY.name}</div>
               <div className="mb-0.5">{COMPANY.address}</div>
@@ -93,10 +94,10 @@ const FactureDocument = (props) => {
             <span className="text-2xl font-extrabold text-right" style={{ color: ORANGE, letterSpacing: "1px" }}>
               FACTURE
             </span>
-            <span className="text-[11px] text-gray-500 mt-2">
+            <span className="text-[11px] text-gray-700 mt-2">
               Date démission : {dateEmission}
             </span>
-            <span className="text-[11px] text-gray-500">
+            <span className="text-[11px] text-gray-700">
               N° : <span className="font-semibold">{order.numero}</span>
             </span>
           </div>
@@ -154,9 +155,9 @@ const FactureDocument = (props) => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="text-center text-gray-400 py-2">
+                  <td colSpan={5} className="text-center text-gray-700 py-2">
                     Aucun produit trouvé dans cette commande.<br />
-                    <span className="text-xs text-red-400">Vérifiez la structure de la commande dans la console.</span>
+                    <span className="text-xs text-red-600">Vérifiez la structure de la commande dans la console.</span>
                   </td>
                 </tr>
               )}
@@ -210,11 +211,11 @@ const FactureDocument = (props) => {
         <div className="flex justify-end items-end mb-6">
           <div className="flex flex-col items-center">
             <QRCode value={qrValue} size={48} logoImage={COMPANY.logo} />
-            <span className="text-[11px] text-gray-500 mt-1">Scan pour vérifier</span>
+            <span className="text-[11px] text-gray-700 mt-1">Scan pour vérifier</span>
           </div>
         </div>
         {/* Legal mentions */}
-        <div className="text-[10px] text-gray-500 mt-2">
+        <div className="text-[10px] text-gray-700 mt-2">
           <div>
             Conditions de paiement : {order.conditions_paiement || "30 jours, virement bancaire"}
           </div>
@@ -230,7 +231,7 @@ const FactureDocument = (props) => {
             <span>03507065011500468753</span>
           </div>
           {/* Copyright right */}
-          <div className="text-gray-400 text-right flex-1 ml-4">
+          <div className="text-gray-700 text-right flex-1 ml-4">
             &copy; {new Date().getFullYear()} {COMPANY.name}. Tous droits réservés.
           </div>
         </div>

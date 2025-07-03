@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { fetchAllPacks } from "../../../../../services/pack";
 import { Pack } from "../../../../../types/pack";
 import "../../styles/dashboard.css";
@@ -56,10 +57,13 @@ export default function PackTable({ onEdit, onView, onDelete }: Props) {
             {packs.map((pack, idx) => (
               <tr key={pack._id}>
                 <td>
-                  <img
+                  <Image
                     src={getPackImage(pack, idx)}
                     alt={pack.designation_fr || pack.slug || "Pack"}
+                    width={80}
+                    height={80}
                     className="category-table-image"
+                    loading="lazy"
                   />
                 </td>
                 <td>{pack.designation_fr}</td>

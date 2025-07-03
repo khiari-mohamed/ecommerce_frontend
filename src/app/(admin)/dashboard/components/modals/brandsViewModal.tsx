@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Brand } from "@/types/brand";
 import "../../styles/dashboard.css";
 
@@ -22,7 +23,14 @@ const BrandsViewModal: React.FC<BrandsViewModalProps> = ({ open, brand, onClose 
         </div>
         <div className="modal-body">
           <div className="brand-details">
-            <img src={brand.logo} alt={brand.designation_fr} className="brand-logo-large" />
+            <Image
+              src={brand.logo}
+              alt={brand.designation_fr}
+              width={120}
+              height={120}
+              className="brand-logo-large"
+              loading="lazy"
+            />
             <h3>{brand.designation_fr}</h3>
             <div
               className="brand-description"

@@ -6,6 +6,7 @@ import { getProductListPage } from '@/services/products';
 import ProductSlider from '@/components/ProductSlider';
 import SubcategoryList from '@/components/Subcategory/SubcategoryList';
 import parse from 'html-react-parser';
+import Image from 'next/image';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -50,10 +51,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         <div className="mb-12 relative rounded-2xl shadow-2xl bg-gradient-to-br from-blue-50 via-white to-gray-100 overflow-hidden">
           {category.cover && (
             <div className="absolute inset-0 z-0">
-              <img
+              <Image
                 src={category.cover || '/default-cover.jpg'}
                 alt={category.designation_fr || category.designation || 'Category'}
+                width={1200}
+                height={400}
                 className="w-full h-full object-cover opacity-40 blur-[2px] scale-105"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent" />
             </div>

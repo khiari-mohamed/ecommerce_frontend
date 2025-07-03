@@ -184,7 +184,6 @@ const VenteFlash = () => {
             Ventes Flash en Cours
           </h2>
         </motion.div>
-        ...
       </div>
     </section>
   );

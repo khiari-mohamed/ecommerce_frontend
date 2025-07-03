@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Testimonial } from "@/types/testimonial";
 import  Modal  from "../ui/Modal";
 import "../../styles/dashboard.css";
@@ -25,11 +26,14 @@ const TestimonialViewModal: React.FC<TestimonialViewModalProps> = ({
         </div>
         <div>
           <span className="font-semibold">Image:</span>
-          <img
+          <Image
             src={testimonial.authorImg}
             alt={testimonial.authorName}
+            width={48}
+            height={48}
             className="brand-logo"
-            style={{ width: 48, height: 48, marginLeft: 8 }}
+            style={{ marginLeft: 8 }}
+            priority={false}
           />
         </div>
         <div>

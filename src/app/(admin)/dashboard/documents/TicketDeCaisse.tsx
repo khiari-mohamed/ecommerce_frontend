@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./TicketDeCaisse.css";
+import Image from "next/image";
 
 const LOGO_DATA_URL = "";
 
@@ -272,13 +273,16 @@ const TicketDeCaisse: React.FC<TicketDeCaisseProps> = ({
           {/* Logo */}
           <div className="ticket-logo">
             {(logoUrl || COMPANY.logo) && (
-              <img
+              <Image
                 src={logoUrl || COMPANY.logo}
                 alt="Logo"
+                width={120}
+                height={40}
                 className="ticket-logo-img"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = "none";
                 }}
+                loading="lazy"
               />
             )}
           </div>

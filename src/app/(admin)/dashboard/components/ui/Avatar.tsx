@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface AvatarProps {
   src?: string;
@@ -27,13 +28,14 @@ export default function Avatar({
       aria-label={alt}
     >
       {src ? (
-        <img
+        <Image
           src={src}
           alt={alt}
+          fill
+          sizes="100%"
           className="object-cover w-full h-full"
-          onError={(e) => {
-            if (fallback) (e.target as HTMLImageElement).src = fallback;
-          }}
+          onError={fallback ? (e) => { (e.target as HTMLImageElement).src = fallback; } : undefined}
+          priority={false}
         />
       ) : (
         <span className="text-gray-500 dark:text-gray-300 font-semibold">

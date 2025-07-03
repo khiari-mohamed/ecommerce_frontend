@@ -1,5 +1,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { QRCode } from "react-qrcode-logo";
 import orderService from "@/services/orders";
 import toast from "react-hot-toast";
@@ -212,7 +213,7 @@ const BonLivraisonDetail: React.FC<BonLivraisonDetailProps> = ({ id, onClose }) 
           {/* Header */}
           <div className="flex justify-between items-start mb-4">
             <div className="flex flex-col items-start">
-              <img src={COMPANY.logo} alt="Logo" className="h-12 mb-1" />
+              <Image src={COMPANY.logo} alt="Logo de la société" width={48} height={48} className="h-12 mb-1" priority={false} />
               <div className="text-[11px] text-gray-700 leading-tight">
                 <div className="mb-0.5 font-bold">{COMPANY.name}</div>
                 <div className="mb-0.5">{COMPANY.address}</div>

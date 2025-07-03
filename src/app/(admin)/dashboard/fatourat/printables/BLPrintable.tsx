@@ -1,5 +1,6 @@
 import React from "react";
 import { QRCode } from "react-qrcode-logo";
+import Image from "next/image";
 
 const COMPANY = {
   logo: "/images/logo/logo.png",
@@ -69,7 +70,7 @@ const BLPrintable = ({ order }) => {
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 18 }}>
         <div>
-          <img src={COMPANY.logo} alt="Logo" style={{ height: 36, marginBottom: 8 }} />
+          <Image src={COMPANY.logo} alt="Logo" width={120} height={36} style={{ height: 36, marginBottom: 8 }} loading="lazy" />
           <div style={{ fontSize: 13, color: "#222", lineHeight: 1.5 }}>
             <div style={{ fontWeight: 700 }}>{COMPANY.name}</div>
             <div>{COMPANY.email}</div>

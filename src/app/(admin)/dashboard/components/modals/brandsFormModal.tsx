@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { Brand } from "@/types/brand";
 import "../../styles/dashboard.css";
 // If you need staticBrands, fix the import path as needed:
@@ -124,9 +125,11 @@ const BrandsFormModal: React.FC<BrandsFormModalProps> = ({
             <label>Logo</label>
             <input type="file" accept="image/*" onChange={handleLogoChange} />
             {(logoPreview || effectiveLogoPreview) && (
-              <img
+              <Image
                 src={logoPreview || effectiveLogoPreview || ""}
                 alt="Logo"
+                width={120}
+                height={60}
                 className="brand-logo-preview"
                 style={{
                   width: 120,
@@ -136,6 +139,7 @@ const BrandsFormModal: React.FC<BrandsFormModalProps> = ({
                   border: "1px solid #eee",
                   marginTop: 8,
                 }}
+                loading="lazy"
               />
             )}
           </div>

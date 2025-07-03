@@ -7,6 +7,7 @@ import n2words from "n2words";
 import BonLivraisonDocument from "@/components/BonLivraisonDocument";
 import DevisDocument from "@/components/DevisDocument";
 import FactureDocument from "@/components/FactureDocument";
+import Image from "next/image";
 
 const COMPANY = {
   logo: "/images/logo/logo.png",
@@ -75,7 +76,7 @@ const OrderInvoice = ({ order, printRef }) => {
         {/* Header */}
         <div className="flex justify-between items-start mb-4">
           <div className="flex flex-col items-start">
-            <img src={COMPANY.logo} alt="Logo" className="h-12 mb-1" />
+            <Image src={COMPANY.logo} alt="Logo" width={48} height={48} className="h-12 mb-1" loading="lazy" />
             <div className="text-[11px] text-gray-700 leading-tight">
               <div className="mb-0.5">{COMPANY.email}</div>
               <div className="mb-0.5">{COMPANY.address}</div>
@@ -351,7 +352,7 @@ const OrderConfirmationClient = () => {
   if (!order) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-blue-50">
-        <img src={COMPANY.logo} alt="Logo" className="h-12 mb-4" />
+        <Image src={COMPANY.logo} alt="Logo" width={48} height={48} className="h-12 mb-4" loading="lazy" />
         <div className="text-lg text-blue-700 font-bold mb-2">Chargement de votre commande...</div>
         <div className="text-gray-500 text-sm">Veuillez patienter.</div>
       </div>

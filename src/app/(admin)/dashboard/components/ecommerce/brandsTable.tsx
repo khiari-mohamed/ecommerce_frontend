@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Brand } from "@/types/brand";
 import "../../styles/dashboard.css";
 
@@ -26,11 +27,14 @@ const BrandsTable: React.FC<BrandsTableProps> = ({ brands, onView, onEdit, onDel
           {brands.map((brand) => (
             <tr key={brand._id}>
               <td>
-                <img
+                <Image
                   src={brand.logo}
                   alt={brand.designation_fr}
+                  width={48}
+                  height={48}
                   className="brand-logo"
                   style={{ width: 48, height: 48, objectFit: "contain", borderRadius: 8 }}
+                  loading="lazy"
                 />
               </td>
               <td>{brand.designation_fr}</td>

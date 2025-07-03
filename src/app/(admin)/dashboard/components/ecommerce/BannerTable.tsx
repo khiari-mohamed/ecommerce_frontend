@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Banner } from "@/types/banner";
 import Button from "../ui/Button";
 import "../../styles/dashboard.css";
@@ -38,11 +39,14 @@ const BannerTable: React.FC<BannerTableProps> = ({
           banners.map((banner) => (
             <tr key={banner._id}>
               <td className="px-4 py-2">
-                <img
+                <Image
                   src={banner.imageUrl}
                   alt={banner.title}
+                  width={120}
+                  height={48}
                   className="h-12 w-auto rounded"
                   style={{ maxWidth: 120, objectFit: "cover" }}
+                  loading="lazy"
                 />
               </td>
               <td className="px-4 py-2">{banner.title}</td>

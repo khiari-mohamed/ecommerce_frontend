@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { SubCategory } from '@/types/subcategory';
 import axios from '@/lib/axios';
 import parse from 'html-react-parser';
+import Image from 'next/image';
 
 async function getSubCategoryBySlug(slug: string): Promise<SubCategory | null> {
   try {
@@ -33,10 +34,13 @@ export default async function SubcategoryPage({
       <div className="mb-8">
         {subcategory.cover && (
           <div className="relative h-40 md:h-64 w-full mb-6 rounded-lg overflow-hidden">
-            <img 
+            <Image
               src={subcategory.cover}
               alt={subcategory.name || subcategory.designation_fr || subcategory.designation || "Subcategory"}
+              width={1200}
+              height={400}
               className="w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
         )}

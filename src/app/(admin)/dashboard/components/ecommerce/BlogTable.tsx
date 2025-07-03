@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { getBlogs } from "../../../../../services/blog.service";
 import { Blog } from "../../../../../types/blog";
 import "../../styles/dashboard.css";
@@ -58,10 +59,13 @@ export default function BlogTable({ onEdit, onView, onDelete }: Props) {
             {blogs.map((blog) => (
               <tr key={blog._id}>
                 <td>
-                  <img
+                  <Image
                     src={getImageUrl(blog.cover)}
                     alt={blog.title || blog.designation_fr || "blog"}
+                    width={60}
+                    height={40}
                     style={{ width: 60, height: 40, objectFit: "cover", borderRadius: 4 }}
+                    loading="lazy"
                   />
                 </td>
                 <td>{blog.title || blog.designation_fr}</td>

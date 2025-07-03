@@ -82,7 +82,7 @@ const SingleItem = ({ item }) => {
             </div>
             <div>
               <h3 className="text-dark ease-out duration-200 hover:text-blue">
-                <a href="#" tabIndex={-1}> {item.title} </a>
+                <span>{item.title}</span>
               </h3>
             </div>
           </div>

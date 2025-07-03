@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { Category } from "@/types/category";
 import { getCategories } from "@/services/categories";
 import categoryData from "../../../../../components/Home/Categories/categoryData"; // Adjust the path if needed
@@ -60,10 +61,13 @@ const CategoryTable: React.FC<Props> = ({ onEdit, onDelete, onView }) => {
               {categories.map((cat) => (
                 <tr key={cat._id}>
                   <td>
-                    <img
+                    <Image
                       src={getCategoryImage(cat)}
                       alt={cat.designation || cat.title || "Category"}
+                      width={80}
+                      height={80}
                       className="category-table-image"
+                      loading="lazy"
                     />
                   </td>
                   <td className="category-table-name">{cat.designation || cat.title}</td>

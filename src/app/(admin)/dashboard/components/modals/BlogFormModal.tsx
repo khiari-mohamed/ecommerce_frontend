@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { Blog } from "../../../../../types/blog";
 import { createBlog, updateBlog } from "../../../../../services/blog.service";
 import "../../styles/dashboard.css";
@@ -228,10 +229,13 @@ export default function BlogFormModal({ open, onClose, blog }: Props) {
         </label>
         {imagePreview && (
           <div style={{ marginBottom: 12 }}>
-            <img
+            <Image
               src={imagePreview}
               alt="Aperçu"
+              width={120}
+              height={80}
               style={{ width: 120, height: 80, objectFit: "cover", borderRadius: 4 }}
+              loading="lazy"
             />
           </div>
         )}

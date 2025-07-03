@@ -1,5 +1,6 @@
 import React from "react";
 import { QRCode } from "react-qrcode-logo";
+import Image from "next/image";
 
 const COMPANY = {
   logo: "/images/logo/logo.png",
@@ -63,9 +64,11 @@ const TKPrintable = ({ order }) => {
       >
         {/* Logo */}
         <div className="ticket-logo" style={{ width: "100%", textAlign: "center", marginBottom: 10 }}>
-          <img
+          <Image
             src={COMPANY.logo}
             alt="Logo"
+            width={120}
+            height={32}
             className="ticket-logo-img"
             style={{
               display: "block",
@@ -77,6 +80,7 @@ const TKPrintable = ({ order }) => {
               objectFit: "contain",
               background: "transparent"
             }}
+            loading="lazy"
           />
         </div>
         {/* Header Info */}

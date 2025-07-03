@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import Modal from "../ui/Modal";
 import { Banner } from "@/types/banner";
 import "../../styles/dashboard.css";
@@ -109,11 +110,14 @@ const BannerViewModal: React.FC<BannerViewModalProps> = ({
         {renderField("Titre", banner.title)}
         <div>
           <span className="font-semibold">Image:</span>
-          <img
+          <Image
             src={banner.imageUrl}
             alt={banner.title}
+            width={320}
+            height={120}
             className="rounded mt-2"
             style={{ maxWidth: 320, maxHeight: 120 }}
+            loading="lazy"
           />
         </div>
         {renderField(

@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Testimonial } from "@/types/testimonial";
 import  Button  from "../ui/Button";
 import { approveTestimonial, deleteTestimonial } from "../../utils/testimonials";
@@ -56,11 +57,14 @@ const TestimonialsTable: React.FC<TestimonialsTableProps> = ({
               <tr key={idx}>
                 <td>
                   <div className="flex items-center gap-2">
-                    <img
+                    <Image
                       src={t.authorImg}
                       alt={t.authorName}
+                      width={36}
+                      height={36}
                       className="brand-logo"
-                      style={{ width: 36, height: 36 }}
+                      style={{}}
+                      priority={false}
                     />
                     <span>{t.authorName}</span>
                   </div>

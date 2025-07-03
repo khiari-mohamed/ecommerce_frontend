@@ -1,4 +1,5 @@
 import { QRCode } from "react-qrcode-logo";
+import Image from "next/image";
 
 const COMPANY = {
   logo: "/images/logo/logo.png",
@@ -49,7 +50,7 @@ const BonLivraisonDocument = ({ order, printRef }) => {
         {/* Header */}
         <div className="flex justify-between items-start mb-4">
           <div className="flex flex-col items-start">
-            <img src={COMPANY.logo} alt="Logo" className="h-12 mb-1" />
+            <Image src={COMPANY.logo} alt="Logo" width={48} height={48} className="h-12 mb-1" loading="lazy" />
             <div className="text-[11px] text-gray-700 leading-tight">
               <div className="mb-0.5 font-bold">{COMPANY.name}</div>
               <div className="mb-0.5">{COMPANY.address}</div>

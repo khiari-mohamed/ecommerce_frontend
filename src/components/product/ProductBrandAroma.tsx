@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { Brand } from "@/types/brand";
 import { Aroma } from "@/types/aroma";
 import { getBrandById } from "@/services/brand";
@@ -74,10 +75,13 @@ const ProductBrandAroma: React.FC<ProductBrandAromaProps> = ({ brandId }) => {
       {brand && (
         <div className="flex items-center gap-2 mb-2">
           {brand.logo && (
-            <img
+            <Image
               src={brand.logo}
               alt={brand.designation_fr}
+              width={32}
+              height={32}
               className="w-8 h-8 object-contain rounded bg-white border"
+              loading="lazy"
             />
           )}
           <span className="font-semibold text-blue-700 text-sm">

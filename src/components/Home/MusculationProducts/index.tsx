@@ -3,6 +3,45 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, easeOut } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import ProductCard from "@/components/shared/productCard";
+import { fetchMusculationProducts } from "@/services/Musculationproducts";
+import { MusculationProduct } from "@/types/MusculationProducts";
+
+interface Product {
+  _id: string;
+  designation: string;
+  mainImage: { url: string };
+  price: number;
+  oldPrice?: number;
+  inStock?: boolean;
+  slug: string;
+  brand?: string;
+  reviews?: Array<{ rating: number }>;
+  [key: string]: any;
+}
+
+function getFallbackImageByIndex(idx: number): string {
+  return `/fallbacks/${(idx % 12) + 1}.png`;
+}
+
+const mapToProductCard = (product: MusculationProduct, idx: number): Product => ({
+  _id: product._id,
+  ...product,
+  designation: product.designation_fr,
+  mainImage: {
+    url: product.cover
+      ? product.cover.startsWith("/")
+        ? product.cover
+        : "/" + product.cover
+      : getFallbackImageByIndex(idx)
+  },
+  price: Number(product.prix),
+  oldPrice: product.promo ? Number(product.promo) : undefined,
+  inStock: product.qte && Number(product.qte) > 0,
+  slug: product.slug,
+  brand: product.brand_id,
+  reviews: [],
+});
 
 const fadeInVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -41,7 +80,6 @@ const images = [
   "/img/v3.jpg",
   "/img/v4.jpg",
   "/img/vv7.jpg",
-
 ];
 
 const IMAGE_CHANGE_INTERVAL = 4000; // 3 seconds
@@ -49,6 +87,7 @@ const FADE_DURATION = 1.2; // seconds
 
 const MusculationProducts = () => {
   const [current, setCurrent] = useState(0);
+  const [sampleProducts, setSampleProducts] = useState<MusculationProduct[]>([]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -56,6 +95,19 @@ const MusculationProducts = () => {
     }, IMAGE_CHANGE_INTERVAL);
     return () => clearTimeout(timeout);
   }, [current]);
+
+  useEffect(() => {
+    // Fetch products and set the first 4 as sample
+    const fetchProducts = async () => {
+      try {
+        const products = await fetchMusculationProducts();
+        setSampleProducts(products.slice(0, 4));
+      } catch (e) {
+        setSampleProducts([]);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   return (
     <div className="w-full mt-24">
@@ -153,6 +205,15 @@ const MusculationProducts = () => {
             </motion.div>
           </div>
         </div>
+      </div>
+
+      {/* Sample Products Grid */}
+      <div className="w-full mx-auto max-w-screen-2xl px-4 md:px-8 mt-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {sampleProducts.map((product, idx) => (
+          <ProductCard key={product._id || idx} product={mapToProductCard(product, idx)} />
+        ))}
+      </div>
       </div>
     </div>
   );

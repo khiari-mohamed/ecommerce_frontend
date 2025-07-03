@@ -187,7 +187,11 @@ const Header = () => {
   return (
     <header
       className="fixed left-0 top-0 w-full z-[9999] bg-white transition-all ease-in-out duration-300"
-      style={{ pointerEvents: navigationOpen ? 'auto' : undefined }}
+      style={{ 
+        pointerEvents: navigationOpen ? 'auto' : undefined,
+        maxHeight: isMobile && navigationOpen ? '100vh' : undefined,
+        overflowY: isMobile && navigationOpen ? 'auto' : undefined
+      }}
     >
       {/* Top header: logo, search, login, cart, etc. */}
       <div
@@ -467,8 +471,11 @@ const Header = () => {
         {/* <!-- header top end --> */}
       </div>
 
-      {/* Bottom header: dropdown nav, always visible and sticky */}
-      <div className="border-t border-gray-3 bg-white sticky top-0 z-[9998]" style={{ boxShadow: stickyMenu ? '0 2px 8px rgba(0,0,0,0.04)' : undefined }}>
+      {/* Bottom header: dropdown nav, now also hides on scroll down and reappears on scroll up */}
+      <div
+        className={`border-t border-gray-3 bg-white sticky top-0 z-[9998] transition-transform duration-300 ease-in-out ${hideTopHeader ? "-translate-y-full" : "translate-y-0"}`}
+        style={{ boxShadow: stickyMenu ? '0 2px 8px rgba(0,0,0,0.04)' : undefined, willChange: 'transform' }}
+      >
         <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">
           <div className="flex items-center justify-between">
             {/* <!--=== Main Nav Start ===--> */}

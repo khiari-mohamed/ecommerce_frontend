@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 const coordonnees = {
-  logo: "img/logo/logo.webp",
+  logo: "images/logo/logo.png",
   email: "contact@protein.tn",
   adresse_fr: "Rue Ribat, 4000 Sousse Tunisie",
   phone_1: "+216 27 612 500",
@@ -91,7 +91,7 @@ function Footer() {
             className="mb-2"
           />
           <p className="text-sm max-w-xs mb-2">
-            PROTEINE TUNISIE - SOBITAS Votre expert en nutrition sportive en Tunisie, basé �� Sousse depuis 2010. Nous proposons une vaste gamme de compléments alimentaires, incluant des protéines, de la créatine, et du matériel de musculation, pour vous aider à atteindre vos objectifs de musculation et de performance.
+           PROTEINE TUNISIE - SOBITAS : Spécialiste en compléments alimentaires sportifs et matériel de musculation en Tunisie depuis 2010. Boostez vos performances avec des produits certifiés : whey protéine, isolate, créatine, BCAA, oméga-3, brûleurs de graisse, etc. Découvrez notre équipement de musculation professionnel : bancs, haltères, barres, gants, machines cardio et accessoires fitness. 🎯 Objectifs : prise de masse, perte de poids, force, récupération musculaire. 🚚 Livraison rapide à Sousse, Tunis, Sfax, Gabès et dans toute la Tunisie.
           </p>
           <p className="text-sm "><strong>Email:</strong> {coordonnees.email}</p>
           <p className="text-sm"><strong>Adresse:</strong> {coordonnees.adresse_fr}</p>
@@ -99,7 +99,7 @@ function Footer() {
 
         {/* Categories Section */}
         <div className="w-full md:w-1/2 lg:w-1/4 mb-6">
-          <h4 className="font-bold mb-4">OUR CATEGORIES</h4>
+          <h4 className="font-bold mb-4">NOS CATÉGORIES</h4>
           <ul className="space-y-2">
             <li>
               <Link href="/categorie/acides-amines" className="hover:underline">ACIDES AMINES</Link>
@@ -146,20 +146,20 @@ function Footer() {
           <div className="flex flex-col sm:flex-row gap-3">
             <Link href={coordonnees.playstore_link} target="_blank">
               <Image
-                src="/img/playstore-336-119.webp"
+                src="/img/icon/icon-app.jpg"
                 width={150}
                 height={50}
                 alt="Disponible sur Google Play"
-                className="mb-2 sm:mb-0"
+                className="mb-2 sm:mb-0 rounded shadow"
               />
             </Link>
             <Link href={coordonnees.appstore_link} target="_blank">
               <Image
-                src="/img/appstore-336-119.webp"
+                src="/img/icon/icon1-app.jpg"
                 width={150}
                 height={50}
                 alt="Disponible sur App Store"
-                className="mb-2 sm:mb-0"
+                className="mb-2 sm:mb-0 rounded shadow"
               />
             </Link>
           </div>

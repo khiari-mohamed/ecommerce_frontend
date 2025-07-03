@@ -34,8 +34,8 @@ const PacksSection: React.FC = () => {
     getPacks();
   }, []);
 
-  if (loading) return <div>Loading packs...</div>;
-  if (!packs.length) return <div>No packs found.</div>;
+  if (loading) return <div>Chargement des packs...</div>;
+  if (!packs.length) return <div>Aucun pack trouvé.</div>;
 
   const getImageSrc = (pack: Pack, index: number) => {
     if (!pack.cover || pack.cover === "undefined") {
@@ -67,8 +67,8 @@ const PacksSection: React.FC = () => {
         >
           {packs.map((pack, idx) => (
             <SwiperSlide key={pack._id}>
-              <div className="bg-white rounded-xl shadow-xl p-6 flex flex-col items-center transition-transform hover:scale-105 hover:shadow-2xl duration-300">
-                <div className="w-40 h-40 sm:w-48 sm:h-48 lg:w-52 lg:h-52 relative mb-4 overflow-hidden rounded-lg border-4 border-orange-100 bg-gray-100">
+              <div className="bg-white rounded-xl shadow-xl p-4 sm:p-6 flex flex-col items-center transition-transform hover:scale-105 hover:shadow-2xl duration-300 w-full max-w-xs mx-auto">
+                <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 relative mb-4 overflow-hidden rounded-lg border-4 border-orange-100 bg-gray-100">
                   <Image
                     src={getImageSrc(pack, idx)}
                     alt={pack.alt_cover || pack.designation_fr || `Pack ${idx + 1}`}
@@ -83,8 +83,8 @@ const PacksSection: React.FC = () => {
                     }}
                   />
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-center">{pack.designation_fr}</h3>
-                <div className="text-primary text-xl font-semibold mb-1">
+                <h3 className="text-lg sm:text-xl font-bold mb-2 text-center">{pack.designation_fr}</h3>
+                <div className="text-primary text-base sm:text-xl font-semibold mb-1">
                   {pack.promo ? (
                     <>
                       <span className="line-through text-gray-400 mr-2">{pack.prix} TND</span>
@@ -94,10 +94,10 @@ const PacksSection: React.FC = () => {
                     <span>{pack.prix} TND</span>
                   )}
                 </div>
-                <div className="text-sm text-gray-500 mb-2 text-center">{pack.description_cover}</div>
+                <div className="text-xs sm:text-sm text-gray-500 mb-2 text-center">{pack.description_cover}</div>
                 <a
                   href={`/shop-details?packId=${pack._id}`}
-                  className="mt-auto px-5 py-2 bg-[#FF4301] text-white rounded-full shadow hover:scale-105 transition font-semibold"
+                  className="mt-auto px-4 py-2 sm:px-5 sm:py-2 bg-[#FF4301] text-white rounded-full shadow hover:scale-105 transition font-semibold w-full text-center"
                 >
                   Voir le pack
                 </a>

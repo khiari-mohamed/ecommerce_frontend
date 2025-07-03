@@ -153,9 +153,9 @@ const PromoBanner = () => {
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
         {/* Big promo banner */}
         <div
-          className={`relative z-1 overflow-hidden rounded-lg ${slot0.bg} py-12.5 lg:py-17.5 xl:py-22.5 px-4 sm:px-7.5 lg:px-14 xl:px-19 mb-7.5`}
+          className={`relative z-1 overflow-hidden rounded-lg ${slot0.bg} py-12.5 lg:py-17.5 xl:py-22.5 px-4 sm:px-7.5 lg:px-14 xl:px-19 mb-7.5 flex flex-col md:flex-row items-center md:items-start`}
         >
-          <div className="max-w-[550px] w-full">
+          <div className="max-w-[550px] w-full z-10">
             <span className="block font-medium text-xl text-dark mb-3">
               {slot0.title}
             </span>
@@ -174,23 +174,24 @@ const PromoBanner = () => {
               {slot0.linkText}
             </Link>
           </div>
-          <Image
-            src={slot0.image}
-            alt={slot0.imageAlt}
-            className="absolute bottom-0 right-4 lg:right-26 -z-1"
-            // Move image 10px up and 20px to the right
-            style={{ bottom: '-40px', right: '24px' }}
-            width={500}
-            height={750}
-          />
+          <div className="relative w-full md:w-auto flex justify-center md:justify-end mt-6 md:mt-0">
+            <Image
+              src={slot0.image}
+              alt={slot0.imageAlt}
+              className="object-contain max-h-[220px] md:max-h-[320px] w-auto"
+              style={{ maxWidth: '100%' }}
+              width={320}
+              height={320}
+            />
+          </div>
         </div>
 
         <div className="grid gap-7.5 grid-cols-1 lg:grid-cols-2">
           {/* Small promo banner 1 - LIPO 6 */}
           <div
-            className={`relative z-1 overflow-hidden rounded-lg ${slot1.bg} py-10 xl:py-16 px-4 sm:px-7.5 xl:px-10`}
+            className={`relative z-1 overflow-hidden rounded-lg ${slot1.bg} py-10 xl:py-16 px-4 sm:px-7.5 xl:px-10 flex flex-col sm:flex-row items-center`}
           >
-            <div className="max-w-[60%]">
+            <div className="w-full sm:w-3/5">
               <span className="block text-lg text-dark mb-1.5">
                 {slot1.title}
               </span>
@@ -210,20 +211,22 @@ const PromoBanner = () => {
                 {slot1.linkText}
               </Link>
             </div>
-            <Image
-              src={slot1.image}
-              alt={slot1.imageAlt}
-              className="absolute top-1/2 -translate-y-1/2 right-3 sm:right-8.5 -z-1"
-              width={200}
-              height={200}
-            />
+            <div className="w-full sm:w-2/5 flex justify-center mt-6 sm:mt-0">
+              <Image
+                src={slot1.image}
+                alt={slot1.imageAlt}
+                className="object-contain max-h-[120px] sm:max-h-[180px] w-auto"
+                width={180}
+                height={180}
+              />
+            </div>
           </div>
 
           {/* Small promo banner 2 - Treadmill */}
           <div
-            className={`relative z-1 overflow-hidden rounded-lg ${slot2.bg} py-10 xl:py-16 px-4 sm:px-7.5 xl:px-10`}
+            className={`relative z-1 overflow-hidden rounded-lg ${slot2.bg} py-10 xl:py-16 px-4 sm:px-7.5 xl:px-10 flex flex-col sm:flex-row items-center`}
           >
-            <div className="ml-auto max-w-[60%]">
+            <div className="w-full sm:w-3/5 ml-auto">
               <span className="block text-lg text-dark mb-1.5">
                 {slot2.title}
               </span>
@@ -243,13 +246,15 @@ const PromoBanner = () => {
                 {slot2.linkText}
               </Link>
             </div>
-            <Image
-              src={slot2.image}
-              alt={slot2.imageAlt}
-              className="absolute top-1/2 -translate-y-1/2 left-3 sm:left-10 -z-1"
-              width={241}
-              height={241}
-            />
+            <div className="w-full sm:w-2/5 flex justify-center mt-6 sm:mt-0">
+              <Image
+                src={slot2.image}
+                alt={slot2.imageAlt}
+                className="object-contain max-h-[120px] sm:max-h-[180px] w-auto"
+                width={180}
+                height={180}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -82,7 +82,7 @@ const MusculationProducts = () => {
       </div>
 
       {/* Banner Image Section */}
-      <div className="relative w-screen h-[60vh] md:h-[70vh] overflow-hidden left-[50%] right-[50%] mx-[-50vw]">
+      <div className="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] overflow-hidden">
         {/* Crossfade Images */}
         <AnimatePresence>
           {images.map((src, idx) =>
@@ -100,7 +100,7 @@ const MusculationProducts = () => {
                   src={src}
                   fill
                   priority
-                  className="object-cover w-full"
+                  className="object-cover w-full h-full"
                   alt="Équipement de musculation et fitness"
                   sizes="100vw"
                 />
@@ -111,13 +111,13 @@ const MusculationProducts = () => {
 
         {/* Gradient Overlay and Content */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/75 to-black/40 z-10">
-          <div className="absolute inset-0 flex flex-col items-start justify-center p-8 text-white max-w-8xl md:p-16 lg:p-24">
+          <div className="absolute inset-0 flex flex-col items-start justify-center p-4 sm:p-8 md:p-16 lg:p-24 text-white max-w-8xl">
             <motion.h2
               variants={fadeInVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
-              className="mb-4 text-2xl font-extrabold text-left uppercase md:text-3xl lg:text-5xl"
+              className="mb-2 text-xl font-extrabold text-left uppercase sm:mb-4 sm:text-2xl md:text-3xl lg:text-5xl"
               style={{ fontFamily: 'Oswald, sans-serif' }}
             >
               Matériel de Musculation
@@ -127,7 +127,7 @@ const MusculationProducts = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.5 }}
-              className="max-w-4xl mb-8 text-lg text-left text-gray-300 md:text-xl lg:text-2xl"
+              className="max-w-2xl sm:max-w-4xl mb-4 sm:mb-8 text-base sm:text-lg text-left text-gray-300 md:text-xl lg:text-2xl"
             >
               Découvrez notre gamme complète de matériel musculation, fitness et
               cardio pour équiper votre salle de sport. Atteignez vos objectifs
@@ -143,7 +143,7 @@ const MusculationProducts = () => {
             >
               <Link href="/musculation-products">
                 <button
-                  className="inline-flex font-medium text-white text-custom-sm rounded-md bg-dark py-3 px-9 ease-out duration-200 hover:bg-blue mt-10"
+                  className="inline-flex font-medium text-white text-custom-sm rounded-md bg-dark py-2 px-6 sm:py-3 sm:px-9 ease-out duration-200 hover:bg-blue mt-6 sm:mt-10 text-base sm:text-lg"
                 >
                   <span className="text-sm font-medium md:text-base">
                     Discover more

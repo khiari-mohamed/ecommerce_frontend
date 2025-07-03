@@ -83,8 +83,8 @@ const SingleItem = ({ item }: { item: Product }) => {
 
   return (
     <Link href={`/product-details?id=${item._id || item.id}`} className="group block">
-      <div className="relative overflow-hidden rounded-lg bg-[#F6F7FB] min-h-[403px]">
-        <div className="text-center px-4 py-7.5">
+      <div className="relative overflow-hidden rounded-lg bg-[#F6F7FB] min-h-[260px] sm:min-h-[320px] md:min-h-[360px] lg:min-h-[403px]">
+        <div className="text-center px-2 sm:px-4 py-5 sm:py-7.5">
           <div className="flex items-center justify-center gap-2.5 mb-2">
             <div className="flex items-center gap-1">
               <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
@@ -126,9 +126,9 @@ const SingleItem = ({ item }: { item: Product }) => {
           <Image 
             src={imageSrc} 
             alt={productName} 
-            width={280} 
-            height={280} 
-            className="object-contain h-64 w-auto"
+            width={180} 
+            height={180} 
+            className="object-contain h-40 sm:h-52 md:h-60 lg:h-64 w-auto"
           />
         </div>
 

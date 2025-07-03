@@ -22,30 +22,31 @@ const BrandSection: React.FC = () => {
       <div className="container mx-auto px-4">
         <h2 className="text-2xl font-bold mb-6 text-center">Nos Marques</h2>
         <Swiper
-          slidesPerView={6}
-          spaceBetween={24}
+          slidesPerView={2}
+          spaceBetween={12}
           freeMode={true}
           navigation={true}
           autoplay={{ delay: 2000, disableOnInteraction: false }}
           modules={[FreeMode, Navigation, Autoplay]}
           className="brand-swiper"
           breakpoints={{
-            320: { slidesPerView: 2 },
-            640: { slidesPerView: 3 },
+            0: { slidesPerView: 2 },
+            480: { slidesPerView: 3 },
+            768: { slidesPerView: 4 },
             1024: { slidesPerView: 6 },
           }}
         >
           {brands.map((brand) => (
             <SwiperSlide key={brand.slug}>
               <div
-                className="cursor-pointer flex items-center justify-center p-4 transition hover:scale-105"
+                className="cursor-pointer flex items-center justify-center p-2 sm:p-4 transition hover:scale-105"
                 onClick={() => handleBrandClick(brand.id)}
                 title={brand.name}
               >
                 <img
                   src={brand.image}
                   alt={brand.name}
-                  className="h-16 object-contain grayscale hover:grayscale-0 transition"
+                  className="h-10 sm:h-16 object-contain grayscale hover:grayscale-0 transition"
                   loading="lazy"
                 />
               </div>

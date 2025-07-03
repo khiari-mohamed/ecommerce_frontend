@@ -21,10 +21,10 @@ const BestSeller = () => {
 
   return (
     <section className="overflow-hidden">
-      <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
+      <div className="max-w-[1170px] w-full mx-auto px-2 sm:px-4 xl:px-0">
         {/* <!-- section title --> */}
-        <div className="mb-10 flex items-center justify-between">
-          <div>
+        <div className="mb-6 sm:mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="w-full sm:w-auto flex flex-col">
             <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
               <Image
                 src="/images/icons/icon-07.svg"
@@ -34,15 +34,15 @@ const BestSeller = () => {
               />
               Ce mois-ci
             </span>
-            <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
+            <h2 className="font-semibold text-lg sm:text-xl xl:text-heading-5 text-dark">
             Meilleures ventes
             </h2>
           </div>  
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-7.5 gap-y-9">
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-7.5 gap-y-6 sm:gap-y-9">
           {loading ? (
-            <div className="col-span-4 flex justify-center items-center py-10">
+            <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 flex justify-center items-center py-10">
               <span>Chargement...</span>
             </div>
           ) : (
@@ -51,10 +51,10 @@ const BestSeller = () => {
             ))
           )}
         </div>
-        <div className="text-center mt-12.5">
+        <div className="text-center mt-8 sm:mt-12.5">
           <Link
             href="/shop-without-sidebar"
-            className="inline-flex font-medium text-custom-sm py-3 px-7 sm:px-12.5 rounded-md border-gray-3 border bg-gray-1 text-dark ease-out duration-200 hover:bg-dark hover:text-white hover:border-transparent"
+            className="inline-flex font-medium text-custom-sm py-3 px-5 sm:px-7 md:px-12.5 rounded-md border-gray-3 border bg-gray-1 text-dark ease-out duration-200 hover:bg-dark hover:text-white hover:border-transparent w-full sm:w-auto text-center justify-center"
           >
             Tout voir
           </Link>

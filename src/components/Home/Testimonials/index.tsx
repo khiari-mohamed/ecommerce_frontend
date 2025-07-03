@@ -28,8 +28,8 @@ const Testimonials = () => {
         <div className="">
           <div className="swiper testimonial-carousel common-carousel p-5">
             {/* <!-- section title --> */}
-            <div className="mb-10 flex items-center justify-between">
-              <div>
+            <div className="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="w-full sm:w-auto flex flex-col">
                 <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
                   <Image
                     src="/images/icons/icon-08.svg"
@@ -43,7 +43,7 @@ const Testimonials = () => {
                   Commentaires des utilisateurs
                 </h2>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 justify-center sm:justify-end w-full sm:w-auto">
                 <div onClick={handlePrev} className="swiper-button-prev">
                   <svg
                     className="fill-current"

@@ -219,7 +219,7 @@ const VenteFlash = () => {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentFlash.id}
-                  className="group bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row border border-primary/20 hover:shadow-2xl transition-all relative max-w-2xl mx-auto"
+                  className="group bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row border border-primary/20 hover:shadow-2xl transition-all relative max-w-2xl mx-auto w-full"
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -230,16 +230,16 @@ const VenteFlash = () => {
                   }}
                 >
                   {/* IMAGE */}
-                  <div className="relative flex-shrink-0 w-full md:w-2/5 flex items-center justify-center bg-gray-50 dark:bg-gray-800 p-4">
+                  <div className="relative flex-shrink-0 w-full md:w-2/5 flex items-center justify-center bg-gray-50 dark:bg-gray-800 p-2 sm:p-4">
                     {mainProduct && (mainProduct.mainImage?.url || mainProduct.cover) ? (
                       <img
                         src={mainProduct.mainImage?.url || mainProduct.cover}
                         alt={mainProduct.designation || mainProduct.designation_fr || ""}
-                        className="w-full h-60 md:h-72 object-contain rounded-lg shadow-md bg-white"
+                        className="w-full h-40 sm:h-60 md:h-72 object-contain rounded-lg shadow-md bg-white"
                         style={{ background: "#fff" }}
                       />
                     ) : (
-                      <div className="w-full h-60 md:h-72 flex items-center justify-center rounded-lg shadow-md bg-white text-gray-300 text-lg">
+                      <div className="w-full h-40 sm:h-60 md:h-72 flex items-center justify-center rounded-lg shadow-md bg-white text-gray-300 text-lg">
                         {/* No image available */}
                       </div>
                     )}
@@ -260,8 +260,8 @@ const VenteFlash = () => {
                       )}
                   </div>
                   {/* CONTENT */}
-                  <div className="flex-1 flex flex-col justify-center p-6 md:p-8">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 text-center md:text-left leading-tight group-hover:text-primary transition-colors">
+                  <div className="flex-1 flex flex-col justify-center p-4 sm:p-6 md:p-8 w-full">
+                    <h3 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3 text-center md:text-left leading-tight group-hover:text-primary transition-colors">
                       {currentFlash.designation_fr}
                     </h3>
                     {currentFlash.endTime &&
@@ -269,7 +269,7 @@ const VenteFlash = () => {
                         <Countdown timeRemaining={timers[currentFlash.id]} />
                       )}
                     <div
-                      className="prose dark:prose-invert text-base text-gray-600 dark:text-gray-300 mt-2 mb-4 line-clamp-4 text-center md:text-left"
+                      className="prose dark:prose-invert text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-2 mb-4 line-clamp-4 text-center md:text-left"
                       dangerouslySetInnerHTML={{
                         __html: currentFlash.description,
                       }}
@@ -295,7 +295,7 @@ const VenteFlash = () => {
                           <div className="flex gap-3 w-full justify-center">
                             <div
   key={`vente-flash-${currentFlash.id}-${mainProduct?.id || mainProduct?._id}`}
-  className="min-w-[260px] max-w-[320px] flex-shrink-0"
+  className="min-w-[200px] max-w-[320px] flex-shrink-0 w-full"
   style={{ scrollSnapAlign: "start" }}
 >
   {mainProduct && (
@@ -309,12 +309,11 @@ const VenteFlash = () => {
       {mainProduct.slug && (
         <a
           href={`/produits/${mainProduct.slug}`}
-          className="mt-4 inline-block font-bold py-2 px-6 rounded transition text-lg w-full text-center"
+          className="mt-2 sm:mt-4 inline-block font-bold py-2 px-4 sm:px-6 rounded transition text-base sm:text-lg w-full text-center"
           style={{
             background: "#FF4500",
             color: "#fff",
-            border: "2px solid #FF4500",
-            marginTop: "-50px"
+            border: "2px solid #FF4500"
           }}
         >
           Voir loffre

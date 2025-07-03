@@ -188,9 +188,13 @@ const Header = () => {
     <header
       className="fixed left-0 top-0 w-full z-[9999] bg-white transition-all ease-in-out duration-300"
       style={{ 
-        pointerEvents: navigationOpen ? 'auto' : undefined,
-        maxHeight: isMobile && navigationOpen ? '100vh' : undefined,
-        overflowY: isMobile && navigationOpen ? 'auto' : undefined
+        pointerEvents: hideTopHeader ? 'none' : (navigationOpen ? 'auto' : undefined),
+        height: hideTopHeader ? 0 : undefined,
+        minHeight: hideTopHeader ? 0 : undefined,
+        maxHeight: hideTopHeader ? 0 : (isMobile && navigationOpen ? '100vh' : undefined),
+        padding: hideTopHeader ? 0 : undefined,
+        overflow: hideTopHeader ? 'hidden' : ((isMobile && navigationOpen) ? 'auto' : undefined),
+        transition: 'height 0.3s, min-height 0.3s, max-height 0.3s, padding 0.3s, pointer-events 0.3s',
       }}
     >
       {/* Top header: logo, search, login, cart, etc. */}

@@ -39,14 +39,20 @@ const CustomSelect = ({ options }) => {
   }, [isOpen]);
 
   return (
-    <div className="dropdown-content custom-select relative" style={{ width: '200px' }}>
+    <div
+      className="dropdown-content custom-select relative w-full max-w-[200px] sm:max-w-[160px]"
+      style={{ minWidth: '0' }}
+    >
       <div
         className={`select-selected whitespace-nowrap ${isOpen ? 'select-arrow-active' : ''}`}
         onClick={toggleDropdown}
       >
         {selectedOption.label}
       </div>
-      <div className={`select-items ${isOpen ? '' : 'select-hide'}`}>
+      <div
+        className={`select-items ${isOpen ? '' : 'select-hide'} max-h-60 overflow-y-auto w-full left-0 right-0`}
+        style={{ minWidth: '0' }}
+      >
         {options.slice(1, -1).map((option, index) => (
           <div
             key={index}

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -18,6 +18,24 @@ interface BrandsDropdownProps {
 
 const BrandsDropdown: React.FC<BrandsDropdownProps> = ({ brands, loadingBrands, stickyMenu }) => {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on scroll or click outside
+  useEffect(() => {
+    if (!open) return;
+    const handleScroll = () => setOpen(false);
+    const handleClick = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    document.addEventListener('mousedown', handleClick);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, [open]);
 
   return (
     <li
@@ -34,17 +52,27 @@ const BrandsDropdown: React.FC<BrandsDropdownProps> = ({ brands, loadingBrands, 
       </span>
       {/* Dropdown grid */}
       <div
-        className={`dropdown absolute left-0 top-full mt-2 bg-white shadow-2xl rounded-xl min-w-[320px] z-50
-          grid-cols-2 md:grid-cols-3 gap-4 p-4 border border-gray-3
-          transition-all duration-300 ease-in-out
-          ${open ? "grid max-h-[350px] overflow-y-auto opacity-100 translate-y-0" : "hidden opacity-0 -translate-y-2"}
-        `}
+        ref={dropdownRef}
+        className={
+          `dropdown absolute left-0 top-full mt-2 bg-white shadow-2xl rounded-xl min-w-[320px] z-50 w-full sm:w-[95vw] md:w-[420px] xl:w-[320px] ` +
+          `grid-cols-2 md:grid-cols-3 gap-4 p-4 border border-gray-3 transition-all duration-300 ease-in-out ` +
+          (open ? "grid max-h-[350px] overflow-y-auto opacity-100 translate-y-0" : "hidden opacity-0 -translate-y-2")
+        }
         style={{
           gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
         }}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
       >
+        {/* Mobile close button */}
+        <button
+          className="header-mobile-close xl:hidden show-on-mobile mb-2 ml-auto"
+          aria-label="Fermer le menu"
+          style={{ display: 'block' }}
+          onClick={() => setOpen(false)}
+        >
+          &times;
+        </button>
         {loadingBrands ? (
           <div className="col-span-full text-center py-4 text-gray-400">Chargement...</div>
         ) : brands.length === 0 ? (

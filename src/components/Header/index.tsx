@@ -43,6 +43,8 @@ const Header = () => {
   const [stickyMenu, setStickyMenu] = useState(false);
   const [showBrandsDropdown, setShowBrandsDropdown] = useState(false);
   const { openCartModal } = useCartModalContext();
+  // For mobile close button
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1280;
 
   const product = useAppSelector((state) => state.cartReducer.items);
   const totalPrice = useSelector(selectTotalPrice);
@@ -82,6 +84,10 @@ const Header = () => {
     } else {
       setStickyMenu(false);
     }
+    // Close mobile nav and dropdowns on scroll (mobile and desktop)
+    setNavigationOpen(false);
+    setShowBrandsDropdown(false);
+    document.body.classList.remove('mobile-nav-open');
   };
 
   useEffect(() => {
@@ -90,6 +96,15 @@ const Header = () => {
       window.removeEventListener("scroll", handleStickyMenu);
     };
   }, []);
+
+  // Prevent body scroll when mobile nav is open
+  useEffect(() => {
+    if (navigationOpen) {
+      document.body.classList.add('mobile-nav-open');
+    } else {
+      document.body.classList.remove('mobile-nav-open');
+    }
+  }, [navigationOpen]);
 
   // Fetch categories and subcategories
   useEffect(() => {
@@ -171,6 +186,17 @@ const Header = () => {
             stickyMenu ? "py-4" : "py-6"
           }`}
         >
+          {/* Mobile Nav Close Button */}
+          {navigationOpen && (
+            <button
+              className="header-mobile-close xl:hidden show-on-mobile"
+              aria-label="Fermer le menu"
+              onClick={() => setNavigationOpen(false)}
+              style={{ position: 'absolute', top: 16, right: 16, zIndex: 10001 }}
+            >
+              &times;
+            </button>
+          )}
           {/* <!-- header top left --> */}
           <div className="xl:w-auto flex-col sm:flex-row w-full flex sm:justify-between sm:items-center gap-5 sm:gap-10">
             <Link className="flex-shrink-0" href="/">
@@ -438,7 +464,7 @@ const Header = () => {
               className={`w-[288px] absolute right-4 top-full xl:static xl:w-auto h-0 xl:h-auto invisible xl:visible xl:flex items-center justify-between ${
                 navigationOpen &&
                 `!visible bg-white shadow-lg border border-gray-3 !h-auto max-h-[400px] overflow-y-scroll rounded-md p-5`
-              }`}
+              } header-mobile-nav`}
             >
               {/* <!-- Main Nav Start --> */}
               <nav>

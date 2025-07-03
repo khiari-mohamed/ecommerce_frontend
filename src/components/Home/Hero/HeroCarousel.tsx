@@ -26,7 +26,7 @@ const HeroCarousal = () => {
           {/* Full-width background image */}
           <div className="absolute inset-0">
             <Image
-              src="/images/hero/zmb-biotechusa-60-gelules.jpg"
+              src="/images/hero/1.jpg"
               alt="ZMB Supplement"
               fill
               className="object-cover"
@@ -59,7 +59,7 @@ const HeroCarousal = () => {
                 href="#"
                 className="inline-block font-bold text-white text-lg rounded-md bg-dark hover:bg-[#333] py-3 px-8 transition-colors duration-300"
               >
-                Shop Now
+                achetez maintenant
               </a>
             </div>
           </div>
@@ -103,7 +103,7 @@ const HeroCarousal = () => {
                 href="#"
                 className="inline-block font-bold text-white text-lg rounded-md bg-dark hover:bg-[#333] py-3 px-8 transition-colors duration-300"
               >
-                Shop Now
+                achetez maintenant
               </a>
             </div>
           </div>

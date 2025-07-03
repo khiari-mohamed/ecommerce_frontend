@@ -1,3 +1,4 @@
+/*
 "use client";
 import { useEffect, useState } from "react";
 import ProductCard from "../../shared/productCard";
@@ -57,7 +58,6 @@ const VenteFlash = () => {
   const [currentFlashIndex, setCurrentFlashIndex] = useState(0);
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
 
-  // Fetch all flash sales and their products (append after static)
   useEffect(() => {
     const fetchFlashSales = async () => {
       try {
@@ -68,7 +68,6 @@ const VenteFlash = () => {
         const limited = filtered.slice(0, 5);
         setFlashSales([...staticFlashSales, ...limited]);
 
-        // Initialize countdowns for fetched sales
         const initialTimers: typeof timers = {};
         limited.forEach((item: FlashSale) => {
           if (item.endTime) {
@@ -77,7 +76,6 @@ const VenteFlash = () => {
         });
         setTimers((prev) => ({ ...prev, ...initialTimers }));
 
-        // Fetch products for each fetched flash sale
         const productsFetches = limited.map((item: FlashSale) =>
           axios
             .get(`${API_URL}/vente-flash/${item.id}/products`)
@@ -100,12 +98,10 @@ const VenteFlash = () => {
     fetchFlashSales();
   }, []);
 
-  // Reset product index when flash changes
   useEffect(() => {
     setCurrentProductIndex(0);
   }, [currentFlashIndex]);
 
-  // Update all countdowns every second
   useEffect(() => {
     const interval = setInterval(() => {
       setTimers((prev) => {
@@ -138,7 +134,6 @@ const VenteFlash = () => {
     };
   };
 
-  // Carousel controls
   const goToPrevFlash = () => {
     setCurrentFlashIndex((prev) => (prev === 0 ? flashSales.length - 1 : prev - 1));
   };
@@ -146,7 +141,6 @@ const VenteFlash = () => {
     setCurrentFlashIndex((prev) => (prev === flashSales.length - 1 ? 0 : prev + 1));
   };
 
-  // Product carousel controls
   const currentFlash = flashSales[currentFlashIndex];
   const currentProducts = productsMap[currentFlash?.id] || [];
   const mainProduct = currentProducts.length > 0 ? currentProducts[currentProductIndex] : null;
@@ -162,7 +156,6 @@ const VenteFlash = () => {
     );
   };
 
-  // SVG Arrow
   const ArrowLeft = (
     <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
       <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -191,186 +184,39 @@ const VenteFlash = () => {
             Ventes Flash en Cours
           </h2>
         </motion.div>
-
-        {flashSales.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500 dark:text-gray-400">
-              Aucun article en vente flash pour le moment
-            </p>
-          </div>
-        ) : (
-          <div className="relative flex items-center justify-center min-h-[520px]">
-            {/* Main flash carousel arrows */}
-            <button
-              aria-label="Flash précédent"
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full shadow p-2 transition disabled:opacity-30"
-              style={{
-                background: "#FF4500",
-                border: "2px solid #FF4500",
-                color: "#fff"
-              }}
-              onClick={goToPrevFlash}
-              disabled={flashSales.length <= 1}
-              type="button"
-            >
-              {ArrowLeft}
-            </button>
-            <div className="w-full flex justify-center">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentFlash.id}
-                  className="group bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row border border-primary/20 hover:shadow-2xl transition-all relative max-w-2xl mx-auto w-full"
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  variants={{
-                    hidden: { opacity: 0, x: 40 },
-                    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
-                    exit: { opacity: 0, x: -40, transition: { duration: 0.4, ease: "easeIn" } },
-                  }}
-                >
-                  {/* IMAGE */}
-                  <div className="relative flex-shrink-0 w-full md:w-2/5 flex items-center justify-center bg-gray-50 dark:bg-gray-800 p-2 sm:p-4">
-                    {mainProduct && (mainProduct.mainImage?.url || mainProduct.cover) ? (
-                      <img
-                        src={mainProduct.mainImage?.url || mainProduct.cover}
-                        alt={mainProduct.designation || mainProduct.designation_fr || ""}
-                        className="w-full h-40 sm:h-60 md:h-72 object-contain rounded-lg shadow-md bg-white"
-                        style={{ background: "#fff" }}
-                      />
-                    ) : (
-                      <div className="w-full h-40 sm:h-60 md:h-72 flex items-center justify-center rounded-lg shadow-md bg-white text-gray-300 text-lg">
-                        {/* No image available */}
-                      </div>
-                    )}
-                    {/* VENTE FLASH badge always visible, styled */}
-                    <div className="absolute top-2 left-2 z-20">
-                      <span
-                        className="inline-block text-white text-xs font-bold px-3 py-1 rounded shadow uppercase tracking-wider"
-                        style={{ background: "#FF4500" }}
-                      >
-                        Vente Flash
-                      </span>
-                    </div>
-                    {typeof currentFlash.discount === "number" &&
-                      currentFlash.discount > 0 && (
-                        <span className="absolute bottom-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded shadow">
-                          -{currentFlash.discount}%
-                        </span>
-                      )}
-                  </div>
-                  {/* CONTENT */}
-                  <div className="flex-1 flex flex-col justify-center p-4 sm:p-6 md:p-8 w-full">
-                    <h3 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3 text-center md:text-left leading-tight group-hover:text-primary transition-colors">
-                      {currentFlash.designation_fr}
-                    </h3>
-                    {currentFlash.endTime &&
-                      timers[currentFlash.id] && (
-                        <Countdown timeRemaining={timers[currentFlash.id]} />
-                      )}
-                    <div
-                      className="prose dark:prose-invert text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-2 mb-4 line-clamp-4 text-center md:text-left"
-                      dangerouslySetInnerHTML={{
-                        __html: currentFlash.description,
-                      }}
-                    />
-                    {/* Product carousel */}
-                    {productsLoaded[currentFlash.id] ? (
-                      currentProducts.length > 0 ? (
-                        <div className="relative mt-4 flex items-center justify-center">
-                          <button
-                            aria-label="Produit précédent"
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full shadow p-2 transition disabled:opacity-30"
-                            style={{
-                              background: "#FF4500",
-                              border: "2px solid #FF4500",
-                              color: "#fff"
-                            }}
-                            onClick={goToPrevProduct}
-                            disabled={currentProducts.length <= 1}
-                            type="button"
-                          >
-                            {ArrowLeft}
-                          </button>
-                          <div className="flex gap-3 w-full justify-center">
-                            <div
-  key={`vente-flash-${currentFlash.id}-${mainProduct?.id || mainProduct?._id}`}
-  className="min-w-[200px] max-w-[320px] flex-shrink-0 w-full"
-  style={{ scrollSnapAlign: "start" }}
->
-  {mainProduct && (
-    <>
-      <ProductCard
-        user={user}
-        product={mapProductToCard(mainProduct)}
-        showDiscountBadge={true}
-        isFlashSale={true}
-      />
-      {mainProduct.slug && (
-        <a
-          href={`/produits/${mainProduct.slug}`}
-          className="mt-2 sm:mt-4 inline-block font-bold py-2 px-4 sm:px-6 rounded transition text-base sm:text-lg w-full text-center"
-          style={{
-            background: "#FF4500",
-            color: "#fff",
-            border: "2px solid #FF4500"
-          }}
-        >
-          Voir loffre
-        </a>
-      )}
-    </>
-  )}
-</div>
-                          </div>
-                          <button
-                            aria-label="Produit suivant"
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full shadow p-2 transition disabled:opacity-30"
-                            style={{
-                              background: "#FF4500",
-                              border: "2px solid #FF4500",
-                              color: "#fff"
-                            }}
-                            onClick={goToNextProduct}
-                            disabled={currentProducts.length <= 1}
-                            type="button"
-                          >
-                            {ArrowRight}
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="text-center text-xs text-gray-400 mt-4">
-                          Aucun produit pour cette vente flash.
-                        </div>
-                      )
-                    ) : (
-                      <div className="text-center text-xs text-gray-400 mt-4">
-                        Chargement des produits...
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-            <button
-              aria-label="Flash suivant"
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full shadow p-2 transition disabled:opacity-30"
-              style={{
-                background: "#FF4500",
-                border: "2px solid #FF4500",
-                color: "#fff"
-              }}
-              onClick={goToNextFlash}
-              disabled={flashSales.length <= 1}
-              type="button"
-            >
-              {ArrowRight}
-            </button>
-          </div>
-        )}
+        ...
       </div>
     </section>
   );
 };
 
 export default VenteFlash;
+*/
+
+
+import { host, storage } from "@/const/urls";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import FlashSaleCard from "../../Common/products/flashSaleCard";
+
+
+async function FlashSale({ products }: { products: any[] }) {
+
+  return (
+    <div className="container py-12 mx-auto">
+        <h2 className="mb-10 uppercase font-bold text-2xl tracking-wide text-center text-[#ff4000]">
+          VENTES FLASH
+        </h2>
+          <div className="productmarging grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {products &&
+              products?.length > 0 &&
+              products?.map((product: any) => {
+                return <FlashSaleCard key={product?.id} product={product} />;
+              })}
+          </div>
+        </div>
+  );
+}
+
+export default FlashSale;

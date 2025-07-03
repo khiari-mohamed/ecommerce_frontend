@@ -1,14 +1,31 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 const Dropdown = ({ menuItem, stickyMenu }) => {
   const [dropdownToggler, setDropdownToggler] = useState(false);
   const pathUrl = usePathname();
+  const dropdownRef = useRef<HTMLUListElement>(null);
+
+  // Close dropdown on scroll or click outside
+  useEffect(() => {
+    if (!dropdownToggler) return;
+    const handleScroll = () => setDropdownToggler(false);
+    const handleClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownToggler(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    document.addEventListener('mousedown', handleClick);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, [dropdownToggler]);
 
   return (
     <li
-      onClick={() => setDropdownToggler(!dropdownToggler)}
       className={`group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full ${
         pathUrl.includes(menuItem.title) && "before:!w-full"
       }`}
@@ -18,6 +35,7 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
         className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center gap-1.5 capitalize ${
           stickyMenu ? "xl:py-4" : "xl:py-6"
         } ${pathUrl.includes(menuItem.title) && "!text-blue"}`}
+        onClick={e => { e.preventDefault(); setDropdownToggler(!dropdownToggler); }}
       >
         {menuItem.title}
         <svg
@@ -39,12 +57,23 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
 
       {/* <!-- Dropdown Start --> */}
       <ul
-        className={`dropdown ${dropdownToggler && "flex"} ${
+        ref={dropdownRef}
+        className={`dropdown w-full sm:w-[95vw] md:w-[420px] xl:w-[193px] ${dropdownToggler ? "flex max-h-[350px] overflow-y-auto opacity-100 translate-y-0" : "hidden opacity-0 -translate-y-2"} ${
           stickyMenu
             ? "xl:group-hover:translate-y-0"
             : "xl:group-hover:translate-y-0"
         }`}
+        style={{ minWidth: '0' }}
       >
+        {/* Mobile close button */}
+        <button
+          className="header-mobile-close xl:hidden show-on-mobile mb-2 ml-auto"
+          aria-label="Fermer le menu"
+          style={{ display: 'block' }}
+          onClick={() => setDropdownToggler(false)}
+        >
+          &times;
+        </button>
         {menuItem.submenu.map((item, i) => (
           <li key={i}>
             <Link
@@ -52,6 +81,7 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
               className={`flex text-custom-sm hover:text-blue hover:bg-gray-1 py-[7px] px-4.5 ${
                 pathUrl === item.path && "text-blue bg-gray-1"
               } `}
+              onClick={() => setDropdownToggler(false)}
             >
               {item.title}
             </Link>

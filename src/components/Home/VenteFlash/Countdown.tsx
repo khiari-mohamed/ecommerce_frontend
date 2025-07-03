@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 
 interface CountdownProps {
   timeRemaining: {
@@ -39,3 +39,4 @@ const Countdown: React.FC<CountdownProps> = ({ timeRemaining }) => {
 };
 
 export default Countdown;
+*/

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { Product } from "@/types/product";
 import {
   getProductListPage,
@@ -132,7 +133,7 @@ useEffect(() => {
       key: "mainImage",
       label: "Image",
       render: (_value, row) => (
-        <img
+        <Image
           src={
             row.cover
               ? "/" + row.cover.replace(/^\/+/, "")
@@ -141,6 +142,8 @@ useEffect(() => {
               : "/images/placeholder.png"
           }
           alt={row.designation || row.title || "Product image"}
+          width={60}
+          height={60}
           className="product-table-image"
           style={{ maxWidth: 60, maxHeight: 60, objectFit: "contain" }}
         />

@@ -1,6 +1,7 @@
 "use client";
 import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import axios from "axios";
 import ProductCard from "@/components/shared/productCard";
 import Countdown from "@/components/Home/VenteFlash/Countdown";
@@ -106,7 +107,7 @@ export default function VenteFlashSlugPage({
         <div className="flex flex-col md:flex-row gap-8 items-center md:items-start bg-white rounded-xl shadow-lg p-6 md:p-10 border border-orange-200">
           {/* IMAGE & BADGE */}
           <div className="w-full md:w-1/3 flex flex-col items-center">
-            <img
+            <Image
               src={
                 flashSale.cover
                   ? flashSale.cover.startsWith("/")
@@ -115,6 +116,8 @@ export default function VenteFlashSlugPage({
                   : FALLBACK_IMAGE
               }
               alt={flashSale.designation_fr}
+              width={320}
+              height={256}
               className="w-full max-w-xs h-40 md:h-64 object-contain rounded-lg shadow-md bg-white"
               onError={(e: any) => {
                 e.currentTarget.src = FALLBACK_IMAGE;

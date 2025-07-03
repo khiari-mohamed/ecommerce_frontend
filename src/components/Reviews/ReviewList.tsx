@@ -8,7 +8,7 @@ interface ReviewListProps {
 
 const ReviewList: React.FC<ReviewListProps> = ({ reviews }) => {
   if (!reviews || reviews.length === 0) {
-    return <div>Aucun avis pour l'instant.</div>;
+    return <div>Aucun avis.</div>;
   }
 
   return (

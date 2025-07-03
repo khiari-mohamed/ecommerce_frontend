@@ -32,7 +32,7 @@ const Checkout = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("Component mounted. Default selectedPayment:", selectedPayment);
+    console.log("Component mounted.");
   }, []);
 
   useEffect(() => {

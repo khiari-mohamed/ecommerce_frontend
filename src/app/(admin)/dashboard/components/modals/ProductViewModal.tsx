@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Product } from "@/types/product";
 import Modal from "../ui/Modal";
 import Badge from "../ui/Badge";
@@ -7,13 +8,12 @@ interface ProductViewModalProps {
   product: Product;
   onClose: () => void;
 }
-
 const ProductViewModal: React.FC<ProductViewModalProps> = ({ product, onClose }) => {
   return (
     <Modal open onClose={onClose} title="Product Details" size="md">
       <div className="space-y-4">
         <div className="flex gap-4">
-          <img
+          <Image
             src={
               product.cover
                 ? (product.cover.startsWith("http") ? product.cover : "/" + product.cover.replace(/^\/+/, ""))
@@ -24,6 +24,8 @@ const ProductViewModal: React.FC<ProductViewModalProps> = ({ product, onClose })
                 : "/images/placeholder.png"
             }
             alt={product.designation}
+            width={128}
+            height={128}
             className="w-32 h-32 object-cover rounded-xl border"
           />
           <div>
@@ -131,10 +133,12 @@ const ProductViewModal: React.FC<ProductViewModalProps> = ({ product, onClose })
             <div className="font-semibold mb-1">Gallery:</div>
             <div className="flex gap-2 flex-wrap">
               {product.images.map((img, idx) => (
-                <img
+                <Image
                   key={idx}
                   src={img.url}
                   alt={`Gallery ${idx + 1}`}
+                  width={64}
+                  height={64}
                   className="w-16 h-16 object-cover rounded border"
                 />
               ))}

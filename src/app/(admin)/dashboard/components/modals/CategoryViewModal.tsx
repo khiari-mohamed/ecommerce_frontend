@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Category } from "@/types/category";
 import "../../styles/dashboard.css";
 interface Props {
@@ -11,9 +12,11 @@ const CategoryViewModal: React.FC<Props> = ({ category, onClose }) => (
     <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md">
       <h2 className="text-xl font-bold mb-4">Category Details</h2>
       <div className="flex gap-4 items-center mb-4">
-        <img
+        <Image
           src={category.cover ? `/images/categories/${category.cover.split('/').pop()}` : "/images/placeholder.png"}
           alt={category.alt_cover || category.designation || category.title || "Category"}
+          width={80}
+          height={80}
           className="w-20 h-20 object-cover rounded-lg border"
         />
         <div>

@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { brands } from "./brandData";
 
@@ -43,9 +44,11 @@ const BrandSection: React.FC = () => {
                 onClick={() => handleBrandClick(brand.id)}
                 title={brand.name}
               >
-                <img
+                <Image
                   src={brand.image}
                   alt={brand.name}
+                  width={120}
+                  height={64}
                   className="h-10 sm:h-16 object-contain grayscale hover:grayscale-0 transition"
                   loading="lazy"
                 />

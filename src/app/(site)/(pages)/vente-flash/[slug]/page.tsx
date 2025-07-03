@@ -131,13 +131,11 @@ export default function VenteFlashSlugPage({
                 -{flashSale.discount}%
               </span>
             )}
-            /*
             {flashSale.endTime && timer && (
               <div className="mt-4">
                 <Countdown timeRemaining={timer} />
               </div>
             )}
-            */
          </div>
           {/* DETAILS */}
           <div className="flex-1 flex flex-col items-center md:items-start">

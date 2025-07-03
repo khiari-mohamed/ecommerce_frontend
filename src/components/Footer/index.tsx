@@ -73,7 +73,7 @@ function Footer() {
               type="submit"
               className="bg-[#FF5000] text-white font-bold px-6 py-3 w-full sm:w-auto hover:bg-[#FF8000] transition-all"
             >
-              S'abonner
+              S&apos;abonner
             </button>
           </div>
         </form>
@@ -136,7 +136,7 @@ function Footer() {
               <Link href="/condition-ventes" className="hover:underline">POLITIQUE DE CONFIDENTIALITÉ</Link>
             </li>
             <li>
-              <Link href="/condition-ventes" className="hover:underline">CONDITIONS D'UTILISATION</Link>
+              <Link href="/condition-ventes" className="hover:underline">CONDITIONS DUTILISATION</Link>
             </li>
             <li>
               <Link href="/remboursement" className="hover:underline">POLITIQUE DE RETOUR ET DE REMBOURSEMENT</Link>

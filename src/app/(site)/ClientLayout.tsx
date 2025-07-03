@@ -39,7 +39,9 @@ export default function ClientLayout({
                   <ModalProvider>
                     <PreviewSliderProvider>
                       <Header />
-                      {children}
+                      <div style={{ paddingTop: '96px' }}>
+                        {children}
+                      </div>
                       <QuickViewModal />
                       <CartSidebarModal />
                       <PreviewSliderModal />

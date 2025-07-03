@@ -1,10 +1,9 @@
-/*
 "use client";
 import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "@/components/shared/productCard";
-// import Countdown from "@/components/Home/VenteFlash/Countdown";
+import Countdown from "@/components/Home/VenteFlash/Countdown";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const FALLBACK_IMAGE = "/static-flash/p8.png";
 
@@ -105,7 +104,7 @@ export default function VenteFlashSlugPage({
     >
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="flex flex-col md:flex-row gap-8 items-center md:items-start bg-white rounded-xl shadow-lg p-6 md:p-10 border border-orange-200">
-          {/* IMAGE & BADGE 
+          {/* IMAGE & BADGE */}
           <div className="w-full md:w-1/3 flex flex-col items-center">
             <img
               src={
@@ -132,15 +131,15 @@ export default function VenteFlashSlugPage({
                 -{flashSale.discount}%
               </span>
             )}
-            {/*
+            /*
             {flashSale.endTime && timer && (
               <div className="mt-4">
                 <Countdown timeRemaining={timer} />
               </div>
             )}
             */
-         /* </div> */
-          /* DETAILS *
+         </div>
+          {/* DETAILS */}
           <div className="flex-1 flex flex-col items-center md:items-start">
             <h1
               className="text-3xl md:text-4xl font-bold uppercase mb-2 tracking-wide text-center md:text-left"
@@ -179,9 +178,9 @@ export default function VenteFlashSlugPage({
             </a>
           </div>
         </div>
-        {/* PRODUCTS */
-        
-        /*<div className="mt-10">
+        {/* PRODUCTS */}
+
+        <div className="mt-10">
           <h2
             className="text-2xl font-bold mb-6 uppercase tracking-wide"
             style={{ color: "#FF4500" }}
@@ -210,8 +209,9 @@ export default function VenteFlashSlugPage({
     </section>
   );
 }
-*/
 
+
+/*
 export default function VenteFlashSlugPage() {
   return null;
-}
+}*/

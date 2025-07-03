@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import { useState, useEffect } from "react";
 
 type TimeLeft = {
@@ -84,4 +84,4 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ endDate }) => {
   );
 };
 
-export default CountdownTimer;
+export default CountdownTimer;*/

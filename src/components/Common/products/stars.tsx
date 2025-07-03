@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 
 interface StarProps {
   fill?: string;
@@ -27,4 +27,4 @@ const Star: React.FC<StarProps> = ({ fill, onClick, className }) => {
   );
 };
 
-export default Star;
+export default Star;*/

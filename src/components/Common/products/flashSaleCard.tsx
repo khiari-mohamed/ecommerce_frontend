@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 
 import { useState } from "react";
 import { storage } from "@/const/urls";
@@ -74,7 +74,7 @@ function FlashSaleCard({ product }: { product: any }) {
           dépêchez-vous! Les offres se terminent en :
         </p>
         
-        {/* Pass promo_expiration_date dynamically */}
+        {/* Pass promo_expiration_date dynamically 
         <CountdownTimer endDate={product.promo_expiration_date} />
       </div>
     </div>
@@ -82,3 +82,4 @@ function FlashSaleCard({ product }: { product: any }) {
 }
 
 export default FlashSaleCard;
+*/

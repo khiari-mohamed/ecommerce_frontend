@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import { storage } from "@/const/urls";
 import Image from "next/image";
 import React from "react";
@@ -31,4 +31,4 @@ function ProductImage1({ alt, img }: { img: string; alt: string }) {
   );
 }
 
-export default ProductImage1;
+export default ProductImage1;*/

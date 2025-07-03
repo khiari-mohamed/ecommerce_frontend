@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -101,4 +101,4 @@ const ProductCard1 = ({ product }: { product: any }) => {
   );
 };
 
-export default ProductCard1;
+export default ProductCard1;*/

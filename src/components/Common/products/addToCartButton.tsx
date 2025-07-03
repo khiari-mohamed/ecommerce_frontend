@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 
 import useCartStore from "@/store";
 import Image from "next/image";
@@ -47,4 +47,4 @@ const AddToCartButton = ({ product, disabled }: { product: any, disabled?: boole
   );
 }
 
-export default AddToCartButton;
+export default AddToCartButton;*/

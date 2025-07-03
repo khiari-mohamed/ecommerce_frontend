@@ -17,7 +17,7 @@ const Home = () => {
     <main>
       <Hero />
       <Categories />
-      <VenteFlash products={[]} />
+      <VenteFlash  />
       <NewArrival />
       <PromoBanner />
       <BestSeller />

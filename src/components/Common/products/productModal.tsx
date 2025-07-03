@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import { storage } from "@/const/urls";
 import useCartStore from "@/store";
 import { Dialog, Transition } from "@headlessui/react";
@@ -224,3 +224,4 @@ export default function ProductModal({ productslug }: { productslug: any }) {
     </div>
   );
 }
+*/

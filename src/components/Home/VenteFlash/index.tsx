@@ -1,4 +1,4 @@
-/*
+
 "use client";
 import { useEffect, useState } from "react";
 import ProductCard from "../../shared/productCard";
@@ -191,9 +191,9 @@ const VenteFlash = () => {
 };
 
 export default VenteFlash;
-*/
 
 
+/*
 import { host, storage } from "@/const/urls";
 import Image from "next/image";
 import Link from "next/link";
@@ -220,3 +220,4 @@ async function FlashSale({ products }: { products: any[] }) {
 }
 
 export default FlashSale;
+*/

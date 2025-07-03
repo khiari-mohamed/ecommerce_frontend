@@ -14,7 +14,7 @@ import PreviewSliderModal from "@/components/Common/PreviewSlider";
 import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
 import { AuthProvider } from "@/context/authContext";
-import { ThemeProvider } from "@/context/ThemeContext";
+
 
 export default function ClientLayout({
   children,
@@ -35,7 +35,6 @@ export default function ClientLayout({
         <>
           <ReduxProvider>
             <AuthProvider>
-              <ThemeProvider>
                 <CartModalProvider>
                   <ModalProvider>
                     <PreviewSliderProvider>
@@ -47,7 +46,6 @@ export default function ClientLayout({
                     </PreviewSliderProvider>
                   </ModalProvider>
                 </CartModalProvider>
-              </ThemeProvider>
             </AuthProvider>
           </ReduxProvider>
           <ScrollToTop />

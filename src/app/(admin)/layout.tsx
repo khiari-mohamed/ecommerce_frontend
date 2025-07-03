@@ -5,7 +5,7 @@ import { CartModalProvider } from "../context/CartSidebarModalContext";
 import { ReduxProvider } from "@/redux/provider";
 import { PreviewSliderProvider } from "../context/PreviewSliderContext";
 import { AuthProvider } from "@/context/authContext";
-import { ThemeProvider } from "@/context/ThemeContext";
+
 
 export default function AdminLayout({
   children,
@@ -17,7 +17,6 @@ export default function AdminLayout({
       <body>
         <ReduxProvider>
           <AuthProvider>
-            <ThemeProvider>
               <CartModalProvider>
                 <ModalProvider>
                   <PreviewSliderProvider>
@@ -25,7 +24,6 @@ export default function AdminLayout({
                   </PreviewSliderProvider>
                 </ModalProvider>
               </CartModalProvider>
-            </ThemeProvider>
           </AuthProvider>
         </ReduxProvider>
       </body>

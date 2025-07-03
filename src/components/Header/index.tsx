@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import Image from "next/image";
-import { ThemeToggle } from "../Common/ThemeToggle";
+// import { ThemeToggle } from "../Common/ThemeToggle";
 import axios from "@/lib/axios";
 import { useRouter } from "next/navigation"; // Add this import
 
@@ -179,7 +179,11 @@ const Header = () => {
         stickyMenu && "shadow"
       }`}
     >
-      <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">
+      {/* Top header: logo, search, login, cart, etc. */}
+      <div
+        className={`max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 transition-transform duration-300 ease-in-out ${stickyMenu ? "-translate-y-full" : "translate-y-0"}`}
+        style={{ willChange: 'transform' }}
+      >
         {/* <!-- header top start --> */}
         <div
           className={`flex flex-col lg:flex-row gap-5 items-end lg:items-center xl:justify-between ease-out duration-200 ${
@@ -275,10 +279,7 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Adding Theme Toggle */}
-          <div className="flex items-center gap-4 ml-4">
-            <ThemeToggle />
-          </div>
+          {/* Theme Toggle removed */}
 
           {/* <!-- header top right --> */}
           <div className="flex w-full lg:w-auto items-center gap-7.5">
@@ -456,7 +457,8 @@ const Header = () => {
         {/* <!-- header top end --> */}
       </div>
 
-      <div className="border-t border-gray-3">
+      {/* Bottom header: dropdown nav, always visible and sticky */}
+      <div className="border-t border-gray-3 bg-white sticky top-0 z-9999">
         <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">
           <div className="flex items-center justify-between">
             {/* <!--=== Main Nav Start ===--> */}

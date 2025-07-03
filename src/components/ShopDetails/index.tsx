@@ -290,7 +290,7 @@ const ShopDetails = () => {
   // Show product details
   return (
     <>
-      <Breadcrumb title={"Shop Details"} pages={["shop details"]} />
+      <Breadcrumb title={"Détails de la boutique"} pages={["shop details"]} />
 
       {!product || !product.title ? (
         "Product not found."

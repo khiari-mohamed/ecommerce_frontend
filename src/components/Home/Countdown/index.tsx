@@ -25,9 +25,9 @@ const CountdownBlogGrid = () => {
 
   return (
     <section className="overflow-hidden py-20 bg-gray-2">
-      <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
+      <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-8 xl:px-0">
         <h2 className="text-2xl sm:text-3xl font-bold text-dark mb-10 text-center">Blog</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-7.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-10">
           {loading ? (
             <div className="col-span-4 text-center py-10 text-gray-400">Chargement...</div>
           ) : blogs.length === 0 ? (

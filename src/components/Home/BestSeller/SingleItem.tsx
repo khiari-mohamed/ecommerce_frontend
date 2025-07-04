@@ -16,10 +16,7 @@ const SingleItem = ({ item }: { item: Product }) => {
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
-    dispatch(updateQuickView({
-      ...item,
-      image: imageSrc
-    }));
+    dispatch(updateQuickView(item));
   };
 
   // add to cart

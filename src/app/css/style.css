@@ -379,10 +379,10 @@
     .swiper-pagination {
       bottom: 0.5rem !important;
     }
-    .flex, .grid {
+    /* /* /* .flex, .grid {
       flex-direction: column !important;
       grid-template-columns: 1fr !important;
-    }
+    } */ */ */
     .hide-mobile {
       display: none !important;
     }

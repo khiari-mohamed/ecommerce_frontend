@@ -16,28 +16,19 @@ const SingleItem = ({ item }: { item: Product }) => {
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
-    dispatch(updateQuickView({ ...item }));
+    dispatch(updateQuickView({
+      ...item,
+      image: imageSrc
+    }));
   };
 
   // add to cart
   const handleAddToCart = () => {
-    // Get the first available image
-    let image = "";
-    if (item.cover) {
-      image = item.cover.startsWith('http') ? item.cover : `/${item.cover}`;
-    } else if (item.mainImage?.url) {
-      image = item.mainImage.url.startsWith('http') ? item.mainImage.url : `/${item.mainImage.url}`;
-    } else if (item.imgs?.thumbnails?.length > 0) {
-      image = item.imgs.thumbnails[0].startsWith('http') ? item.imgs.thumbnails[0] : `/${item.imgs.thumbnails[0]}`;
-    } else if (item.imgs?.previews?.length > 0) {
-      image = item.imgs.previews[0].startsWith('http') ? item.imgs.previews[0] : `/${item.imgs.previews[0]}`;
-    }
-
     dispatch(
       addItemToCart({
         ...item,
         quantity: 1,
-        image: image
+        image: imageSrc
       })
     );
   };
@@ -85,7 +76,7 @@ const SingleItem = ({ item }: { item: Product }) => {
     <Link href={`/product-details?id=${item._id || item.id}`} className="group block">
       <div className="relative overflow-hidden rounded-lg bg-[#F6F7FB] min-h-[260px] sm:min-h-[320px] md:min-h-[360px] lg:min-h-[403px]">
         <div className="text-center px-2 sm:px-4 py-5 sm:py-7.5">
-          <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 mb-2 md:flex-row md:gap-2.5">
+          <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 mb-2 !flex-row !flex-nowrap">
             <div className="flex flex-row flex-nowrap items-center gap-1">
               <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
               <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
@@ -134,7 +125,7 @@ const SingleItem = ({ item }: { item: Product }) => {
           />
         </div>
 
-        <div className="absolute right-0 bottom-0 translate-x-full u-w-full flex flex-row flex-nowrap gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0 md:flex-col md:gap-2">
+        <div className="absolute right-0 bottom-0 translate-x-full u-w-full flex flex-row flex-nowrap gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0 overflow-x-auto !flex-row !flex-nowrap">
           <button
             onClick={e => {
               e.preventDefault();

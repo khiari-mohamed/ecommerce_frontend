@@ -61,7 +61,7 @@ export default async function SubcategoryPage({
         <div className="mb-12">
           <h2 className="text-2xl font-semibold mb-6">Produits</h2>
           {/* Uncomment and implement ProductItem if you have product details:
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {subcategory.products.map(product => (
               <ProductItem key={product._id || product.id} item={product} />
             ))}

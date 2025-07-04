@@ -207,7 +207,7 @@ async function FlashSale({ products }: { products: any[] }) {
         <h2 className="mb-10 uppercase font-bold text-2xl tracking-wide text-center text-[#ff4000]">
           VENTES FLASH
         </h2>
-          <div className="productmarging grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="productmarging grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {products &&
               products?.length > 0 &&
               products?.map((product: any) => {

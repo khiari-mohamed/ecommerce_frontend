@@ -56,7 +56,7 @@ const NewArrival = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-7.5 gap-y-6 sm:gap-y-9">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 md:gap-x-7.5 gap-y-6 md:gap-y-9">
           {loading ? (
             <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 flex justify-center items-center py-10">
               <span>Chargement...</span>

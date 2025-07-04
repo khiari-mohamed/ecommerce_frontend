@@ -79,22 +79,21 @@ const ProductCard = ({ product }: { product: any }) => {
               Nouveau
             </span>
           )}
-          <div className="mt-4 mb-2">
-          <Link href={`/shop/${product.slug}`} className="w-full shadow-lg relative pt-10">
-
-            <h2 className="font-weight-700 text-gray-900 product-card-title hover:text-[#0d6efd] title-font text-sm font-medium">
-              {product.designation_fr}
-            </h2>
+          <div className="mt-4 mb-2 flex flex-col items-center text-center w-full">
+            <Link href={`/shop/${product.slug}`} className="w-full shadow-lg relative pt-10">
+              <h2 className="font-weight-700 text-gray-900 product-card-title hover:text-[#0d6efd] title-font text-sm font-medium w-full text-center">
+                {product.designation_fr}
+              </h2>
             </Link>
-            <span className="flex items-center gap-0.5">
+            <span className="flex flex-row items-center justify-center gap-0.5 w-full">
               {[1, 2, 3, 4, 5].map((star, i) => {
                 const isFilled = i < rating;
                 return (
                   <Star
                     key={i}
                     fill={isFilled ? "#EAB308" : "none"}
-                    onClick={() => handleStarClick(i + 1)} // Make star clickable
-                    className="cursor-pointer" // Show clickable cursor
+                    onClick={() => handleStarClick(i + 1)}
+                    className="cursor-pointer"
                   />
                 );
               })}

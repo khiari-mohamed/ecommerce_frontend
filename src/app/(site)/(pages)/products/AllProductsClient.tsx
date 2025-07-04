@@ -49,7 +49,7 @@ const AllProductsClient = () => {
       {loading && <div>Chargement...</div>}
       {error && <div style={{ color: "red" }}>{error}</div>}
       {products.length === 0 && !loading && <div>Aucun produit trouvé.</div>}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {products.map(product => (
           <SingleGridItem item={product} key={product._id} />
         ))}

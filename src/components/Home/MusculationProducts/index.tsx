@@ -209,7 +209,7 @@ const MusculationProducts = () => {
 
       {/* Sample Products Grid */}
       <div className="w-full mx-auto max-w-screen-2xl px-4 md:px-8 mt-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {sampleProducts.map((product, idx) => (
           <ProductCard key={product._id || idx} product={mapToProductCard(product, idx)} />
         ))}

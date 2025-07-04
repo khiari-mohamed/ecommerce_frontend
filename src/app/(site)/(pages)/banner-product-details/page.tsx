@@ -169,7 +169,7 @@ const BannerProductDetails = () => {
               {brand && (
                 <div className="mb-2 text-sm text-gray-600">Marque: {brand}</div>
               )}
-              <div className="flex flex-wrap items-center gap-5.5 mb-4.5">
+              <div className="flex flex-row flex-wrap items-center gap-5.5 mb-4.5">
                 <div className="flex items-center gap-2.5">
                   <div className="flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
@@ -211,7 +211,7 @@ const BannerProductDetails = () => {
                 )}
               </ul>
               <form onSubmit={(e) => e.preventDefault()}>
-                <div className="flex flex-wrap items-center gap-4.5 mt-6">
+                <div className="flex flex-row flex-wrap items-center gap-4.5 mt-6">
                   <div className="flex items-center rounded-md border border-gray-3">
                     <button
                       aria-label="button for remove product"
@@ -264,7 +264,7 @@ const BannerProductDetails = () => {
                 </div>
               </form>
               {/* Social Share & Copy Link */}
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-8 flex flex-row flex-wrap items-center gap-3">
                 {/* Facebook */}
                 <button aria-label="Partager sur Facebook" className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-blue-600 hover:text-white transition-all duration-150" onClick={() => {window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank', 'noopener,noreferrer');}}><svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/></svg></button>
                 {/* Twitter */}

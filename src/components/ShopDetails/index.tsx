@@ -373,7 +373,7 @@ const ShopDetails = () => {
     ? product.brand
     : (product.brand as any)._id || ""
 } />
-                  <div className="flex flex-wrap items-center gap-5.5 mb-4.5">
+                  <div className="flex flex-row flex-wrap items-center gap-5.5 mb-4.5">
                     <div className="flex items-center gap-2.5">
                       {/* Stars */}
                       <div className="flex items-center gap-1">
@@ -591,7 +591,7 @@ const ShopDetails = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-wrap items-center gap-4.5">
+                    <div className="flex flex-row flex-wrap items-center gap-4.5">
                       <div className="flex items-center rounded-md border border-gray-3">
                         <button
                           aria-label="button for remove product"
@@ -694,7 +694,7 @@ const ShopDetails = () => {
                     </div>
                   </form>
                   {/* Social Share & Copy Link */}
-                  <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <div className="mt-8 flex flex-row flex-wrap items-center gap-3">
                     {/* Facebook */}
                     <button
                       aria-label="Partager sur Facebook"

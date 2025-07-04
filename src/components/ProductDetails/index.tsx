@@ -235,7 +235,7 @@ const ProductDetails = () => {
               {/* --- FLAVORS/AROMAS BADGES --- */}
               
               {/* --- END FLAVORS/AROMAS BADGES --- */}
-              <div className="flex flex-wrap items-center gap-5.5 mb-4.5">
+              <div className="flex flex-row flex-wrap items-center gap-5.5 mb-4.5">
                 <div className="flex items-center gap-2.5">
                   <div className="flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
@@ -429,7 +429,7 @@ const ProductDetails = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-4.5">
+                <div className="flex flex-row flex-wrap items-center gap-4.5">
                   <div className="flex items-center rounded-md border border-gray-3">
                     <button aria-label="button for remove product" className="flex items-center justify-center w-12 h-12 ease-out duration-200 hover:text-blue" onClick={() => quantity > 1 && setQuantity(quantity - 1)}>
                       <svg className="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.33301 10.0001C3.33301 9.53984 3.7061 9.16675 4.16634 9.16675H15.833C16.2932 9.16675 16.6663 9.53984 16.6663 10.0001C16.6663 10.4603 16.2932 10.8334 15.833 10.8334H4.16634C3.7061 10.8334 3.33301 10.4603 3.33301 10.0001Z" fill=""/></svg>
@@ -472,7 +472,7 @@ const ProductDetails = () => {
                 </div>
               </form>
               {/* Social Share & Copy Link */}
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-8 flex flex-row flex-wrap items-center gap-3">
                 {/* Facebook */}
                 <button
                   aria-label="Partager sur Facebook"

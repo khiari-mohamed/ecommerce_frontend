@@ -124,7 +124,7 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
         )}
         <Image src={imageSrc} alt={item.title || item.designation || ""} width={250} height={250} />
 
-        <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
+        <div className="absolute left-0 bottom-0 translate-y-full w-full flex flex-row flex-nowrap items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0 md:flex-row md:gap-2.5">
           <button
             onClick={() => {
               openModal();
@@ -191,7 +191,7 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
         </div>
       </div>
 
-      <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 mb-2">
+      <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 mb-2 md:flex-row md:gap-2.5">
         <div className="flex flex-row flex-nowrap items-center gap-1">
           <Image
             src="/images/icons/icon-star.svg"

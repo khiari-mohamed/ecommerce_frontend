@@ -453,7 +453,7 @@ const QuickViewModal = () => {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-row flex-wrap items-center gap-4">
                 <button
                   disabled={quantity === 0 && true}
                   onClick={() => handleAddToCart()}
@@ -484,7 +484,7 @@ const QuickViewModal = () => {
                 </button>
               </div>
               {/* Social Share & Copy Link */}
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-8 flex flex-row flex-wrap items-center gap-3">
                 {/* Facebook */}
                 <button
                   aria-label="Partager sur Facebook"

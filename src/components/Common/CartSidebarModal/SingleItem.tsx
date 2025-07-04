@@ -10,6 +10,7 @@ function getProductImageSrc(item: any): string {
   if (item.imgs?.thumbnails?.[0]) return item.imgs.thumbnails[0];
   if (item.mainImage && typeof item.mainImage === "object" && item.mainImage.url) return item.mainImage.url;
   if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]?.url) return item.images[0].url;
+  if (typeof item.image === "string" && item.image.trim() !== "") return item.image;
   return "/images/placeholder.png";
 }
 

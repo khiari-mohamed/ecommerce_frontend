@@ -1,3 +1,5 @@
+import { Product } from "@/types/product";
+
 /**
  * Normalize image URLs for next/image and fallback to a placeholder if missing.
  * Handles:
@@ -7,7 +9,7 @@
  *  - Ensures leading slash for relative paths
  *  - Leaves valid external URLs as-is
  */
-export function getValidImageSrc(src?: string): string {
+export function getValidImageSrc(product: Product, key: number, src?: string): string {
   if (!src || typeof src !== "string" || src.trim() === "") {
     return "/images/placeholder.png";
   }

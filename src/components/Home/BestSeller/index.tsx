@@ -46,9 +46,30 @@ const BestSeller = () => {
               <span>Chargement...</span>
             </div>
           ) : (
-            products.map((item, key) => (
-              <ProductItem item={item} key={key} />
-            ))
+            products.map((item, key) => {
+            const normalizedItem = {
+            ...item,
+            imgs: item.imgs && item.imgs.thumbnails.length > 0 && item.imgs.previews.length > 0
+            ? item.imgs
+            : {
+            thumbnails: (
+            item.images && Array.isArray(item.images) && item.images.length > 0
+            ? item.images.map((img: any) => img.url)
+            : item.mainImage?.url
+            ? [item.mainImage.url]
+            : []
+            ),
+            previews: (
+            item.images && Array.isArray(item.images) && item.images.length > 0
+            ? item.images.map((img: any) => img.url)
+            : item.mainImage?.url
+            ? [item.mainImage.url]
+            : []
+            ),
+            },
+            };
+            return <ProductItem item={normalizedItem} key={key} />;
+            })
           )}
         </div>
         <div className="text-center mt-8 sm:mt-12.5">

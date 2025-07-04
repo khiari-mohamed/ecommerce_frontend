@@ -77,8 +77,8 @@ const ShopWithSidebar = () => {
     }
     // Add price filter
     if (selectedPriceRange.min !== 10 || selectedPriceRange.max !== 12000) {
-    params.push(`minPrice=${selectedPriceRange.min}`);
-    params.push(`maxPrice=${selectedPriceRange.max}`);
+    params.push(`min_prix=${selectedPriceRange.min}`);
+    params.push(`max_prix=${selectedPriceRange.max}`);
     }
     params.push(`page=${currentPage}`);
     if (params.length > 0) {
@@ -290,17 +290,12 @@ const ShopWithSidebar = () => {
                   {/* <!-- category box --> */}
                   {/* <!-- Catégories box --> */}
                   <div className="bg-white shadow-1 rounded-lg">
-                  <div className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5">
-                  <p className="text-dark">Catégories</p>
-                  </div>
-                  <div>
                   <CategoryDropdown
                   selectedCategories={selectedCategories}
                   onCategorySelect={handleCategorySelect}
                   products={allProducts}
                   subcategories={subcategories}
                   />
-                  </div>
                   </div>
 
                   {/* <!-- aromas box removed --> */}

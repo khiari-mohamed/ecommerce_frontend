@@ -120,7 +120,7 @@ const CategoryDropdown = ({
           toggleDropdown && "shadow-filter"
         }`}
       >
-        <p className="text-dark">Category</p>
+        <p className="text-dark">Catégories</p>
         <button
           aria-label="button for category dropdown"
           className={`text-dark ease-out duration-200 ${
@@ -161,7 +161,7 @@ const CategoryDropdown = ({
         ) : error ? (
           <div className="text-red-500 text-sm">{error}</div>
         ) : categories.length === 0 ? (
-          <div className="text-gray-500 text-sm">No categories found</div>
+          <div className="text-gray-500 text-sm">Aucune catégorie trouvée</div>
         ) : (
           categories.map((category) => (
             <CategoryItem

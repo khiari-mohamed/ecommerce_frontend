@@ -8,20 +8,50 @@ const PromotionsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Robust normalization logic
+  function normalizeProduct(item) {
+  return {
+  ...item,
+  imgs: item.imgs && item.imgs.thumbnails?.length > 0 && item.imgs.previews?.length > 0
+  ? item.imgs
+  : {
+  thumbnails: (
+  item.images && Array.isArray(item.images) && item.images.length > 0
+  ? item.images.map((img) => img.url)
+  : item.mainImage?.url
+  ? [item.mainImage.url]
+  : []
+  ),
+  previews: (
+  item.images && Array.isArray(item.images) && item.images.length > 0
+  ? item.images.map((img) => img.url)
+  : item.mainImage?.url
+  ? [item.mainImage.url]
+  : []
+  ),
+  },
+  mainImage: item.mainImage || { url: item.cover || "" },
+  cover: item.cover || item.mainImage?.url || "",
+  };
+  }
+  
   useEffect(() => {
-    axios.get("/products/store/promotions")
-      .then(res => {
-        // Map API fields to expected ProductItem fields
-        const mapped = (res.data.data || []).map((item) => ({
-          ...item,
-          price: Number(item.prix ?? item.price) || 0,
-          discountedPrice: Number(item.promo ?? item.discountedPrice) || Number(item.prix ?? item.price) || 0,
-          cover: item.cover || item.mainImage?.url || "",
-          title: item.designation_fr || item.designation || "",
-        }));
-        setProducts(mapped);
-      })
-      .finally(() => setLoading(false));
+  axios.get("/products/store/promotions")
+  .then(res => {
+  // Map API fields to expected ProductItem fields
+  const mapped = (res.data.data || []).map((item) => {
+  const normalized = normalizeProduct({
+  ...item,
+  price: Number(item.prix ?? item.price) || 0,
+  discountedPrice: Number(item.promo ?? item.discountedPrice) || Number(item.prix ?? item.price) || 0,
+  cover: item.cover || item.mainImage?.url || "",
+  title: item.designation_fr || item.designation || "",
+  });
+  return normalized;
+  });
+  setProducts(mapped);
+  })
+  .finally(() => setLoading(false));
   }, []);
 
   return (

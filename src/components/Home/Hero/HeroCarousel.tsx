@@ -18,7 +18,7 @@ const HeroCarousal = () => {
     clickable: true,
     }}
     modules={[Autoplay, Pagination]}
-    className="hero-carousel w-full"
+    className="hero-carousel w-full mt-[88px] md:mt-0"
     style={{ width: '100%' }}
     >
       {/* First Slide (updated to full-width) */}

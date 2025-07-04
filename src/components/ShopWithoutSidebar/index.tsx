@@ -154,7 +154,7 @@ const ShopWithoutSidebar = () => {
               <div className="rounded-lg bg-white shadow-1 pl-3 pr-2.5 py-2.5 mb-6">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-wrap items-center gap-4">
-                    <CustomSelect options={options} />
+                    <CustomSelect options={options} value={undefined} onChange={undefined} />
 
                     <p>
                       Showing <span className="text-dark">{shopData.length} of {totalProducts}</span>{" "}
@@ -201,10 +201,34 @@ const ShopWithoutSidebar = () => {
                     : "flex flex-col gap-7.5"
                 }`}
               >
-                {shopData.map((item, key) =>
-                  productStyle === "grid" ? (
+                {shopData.map((item, key) => {
+                  // Robust normalization logic
+                  const normalized = {
+                    ...item,
+                    imgs: item.imgs && item.imgs.thumbnails?.length > 0 && item.imgs.previews?.length > 0
+                      ? item.imgs
+                      : {
+                          thumbnails: (
+                            item.images && Array.isArray(item.images) && item.images.length > 0
+                              ? item.images.map((img) => img.url)
+                              : item.mainImage?.url
+                              ? [item.mainImage.url]
+                              : []
+                          ),
+                          previews: (
+                            item.images && Array.isArray(item.images) && item.images.length > 0
+                              ? item.images.map((img) => img.url)
+                              : item.mainImage?.url
+                              ? [item.mainImage.url]
+                              : []
+                          ),
+                        },
+                    mainImage: item.mainImage || { url: item.cover || "" },
+                    cover: item.cover || item.mainImage?.url || "",
+                  };
+                  return productStyle === "grid" ? (
                     <div key={key}>
-                      <SingleGridItem item={item} />
+                      <SingleGridItem item={normalized} />
                       <div className="mt-2 flex items-center gap-2">
                         <StarRating rating={getRandomRating(key)} />
                         <span className="text-xs text-gray-500">
@@ -214,7 +238,7 @@ const ShopWithoutSidebar = () => {
                     </div>
                   ) : (
                     <div key={key}>
-                      <SingleListItem item={item} />
+                      <SingleListItem item={normalized} />
                       <div className="mt-2 flex items-center gap-2">
                         <StarRating rating={getRandomRating(key)} />
                         <span className="text-xs text-gray-500">
@@ -222,8 +246,8 @@ const ShopWithoutSidebar = () => {
                         </span>
                       </div>
                     </div>
-                  )
-                )}
+                  );
+                })}
               </div>
               {/* <!-- Products Grid Tab Content End --> */}
 

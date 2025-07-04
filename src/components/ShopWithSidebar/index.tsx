@@ -7,8 +7,6 @@ import PriceDropdown from "./PriceDropdown";
 import SingleGridItem from "../Shop/SingleGridItem";
 import SingleListItem from "../Shop/SingleListItem";
 import { getProductListPage } from "@/services/products";
-import { Aroma } from "@/types/aroma";
-import { getAllAromas } from "@/services/aroma";
 import { Brand } from "@/types/brand";
 import { getAllBrands } from "@/services/brand";
 import { SubCategory } from "@/types/subcategory";
@@ -19,6 +17,7 @@ const ShopWithSidebar = () => {
   const [productStyle, setProductStyle] = useState<"grid" | "list">("grid");
   const [productSidebar, setProductSidebar] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
+  const [selectedSort, setSelectedSort] = useState("0");
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [products, setProducts] = useState<any[]>([]);
@@ -49,36 +48,35 @@ const ShopWithSidebar = () => {
 
   // Sorting options (implement sorting logic if needed)
   const options = [
-    { label: "Latest Products", value: "0" },
-    { label: "Best Selling", value: "1" },
-    { label: "Old Products", value: "2" },
+    { label: "Derniers produits", value: "0" },
+    { label: "les plus vendus", value: "1" },
+    { label: "Anciens produits", value: "2" },
   ];
 
   // Build query string for filters and pagination
   useEffect(() => {
-    setLoading(true);
-    let query = "";
-    const params: string[] = [];
-
-    // If categories are selected, convert them to subcategory IDs
-    let subcategoryIds: string[] = [];
+  setLoading(true);
+  let query = "";
+  const params: string[] = [];
+  params.push(`sort=${selectedSort}`);
+    let subCategoryDesignations: string[] = [];
     if (selectedCategories.length > 0) {
-      subcategoryIds = subcategories
-        .filter(sub => selectedCategories.includes(String(sub.categorie_id)))
-        .map(sub => String(sub.id));
-      if (subcategoryIds.length > 0) {
-        params.push(`subcategory=${subcategoryIds.join(",")}`);
+      subCategoryDesignations = subcategories
+        .filter(sub => selectedCategories.includes(String(sub.id)))
+        .map(sub => sub.designation); // or sub.designation_fr if that's the field
+      if (subCategoryDesignations.length > 0) {
+        params.push(`subCategory=${subCategoryDesignations.join(",")}`);
       }
     }
 
     // Aroma filter removed
     if (selectedBrands.length > 0) {
-    params.push(`brand_id=${selectedBrands.join(",")}`);
+      params.push(`brand=${selectedBrands.join(",")}`);
     }
     // Add price filter
     if (selectedPriceRange.min !== 10 || selectedPriceRange.max !== 12000) {
-    params.push(`min_prix=${selectedPriceRange.min}`);
-    params.push(`max_prix=${selectedPriceRange.max}`);
+      params.push(`minPrice=${selectedPriceRange.min}`);
+      params.push(`maxPrice=${selectedPriceRange.max}`);
     }
     params.push(`page=${currentPage}`);
     if (params.length > 0) {
@@ -90,7 +88,7 @@ const ShopWithSidebar = () => {
     setPagination(res.pagination);
     })
     .finally(() => setLoading(false));
-    }, [selectedCategories, selectedBrands, subcategories, currentPage, selectedPriceRange]);
+    }, [selectedCategories, selectedBrands, subcategories, currentPage, selectedPriceRange, selectedSort]);
 
   const handleCategorySelect = (id: string) => {
     setSelectedCategories((prev) =>
@@ -377,7 +375,7 @@ const ShopWithSidebar = () => {
                 <div className="flex items-center justify-between">
                   {/* <!-- top bar left --> */}
                   <div className="flex flex-wrap items-center gap-4">
-                    <CustomSelect options={options} />
+                    <CustomSelect options={options} value={selectedSort} onChange={setSelectedSort} />
 
                     <p>
                       Affichage{" "}
@@ -455,10 +453,34 @@ const ShopWithSidebar = () => {
                     Aucun produit trouvé.
                   </div>
                 ) : (
-                  products.map((item, key) =>
-                    productStyle === "grid" ? (
+                  products.map((item, key) => {
+                    // Robust normalization logic
+                    const normalized = {
+                      ...item,
+                      imgs: item.imgs && item.imgs.thumbnails?.length > 0 && item.imgs.previews?.length > 0
+                        ? item.imgs
+                        : {
+                            thumbnails: (
+                              item.images && Array.isArray(item.images) && item.images.length > 0
+                                ? item.images.map((img) => img.url)
+                                : item.mainImage?.url
+                                ? [item.mainImage.url]
+                                : []
+                            ),
+                            previews: (
+                              item.images && Array.isArray(item.images) && item.images.length > 0
+                                ? item.images.map((img) => img.url)
+                                : item.mainImage?.url
+                                ? [item.mainImage.url]
+                                : []
+                            ),
+                          },
+                      mainImage: item.mainImage || { url: item.cover || "" },
+                      cover: item.cover || item.mainImage?.url || "",
+                    };
+                    return productStyle === "grid" ? (
                       <div key={key}>
-                        <SingleGridItem item={item} />
+                        <SingleGridItem item={normalized} />
                         <div className="mt-2 flex items-center gap-2">
                           <StarRating rating={getRandomRating(key)} />
                           <span className="text-xs text-gray-500">
@@ -468,7 +490,7 @@ const ShopWithSidebar = () => {
                       </div>
                     ) : (
                       <div key={key}>
-                        <SingleListItem item={item} />
+                        <SingleListItem item={normalized} />
                         <div className="mt-2 flex items-center gap-2">
                           <StarRating rating={getRandomRating(key)} />
                           <span className="text-xs text-gray-500">
@@ -476,8 +498,8 @@ const ShopWithSidebar = () => {
                           </span>
                         </div>
                       </div>
-                    )
-                  )
+                    );
+                  })
                 )}
               </div>
               {/* <!-- Products Grid/List Tab Content End --> */}

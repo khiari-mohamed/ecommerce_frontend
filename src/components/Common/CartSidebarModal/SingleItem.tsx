@@ -17,15 +17,19 @@ const SingleItem = ({ item, removeItemFromCart }) => {
     dispatch(removeItemFromCart(item.id));
   };
 
-  // Safely get the image src for the product in the cart
-  const imgSrc = getSafeImageSrc(
-    item.image ||
-    (item.cover ? (typeof item.cover === "string" ? item.cover : undefined) : undefined) ||
-    item.mainImage?.url ||
-    item.imgs?.previews?.[0] ||
-    item.imgs?.thumbnails?.[0] ||
-    undefined
-  );
+  // Robust image selection logic for all product shapes
+  const getValidImageSrc = (item) => {
+    if (item.cover) {
+      if (typeof item.cover === "string" && item.cover.trim() !== "") return item.cover;
+      if (item.cover.url) return item.cover.url;
+    }
+    if (item.mainImage?.url) return item.mainImage.url;
+    if (item.imgs?.previews?.[0]) return item.imgs.previews[0];
+    if (item.imgs?.thumbnails?.[0]) return item.imgs.thumbnails[0];
+    if (item.image) return item.image;
+    return "/images/placeholder.png";
+  };
+  const imgSrc = getValidImageSrc(item);
 
   return (
     <div className="flex items-center justify-between gap-5">

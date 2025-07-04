@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { addItemToCart } from "@/redux/features/cart-slice";
@@ -9,20 +8,51 @@ import Image from "next/image";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { resetQuickView } from "@/redux/features/quickView-slice";
 import { updateproductDetails } from "@/redux/features/product-details";
-import { getValidImageSrc } from "@/utils/imageUtils"; // 1. Import
+// Robust image selection for all product shapes
+const getValidImageSrc = (product, idx = 0) => {
+  if (product?.imgs?.thumbnails && product.imgs.thumbnails.length > 0)
+    return product.imgs.thumbnails[idx] || product.imgs.thumbnails[0];
+  if (product?.imgs?.previews && product.imgs.previews.length > 0)
+    return product.imgs.previews[idx] || product.imgs.previews[0];
+  const cover = product?.cover;
+  if (cover !== undefined && cover !== null) {
+    if (typeof cover === "string" && cover.trim() !== "") return cover;
+    if (typeof cover === "object" && cover.url) return cover.url;
+  }
+  if (product?.mainImage && typeof product.mainImage === "object" && product.mainImage.url) return product.mainImage.url;
+  return "/images/placeholder.png";
+};
+
+// Helper to get all preview images for the modal
+function getPreviewImages(product: any): string[] {
+  if (product?.imgs?.thumbnails && product.imgs.thumbnails.length > 0) {
+    return product.imgs.thumbnails;
+  }
+  if (product?.imgs?.previews && product.imgs.previews.length > 0) {
+    return product.imgs.previews;
+  }
+  const cover = product?.cover;
+  if (cover !== undefined && cover !== null) {
+    if (typeof cover === "string" && cover.trim() !== "") return [cover];
+    if (typeof cover === "object" && cover.url) return [cover.url];
+  }
+  if (product?.mainImage && typeof product.mainImage === "object" && product.mainImage.url) {
+    return [product.mainImage.url];
+  }
+  if (product?.images) {
+    return [product.images];
+  }
+  return ["/images/placeholder.png"];
+}
 
 const QuickViewModal = () => {
   const { isModalOpen, closeModal } = useModalContext();
   const { openPreviewModal } = usePreviewSlider();
   const [quantity, setQuantity] = useState(1);
-
   const dispatch = useDispatch<AppDispatch>();
-
   // get the product data
   const product = useAppSelector((state) => state.quickViewReducer.value);
-
   const [activePreview, setActivePreview] = useState(0);
-
   // preview modal
   const handlePreviewSlider = () => {
     dispatch(updateproductDetails(product));
@@ -108,32 +138,22 @@ const QuickViewModal = () => {
             <div className="max-w-[526px] w-full">
               <div className="flex gap-5">
                 <div className="flex flex-col gap-5">
-                  {(
-                    (product?.imgs?.thumbnails && product.imgs.thumbnails.length > 0
-                      ? product.imgs.thumbnails
-                      : product?.imgs?.previews && product.imgs.previews.length > 0
-                      ? product.imgs.previews
-                      : product?.cover
-                      ? [product.cover]
-                      : product?.mainImage?.url
-                      ? [product.mainImage.url]
-                      : [])
-                  ).map((img, key) => (
-                    <button
-                      onClick={() => setActivePreview(key)}
-                      key={key}
-                      className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${
-                        activePreview === key && "border-2 border-blue"
-                      }`}
-                    >
-                      <Image
-                        src={getValidImageSrc(img)}
-                        alt="thumbnail"
-                        width={61}
-                        height={61}
-                        className="aspect-square"
-                      />
-                    </button>
+                  {getPreviewImages(product).map((img, key) => (
+                  <button
+                  onClick={() => setActivePreview(key)}
+                  key={key}
+                  className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${
+                  activePreview === key && "border-2 border-blue"
+                  }`}
+                  >
+                  <Image
+                  src={getValidImageSrc(product, key)}
+                  alt="thumbnail"
+                  width={61}
+                  height={61}
+                  className="aspect-square"
+                  />
+                  </button>
                   ))}
                 </div>
 
@@ -161,18 +181,7 @@ const QuickViewModal = () => {
                       </svg>
                     </button>
                     <Image
-                      src={getValidImageSrc(
-                        (product?.imgs?.thumbnails && product.imgs.thumbnails.length > 0
-                          ? product.imgs.thumbnails[activePreview]
-                          : product?.imgs?.previews && product.imgs.previews.length > 0
-                          ? product.imgs.previews[activePreview]
-                          : product?.cover
-                          ? product.cover
-                          : product?.mainImage?.url
-                          ? product.mainImage.url
-                          : undefined
-                        )
-                      )}
+                      src={getValidImageSrc(product, activePreview)}
                       alt="products-details"
                       width={400}
                       height={400}

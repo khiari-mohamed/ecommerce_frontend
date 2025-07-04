@@ -19,6 +19,14 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
+  // DEBUG: Log the product item to compare BestSeller vs NewArrival
+  if (typeof window !== "undefined") {
+    // Only log in browser
+    // @ts-ignore
+    window.__lastProductItem = item;
+    // eslint-disable-next-line no-console
+    console.log("[ProductItem] item:", item);
+  }
   // Fetch aromas if not provided as prop
   const [aromas, setAromas] = React.useState<Aroma[]>(aromasProp);
   React.useEffect(() => {

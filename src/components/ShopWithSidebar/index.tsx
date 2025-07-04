@@ -27,10 +27,7 @@ const ShopWithSidebar = () => {
   const [pagination, setPagination] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Aromas state
-  const [aromas, setAromas] = useState<Aroma[]>([]);
-  const [selectedAromas, setSelectedAromas] = useState<string[]>([]);
-  const [aromaDropdownOpen, setAromaDropdownOpen] = useState(true);
+  // Aromas state (REMOVED)
 
   // Brands state
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -40,12 +37,14 @@ const ShopWithSidebar = () => {
   // Subcategories state (for category-product bridge)
   const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
 
+  // Price filter state
+  const [selectedPriceRange, setSelectedPriceRange] = useState<{ min: number; max: number }>({ min: 10, max: 12000 });
+  
   // Fetch all products and all subcategories ONCE for sidebar counts
   useEffect(() => {
-    getAllAromas().then(setAromas);
-    getAllBrands().then(setBrands);
-    getAllSubCategories().then(setSubcategories);
-    getProductListPage("limit=1000").then(res => setAllProducts(res.products));
+  getAllBrands().then(setBrands);
+  getAllSubCategories().then(setSubcategories);
+  getProductListPage("limit=1000").then(res => setAllProducts(res.products));
   }, []);
 
   // Sorting options (implement sorting logic if needed)
@@ -72,23 +71,26 @@ const ShopWithSidebar = () => {
       }
     }
 
-    if (selectedAromas.length > 0) {
-      params.push(`aroma=${selectedAromas.join(",")}`);
-    }
+    // Aroma filter removed
     if (selectedBrands.length > 0) {
-      params.push(`brand=${selectedBrands.join(",")}`);
+    params.push(`brand_id=${selectedBrands.join(",")}`);
+    }
+    // Add price filter
+    if (selectedPriceRange.min !== 10 || selectedPriceRange.max !== 12000) {
+    params.push(`minPrice=${selectedPriceRange.min}`);
+    params.push(`maxPrice=${selectedPriceRange.max}`);
     }
     params.push(`page=${currentPage}`);
     if (params.length > 0) {
-      query = params.join("&");
+    query = params.join("&");
     }
     getProductListPage(query)
-      .then((res) => {
-        setProducts(res.products);
-        setPagination(res.pagination);
-      })
-      .finally(() => setLoading(false));
-  }, [selectedCategories, selectedAromas, selectedBrands, subcategories, currentPage]);
+    .then((res) => {
+    setProducts(res.products);
+    setPagination(res.pagination);
+    })
+    .finally(() => setLoading(false));
+    }, [selectedCategories, selectedBrands, subcategories, currentPage, selectedPriceRange]);
 
   const handleCategorySelect = (id: string) => {
     setSelectedCategories((prev) =>
@@ -99,14 +101,7 @@ const ShopWithSidebar = () => {
     setCurrentPage(1); // Reset to first page on filter change
   };
 
-  const handleAromaSelect = (id: string) => {
-    setSelectedAromas((prev) =>
-      prev.includes(id)
-        ? prev.filter((aromaId) => aromaId !== id)
-        : [...prev, id]
-    );
-    setCurrentPage(1); // Reset to first page on filter change
-  };
+  // Aroma select handler removed
 
   const handleBrandSelect = (id: string) => {
     setSelectedBrands((prev) =>
@@ -244,44 +239,31 @@ const ShopWithSidebar = () => {
       />
       <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28 bg-[#f3f4f6]">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-          <div className="flex gap-7.5">
+          {/* Filtres open button (mobile only) */}
+          <button
+            onClick={() => setProductSidebar(true)}
+            className="xl:hidden mb-4 px-4 py-2 bg-blue text-white rounded-md font-semibold"
+            aria-label="Ouvrir les filtres"
+          >
+            Filtres
+          </button>
+          <div className="flex flex-col xl:flex-row gap-7.5">
             {/* <!-- Sidebar Start --> */}
             <div
-              className={`sidebar-content fixed xl:z-1 z-9999 left-0 top-0 xl:translate-x-0 xl:static max-w-[310px] xl:max-w-[270px] w-full ease-out duration-200 ${
+              className={`sidebar-content fixed xl:z-1 z-9999 left-0 top-0 xl:translate-x-0 xl:static w-full max-w-full xl:max-w-[270px] xl:w-[270px] ease-out duration-200 ${
                 productSidebar
                   ? "translate-x-0 bg-white p-5 h-screen overflow-y-auto"
-                  : "-translate-x-full"
+                  : "-translate-x-full xl:translate-x-0"
               }`}
             >
+              {/* Close button (mobile only) */}
               <button
-                onClick={() => setProductSidebar(!productSidebar)}
-                aria-label="button for product sidebar toggle"
-                className={`xl:hidden absolute -right-12.5 sm:-right-8 flex items-center justify-center w-8 h-8 rounded-md bg-white shadow-1 ${
-                  stickyMenu
-                    ? "lg:top-20 sm:top-34.5 top-35"
-                    : "lg:top-24 sm:top-39 top-37"
-                }`}
+                onClick={() => setProductSidebar(false)}
+                aria-label="Fermer les filtres"
+                className="xl:hidden absolute top-4 right-4 z-50 w-8 h-8 items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 flex"
               >
-                <svg
-                  className="fill-current"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M10.0068 3.44714C10.3121 3.72703 10.3328 4.20146 10.0529 4.5068L5.70494 9.25H20C20.4142 9.25 20.75 9.58579 20.75 10C20.75 10.4142 20.4142 10.75 20 10.75H4.00002C3.70259 10.75 3.43327 10.5742 3.3135 10.302C3.19374 10.0298 3.24617 9.71246 3.44715 9.49321L8.94715 3.49321C9.22704 3.18787 9.70147 3.16724 10.0068 3.44714Z"
-                    fill=""
-                  />
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M20.6865 13.698C20.5668 13.4258 20.2974 13.25 20 13.25L4.00001 13.25C3.5858 13.25 3.25001 13.5858 3.25001 14C3.25001 14.4142 3.5858 14.75 4.00001 14.75L18.2951 14.75L13.9472 19.4932C13.6673 19.7985 13.6879 20.273 13.9932 20.5529C14.2986 20.8328 14.773 20.8121 15.0529 20.5068L20.5529 14.5068C20.7539 14.2876 20.8063 13.9703 20.6865 13.698Z"
-                    fill=""
-                  />
+                <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M6 6l8 8M6 14L14 6" />
                 </svg>
               </button>
 
@@ -296,130 +278,99 @@ const ShopWithSidebar = () => {
                         type="button"
                         onClick={() => {
                           setSelectedCategories([]);
-                          setSelectedAromas([]);
                           setSelectedBrands([]);
                           setCurrentPage(1);
-                        }}
-                      >
+                          }}
+                          >
                         Tout nettoyer
                       </button>
                     </div>
                   </div>
 
                   {/* <!-- category box --> */}
+                  {/* <!-- Catégories box --> */}
+                  <div className="bg-white shadow-1 rounded-lg">
+                  <div className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5">
+                  <p className="text-dark">Catégories</p>
+                  </div>
+                  <div>
                   <CategoryDropdown
-                    selectedCategories={selectedCategories}
-                    onCategorySelect={handleCategorySelect}
-                    products={allProducts}
-                    subcategories={subcategories}
+                  selectedCategories={selectedCategories}
+                  onCategorySelect={handleCategorySelect}
+                  products={allProducts}
+                  subcategories={subcategories}
                   />
-
-                  {/* <!-- aromas box --> */}
-                  <div className="bg-white shadow-1 rounded-lg">
-                    <div
-                      className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5"
-                      onClick={() => setAromaDropdownOpen((prev) => !prev)}
-                    >
-                      <p className="text-dark">Aromas</p>
-                      <button
-                        aria-label="toggle aromas dropdown"
-                        className={`text-dark ease-out duration-200 ${aromaDropdownOpen ? "rotate-180" : ""}`}
-                        type="button"
-                        tabIndex={-1}
-                      >
-                        <svg
-                          className="fill-current"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M4.43057 8.51192C4.70014 8.19743 5.17361 8.161 5.48811 8.43057L12 14.0122L18.5119 8.43057C18.8264 8.16101 19.2999 8.19743 19.5695 8.51192C19.839 8.82642 19.8026 9.29989 19.4881 9.56946L12.4881 15.5695C12.2072 15.8102 11.7928 15.8102 11.5119 15.5695L4.51192 9.56946C4.19743 9.29989 4.161 8.82641 4.43057 8.51192Z"
-                            fill=""
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div className={`flex-col gap-3 py-6 pl-6 pr-5.5 ${aromaDropdownOpen ? "flex" : "hidden"}`}>
-                      {aromas.length === 0 ? (
-                        <span className="text-gray-400 text-sm">Aucun arôme trouvé</span>
-                      ) : (
-                        aromas.map((aroma) => (
-                          <label
-                            key={aroma._id}
-                            className="flex items-center gap-2 cursor-pointer"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={selectedAromas.includes(aroma._id)}
-                              onChange={() => handleAromaSelect(aroma._id)}
-                              className="accent-blue"
-                            />
-                            <span className="text-dark">{aroma.designation_fr}</span>
-                          </label>
-                        ))
-                      )}
-                    </div>
+                  </div>
                   </div>
 
-                  {/* <!-- brands box (replaces color) --> */}
+                  {/* <!-- aromas box removed --> */}
+
+                  {/* <!-- Marques box (replaces color) --> */}
                   <div className="bg-white shadow-1 rounded-lg">
-                    <div
-                      className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5"
-                      onClick={() => setBrandDropdownOpen((prev) => !prev)}
-                    >
-                      <p className="text-dark">Brands</p>
-                      <button
-                        aria-label="toggle brands dropdown"
-                        className={`text-dark ease-out duration-200 ${brandDropdownOpen ? "rotate-180" : ""}`}
-                        type="button"
-                        tabIndex={-1}
-                      >
-                        <svg
-                          className="fill-current"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M4.43057 8.51192C4.70014 8.19743 5.17361 8.161 5.48811 8.43057L12 14.0122L18.5119 8.43057C18.8264 8.16101 19.2999 8.19743 19.5695 8.51192C19.839 8.82642 19.8026 9.29989 19.4881 9.56946L12.4881 15.5695C12.2072 15.8102 11.7928 15.8102 11.5119 15.5695L4.51192 9.56946C4.19743 9.29989 4.161 8.82641 4.43057 8.51192Z"
-                            fill=""
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div className={`flex-col gap-3 py-6 pl-6 pr-5.5 ${brandDropdownOpen ? "flex" : "hidden"}`}>
-                      {brands.length === 0 ? (
-                        <span className="text-gray-400 text-sm">No brands found</span>
-                      ) : (
-                        brands.map((brand) => (
-                          <label
-                            key={brand._id}
-                            className="flex items-center gap-2 cursor-pointer"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={selectedBrands.includes(brand._id)}
-                              onChange={() => handleBrandSelect(brand._id)}
-                              className="accent-blue"
-                            />
-                            <span className="text-dark">{brand.designation_fr}</span>
-                          </label>
-                        ))
-                      )}
-                    </div>
+                  <div
+                  className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5"
+                  onClick={() => setBrandDropdownOpen((prev) => !prev)}
+                  >
+                  <p className="text-dark">Marques</p>
+                  <button
+                  aria-label="toggle brands dropdown"
+                  className={`text-dark ease-out duration-200 ${brandDropdownOpen ? "rotate-180" : ""}`}
+                  type="button"
+                  tabIndex={-1}
+                  >
+                  <svg
+                  className="fill-current"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  >
+                  <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M4.43057 8.51192C4.70014 8.19743 5.17361 8.161 5.48811 8.43057L12 14.0122L18.5119 8.43057C18.8264 8.16101 19.2999 8.19743 19.5695 8.51192C19.839 8.82642 19.8026 9.29989 19.4881 9.56946L12.4881 15.5695C12.2072 15.8102 11.7928 15.8102 11.5119 15.5695L4.51192 9.56946C4.19743 9.29989 4.161 8.82641 4.43057 8.51192Z"
+                  fill=""
+                  />
+                  </svg>
+                  </button>
+                  </div>
+                  <div className={`flex-col gap-3 py-6 pl-6 pr-5.5 ${brandDropdownOpen ? "flex" : "hidden"}`}>
+                  {brands.length === 0 ? (
+                  <span className="text-gray-400 text-sm">Aucune marque trouvée</span>
+                  ) : (
+                  brands.map((brand) => (
+                  <label
+                  key={brand._id}
+                  className="flex items-center gap-2 cursor-pointer"
+                  >
+                  <input
+                  type="checkbox"
+                  checked={selectedBrands.includes(brand._id)}
+                  onChange={() => handleBrandSelect(brand._id)}
+                  className="accent-blue"
+                  />
+                  <span className="text-dark">{brand.designation_fr}</span>
+                  </label>
+                  ))
+                  )}
+                  </div>
                   </div>
 
-                  {/* <!-- price range box --> */}
-                  <PriceDropdown />
+                  {/* <!-- Prix box --> */}
+                  <div className="bg-white shadow-1 rounded-lg">
+                  <div className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5">
+                  <p className="text-dark">Prix</p>
+                  </div>
+                  <PriceDropdown
+                  minPrice={10}
+                  maxPrice={12000}
+                  onChange={(min, max) => {
+                  setSelectedPriceRange({ min, max });
+                  setCurrentPage(1);
+                  }}
+                  />
+                  </div>
                 </div>
               </form>
             </div>
@@ -498,7 +449,7 @@ const ShopWithSidebar = () => {
               <div
                 className={`${
                   productStyle === "grid"
-                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-7.5 gap-y-9"
+                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-7.5 gap-y-9"
                     : "flex flex-col gap-7.5"
                 }`}
               >

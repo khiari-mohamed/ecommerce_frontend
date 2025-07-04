@@ -5,12 +5,32 @@ import Image from "next/image";
 
 // Universal robust image selection logic
 function getProductImageSrc(item: any): string {
-  if (typeof item.cover === "string" && item.cover.trim() !== "") return item.cover;
-  if (item.imgs?.previews?.[0]) return item.imgs.previews[0];
-  if (item.imgs?.thumbnails?.[0]) return item.imgs.thumbnails[0];
-  if (item.mainImage && typeof item.mainImage === "object" && item.mainImage.url) return item.mainImage.url;
-  if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]?.url) return item.images[0].url;
-  if (typeof item.image === "string" && item.image.trim() !== "") return item.image;
+  // Helper to ensure leading slash for relative paths
+  const ensureLeadingSlash = (src: string) => {
+    if (!src) return "/images/placeholder.png";
+    if (src.startsWith("http")) return src;
+    if (!src.startsWith("/")) return "/" + src;
+    return src;
+  };
+
+  if (item.mainImage && typeof item.mainImage === "object" && item.mainImage.url && item.mainImage.url.trim() !== "") {
+    return ensureLeadingSlash(item.mainImage.url);
+  }
+  if (item.imgs?.previews?.[0]) {
+    return ensureLeadingSlash(item.imgs.previews[0]);
+  }
+  if (item.imgs?.thumbnails?.[0]) {
+    return ensureLeadingSlash(item.imgs.thumbnails[0]);
+  }
+  if (typeof item.cover === "string" && item.cover.trim() !== "") {
+    return ensureLeadingSlash(item.cover);
+  }
+  if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]?.url) {
+    return ensureLeadingSlash(item.images[0].url);
+  }
+  if (typeof item.image === "string" && item.image.trim() !== "") {
+    return ensureLeadingSlash(item.image);
+  }
   return "/images/placeholder.png";
 }
 

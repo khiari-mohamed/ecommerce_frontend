@@ -57,7 +57,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                 width={1200}
                 height={400}
                 className="w-full h-full object-cover opacity-40 blur-[2px] scale-105"
-                loading="lazy"
+                fetchPriority="high"
+                sizes="(max-width: 768px) 100vw, 1200px"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent" />
             </div>

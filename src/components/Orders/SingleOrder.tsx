@@ -59,7 +59,7 @@ const SingleOrder: React.FC<SingleOrderProps> = ({
 
   // Render as table row or card
   return asCard ? (
-    <div className="border rounded-lg p-4 mb-4 bg-white shadow">
+    <div className="border rounded-lg p-4 mb-4 bg-white shadow flex flex-col items-center text-center">
       <div className="font-semibold text-purple-700 mb-2">
         #{String(orderId).slice(-8)}
       </div>

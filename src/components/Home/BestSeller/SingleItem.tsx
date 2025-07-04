@@ -85,13 +85,13 @@ const SingleItem = ({ item }: { item: Product }) => {
     <Link href={`/product-details?id=${item._id || item.id}`} className="group block">
       <div className="relative overflow-hidden rounded-lg bg-[#F6F7FB] min-h-[260px] sm:min-h-[320px] md:min-h-[360px] lg:min-h-[403px]">
         <div className="text-center px-2 sm:px-4 py-5 sm:py-7.5">
-          <div className="flex items-center justify-center gap-2.5 mb-2">
-            <div className="flex items-center gap-1">
-              <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
-              <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
-              <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
-              <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
-              <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} />
+          <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 mb-2">
+            <div className="flex flex-row flex-nowrap items-center gap-1">
+              <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
+              <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
+              <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
+              <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
+              <Image src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
             </div>
            <p className="text-custom-sm">
   {(item.reviews?.length && item.reviews.length > 0)
@@ -100,7 +100,7 @@ const SingleItem = ({ item }: { item: Product }) => {
 </p>
           </div>
 
-          <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
+          <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5 text-center w-full">
             {productName}
           </h3>
 
@@ -129,6 +129,8 @@ const SingleItem = ({ item }: { item: Product }) => {
             width={180} 
             height={180} 
             className="object-contain h-40 sm:h-52 md:h-60 lg:h-64 w-auto"
+            loading="lazy"
+            sizes="(max-width: 768px) 50vw, 180px"
           />
         </div>
 

@@ -242,11 +242,11 @@ const ProductCard = memo(
               </div>
             )}
             
-            <h3 className="mb-2.5 text-sm font-medium text-center transition-colors sm:text-base line-clamp-2 group-hover:text-primary">
+            <h3 className="mb-2.5 text-sm font-medium text-center w-full transition-colors sm:text-base line-clamp-2 group-hover:text-primary">
               {product?.designation}
             </h3>
 
-            <div className="flex flex-col items-center justify-center mb-2 md:flex-row md:space-x-2">
+            <div className="flex flex-row flex-nowrap items-center justify-center gap-2 mb-2">
               <span className="text-base font-semibold text-[#EF837B]">
                 {formatCurrency(product?.price)}
               </span>
@@ -257,7 +257,7 @@ const ProductCard = memo(
               )}
             </div>
 
-            <div className="flex items-center justify-center mb-3">
+            <div className="flex flex-row flex-nowrap items-center justify-center mb-3">
               <Rate
                 value={averageRating}
                 disabled

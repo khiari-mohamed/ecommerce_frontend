@@ -75,7 +75,8 @@ const PacksSection: React.FC = () => {
                     fill
                     className="object-cover"
                     priority={idx < 4}
-                    unoptimized={true}
+                    loading={idx < 4 ? 'eager' : 'lazy'}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1200px) 25vw, 192px"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = fallbackImages[idx % fallbackImages.length];

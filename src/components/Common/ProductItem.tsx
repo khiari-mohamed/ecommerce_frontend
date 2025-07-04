@@ -191,8 +191,8 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-2.5 mb-2">
-        <div className="flex items-center gap-1">
+      <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 mb-2">
+        <div className="flex flex-row flex-nowrap items-center gap-1">
           <Image
             src="/images/icons/icon-star.svg"
             alt="star icon"
@@ -233,7 +233,7 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
       </div>
 
       <h3
-        className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5"
+        className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5 text-center w-full"
         onClick={() => handleProductDetails()}
       >
         <Link href={`/product-details?id=${item._id || item.id}`}>{item.title || item.designation || item.designation_fr || "Produit"}</Link>
@@ -241,7 +241,7 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
 
       
 
-      <span className="flex items-center gap-2 font-medium text-lg">
+      <span className="flex flex-row flex-nowrap items-center gap-2 font-medium text-lg justify-center">
         <span className="text-dark">
           {Number(item.discountedPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
         </span>

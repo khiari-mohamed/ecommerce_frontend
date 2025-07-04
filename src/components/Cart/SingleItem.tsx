@@ -48,22 +48,20 @@ const SingleItem = ({ item }) => {
   );
 
   return (
-    <div className="flex items-center border-t border-gray-3 py-5 px-7.5">
-      <div className="min-w-[400px]">
-        <div className="flex items-center justify-between gap-5">
-          <div className="w-full flex items-center gap-5.5">
-            <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[80px] w-full h-17.5">
-              <Image
-  width={200}
-  height={200}
-  src={imgSrc}
-  alt="product"
-  onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }}
-/>
-            </div>
-
-            <div>
-              <h3 className="text-dark ease-out duration-200 hover:text-blue">
+    <div className="flex flex-wrap items-center border-t border-gray-3 py-5 px-2 sm:px-7.5">
+      <div className="w-full sm:w-[40%] min-w-[180px] mb-2 sm:mb-0">
+        <div className="flex items-center justify-between gap-3 sm:gap-5">
+          <div className="w-20 flex-shrink-0 flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[80px] h-17.5">
+            <Image
+              width={80}
+              height={80}
+              src={imgSrc}
+              alt="product"
+              className="object-contain"
+              onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }}
+            />
+            <div className="ml-2">
+              <h3 className="text-dark ease-out duration-200 hover:text-blue text-sm sm:text-base">
                 <a href="#"> {item.title} </a>
               </h3>
             </div>
@@ -71,18 +69,18 @@ const SingleItem = ({ item }) => {
         </div>
       </div>
 
-      <div className="min-w-[180px]">
-        <p className="text-dark">
+      <div className="w-1/2 sm:w-[15%] min-w-[100px] mb-2 sm:mb-0">
+        <p className="text-dark text-sm sm:text-base">
           {Number(item.discountedPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
         </p>
       </div>
 
-      <div className="min-w-[275px]">
-        <div className="w-max flex items-center rounded-md border border-gray-3">
+      <div className="w-1/2 sm:w-[25%] min-w-[120px] mb-2 sm:mb-0">
+        <div className="w-max flex items-center rounded-md border border-gray-3 mx-auto">
           <button
             onClick={() => handleDecreaseQuantity()}
             aria-label="button for remove product"
-            className="flex items-center justify-center w-11.5 h-11.5 ease-out duration-200 hover:text-blue"
+            className="flex items-center justify-center w-9 h-9 sm:w-11.5 sm:h-11.5 ease-out duration-200 hover:text-blue"
           >
             <svg
               className="fill-current"
@@ -99,14 +97,14 @@ const SingleItem = ({ item }) => {
             </svg>
           </button>
 
-          <span className="flex items-center justify-center w-16 h-11.5 border-x border-gray-4">
+          <span className="flex items-center justify-center w-10 h-9 sm:w-16 sm:h-11.5 border-x border-gray-4">
             {quantity}
           </span>
 
           <button
             onClick={() => handleIncreaseQuantity()}
             aria-label="button for add product"
-            className="flex items-center justify-center w-11.5 h-11.5 ease-out duration-200 hover:text-blue"
+            className="flex items-center justify-center w-9 h-9 sm:w-11.5 sm:h-11.5 ease-out duration-200 hover:text-blue"
           >
             <svg
               className="fill-current"
@@ -129,13 +127,13 @@ const SingleItem = ({ item }) => {
         </div>
       </div>
 
-      <div className="min-w-[200px]">
-        <p className="text-dark">
+      <div className="w-1/2 sm:w-[15%] min-w-[80px] mb-2 sm:mb-0">
+        <p className="text-dark text-sm sm:text-base">
           {Number(item.discountedPrice * quantity).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
         </p>
       </div>
 
-      <div className="min-w-[50px] flex justify-end">
+      <div className="w-1/2 sm:w-[5%] min-w-[40px] flex justify-end">
         <button
           onClick={() => handleRemoveFromCart()}
           aria-label="button for remove product from cart"

@@ -182,6 +182,8 @@ const PromoBanner = () => {
               style={{ maxWidth: '100%' }}
               width={320}
               height={320}
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, 320px"
             />
           </div>
         </div>
@@ -218,6 +220,8 @@ const PromoBanner = () => {
                 className="object-contain max-h-[120px] sm:max-h-[180px] w-auto"
                 width={180}
                 height={180}
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 180px"
               />
             </div>
           </div>
@@ -253,6 +257,8 @@ const PromoBanner = () => {
                 className="object-contain max-h-[120px] sm:max-h-[180px] w-auto"
                 width={180}
                 height={180}
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 180px"
               />
             </div>
           </div>

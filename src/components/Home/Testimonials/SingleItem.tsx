@@ -11,6 +11,8 @@ const SingleItem = ({ testimonial }: { testimonial: Testimonial }) => {
           alt="star icon"
           width={15}
           height={15}
+          loading="lazy"
+          sizes="15px"
         />
         <Image
           src="/images/icons/icon-star.svg"
@@ -48,6 +50,8 @@ const SingleItem = ({ testimonial }: { testimonial: Testimonial }) => {
             className="w-12.5 h-12.5 rounded-full overflow-hidden"
             width={50}
             height={50}
+            loading="lazy"
+            sizes="50px"
           />
         </div>
 

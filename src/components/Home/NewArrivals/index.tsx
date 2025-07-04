@@ -62,8 +62,8 @@ const NewArrival = () => {
               <span>Chargement...</span>
             </div>
           ) : (
-            products.map((item, key) => (
-              <ProductItem item={item} key={key} />
+            products.slice(0, 8).map((item, key) => (
+            <ProductItem item={item} key={key} />
             ))
           )}
         </div>

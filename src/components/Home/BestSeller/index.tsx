@@ -13,11 +13,12 @@ const BestSeller = () => {
 
   useEffect(() => {
     getTopProductsFeature()
-      .then((data) => { 
-        setProducts(data);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+    .then((data) => { 
+    console.log('Number of products returned by getTopProductsFeature:', data.length);
+    setProducts(data);
+    })
+    .finally(() => setLoading(false));
+    }, []);
 
   return (
     <section className="overflow-hidden">
@@ -46,7 +47,7 @@ const BestSeller = () => {
               <span>Chargement...</span>
             </div>
           ) : (
-            products.map((item, key) => {
+            products.slice(0, 4).map((item, key) => {
             const normalizedItem = {
             ...item,
             imgs: item.imgs && item.imgs.thumbnails.length > 0 && item.imgs.previews.length > 0

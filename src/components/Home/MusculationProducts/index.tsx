@@ -101,7 +101,7 @@ const MusculationProducts = () => {
     const fetchProducts = async () => {
       try {
         const products = await fetchMusculationProducts();
-        setSampleProducts(products.slice(10, 15));
+        setSampleProducts(products.slice(10, 14));
       } catch (e) {
         setSampleProducts([]);
       }

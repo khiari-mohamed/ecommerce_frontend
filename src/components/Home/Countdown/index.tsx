@@ -2,16 +2,24 @@
 
 import React, { useEffect, useState } from "react";
 import BlogItem from "../../Blog/BlogItem";
-import { getLandingPageBlogs } from "@/services/blog.service";
+import { getLandingPageBlogs, getBlogs } from "@/services/blog.service";
 
 const CountdownBlogGrid = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Try landing page blogs first, fallback to all blogs if empty
     getLandingPageBlogs().then((data) => {
-      setBlogs(Array.isArray(data) ? data.slice(0, 4) : []);
-      setLoading(false);
+      if (Array.isArray(data) && data.length > 0) {
+        setBlogs(data.slice(0, 4));
+        setLoading(false);
+      } else {
+        getBlogs().then((fallback) => {
+          setBlogs(Array.isArray(fallback) ? fallback.slice(0, 4) : []);
+          setLoading(false);
+        });
+      }
     });
   }, []);
 
@@ -22,6 +30,8 @@ const CountdownBlogGrid = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-7.5">
           {loading ? (
             <div className="col-span-4 text-center py-10 text-gray-400">Chargement...</div>
+          ) : blogs.length === 0 ? (
+            <div className="col-span-4 text-center py-10 text-gray-400">Aucun blog à afficher.</div>
           ) : (
             blogs.map((blog, key) => <BlogItem blog={blog} key={key} />)
           )}

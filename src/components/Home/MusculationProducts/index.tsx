@@ -101,7 +101,7 @@ const MusculationProducts = () => {
     const fetchProducts = async () => {
       try {
         const products = await fetchMusculationProducts();
-        setSampleProducts(products.slice(0, 4));
+        setSampleProducts(products.slice(10, 15));
       } catch (e) {
         setSampleProducts([]);
       }
@@ -195,7 +195,7 @@ const MusculationProducts = () => {
             >
               <Link href="/musculation-products">
                 <button
-                  className="inline-flex font-medium text-white text-custom-sm rounded-md bg-dark py-2 px-6 sm:py-3 sm:px-9 ease-out duration-200 hover:bg-blue mt-6 sm:mt-10 text-base sm:text-lg"
+                  className="inline-flex font-medium text-white text-base sm:text-lg rounded-md bg-dark py-2 px-6 sm:py-3 sm:px-9 ease-out duration-200 hover:bg-blue mt-6 sm:mt-10"
                 >
                   <span className="text-sm font-medium md:text-base">
                     Discover more

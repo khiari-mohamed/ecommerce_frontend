@@ -379,10 +379,6 @@
     .swiper-pagination {
       bottom: 0.5rem !important;
     }
-    /* /* /* .flex, .grid {
-      flex-direction: column !important;
-      grid-template-columns: 1fr !important;
-    } */ */ */
     .hide-mobile {
       display: none !important;
     }
@@ -443,11 +439,7 @@
     .swiper-pagination {
       bottom: 1rem !important;
     }
-    .flex, .grid {
-      flex-direction: column !important;
-      grid-template-columns: 1fr !important;
-    }
-    .hide-tablet {
+        .hide-tablet {
       display: none !important;
     }
     .show-tablet {
@@ -507,11 +499,7 @@
     .swiper-pagination {
       bottom: 1.5rem !important;
     }
-    .flex, .grid {
-      flex-direction: column !important;
-      grid-template-columns: 1fr !important;
-    }
-    .hide-desktop {
+        .hide-desktop {
       display: none !important;
     }
     .show-desktop {

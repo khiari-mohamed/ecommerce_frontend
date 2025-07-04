@@ -252,13 +252,13 @@ const PromoBanner = () => {
             </div>
             <div className="w-full sm:w-2/5 flex justify-center mt-6 sm:mt-0">
               <Image
-                src={slot2.image}
-                alt={slot2.imageAlt}
-                className="object-contain max-h-[120px] sm:max-h-[180px] w-auto"
-                width={180}
-                height={180}
-                loading="lazy"
-                sizes="(max-width: 768px) 100vw, 180px"
+              src={slot2.image}
+              alt={slot2.imageAlt}
+              className="object-contain max-h-[120px] sm:max-h-[180px] w-auto"
+              width={180}
+              height={180}
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, 180px"
               />
             </div>
           </div>

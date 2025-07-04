@@ -40,31 +40,17 @@ const SingleItem = ({ item }: { item: Product }) => {
     );
   };
 
-  // Helper to get valid image source
-  const getValidImageSrc = (src?: string): string => {
-    if (!src || typeof src !== "string" || src.trim() === "") {
-      return "/images/placeholder.png";
-    }
-    
-    // Normalize the image path
-    let cleanSrc = src.trim().replace(/\\\\/g, "/").replace(/\\/g, "/");
-    
-    // If it's already a full URL or starts with /, use as is
-    if (cleanSrc.startsWith("http") || cleanSrc.startsWith("/")) {
-      return cleanSrc;
-    }
-    
-    // Otherwise prepend with /
-    return `/${cleanSrc}`;
-  };
+  // Universal robust image selection logic
+  function getProductImageSrc(item: Product): string {
+    if (typeof item.cover === "string" && item.cover.trim() !== "") return item.cover;
+    if (item.imgs?.previews?.[0]) return item.imgs.previews[0];
+    if (item.imgs?.thumbnails?.[0]) return item.imgs.thumbnails[0];
+    if (item.mainImage && typeof item.mainImage === "object" && item.mainImage.url) return item.mainImage.url;
+    if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]?.url) return item.images[0].url;
+    return "/images/placeholder.png";
+  }
 
-  // Get the main image source with fallbacks
-  const imageSrc = getValidImageSrc(
-    item.cover || 
-    item.mainImage?.url ||
-    (item.imgs?.previews?.[0]) || 
-    (item.imgs?.thumbnails?.[0])
-  );
+  const imageSrc = getProductImageSrc(item);
 
   // Get the product name with fallbacks
   const productName = item.designation || item.title || "Produit";

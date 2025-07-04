@@ -3,12 +3,15 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import Image from "next/image";
 
-// Helper to ensure image src is valid for Next.js
-const getSafeImageSrc = (src: string | undefined) => {
-  if (!src) return "/default-product.jpg";
-  if (src.startsWith("/") || src.startsWith("http")) return src;
-  return "/" + src;
-};
+// Universal robust image selection logic
+function getProductImageSrc(item: any): string {
+  if (typeof item.cover === "string" && item.cover.trim() !== "") return item.cover;
+  if (item.imgs?.previews?.[0]) return item.imgs.previews[0];
+  if (item.imgs?.thumbnails?.[0]) return item.imgs.thumbnails[0];
+  if (item.mainImage && typeof item.mainImage === "object" && item.mainImage.url) return item.mainImage.url;
+  if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]?.url) return item.images[0].url;
+  return "/images/placeholder.png";
+}
 
 const SingleItem = ({ item, removeItemFromCart }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,19 +20,7 @@ const SingleItem = ({ item, removeItemFromCart }) => {
     dispatch(removeItemFromCart(item.id));
   };
 
-  // Robust image selection logic for all product shapes
-  const getValidImageSrc = (item) => {
-    if (item.cover) {
-      if (typeof item.cover === "string" && item.cover.trim() !== "") return item.cover;
-      if (item.cover.url) return item.cover.url;
-    }
-    if (item.mainImage?.url) return item.mainImage.url;
-    if (item.imgs?.previews?.[0]) return item.imgs.previews[0];
-    if (item.imgs?.thumbnails?.[0]) return item.imgs.thumbnails[0];
-    if (item.image) return item.image;
-    return "/images/placeholder.png";
-  };
-  const imgSrc = getValidImageSrc(item);
+  const imgSrc = getProductImageSrc(item);
 
   return (
     <div className="flex items-center justify-between gap-5">
@@ -48,8 +39,8 @@ const SingleItem = ({ item, removeItemFromCart }) => {
             <a href="#"> {item.title} </a>
           </h3>
           <p className="text-custom-sm">
-                Prix: {Number(item.discountedPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
-              </p>
+            Prix: {Number(item.discountedPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+          </p>
         </div>
       </div>
 

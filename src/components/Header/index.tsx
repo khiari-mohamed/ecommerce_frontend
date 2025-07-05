@@ -17,9 +17,8 @@ import { useSelector } from "react-redux";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import Image from "next/image";
-// import { ThemeToggle } from "../Common/ThemeToggle";
 import axios from "@/lib/axios";
-import { useRouter } from "next/navigation"; // Add this import
+import { useRouter } from "next/navigation";
 
 interface Subcategory {
   _id: string;
@@ -486,7 +485,7 @@ const Header = () => {
             <div
               className={`w-[288px] absolute right-4 top-full xl:static xl:w-auto h-0 xl:h-auto invisible xl:visible xl:flex items-center justify-between ${
                 navigationOpen &&
-                `!visible bg-white shadow-lg border border-gray-3 !h-auto max-h-[400px] overflow-y-auto rounded-md p-5`
+                `!visible bg-white shadow-lg border border-gray-3 !h-auto xl:!h-auto xl:!max-h-none xl:!overflow-visible max-h-none overflow-visible rounded-md p-5 static xl:relative`
               } header-mobile-nav`}
               style={{ zIndex: 10020, background: 'white' }}
             >

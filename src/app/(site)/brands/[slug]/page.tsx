@@ -73,7 +73,7 @@ export default async function BrandPage({
   }
 
   return (
-    <main className="max-w-4xl mx-auto py-10 px-4">
+    <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8 pt-[70px] sm:pt-[100px] md:pt-[120px] lg:pt-[130px]">
       <div className="flex flex-col items-center">
         <Image
           src={`/images/brand/${brand.logo}`}
@@ -82,10 +82,8 @@ export default async function BrandPage({
           height={128}
           className="w-24 h-24 md:w-32 md:h-32 object-contain mb-4"
         />
-        <h1 className="text-3xl font-bold mb-2">
-          <Link href={`/brands/${encodeURIComponent(brand.slug)}`}>
-            {brand.designation_fr}
-          </Link>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center break-words">
+          <Link href={`/brands/${encodeURIComponent(brand.slug)}`}>{brand.designation_fr}</Link>
         </h1>
         {brand.description_fr && (
           <div
@@ -95,6 +93,6 @@ export default async function BrandPage({
         )}
       </div>
       <BrandProductGrid products={products} />
-    </main>
+    </div>
   );
 }

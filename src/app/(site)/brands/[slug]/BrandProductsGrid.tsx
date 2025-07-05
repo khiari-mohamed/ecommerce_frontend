@@ -45,4 +45,4 @@ const BrandProductGrid: React.FC<BrandProductGridProps> = ({ products }) => {
 };
 
 
-export default BrandProductGrid;  
+export default BrandProductGrid;    

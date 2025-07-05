@@ -14,8 +14,8 @@ import { FreeMode, Navigation, Autoplay } from "swiper/modules";
 const BrandSection: React.FC = () => {
   const router = useRouter();
 
-  const handleBrandClick = (brandId: string) => {
-    router.push(`/products?brand=${brandId}`);
+  const handleBrandClick = (brandSlug: string) => {
+    router.push(`/brands/${brandSlug}`);
   };
 
   return (
@@ -38,22 +38,22 @@ const BrandSection: React.FC = () => {
           }}
         >
           {brands.map((brand) => (
-            <SwiperSlide key={brand.slug}>
-              <div
-                className="cursor-pointer flex items-center justify-center p-2 sm:p-4 transition hover:scale-105"
-                onClick={() => handleBrandClick(brand.id)}
-                title={brand.name}
-              >
-                <Image
-                  src={brand.image}
-                  alt={brand.name}
-                  width={120}
-                  height={64}
-                  className="h-10 sm:h-16 object-contain grayscale hover:grayscale-0 transition"
-                  loading="lazy"
-                />
-              </div>
-            </SwiperSlide>
+          <SwiperSlide key={brand.slug}>
+          <div
+          className="cursor-pointer flex items-center justify-center p-2 sm:p-4 transition hover:scale-105"
+          onClick={() => handleBrandClick(brand.slug)}
+          title={brand.name}
+          >
+          <Image
+          src={brand.image}
+          alt={brand.name}
+          width={120}
+          height={64}
+          className="h-10 sm:h-16 object-contain grayscale hover:grayscale-0 transition"
+          loading="lazy"
+          />
+          </div>
+          </SwiperSlide>
           ))}
         </Swiper>
       </div>

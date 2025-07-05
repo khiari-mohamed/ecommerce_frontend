@@ -60,6 +60,15 @@ export default function ProductSlider({ products }: { products: any[] }) {
         style={{ scrollBehavior: "smooth" }}
       >
         {products.map((item: any, key: number) => {
+          // Robust image selection logic (same as BestSeller/ProductCard)
+          function getProductImageSrc(item: any): string {
+            if (typeof item.cover === "string" && item.cover.trim() !== "") return item.cover;
+            if (item.imgs?.previews?.[0]) return item.imgs.previews[0];
+            if (item.imgs?.thumbnails?.[0]) return item.imgs.thumbnails[0];
+            if (item.mainImage && typeof item.mainImage === "object" && item.mainImage.url) return item.mainImage.url;
+            if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]?.url) return item.images[0].url;
+            return "/images/placeholder.png";
+          }
           // Robust normalization logic (copied from ShopWithSidebar)
           const normalized = {
             ...item,
@@ -86,6 +95,7 @@ export default function ProductSlider({ products }: { products: any[] }) {
             title: item.title || item.designation_fr || item.designation || "Produit",
             discountedPrice: item.price,
             reviews: item.reviews || 0,
+            image: getProductImageSrc(item), // Add robust image property
           };
           return (
             <div

@@ -22,6 +22,20 @@ function getValidImageSrc(src?: string): string {
   return cleanSrc;
 }
 
+// Robust image selection logic (same as ProductCard/BestSeller)
+function getProductImageCandidates(item: any): string[] {
+  const candidates: string[] = [];
+  if (typeof item?.cover === "string" && item.cover.trim() !== "") candidates.push(item.cover);
+  if (item?.imgs?.previews?.length && item.imgs.previews[0]) candidates.push(item.imgs.previews[0]);
+  if (item?.imgs?.thumbnails?.length && item.imgs.thumbnails[0]) candidates.push(item.imgs.thumbnails[0]);
+  if (item?.mainImage && typeof item.mainImage === "object" && item.mainImage.url) candidates.push(item.mainImage.url);
+  if (Array.isArray(item?.images) && item.images.length > 0 && item.images[0]?.url) candidates.push(item.images[0].url);
+  // Remove duplicates and invalids
+  return candidates
+    .map(getValidImageSrc)
+    .filter((src, idx, arr) => src !== "/images/placeholder.png" && !!src && arr.indexOf(src) === idx);
+}
+
 const PreviewSliderModal = () => {
   const { closePreviewModal, isModalPreviewOpen } = usePreviewSlider();
   const rawData = useAppSelector((state) => state.productDetailsReducer.value);
@@ -70,20 +84,11 @@ const PreviewSliderModal = () => {
     sliderRef.current.swiper.slideNext();
   }, []);
 
-  // Get images array from data (support both previews and thumbnails)
+  // Get images array from data (robust logic)
   const images = useMemo(() => {
     if (!data) return [];
-    let imageUrls = [];
-    if (data.imgs?.previews?.length) {
-      imageUrls = data.imgs.previews;
-    } else if (data.imgs?.thumbnails?.length) {
-      imageUrls = data.imgs.thumbnails;
-    } else if (data.mainImage?.url) {
-      imageUrls = [data.mainImage.url];
-    } else if (data.cover) {
-      imageUrls = [data.cover];
-    }
-    return imageUrls.map(url => getValidImageSrc(url));
+    const candidates = getProductImageCandidates(data);
+    return candidates.length > 0 ? candidates : ["/images/placeholder.png"];
   }, [data]);
 
   return (

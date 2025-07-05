@@ -7,68 +7,50 @@ import Image from "next/image";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useAppSelector } from "@/redux/store";
 
-// Helper to ensure only local images or fallback to placeholder
 function getValidImageSrc(src?: string): string {
   if (!src || typeof src !== "string" || src.trim() === "") {
     return "/images/placeholder.png";
   }
+
   let cleanSrc = src.trim().replace(/\\\\/g, "/").replace(/\\/g, "/");
+
+  // Handle localhost or development absolute URLs
+  if (cleanSrc.startsWith("http://localhost") || cleanSrc.startsWith("https://localhost")) {
+    try {
+      const url = new URL(cleanSrc);
+      cleanSrc = url.pathname; // Only keep the relative part
+    } catch {
+      return "/images/placeholder.png";
+    }
+  }
+
+  // External URLs (make sure you're allowing them in next.config.js)
   if (cleanSrc.startsWith("http")) {
     return cleanSrc;
   }
+
+  // Ensure it starts with a slash
   if (!cleanSrc.startsWith("/")) {
     cleanSrc = "/" + cleanSrc;
   }
+
   return cleanSrc;
 }
 
-// Robust image selection logic (same as ProductCard/BestSeller)
-function getProductImageCandidates(item: any): string[] {
-  const candidates: string[] = [];
-  if (typeof item?.cover === "string" && item.cover.trim() !== "") candidates.push(item.cover);
-  if (item?.imgs?.previews?.length && item.imgs.previews[0]) candidates.push(item.imgs.previews[0]);
-  if (item?.imgs?.thumbnails?.length && item.imgs.thumbnails[0]) candidates.push(item.imgs.thumbnails[0]);
-  if (item?.mainImage && typeof item.mainImage === "object" && item.mainImage.url) candidates.push(item.mainImage.url);
-  if (Array.isArray(item?.images) && item.images.length > 0 && item.images[0]?.url) candidates.push(item.images[0].url);
-  // Remove duplicates and invalids
-  return candidates
-    .map(getValidImageSrc)
-    .filter((src, idx, arr) => src !== "/images/placeholder.png" && !!src && arr.indexOf(src) === idx);
-}
 
 const PreviewSliderModal = () => {
   const { closePreviewModal, isModalPreviewOpen } = usePreviewSlider();
   const rawData = useAppSelector((state) => state.productDetailsReducer.value);
 
-  // Normalize product fields for consistent UI usage (robust normalization)
+  // Normalize product fields for consistent UI usage
   const data = useMemo(() => {
     if (!rawData) return null;
     return {
       ...rawData,
-      imgs: rawData.imgs && rawData.imgs.thumbnails?.length > 0 && rawData.imgs.previews?.length > 0
-        ? rawData.imgs
-        : {
-            thumbnails: (
-              rawData.images && Array.isArray(rawData.images) && rawData.images.length > 0
-                ? rawData.images.map((img: any) => img.url)
-                : rawData.mainImage?.url
-                ? [rawData.mainImage.url]
-                : []
-            ),
-            previews: (
-              rawData.images && Array.isArray(rawData.images) && rawData.images.length > 0
-                ? rawData.images.map((img: any) => img.url)
-                : rawData.mainImage?.url
-                ? [rawData.mainImage.url]
-                : []
-            ),
-          },
-      mainImage: rawData.mainImage || { url: rawData.cover || "" },
-      cover: rawData.cover || rawData.mainImage?.url || "",
       price: Number(rawData.prix ?? rawData.price) || 0,
       discountedPrice: Number(rawData.promo ?? rawData.discountedPrice) || Number(rawData.prix ?? rawData.price) || 0,
-      title: rawData.title || rawData.designation_fr || rawData.designation || "Produit",
-      reviews: rawData.reviews || 0,
+      cover: rawData.cover || rawData.mainImage?.url || "",
+      title: rawData.designation_fr || rawData.designation || "",
     };
   }, [rawData]);
 
@@ -84,11 +66,20 @@ const PreviewSliderModal = () => {
     sliderRef.current.swiper.slideNext();
   }, []);
 
-  // Get images array from data (robust logic)
+  // Get images array from data (support both previews and thumbnails)
   const images = useMemo(() => {
     if (!data) return [];
-    const candidates = getProductImageCandidates(data);
-    return candidates.length > 0 ? candidates : ["/images/placeholder.png"];
+    let imageUrls = [];
+    if (data.imgs?.previews?.length) {
+      imageUrls = data.imgs.previews;
+    } else if (data.imgs?.thumbnails?.length) {
+      imageUrls = data.imgs.thumbnails;
+    } else if (data.mainImage?.url) {
+      imageUrls = [data.mainImage.url];
+    } else if (data.cover) {
+      imageUrls = [data.cover];
+    }
+    return imageUrls.map(url => getValidImageSrc(url));
   }, [data]);
 
   return (
@@ -164,36 +155,35 @@ const PreviewSliderModal = () => {
         </button>
       </div>
 
-      <div className="flex flex-col items-center w-full">
+      <div className="flex flex-col items-center">
         <Swiper ref={sliderRef} slidesPerView={1} spaceBetween={20}>
           {images.length > 0 ? (
             images.map((img, idx) => (
               <SwiperSlide key={idx}>
-                <div className="flex flex-col items-center w-full">
-                  <div className="flex justify-center items-center w-full">
+                <div className="flex flex-col items-center">
+                  <div className="flex justify-center items-center">
                     <Image
                       src={img}
                       alt={`product image ${idx + 1}`}
                       width={450}
                       height={450}
-                      className="object-contain w-full max-w-[95vw] max-h-[60vh] sm:max-h-[70vh] md:max-h-[80vh] h-auto rounded bg-white"
-                      sizes="(max-width: 640px) 90vw, (max-width: 1024px) 70vw, 450px"
+                      className="object-contain max-w-[90vw] max-h-[80vh] w-auto h-auto rounded bg-white"
                     />
                   </div>
                   {/* Product Title */}
-                  <h3 className="mt-4 mb-2 text-lg sm:text-xl font-semibold text-white text-center px-2 break-words">
+                  <h3 className="mt-6 mb-2 text-xl font-semibold text-white text-center">
                     {data?.title}
                   </h3>
                   {/* Product Price */}
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-base sm:text-lg font-bold text-white">
+                    <span className="text-lg font-bold text-white">
                       {Number(data?.discountedPrice).toLocaleString("fr-TN", {
                         style: "currency",
                         currency: "TND",
                       })}
                     </span>
                     {data?.discountedPrice !== data?.price && (
-                      <span className="text-sm sm:text-base line-through text-gray-300">
+                      <span className="text-base line-through text-gray-300">
                         {Number(data?.price).toLocaleString("fr-TN", {
                           style: "currency",
                           currency: "TND",
@@ -206,16 +196,15 @@ const PreviewSliderModal = () => {
             ))
           ) : (
             <SwiperSlide>
-              <div className="flex flex-col items-center w-full">
+              <div className="flex flex-col items-center">
                 <Image
                   src="/images/placeholder.png"
                   alt="No image"
                   width={450}
                   height={450}
-                  className="object-cover w-full max-w-[95vw] max-h-[60vh] sm:max-h-[70vh] md:max-h-[80vh] h-auto rounded"
-                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 70vw, 450px"
+                  className="object-cover w-full h-[450px] rounded"
                 />
-                <h3 className="mt-4 mb-2 text-lg sm:text-xl font-semibold text-white text-center px-2 break-words">
+                <h3 className="mt-6 mb-2 text-xl font-semibold text-white text-center">
                   {data?.title}
                 </h3>
               </div>

@@ -59,7 +59,12 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
       addItemToCart({
         ...item,
         quantity: 1,
-        image: ""
+        image: item.image && item.image !== "" ? item.image : getValidImageSrc(
+          item.cover ||
+          item.imgs?.previews?.[0] || 
+          item.imgs?.thumbnails?.[0] ||
+          item.mainImage?.url
+        )
       })
     );
   };

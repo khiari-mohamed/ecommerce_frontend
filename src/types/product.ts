@@ -39,6 +39,7 @@ export type Product = {
     previews: string[];
   };
   currency: string;
+  image?: string; // <-- allow robust image property for cart/sidebar
 
   _id: string;
   designation: string;

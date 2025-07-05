@@ -26,15 +26,35 @@ const PreviewSliderModal = () => {
   const { closePreviewModal, isModalPreviewOpen } = usePreviewSlider();
   const rawData = useAppSelector((state) => state.productDetailsReducer.value);
 
-  // Normalize product fields for consistent UI usage
+  // Normalize product fields for consistent UI usage (robust normalization)
   const data = useMemo(() => {
     if (!rawData) return null;
     return {
       ...rawData,
+      imgs: rawData.imgs && rawData.imgs.thumbnails?.length > 0 && rawData.imgs.previews?.length > 0
+        ? rawData.imgs
+        : {
+            thumbnails: (
+              rawData.images && Array.isArray(rawData.images) && rawData.images.length > 0
+                ? rawData.images.map((img: any) => img.url)
+                : rawData.mainImage?.url
+                ? [rawData.mainImage.url]
+                : []
+            ),
+            previews: (
+              rawData.images && Array.isArray(rawData.images) && rawData.images.length > 0
+                ? rawData.images.map((img: any) => img.url)
+                : rawData.mainImage?.url
+                ? [rawData.mainImage.url]
+                : []
+            ),
+          },
+      mainImage: rawData.mainImage || { url: rawData.cover || "" },
+      cover: rawData.cover || rawData.mainImage?.url || "",
       price: Number(rawData.prix ?? rawData.price) || 0,
       discountedPrice: Number(rawData.promo ?? rawData.discountedPrice) || Number(rawData.prix ?? rawData.price) || 0,
-      cover: rawData.cover || rawData.mainImage?.url || "",
-      title: rawData.designation_fr || rawData.designation || "",
+      title: rawData.title || rawData.designation_fr || rawData.designation || "Produit",
+      reviews: rawData.reviews || 0,
     };
   }, [rawData]);
 
@@ -139,35 +159,36 @@ const PreviewSliderModal = () => {
         </button>
       </div>
 
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center w-full">
         <Swiper ref={sliderRef} slidesPerView={1} spaceBetween={20}>
           {images.length > 0 ? (
             images.map((img, idx) => (
               <SwiperSlide key={idx}>
-                <div className="flex flex-col items-center">
-                  <div className="flex justify-center items-center">
+                <div className="flex flex-col items-center w-full">
+                  <div className="flex justify-center items-center w-full">
                     <Image
                       src={img}
                       alt={`product image ${idx + 1}`}
                       width={450}
                       height={450}
-                      className="object-contain max-w-[90vw] max-h-[80vh] w-auto h-auto rounded bg-white"
+                      className="object-contain w-full max-w-[95vw] max-h-[60vh] sm:max-h-[70vh] md:max-h-[80vh] h-auto rounded bg-white"
+                      sizes="(max-width: 640px) 90vw, (max-width: 1024px) 70vw, 450px"
                     />
                   </div>
                   {/* Product Title */}
-                  <h3 className="mt-6 mb-2 text-xl font-semibold text-white text-center">
+                  <h3 className="mt-4 mb-2 text-lg sm:text-xl font-semibold text-white text-center px-2 break-words">
                     {data?.title}
                   </h3>
                   {/* Product Price */}
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-lg font-bold text-white">
+                    <span className="text-base sm:text-lg font-bold text-white">
                       {Number(data?.discountedPrice).toLocaleString("fr-TN", {
                         style: "currency",
                         currency: "TND",
                       })}
                     </span>
                     {data?.discountedPrice !== data?.price && (
-                      <span className="text-base line-through text-gray-300">
+                      <span className="text-sm sm:text-base line-through text-gray-300">
                         {Number(data?.price).toLocaleString("fr-TN", {
                           style: "currency",
                           currency: "TND",
@@ -180,15 +201,16 @@ const PreviewSliderModal = () => {
             ))
           ) : (
             <SwiperSlide>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center w-full">
                 <Image
                   src="/images/placeholder.png"
                   alt="No image"
                   width={450}
                   height={450}
-                  className="object-cover w-full h-[450px] rounded"
+                  className="object-cover w-full max-w-[95vw] max-h-[60vh] sm:max-h-[70vh] md:max-h-[80vh] h-auto rounded"
+                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 70vw, 450px"
                 />
-                <h3 className="mt-6 mb-2 text-xl font-semibold text-white text-center">
+                <h3 className="mt-4 mb-2 text-lg sm:text-xl font-semibold text-white text-center px-2 break-words">
                   {data?.title}
                 </h3>
               </div>

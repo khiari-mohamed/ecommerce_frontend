@@ -233,7 +233,9 @@ const Header = () => {
             <div className="max-w-[475px] w-full relative">
               <form onSubmit={handleSearch} autoComplete="off">
                 <div className="flex items-center">
-                  <CustomSelect options={options} />
+                  <div className="min-w-[150px] mr-2">
+                    <CustomSelect options={options} />
+                  </div>
 
                   <div className="relative max-w-[333px] sm:min-w-[333px] w-full">
                     <span className="absolute left-0 top-1/2 -translate-y-1/2 inline-block w-px h-5.5 bg-gray-4"></span>
@@ -545,44 +547,68 @@ const Header = () => {
                   {/* Brands Dropdown Nav */}
                   <li
                     className="relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full"
-                    onMouseEnter={() => setShowBrandsDropdown(true)}
-                    onMouseLeave={() => setShowBrandsDropdown(false)}
+                    onMouseEnter={() => { if (window.innerWidth >= 1280) setShowBrandsDropdown(true); }}
+                    onMouseLeave={() => { if (window.innerWidth >= 1280) setShowBrandsDropdown(false); }}
                   >
+                    {/* Marques Dropdown Toggle (responsive) */}
                     <span
-                      className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center gap-1.5 capitalize cursor-pointer ${stickyMenu ? "xl:py-4" : "xl:py-6"}`}
+                      className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center gap-1.5 capitalize cursor-pointer ${stickyMenu ? "xl:py-4" : "xl:py-6"} xl:block`}
+                      onClick={() => {
+                        if (window.innerWidth < 1280) setShowBrandsDropdown((prev) => !prev);
+                      }}
                     >
                       <svg className="w-5 h-5 mr-1 text-blue" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M16 17l-4 4m0 0l-4-4m4 4V3" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       Marques
                       <svg className="ml-1 w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     </span>
-                    {/* Dropdown grid */}
+                    {/* Dropdown grid - responsive for mobile/desktop */}
                     {showBrandsDropdown && (
-                      <div className="dropdown absolute left-0 top-full mt-2 bg-white shadow-2xl rounded-xl min-w-[320px] z-[10030] grid grid-cols-2 md:grid-cols-3 gap-4 p-4 border border-gray-3 animate-fade-in"
-                        onMouseEnter={() => setShowBrandsDropdown(true)}
-                        onMouseLeave={() => setShowBrandsDropdown(false)}
+                      <div
+                        className={`dropdown z-[10030] ${
+                          window.innerWidth < 1280
+                            ? 'fixed inset-0 bg-black/40 flex items-start justify-center pt-24 xl:hidden' // mobile overlay
+                            : 'absolute left-0 top-full mt-2 bg-white shadow-2xl rounded-xl min-w-[320px] grid grid-cols-2 md:grid-cols-3 gap-4 p-4 border border-gray-3 animate-fade-in'
+                        }`}
+                        onClick={() => { if (window.innerWidth < 1280) setShowBrandsDropdown(false); }}
                       >
-                        {loadingBrands ? (
-                          <div className="col-span-full text-center py-4 text-gray-400">Chargement...</div>
-                        ) : brands.length === 0 ? (
-                          <div className="col-span-full text-center py-4 text-gray-400">Aucune marque</div>
-                        ) : (
-                          brands.map((brand) => (
-                            <Link
-                              key={brand._id}
-                              href={`/brands/${brand.slug}`}
-                              className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-blue/10 transition group"
+                        <div
+                          className={`bg-white rounded-xl w-full max-w-[350px] p-4 relative ${window.innerWidth < 1280 ? '' : ''}`}
+                          onClick={e => e.stopPropagation()}
+                        >
+                          {/* Close button for mobile */}
+                          {window.innerWidth < 1280 && (
+                            <button
+                              className="absolute top-2 right-2 text-2xl text-gray-500 hover:text-blue xl:hidden"
+                              onClick={() => setShowBrandsDropdown(false)}
+                              aria-label="Fermer le menu Marques"
                             >
-                              <Image
-                                src={`/images/brand/${brand.logo}`}
-                                alt={brand.designation_fr}
-                                width={60}
-                                height={60}
-                                className="object-contain rounded-full shadow-md border border-gray-200 bg-white grayscale group-hover:grayscale-0 group-hover:scale-110 transition"
-                              />
-                              <span className="text-xs font-semibold text-center text-dark group-hover:text-blue truncate w-20">{brand.designation_fr}</span>
-                            </Link>
-                          ))
-                        )}
+                              &times;
+                            </button>
+                          )}
+                          {loadingBrands ? (
+                            <div className="col-span-full text-center py-4 text-gray-400">Chargement...</div>
+                          ) : brands.length === 0 ? (
+                            <div className="col-span-full text-center py-4 text-gray-400">Aucune marque</div>
+                          ) : (
+                            brands.map((brand) => (
+                              <Link
+                                key={brand._id}
+                                href={`/brands/${brand.slug}`}
+                                className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-blue/10 transition group"
+                                onClick={() => setShowBrandsDropdown(false)}
+                              >
+                                <Image
+                                  src={`/images/brand/${brand.logo}`}
+                                  alt={brand.designation_fr}
+                                  width={60}
+                                  height={60}
+                                  className="object-contain rounded-full shadow-md border border-gray-200 bg-white grayscale group-hover:grayscale-0 group-hover:scale-110 transition"
+                                />
+                                <span className="text-xs font-semibold text-center text-dark group-hover:text-blue truncate w-20">{brand.designation_fr}</span>
+                              </Link>
+                            ))
+                          )}
+                        </div>
                       </div>
                     )}
                   </li>

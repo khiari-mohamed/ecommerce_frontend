@@ -42,7 +42,7 @@ export default function ClientLayout({
                   <ModalProvider>
                     <PreviewSliderProvider>
                       <Header />
-                    <div style={{ paddingTop: isHomePage ? 0 : "130px" }}>
+                    <div className={isHomePage ? '' : 'pt-[70px] sm:pt-[100px] md:pt-[120px] lg:pt-[130px]'}>
                         {children}
                       </div>
                       <QuickViewModal />

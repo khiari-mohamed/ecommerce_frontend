@@ -22,7 +22,7 @@ const SingleItem = ({ item }: { item: Category }) => {
           />
         ) : (
           <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-500">No Image</span>
+            <span className="text-gray-500">Aucune image</span>
           </div>
         )}
       </div>

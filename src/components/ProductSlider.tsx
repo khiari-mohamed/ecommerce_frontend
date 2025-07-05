@@ -59,28 +59,46 @@ export default function ProductSlider({ products }: { products: any[] }) {
         className="flex gap-4 md:gap-8 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-blue-50"
         style={{ scrollBehavior: "smooth" }}
       >
-        {products.map((product: any) => (
-          <div
-            key={product._id || product.id}
-            className="min-w-[270px] max-w-[320px] min-h-[360px] snap-start flex-shrink-0 transform hover:-translate-y-2 hover:scale-[1.03] transition-all duration-300 shadow-xl rounded-2xl bg-white/90 border border-blue-100 hover:shadow-2xl hover:border-blue-300"
-            style={{
-              boxShadow: "0 4px 14px rgba(0, 0, 0, 0.08)",
-            }}
-          >
-           <ProductItem
-  item={{
-    ...product,
-    mainImage: { url: getProductImage(product) },
-    imgs: {
-      previews: [getProductImage(product)],
-    },
-    title: product.title || product.designation_fr || product.designation || "Produit",
-    discountedPrice: product.price,
-    reviews: product.reviews || 0,
-  }}
-/>
-          </div>
-        ))}
+        {products.map((item: any, key: number) => {
+          // Robust normalization logic (copied from ShopWithSidebar)
+          const normalized = {
+            ...item,
+            imgs: item.imgs && item.imgs.thumbnails?.length > 0 && item.imgs.previews?.length > 0
+              ? item.imgs
+              : {
+                  thumbnails: (
+                    item.images && Array.isArray(item.images) && item.images.length > 0
+                      ? item.images.map((img: any) => img.url)
+                      : item.mainImage?.url
+                      ? [item.mainImage.url]
+                      : []
+                  ),
+                  previews: (
+                    item.images && Array.isArray(item.images) && item.images.length > 0
+                      ? item.images.map((img: any) => img.url)
+                      : item.mainImage?.url
+                      ? [item.mainImage.url]
+                      : []
+                  ),
+                },
+            mainImage: item.mainImage || { url: item.cover || "" },
+            cover: item.cover || item.mainImage?.url || "",
+            title: item.title || item.designation_fr || item.designation || "Produit",
+            discountedPrice: item.price,
+            reviews: item.reviews || 0,
+          };
+          return (
+            <div
+              key={item._id || item.id}
+              className="min-w-[75vw] max-w-[95vw] sm:min-w-[320px] sm:max-w-[350px] min-h-[260px] sm:min-h-[360px] snap-start flex-shrink-0 transform hover:-translate-y-2 hover:scale-[1.03] transition-all duration-300 shadow-xl rounded-2xl bg-white/90 border border-blue-100 hover:shadow-2xl hover:border-blue-300"
+              style={{
+                boxShadow: "0 4px 14px rgba(0, 0, 0, 0.08)",
+              }}
+            >
+              <ProductItem item={normalized} />
+            </div>
+          );
+        })}
       </div>
 
       {showScrollButtons && (

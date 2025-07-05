@@ -29,32 +29,31 @@ export default async function SubcategoryPage({
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Subcategory Header */}
-      <div className="mb-8">
-        {subcategory.cover && (
-          <div className="relative h-40 md:h-64 w-full mb-6 rounded-lg overflow-hidden">
-            <Image
-              src={subcategory.cover}
-              alt={subcategory.name || subcategory.designation_fr || subcategory.designation || "Subcategory"}
-              width={1200}
-              height={400}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        )}
-        
-        <h1 className="text-3xl font-bold mb-2">
-          {subcategory.name || subcategory.designation_fr || subcategory.designation}
-        </h1>
-        
-        {subcategory.description_fr && (
-          <div className="prose max-w-none mb-8">
-            {parse(subcategory.description_fr)}
-          </div>
-        )}
-      </div>
+  <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8 pt-[70px] sm:pt-[100px] md:pt-[120px] lg:pt-[130px]">
+  {/* Subcategory Header */}
+  <div className="mb-8">
+  {subcategory.cover && (
+  <div className="relative h-36 sm:h-48 md:h-64 w-full mb-4 sm:mb-6 rounded-lg overflow-hidden">
+  <Image
+  src={subcategory.cover}
+  alt={subcategory.name || subcategory.designation_fr || subcategory.designation || "Subcategory"}
+  width={1200}
+  height={400}
+  className="w-full h-full object-cover"
+  loading="lazy"
+  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
+  />
+  </div>
+  )}
+  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center break-words">
+  {subcategory.name || subcategory.designation_fr || subcategory.designation}
+  </h1>
+  {subcategory.description_fr && (
+  <div className="prose max-w-none mb-6 sm:mb-8 mx-auto text-center">
+  {parse(subcategory.description_fr)}
+  </div>
+  )}
+  </div>
 
       {/* Products Grid (future-ready) */}
       {subcategory.products && subcategory.products.length > 0 && (

@@ -10,7 +10,7 @@ const PAYMENT_METHODS = [
   {
     key: "payme",
     label: "Paymee (Carte Bancaire)",
-    icon: "/images/checkout/paymee.svg", // Assurez-vous que ce fichier existe ou remplacez-le par un chemin valide
+    icon: "/images/checkout/paymeelogo.webp",
   },
   {
     key: "cash",

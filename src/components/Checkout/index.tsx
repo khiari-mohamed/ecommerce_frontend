@@ -96,33 +96,39 @@ const Checkout = () => {
       console.log("Selected payment method:", selectedPayment);
       console.log("Order data:", orderData);
 
-      // Always force Paymee redirect for testing
       await createOrder(orderData);
 
-      console.log("Initiating Paymee payment...");
-      const response = await axios.post(`${API_BASE}/payments/payme/create`, {
-        amount: total,
-        note: `Commande ${orderData.numero}`,
-        first_name: billingInfo.firstName,
-        last_name: billingInfo.lastName,
-        email: billingInfo.email,
-        phone: billingInfo.phone,
-        return_url: "https://ecommerce-frontend-ruby-eta.vercel.app/facture",
-        cancel_url: "https://ecommerce-frontend-ruby-eta.vercel.app/checkout",
-        webhook_url: "https://ecommercebakcned-production.up.railway.app/payments/payme/webhook",
-        order_id: orderData.numero,
-      });
+      if (selectedPayment === "payme") {
+        // Paymee payment flow
+        console.log("Initiating Paymee payment...");
+        const response = await axios.post(`${API_BASE}/payments/payme/create`, {
+          amount: total,
+          note: `Commande ${orderData.numero}`,
+          first_name: billingInfo.firstName,
+          last_name: billingInfo.lastName,
+          email: billingInfo.email,
+          phone: billingInfo.phone,
+          return_url: `https://ecommerce-frontend-ruby-eta.vercel.app/order-confirmation?orderNumber=${orderData.numero}`,
+          cancel_url: "https://ecommerce-frontend-ruby-eta.vercel.app/checkout",
+          webhook_url: "https://ecommercebakcned-production.up.railway.app/payments/payme/webhook",
+          order_id: orderData.numero,
+        });
 
-      console.log("Paymee backend response:", response.data);
+        console.log("Paymee backend response:", response.data);
 
-      const paymentUrl = response.data.payment_url || response.data;
-      if (paymentUrl) {
-        console.log("Redirecting to Paymee payment URL:", paymentUrl);
-        window.location.href = paymentUrl;
+        const paymentUrl = response.data.payment_url || response.data;
+        if (paymentUrl) {
+          console.log("Redirecting to Paymee payment URL:", paymentUrl);
+          window.location.href = paymentUrl;
+          return;
+        } else {
+          toast.error("Erreur lors de la génération du lien de paiement Paymee.");
+          console.error("No paymentUrl received from backend.");
+        }
+      } else if (selectedPayment === "cash") {
+        // Cash on delivery: redirect directly to facture page
+        window.location.href = `https://ecommerce-frontend-ruby-eta.vercel.app/order-confirmation?orderNumber=${orderData.numero}`;
         return;
-      } else {
-        toast.error("Erreur lors de la génération du lien de paiement Paymee.");
-        console.error("No paymentUrl received from backend.");
       }
     } catch (err: any) {
       toast.error("Échec de l'envoi de la commande");

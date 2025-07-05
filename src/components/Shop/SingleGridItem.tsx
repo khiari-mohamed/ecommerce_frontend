@@ -12,6 +12,7 @@ import Image from "next/image";
 import { formatCurrency } from "@/lib/formattedPrice";
 import ProductBrandAroma from "@/components/product/ProductBrandAroma";
 import StarRating from "../../components/Common/StarRating";
+import { getProductImageSrc } from "@/utils/image";
 
 const SingleGridItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
@@ -142,13 +143,13 @@ const SingleGridItem = ({ item }: { item: Product }) => {
     <div className="group">
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-white shadow-1 min-h-[270px] mb-4">
        <Image
-  src={item.cover ? "/" + item.cover.replace(/^\/+/, "") : "/placeholder.svg"}
-  alt={item.designation || item.title || "Product image"}
-  width={250}
-  height={250}
-  className="object-contain w-full max-w-full h-auto"
-  priority={false}
-/>
+          src={getProductImageSrc(item)}
+          alt={item.designation || item.title || "Product image"}
+          width={250}
+          height={250}
+          className="object-contain w-full max-w-full h-auto"
+          priority={false}
+        />
 
         <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
           <button

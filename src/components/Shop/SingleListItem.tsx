@@ -13,6 +13,7 @@ import Image from "next/image";
 import { formatCurrency } from "@/lib/formattedPrice";
 import ProductBrandAroma from "@/components/product/ProductBrandAroma";
 import StarRating from "@/components/Common/StarRating";
+import { getProductImageSrc } from "@/utils/image";
 
 const SingleListItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
@@ -78,7 +79,7 @@ const SingleListItem = ({ item }: { item: Product }) => {
       <div className="flex">
         <div className="shadow-list relative overflow-hidden flex items-center justify-center max-w-[270px] w-full sm:min-h-[270px] p-4">
           <Image
-            src={item.cover ? "/" + item.cover.replace(/^\/+/, "") : "/placeholder.svg"}
+            src={getProductImageSrc(item)}
             alt={item.designation || item.title || "Product image"}
             width={250}
             height={250}

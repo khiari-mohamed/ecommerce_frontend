@@ -6,37 +6,7 @@ import "swiper/css";
 import Image from "next/image";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useAppSelector } from "@/redux/store";
-
-function getValidImageSrc(src?: string): string {
-  if (!src || typeof src !== "string" || src.trim() === "") {
-    return "/images/placeholder.png";
-  }
-
-  let cleanSrc = src.trim().replace(/\\\\/g, "/").replace(/\\/g, "/");
-
-  // Handle localhost or development absolute URLs
-  if (cleanSrc.startsWith("http://localhost") || cleanSrc.startsWith("https://localhost")) {
-    try {
-      const url = new URL(cleanSrc);
-      cleanSrc = url.pathname; // Only keep the relative part
-    } catch {
-      return "/images/placeholder.png";
-    }
-  }
-
-  // External URLs (make sure you're allowing them in next.config.js)
-  if (cleanSrc.startsWith("http")) {
-    return cleanSrc;
-  }
-
-  // Ensure it starts with a slash
-  if (!cleanSrc.startsWith("/")) {
-    cleanSrc = "/" + cleanSrc;
-  }
-
-  return cleanSrc;
-}
-
+import { normalizeImageUrl } from "@/utils/image";
 
 const PreviewSliderModal = () => {
   const { closePreviewModal, isModalPreviewOpen } = usePreviewSlider();
@@ -79,7 +49,7 @@ const PreviewSliderModal = () => {
     } else if (data.cover) {
       imageUrls = [data.cover];
     }
-    return imageUrls.map(url => getValidImageSrc(url));
+    return imageUrls.map(url => normalizeImageUrl(url));
   }, [data]);
 
   return (

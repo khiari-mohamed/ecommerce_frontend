@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Rate from 'antd/es/rate';
 import { ShoppingCart } from "lucide-react";
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useCallback, memo } from "react";
 import Link from "next/link";
 import { formatCurrency } from "../../lib/formattedPrice";
 import { cn } from "../../lib/utils";
@@ -13,6 +13,7 @@ import { useIsMobile } from "../../hooks/use-mobile";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "@/redux/features/cart-slice";
 import { AppDispatch } from "@/redux/store";
+import { getProductImageSrc } from "@/utils/image";
 
 interface Product {
   _id: string;
@@ -56,48 +57,7 @@ const ProductCard = memo(
     const [isHovered, setIsHovered] = useState(false);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-    // --- PATCH: Always ensure leading slash for image src ---
-    function normalizeProduct(item: any) {
-      return {
-        ...item,
-        imgs: item.imgs && item.imgs.thumbnails?.length > 0 && item.imgs.previews?.length > 0
-          ? item.imgs
-          : {
-              thumbnails: (
-                item.images && Array.isArray(item.images) && item.images.length > 0
-                  ? item.images.map((img: any) => img.url)
-                  : item.mainImage?.url
-                  ? [item.mainImage.url]
-                  : []
-              ),
-              previews: (
-                item.images && Array.isArray(item.images) && item.images.length > 0
-                  ? item.images.map((img: any) => img.url)
-                  : item.mainImage?.url
-                  ? [item.mainImage.url]
-                  : []
-              ),
-            },
-        mainImage: item.mainImage || { url: item.cover || "" },
-        cover: item.cover || item.mainImage?.url || "",
-      };
-    }
-    const normalizedProduct = normalizeProduct(product);
-    const getSafeImageSrc = (src: string | undefined) => {
-      if (!src) return "/placeholder.svg";
-      if (src.startsWith("/") || src.startsWith("http")) return src;
-      return "/" + src;
-    };
-    function getProductImageSrc(item: any): string {
-      if (typeof item.cover === "string" && item.cover.trim() !== "") return item.cover;
-      if (item.imgs?.previews?.[0]) return item.imgs.previews[0];
-      if (item.imgs?.thumbnails?.[0]) return item.imgs.thumbnails[0];
-      if (item.mainImage && typeof item.mainImage === "object" && item.mainImage.url) return item.mainImage.url;
-      if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]?.url) return item.images[0].url;
-      return "/placeholder.svg";
-    }
-    const [imgSrc, setImgSrc] = useState(getSafeImageSrc(getProductImageSrc(normalizedProduct)));
-
+    const [imgSrc, setImgSrc] = useState(getProductImageSrc(product));
     const isMobile = useIsMobile();
 
     const reviewsCount = product?.reviews?.length || 0;
@@ -156,7 +116,7 @@ const ProductCard = memo(
                 ? { thumbnails: [product.mainImage.url], previews: [product.mainImage.url] }
                 : undefined,
               type: type === "pack" ? "Pack" : "Product",
-              image: ""
+              image: getProductImageSrc(product),
             })
           );
 
@@ -178,7 +138,6 @@ const ProductCard = memo(
       [product, type, dispatch, isAddingToCart]
     );
 
-    
     return (
       <div
         className={cn(
@@ -248,9 +207,7 @@ const ProductCard = memo(
                 onLoad={() => setIsImageLoaded(true)}
                 onError={() => {
                   if (fallbackImage && imgSrc !== fallbackImage) {
-                    setImgSrc(getSafeImageSrc(fallbackImage));
-                  } else if (imgSrc && !imgSrc.startsWith("/")) {
-                    setImgSrc(getSafeImageSrc(imgSrc));
+                    setImgSrc(fallbackImage);
                   }
                 }}
                 loading="lazy"

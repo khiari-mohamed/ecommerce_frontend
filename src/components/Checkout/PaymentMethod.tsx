@@ -1,75 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import axios from "axios";
-import toast from "react-hot-toast";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
-interface PaymentMethodType {
-  _id: string;
-  key: string;
-  label: string;
-  icon?: string;
-  enabled: boolean;
-}
 interface PaymentMethodProps {
   value: string;
   onChange: (val: string) => void;
 }
 
-const PaymentMethod: React.FC<PaymentMethodProps> = ({
-  onChange,
-  value: selectedPayment,
-}) => {
-  const [methods, setMethods] = useState<PaymentMethodType[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [payment, setPayment] = useState(selectedPayment || "");
+const PAYMENT_METHODS = [
+  {
+    key: "payme",
+    label: "Paymee (Carte Bancaire)",
+    icon: "/images/checkout/paymee.svg", // Assurez-vous que ce fichier existe ou remplacez-le par un chemin valide
+  },
+  {
+    key: "cash",
+    label: "Paiement à la livraison",
+    icon: "/images/checkout/cash.svg", // Assurez-vous que ce fichier existe ou remplacez-le par un chemin valide
+  },
+];
+
+const PaymentMethod: React.FC<PaymentMethodProps> = ({ value, onChange }) => {
+  const [payment, setPayment] = useState(value || "payme");
 
   useEffect(() => {
-    async function fetchMethods() {
-      try {
-        const res = await axios.get(`${API_BASE}/payment-methods`);
-        setMethods(res.data);
-        // Set default if not set
-        if (!payment && res.data.length > 0) {
-          setPayment(res.data[0].key);
-          onChange(res.data[0].key);
-        }
-      } catch (err: any) {
-        toast.error("Failed to load payment methods");
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchMethods();
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    setPayment(selectedPayment);
-  }, [selectedPayment]);
+    setPayment(value);
+  }, [value]);
 
   const handleSelect = (key: string) => {
     setPayment(key);
     onChange(key);
   };
 
-  if (loading) {
-    return (
-      <div className="bg-white shadow-1 rounded-[10px] mt-7.5 p-8.5">
-        <p>Loading payment methods...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="bg-white shadow-1 rounded-[10px] mt-7.5">
       <div className="border-b border-gray-3 py-5 px-4 sm:px-8.5">
-        <h3 className="font-medium text-xl text-dark">Payment Method</h3>
+        <h3 className="font-medium text-xl text-dark">Méthode de paiement</h3>
       </div>
       <div className="p-4 sm:p-8.5">
         <div className="flex flex-col gap-3">
-          {methods.map((method) => (
+          {PAYMENT_METHODS.map((method) => (
             <label
               key={method.key}
               htmlFor={method.key}
@@ -105,14 +74,8 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
                       <Image
                         src={method.icon}
                         alt={method.key}
-                        width={
-                          method.key === "payme"
-                            ? 75
-                            : method.key === "cash"
-                            ? 21
-                            : 29
-                        }
-                        height={method.key === "payme" ? 20 : 21}
+                        width={method.key === "payme" ? 75 : 29}
+                        height={20}
                       />
                     </div>
                   )}

@@ -1,11 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
-import Login from "./Login";
-import Shipping, { initialState as shippingInitialState } from "./Shipping";
 import ShippingMethod from "./ShippingMethod";
 import PaymentMethod from "./PaymentMethod";
-import Coupon from "./Coupon";
 import Billing, { initialState as billingInitialState } from "./Billing";
 import toast from "react-hot-toast";
 import { useAppSelector } from "@/redux/store";
@@ -14,7 +11,7 @@ import type { Order } from "@/types/order";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-const fraisLivraison = 15;
+const fraisLivraison = 10;
 
 const Checkout = () => {
   // Utiliser le panier Redux
@@ -22,7 +19,7 @@ const Checkout = () => {
 
   // États contrôlés pour la facturation, livraison, etc.
   const [billingInfo, setBillingInfo] = useState(billingInitialState);
-  const [shippingInfo, setShippingInfo] = useState(shippingInitialState);
+  // const [shippingInfo, setShippingInfo] = useState();
   const [selectedShipping, setSelectedShipping] = useState<string>("");
   // Force Paymee as the default payment method for testing
   const [selectedPayment, setSelectedPayment] = useState<string>("payme");
@@ -76,15 +73,15 @@ const Checkout = () => {
       note: notes,
       livraison: selectedShipping,
       frais_livraison: fraisLivraison.toString(),
-      livraison_nom: shippingInfo.lastName,
-      livraison_prenom: shippingInfo.firstName,
-      livraison_adresse1: shippingInfo.address,
-      livraison_adresse2: shippingInfo.addressTwo,
-      livraison_email: shippingInfo.email,
-      livraison_phone: shippingInfo.phone,
-      livraison_pays: shippingInfo.country,
-      livraison_region: shippingInfo.countryName,
-      livraison_ville: shippingInfo.town,
+      livraison_nom: "",
+      livraison_prenom: "",
+      livraison_adresse1: "",
+      livraison_adresse2: "",
+      livraison_email: "",
+      livraison_phone: "",
+      livraison_pays: "",
+      livraison_region: "",
+      livraison_ville: "",
       livraison_code_postale: "",
       numero: generateOrderNumber(),
       historique: "",
@@ -110,9 +107,9 @@ const Checkout = () => {
         last_name: billingInfo.lastName,
         email: billingInfo.email,
         phone: billingInfo.phone,
-        return_url: "https://dcd1-197-22-131-170.ngrok-free.app/order-confirmation",
-        cancel_url: "https://dcd1-197-22-131-170.ngrok-free.app/checkout",
-        webhook_url: "https://dcd1-197-22-131-170.ngrok-free.app/payments/payme/webhook",
+        return_url: "https://ecommerce-frontend-ruby-eta.vercel.app/facture",
+        cancel_url: "https://ecommerce-frontend-ruby-eta.vercel.app/checkout",
+        webhook_url: "https://ecommercebakcned-production.up.railway.app/payments/payme/webhook",
         order_id: orderData.numero,
       });
 
@@ -140,17 +137,14 @@ const Checkout = () => {
       <Breadcrumb title={"Paiement"} pages={["paiement"]} />
       <section className="overflow-hidden py-10 sm:py-16 md:py-20 bg-gray-2">
         <div className="max-w-full md:max-w-3xl lg:max-w-5xl xl:max-w-[1170px] w-full mx-auto px-2 sm:px-4 md:px-8 xl:px-0">
-          {/* Login is now OUTSIDE the main form */}
-          <Login />
           <form onSubmit={handleSubmit}>
-            <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-11">
+            <div className="flex flex-col gap-7.5 xl:gap-11 lg:flex-row">
               {/* <!-- Colonne gauche --> */}
-              <div className="w-full lg:max-w-[670px]">
+              <div className="w-full lg:max-w-[670px] min-w-0">
                 <Billing value={billingInfo} onChange={setBillingInfo} />
-                <Shipping value={shippingInfo} onChange={setShippingInfo} />
                 <div className="bg-white shadow-1 rounded-[10px] p-4 sm:p-8.5 mt-7.5">
                   <div>
-                    <label htmlFor="notes" className="block mb-2.5">
+                    <label htmlFor="notes" className="block mb-2.5" style={{ color: '#FF4301' }}>
                       Autres remarques (optionnel)
                     </label>
                     <textarea
@@ -166,7 +160,7 @@ const Checkout = () => {
                 </div>
               </div>
               {/* <!-- Colonne droite --> */}
-              <div className="w-full lg:max-w-[455px]">
+              <div className="w-full lg:max-w-[455px] min-w-0 mt-7.5 lg:mt-0">
                 <div className="bg-white shadow-1 rounded-[10px]">
                   <div className="border-b border-gray-3 py-5 px-4 sm:px-8.5">
                     <h3 className="font-medium text-lg sm:text-xl text-dark">
@@ -174,7 +168,7 @@ const Checkout = () => {
                     </h3>
                   </div>
                   <div className="pt-2.5 pb-8.5 px-4 sm:px-8.5">
-                    <div className="flex items-center justify-between py-5 border-b border-gray-3 text-xs sm:text-base">
+                    <div className="flex flex-col sm:flex-row items-center justify-between py-5 border-b border-gray-3 text-xs sm:text-base gap-2">
                       <div>
                         <h4 className="font-medium text-dark">Produit</h4>
                       </div>
@@ -187,19 +181,19 @@ const Checkout = () => {
                     {cart.map((item, idx) => (
                       <div
                         key={typeof item.id === "number" && Number.isFinite(item.id) ? `cart-item-${item.id}` : `cart-item-${idx}`}
-                        className="flex items-center justify-between py-5 border-b border-gray-3 text-xs sm:text-base"
+                        className="flex flex-col sm:flex-row items-center justify-between py-5 border-b border-gray-3 text-xs sm:text-base gap-2"
                       >
-                        <div>
-                          <p className="text-dark">{item.title}</p>
+                        <div className="w-full sm:w-auto">
+                          <p className="text-dark break-words">{item.title}</p>
                         </div>
-                        <div>
+                        <div className="w-full sm:w-auto">
                           <p className="text-dark text-right">
                             {Number((item.discountedPrice || item.price) * item.quantity).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
                           </p>
                         </div>
                       </div>
                     ))}
-                    <div className="flex items-center justify-between py-5 border-b border-gray-3 text-xs sm:text-base">
+                    <div className="flex flex-col sm:flex-row items-center justify-between py-5 border-b border-gray-3 text-xs sm:text-base gap-2">
                       <div>
                         <p className="text-dark">Frais de livraison</p>
                       </div>
@@ -209,7 +203,7 @@ const Checkout = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between pt-5 text-xs sm:text-base">
+                    <div className="flex flex-col sm:flex-row items-center justify-between pt-5 text-xs sm:text-base gap-2">
                       <div>
                         <p className="font-medium text-lg text-dark">Total</p>
                       </div>
@@ -221,12 +215,18 @@ const Checkout = () => {
                     </div>
                   </div>
                 </div>
-                <Coupon value={coupon} onChange={setCoupon} />
-                <ShippingMethod value={selectedShipping} onChange={setSelectedShipping} />
-                <PaymentMethod value={selectedPayment} onChange={setSelectedPayment} />
+                <div className="mt-7.5">
+                  <ShippingMethod value={selectedShipping} onChange={setSelectedShipping} />
+                </div>
+                <div className="mt-7.5">
+                  <PaymentMethod value={selectedPayment} onChange={setSelectedPayment} />
+                </div>
                 <button
                   type="submit"
-                  className="w-full flex justify-center font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark mt-7.5"
+                  className="w-full flex justify-center font-medium text-white py-3 px-6 rounded-md ease-out duration-200 mt-7.5"
+                  style={{ backgroundColor: '#FF4301', border: 'none' }}
+                  onMouseOver={e => (e.currentTarget.style.backgroundColor = '#e03c00')}
+                  onMouseOut={e => (e.currentTarget.style.backgroundColor = '#FF4301')}
                   disabled={loading}
                 >
                   {loading ? "Traitement..." : "Valider la commande"}

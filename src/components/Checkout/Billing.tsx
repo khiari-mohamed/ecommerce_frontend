@@ -68,7 +68,7 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
       <div className="bg-white shadow-1 rounded-[10px] p-4 sm:p-8.5">
         <div className="flex flex-col lg:flex-row gap-5 sm:gap-8 mb-5">
           <div className="w-full">
-            <label htmlFor="firstName" className="block mb-2.5">
+            <label htmlFor="firstName" className="block mb-2.5" style={{ color: '#FF4301' }}>
               Prénom <span className="text-red">*</span>
             </label>
             <input
@@ -83,7 +83,7 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
             />
           </div>
           <div className="w-full">
-            <label htmlFor="lastName" className="block mb-2.5">
+            <label htmlFor="lastName" className="block mb-2.5" style={{ color: '#FF4301' }}>
               Nom <span className="text-red">*</span>
             </label>
             <input
@@ -100,7 +100,7 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
         </div>
 
         <div className="mb-5">
-          <label htmlFor="companyName" className="block mb-2.5">
+          <label htmlFor="companyName" className="block mb-2.5" style={{ color: '#FF4301' }}>
             Société
           </label>
           <input
@@ -115,7 +115,7 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
         </div>
 
         <div className="mb-5">
-          <label htmlFor="countryName" className="block mb-2.5">
+          <label htmlFor="countryName" className="block mb-2.5" style={{ color: '#FF4301' }}>
             Pays / Région <span className="text-red">*</span>
           </label>
           <div className="relative">
@@ -154,7 +154,7 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
         </div>
 
         <div className="mb-5">
-          <label htmlFor="address" className="block mb-2.5">
+          <label htmlFor="address" className="block mb-2.5" style={{ color: '#FF4301' }}>
             Adresse <span className="text-red">*</span>
           </label>
           <input
@@ -181,7 +181,7 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
         </div>
 
         <div className="mb-5">
-          <label htmlFor="town" className="block mb-2.5">
+          <label htmlFor="town" className="block mb-2.5" style={{ color: '#FF4301' }}>
             Ville <span className="text-red">*</span>
           </label>
           <input
@@ -197,7 +197,7 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
         </div>
 
         <div className="mb-5">
-          <label htmlFor="country" className="block mb-2.5">
+          <label htmlFor="country" className="block mb-2.5" style={{ color: '#FF4301' }}>
             Gouvernorat / Région
           </label>
           <input
@@ -212,7 +212,7 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
         </div>
 
         <div className="mb-5">
-          <label htmlFor="phone" className="block mb-2.5">
+          <label htmlFor="phone" className="block mb-2.5" style={{ color: '#FF4301' }}>
             Téléphone <span className="text-red">*</span>
           </label>
           <input
@@ -228,7 +228,7 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
         </div>
 
         <div className="mb-5.5">
-          <label htmlFor="email" className="block mb-2.5">
+          <label htmlFor="email" className="block mb-2.5" style={{ color: '#FF4301' }}>
             Adresse e-mail <span className="text-red">*</span>
           </label>
           <input

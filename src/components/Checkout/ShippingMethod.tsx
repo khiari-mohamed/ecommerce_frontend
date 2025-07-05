@@ -8,25 +8,11 @@ interface ShippingMethodProps {
 
 const SHIPPING_OPTIONS = [
   {
-    key: "free",
-    label: "Free Shipping",
-    price: 0,
-    description: "Standard Shipping",
-    icon: null,
-  },
-  {
-    key: "fedex",
-    label: "FedEx",
-    price: 10.99,
-    description: "Standard Shipping",
-    icon: "/images/checkout/fedex.svg",
-  },
-  {
-    key: "dhl",
-    label: "DHL",
-    price: 12.5,
-    description: "Standard Shipping",
-    icon: "/images/checkout/dhl.svg",
+    key: "aramex",
+    label: "Aramex",
+    price: 15,
+    description: "Livraison standard en Tunisie",
+    icon: "/images/checkout/aramexlogo.webp", // Assurez-vous que ce fichier existe ou remplacez-le par un chemin valide
   },
 ];
 
@@ -34,7 +20,7 @@ const ShippingMethod: React.FC<ShippingMethodProps> = ({ value, onChange }) => {
   return (
     <div className="bg-white shadow-1 rounded-[10px] mt-7.5">
       <div className="border-b border-gray-3 py-5 px-4 sm:px-8.5">
-        <h3 className="font-medium text-xl text-dark">Shipping Method</h3>
+        <h3 className="font-medium text-xl text-dark">Méthode de livraison</h3>
       </div>
       <div className="p-4 sm:p-8.5">
         <div className="flex flex-col gap-4">

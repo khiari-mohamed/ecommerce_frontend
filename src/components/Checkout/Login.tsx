@@ -1,3 +1,4 @@
+/*
 import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -67,7 +68,7 @@ const Login = () => {
         </span>
       </div>
 
-      {/* <!-- dropdown menu --> */}
+      {/* <!-- dropdown menu --> 
       <div
         className={`${
           dropdown ? "block" : "hidden"
@@ -125,3 +126,4 @@ const Login = () => {
 };
 
 export default Login;
+*/

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/*import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -76,4 +76,4 @@ const Coupon : React.FC<CouponProps> = ({ value, onChange }) => {
   );
 };
 
-export default Coupon;
+export default Coupon;*/

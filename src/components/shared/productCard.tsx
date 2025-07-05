@@ -177,7 +177,7 @@ const ProductCard = memo(
           setIsAddingToCart(false);
         }
       },
-      [product, type, dispatch, isAddingToCart]
+      [product, type, dispatch, isAddingToCart, normalizedProduct]
     );
 
     

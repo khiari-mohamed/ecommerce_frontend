@@ -10,7 +10,7 @@ const SHIPPING_OPTIONS = [
   {
     key: "aramex",
     label: "Aramex",
-    price: 15,
+    price: 10,
     description: "Livraison standard en Tunisie",
     icon: "/images/checkout/aramexlogo.webp", // Assurez-vous que ce fichier existe ou remplacez-le par un chemin valide
   },

@@ -1,5 +1,5 @@
 
-"use client";
+/*"use client";
 import { useEffect, useState } from "react";
 import ProductCard from "../../shared/productCard";
 import { useAuth } from "../../../context/authContext";
@@ -220,3 +220,8 @@ async function FlashSale({ products }: { products: any[] }) {
 
 export default FlashSale;
 */
+
+// index.tsx
+export default function VenteFlash() {
+  return null; // or a placeholder message
+}

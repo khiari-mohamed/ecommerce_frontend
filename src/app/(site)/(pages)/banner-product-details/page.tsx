@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import Image from "next/image";
-import Newsletter from "@/components/Common/Newsletter";
 import RecentlyViewdItems from "@/components/ShopDetails/RecentlyViewd";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useSearchParams } from "next/navigation";
@@ -412,7 +411,7 @@ const BannerProductDetails = () => {
         </div>
       </section>
       <RecentlyViewdItems />
-      <Newsletter />
+
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 
 interface CountdownProps {
   timeRemaining: {
@@ -38,4 +38,9 @@ const Countdown: React.FC<CountdownProps> = ({ timeRemaining }) => {
   );
 };
 
-export default Countdown;
+export default Countdown;*/
+
+// Countdown.tsx
+export default function Countdown() {
+  return null;
+}

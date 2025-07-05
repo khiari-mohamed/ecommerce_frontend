@@ -1,5 +1,4 @@
-
-"use client";
+/*"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 
@@ -50,7 +49,7 @@ const Newsletter = () => {
     <section className="overflow-hidden w-full">
       <div className="w-full px-0">
         <div className="relative z-1 overflow-hidden rounded-none">
-          {/* <!-- bg shapes --> */}
+          {/* <!-- bg shapes --> 
           <Image
             src="/images/shapes/newsletter-bg.jpg"
             alt="background illustration"
@@ -114,3 +113,4 @@ const Newsletter = () => {
 };
 
 export default Newsletter;
+*/

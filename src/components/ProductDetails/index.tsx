@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import Image from "next/image";
-import Newsletter from "../Common/Newsletter";
 import RecentlyViewdItems from "../ShopDetails/RecentlyViewd";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useSearchParams } from "next/navigation";
@@ -719,7 +718,6 @@ const ProductDetails = () => {
         </div>
       </section>
       <RecentlyViewdItems />
-      <Newsletter />
     </>
   );
 };

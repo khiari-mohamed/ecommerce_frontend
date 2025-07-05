@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -105,7 +105,7 @@ export default function VenteFlashSlugPage({
     >
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="flex flex-col md:flex-row gap-8 items-center md:items-start bg-white rounded-xl shadow-lg p-6 md:p-10 border border-orange-200">
-          {/* IMAGE & BADGE */}
+          {/* IMAGE & BADGE *
           <div className="w-full md:w-1/3 flex flex-col items-center">
             <Image
               src={
@@ -140,7 +140,7 @@ export default function VenteFlashSlugPage({
               </div>
             )}
          </div>
-          {/* DETAILS */}
+          {/* DETAILS 
           <div className="flex-1 flex flex-col items-center md:items-start">
             <h1
               className="text-3xl md:text-4xl font-bold uppercase mb-2 tracking-wide text-center md:text-left"
@@ -179,7 +179,7 @@ export default function VenteFlashSlugPage({
             </a>
           </div>
         </div>
-        {/* PRODUCTS */}
+        {/* PRODUCTS 
 
         <div className="mt-10">
           <h2
@@ -210,9 +210,8 @@ export default function VenteFlashSlugPage({
     </section>
   );
 }
-
-
-/*
+*/
 export default function VenteFlashSlugPage() {
   return null;
-}*/
+
+}

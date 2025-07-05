@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "@/lib/axios";
 import { toast } from "react-toastify";
 
 const coordonnees = {
@@ -25,27 +26,58 @@ const coordonnees = {
 
 function Footer() {
   const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
 
-  const handleSubscribe = async (e: any) => {
+  // Categories for footer
+  const [categories, setCategories] = useState<{ _id: string; slug: string; name: string }[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await axios.get("/categories?populate=subcategories");
+        setCategories(res.data.data || []);
+      } catch (error) {
+        setCategories([]);
+      } finally {
+        setLoadingCategories(false);
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus("loading");
+    setMessage("");
+    if (!email || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(email)) {
+      setStatus("error");
+      setMessage("Veuillez entrer une adresse e-mail valide.");
+      return;
+    }
     try {
-      if (!email) return;
-      const res = await fetch(
-        "https://admin.protein.tn/public/api/newsletter",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-        }
-      );
-
-      const data = await res.json();
-      if (data?.success) toast.success(data?.success);
-      if (data?.error) toast.error(data?.error);
-    } catch (e) {
-      console.log(e);
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: email,
+          customerName: "Valued Customer",
+          customerEmail: email,
+          unsubscribeLink: "https://protein.tn/unsubscribe?email=" + encodeURIComponent(email),
+        }),
+      });
+      if (res.ok) {
+        setStatus("success");
+        setMessage("Merci de votre inscription ! Veuillez consulter votre boîte mail.");
+        setEmail("");
+      } else {
+        const data = await res.json();
+        setStatus("error");
+        setMessage(data.message || "Une erreur s'est produite. Veuillez réessayer.");
+      }
+    } catch (err) {
+      setStatus("error");
+      setMessage("Erreur réseau. Veuillez réessayer.");
     }
   };
 
@@ -68,14 +100,29 @@ function Footer() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="p-3 w-full sm:w-64 text-black outline-none mb-2 sm:mb-0"
+              disabled={status === "loading"}
             />
             <button
               type="submit"
               className="bg-[#FF5000] text-white font-bold px-6 py-3 w-full sm:w-auto hover:bg-[#FF8000] transition-all"
+              disabled={status === "loading"}
             >
-              S&apos;abonner
+              {status === "loading" ? "Abonnement..." : "S'abonner"}
             </button>
           </div>
+          {message && (
+            <div
+              className={`mt-2 text-sm ${
+                status === "success"
+                  ? "text-green-600"
+                  : status === "error"
+                  ? "text-red-600"
+                  : ""
+              }`}
+            >
+              {message}
+            </div>
+          )}
         </form>
       </div>
 
@@ -101,27 +148,36 @@ function Footer() {
         <div className="w-full md:w-1/2 lg:w-1/4 mb-6">
           <h4 className="font-bold mb-4">NOS CATÉGORIES</h4>
           <ul className="space-y-2">
-            <li>
-              <Link href="/categorie/acides-amines" className="hover:underline">ACIDES AMINES</Link>
-            </li>
-            <li>
-              <Link href="/categorie/perte-de-poids" className="hover:underline">PERTE DE POIDS</Link>
-            </li>
-            <li>
-              <Link href="/categorie/prise-de-masse" className="hover:underline">PRISE DE MASSE</Link>
-            </li>
-            <li>
-              <Link href="/categorie/proteines" className="hover:underline">PROTEINES</Link>
-            </li>
-            <li>
-              <Link href="/categorie/pre-intra-and-post-workout" className="hover:underline">PRE, INTRA & POST WORKOUT</Link>
-            </li>
-            <li>
-              <Link href="/categorie/vetements-et-accessoires" className="hover:underline">VÊTEMENTS ET ACCESSOIRES</Link>
-            </li>
-            <li>
-              <Link href="/categorie/vetements-et-accessoires" className="hover:underline">MATÉRIEL ET ACCESSOIRES</Link>
-            </li>
+            {loadingCategories ? (
+              <li>Chargement...</li>
+            ) : categories.length === 0 ? (
+              <li>Aucune catégorie</li>
+            ) : (
+              [
+                { label: "ACIDES AMINES", key: "acides-amines" },
+                { label: "PERTE DE POIDS", key: "perte-de-poids" },
+                { label: "PRISE DE MASSE", key: "prise-de-masse" },
+                { label: "PROTEINES", key: "proteines" },
+                { label: "PRE, INTRA & POST WORKOUT", key: "pre-intra-and-post-workout" },
+                { label: "VÊTEMENTS ET ACCESSOIRES", key: "vetements-et-accessoires" },
+                { label: "MATÉRIEL ET ACCESSOIRES", key: "materiel-et-accessoires" },
+              ].map((item) => {
+                const cat = categories.find(
+                  (c) => c.slug === item.key || c.name.toLowerCase().replace(/[^a-z0-9]+/gi, "-") === item.key
+                );
+                return (
+                  <li key={item.key}>
+                    {cat ? (
+                      <Link href={`/categories/${cat.slug}`} className="hover:underline">
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <span className="text-gray-400 cursor-not-allowed">{item.label}</span>
+                    )}
+                  </li>
+                );
+              })
+            )}
           </ul>
         </div>
 
@@ -130,16 +186,16 @@ function Footer() {
           <h4 className="font-bold mb-4">ENTREPRISE</h4>
           <ul className="space-y-2 mb-4">
             <li>
-              <Link href="/qui-sommes-nous" className="hover:underline">À PROPOS DE NOUS</Link>
+              <Link href="/" className="hover:underline">À PROPOS DE NOUS</Link>
             </li>
             <li>
-              <Link href="/condition-ventes" className="hover:underline">POLITIQUE DE CONFIDENTIALITÉ</Link>
+              <Link href="/" className="hover:underline">POLITIQUE DE CONFIDENTIALITÉ</Link>
             </li>
             <li>
-              <Link href="/condition-ventes" className="hover:underline">CONDITIONS DUTILISATION</Link>
+              <Link href="/" className="hover:underline">CONDITIONS DUTILISATION</Link>
             </li>
             <li>
-              <Link href="/remboursement" className="hover:underline">POLITIQUE DE RETOUR ET DE REMBOURSEMENT</Link>
+              <Link href="/" className="hover:underline">POLITIQUE DE RETOUR ET DE REMBOURSEMENT</Link>
             </li>
           </ul>
           <h4 className="font-bold mb-4">TÉLÉCHARGER NOTRE APPLICATION</h4>

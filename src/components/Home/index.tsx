@@ -1,4 +1,8 @@
+"use client";
+// This file is a part of the template_front project.
+// It is responsible for rendering the home page of the application.
 import React from "react";
+import { useEffect, useState } from "react";
 import Hero from "./Hero";
 import Categories from "./Categories";
 import NewArrival from "./NewArrivals";
@@ -6,18 +10,27 @@ import PromoBanner from "./PromoBanner";
 import BestSeller from "./BestSeller";
 import CountdownBlogGrid from "./Countdown";
 import Testimonials from "./Testimonials";
-import Newsletter from "../Common/Newsletter";
 import MusculationProducts from "./MusculationProducts";
-import VenteFlash from "@/components/Home/VenteFlash";
+//import VenteFlash from "@/components/Home/VenteFlash";
 import PacksSection from "./PacksSection/PacksSection";
 import BrandSection from "@/components/Home/BrandSection";
+import StaticVenteFlash from "../StaticVenteFlash/StaticVenteFlash";
+import { getVenteFlashList } from "@/services/venteFlash";
+
 
 const Home = () => {
+
+   const [ventesFlash, setVentesFlash] = useState([]);
+
+  useEffect(() => {
+    getVenteFlashList().then(setVentesFlash);
+  }, []);
   return (
     <main>
       <Hero />
       <Categories />
-      <VenteFlash  />
+      <StaticVenteFlash products={ventesFlash} />
+      {/* <VenteFlash /> */}
       <NewArrival />
       <PromoBanner />
       <BestSeller />
@@ -26,8 +39,7 @@ const Home = () => {
       <MusculationProducts />
       <Testimonials />
       <BrandSection />
-      <Newsletter />
-    </main>
+      </main>
   );
 };
 

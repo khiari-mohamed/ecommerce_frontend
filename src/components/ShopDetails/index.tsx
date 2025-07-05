@@ -1039,7 +1039,6 @@ const ShopDetails = () => {
               </div>
             </div>
           </section>
-          
           <RecentlyViewdItems />
         </>
       )}

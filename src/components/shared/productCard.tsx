@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import Rate from 'antd/es/rate';
 import { ShoppingCart } from "lucide-react";
@@ -89,6 +88,8 @@ const ProductCard = memo(
       if (src.startsWith("/") || src.startsWith("http")) return src;
       return "/" + src;
     };
+    console.log("Product for image", product);
+    console.log("Image src", getProductImageSrc(product));
     function getProductImageSrc(item: any): string {
       if (typeof item.cover === "string" && item.cover.trim() !== "") return item.cover;
       if (item.imgs?.previews?.[0]) return item.imgs.previews[0];

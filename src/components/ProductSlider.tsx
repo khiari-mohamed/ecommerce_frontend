@@ -1,6 +1,9 @@
 "use client";
 import React, { useRef } from "react";
 import ProductItem from "@/components/Common/ProductItem";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { addItemToCart } from "@/redux/features/cart-slice";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -95,7 +98,21 @@ export default function ProductSlider({ products }: { products: any[] }) {
             title: item.title || item.designation_fr || item.designation || "Produit",
             discountedPrice: item.price,
             reviews: item.reviews || 0,
-            image: getProductImageSrc(item), // Add robust image property
+          };
+          const dispatch = useDispatch<AppDispatch>();
+          const handleAddToCart = () => {
+            dispatch(
+              addItemToCart({
+                id: normalized.id || normalized._id,
+                title: normalized.title,
+                price: normalized.price,
+                discountedPrice: normalized.discountedPrice,
+                quantity: 1,
+                imgs: normalized.imgs,
+                type: normalized.type,
+                image: getProductImageSrc(normalized),
+              })
+            );
           };
           return (
             <div
@@ -106,6 +123,12 @@ export default function ProductSlider({ products }: { products: any[] }) {
               }}
             >
               <ProductItem item={normalized} />
+              <button
+                onClick={handleAddToCart}
+                className="w-full mt-2 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+              >
+                Ajouter au panier
+              </button>
             </div>
           );
         })}

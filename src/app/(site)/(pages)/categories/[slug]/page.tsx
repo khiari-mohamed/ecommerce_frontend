@@ -7,8 +7,16 @@ import SubcategoryList from '@/components/Subcategory/SubcategoryList';
 import parse from 'html-react-parser';
 import Image from 'next/image';
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+
+
+
+interface CategoryPageProps {
+  params?: { slug: string };
+}
+
+export async function generateMetadata({ params }: CategoryPageProps) {
+  const slug = params?.slug;
+  if (!slug) return {};
   const category = await getCategoryBySlug(slug);
   return {
     title: category?.designation_fr || category?.designation || 'Category',
@@ -18,9 +26,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function CategoryPage({ params }: { params: { slug: string } }) {
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const slug = params?.slug;
   try {
-    const { slug } = params;
+    if (!slug) {
+      notFound();
+      return null;
+    }
     const category = await getCategoryBySlug(slug);
 
     if (!category) {

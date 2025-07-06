@@ -4,6 +4,7 @@ import axios from "@/lib/axios";
 import BrandProductGrid from "./BrandProductsGrid";
 import Link from "next/link";
 import Image from "next/image";
+import React from "react";
 
 interface Brand {
   _id: string;
@@ -71,10 +72,25 @@ export default async function BrandPage({
     notFound();
   }
 
+  // Minimal ClientHeaderOffset implementation
+  function ClientHeaderOffset() {
+    React.useEffect(() => {
+      function setOffset() {
+        // You can adjust this value to match your header height on mobile/desktop
+        const mobile = window.innerWidth < 640;
+        const offset = mobile ? 60 : 70;
+        document.documentElement.style.setProperty('--header-offset', offset + 'px');
+      }
+      setOffset();
+      window.addEventListener('resize', setOffset);
+      return () => window.removeEventListener('resize', setOffset);
+    }, []);
+    return null;
+  }
+
   return (
   <>
   {/* Adaptive header offset for mobile - handled in client component */}
-  {/* @ts-expect-error Async Server Component using Client Component */}
   <ClientHeaderOffset />
   <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8" style={{ paddingTop: 'var(--header-offset, 70px)' }}>
   <div className="flex flex-col items-center">

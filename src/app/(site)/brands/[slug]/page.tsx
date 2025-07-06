@@ -13,7 +13,6 @@ interface Brand {
   logo: string;
   description_fr?: string;
 }
-
 interface BrandPageProps {
   params: { slug: string };
 }

@@ -11,8 +11,8 @@ interface BrandProductGridProps {
 const BrandProductGrid: React.FC<BrandProductGridProps> = ({ products }) => {
   const safeProducts = Array.isArray(products) ? products : [];
   return (
-    <div className="mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">Produits de la marque</h2>
+  <div className="mt-[180px] md:mt-10">
+  <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">Produits de la marque</h2>
       {safeProducts.length === 0 ? (
         <div className="text-center text-gray-400">Aucun produit trouvé pour cette marque.</div>
       ) : (
@@ -36,7 +36,7 @@ const BrandProductGrid: React.FC<BrandProductGridProps> = ({ products }) => {
               brand: product.brand_id,
               reviews: product.reviews ?? [],
             };
-            return <ProductCard key={product._id} product={mappedProduct} />;
+            return <ProductCard key={product._id} product={mappedProduct} typeRef={"shop-details?slug"} />;
           })}
         </div>
       )}

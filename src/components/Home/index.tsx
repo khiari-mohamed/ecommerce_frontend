@@ -1,6 +1,4 @@
 "use client";
-// This file is a part of the template_front project.
-// It is responsible for rendering the home page of the application.
 import React from "react";
 import { useEffect, useState } from "react";
 import Hero from "./Hero";
@@ -11,7 +9,6 @@ import BestSeller from "./BestSeller";
 import CountdownBlogGrid from "./Countdown";
 import Testimonials from "./Testimonials";
 import MusculationProducts from "./MusculationProducts";
-//import VenteFlash from "@/components/Home/VenteFlash";
 import PacksSection from "./PacksSection/PacksSection";
 import BrandSection from "@/components/Home/BrandSection";
 import StaticVenteFlash from "../StaticVenteFlash/StaticVenteFlash";

@@ -73,36 +73,36 @@ const OrderInvoice = ({ order, printRef }) => {
       className="document-print-area min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 py-4 px-1 sm:py-8 sm:px-2 md:px-4 font-sans print:bg-white print:py-0 print:px-0"
     >
       <div className="w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-2 sm:p-4 md:p-6 relative border border-blue-200 print:shadow-none print:border-none print:rounded-none print:p-0">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-2 sm:gap-0">
-          <div className="flex flex-col items-start">
-            <Image src={COMPANY.logo} alt="Logo Votre Société" width={96} height={96} className="h-16 w-24 sm:h-20 sm:w-32 object-contain mb-1" loading="lazy" sizes="96px" />
-            <div className="text-[11px] text-gray-700 leading-tight">
-              <div className="mb-0.5">{COMPANY.email}</div>
-              <div className="mb-0.5">{COMPANY.address}</div>
-              <div>{COMPANY.tel}</div>
-            </div>
-          </div>
-          <div className="flex flex-col items-end mt-2 sm:mt-0">
-            <span className="text-xl sm:text-2xl font-extrabold text-right" style={{ color: ORANGE, letterSpacing: "1px" }}>Facture</span>
-            <span className="text-[11px] text-gray-500 mt-2">
-              Date : {new Date(order.created_at).toLocaleString("fr-FR", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit"
-              })}
-            </span>
-            <span className="text-[11px] text-gray-500">N° : <span className="font-semibold">{order.numero}</span></span>
-          </div>
-        </div>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4 sm:gap-0">
+      <div className="flex flex-col items-start w-full sm:w-auto">
+      <Image src={COMPANY.logo} alt="Logo Votre Société" width={96} height={96} className="h-16 w-24 sm:h-20 sm:w-32 object-contain mb-1 mx-auto sm:mx-0" loading="lazy" sizes="96px" />
+      <div className="text-[11px] text-gray-700 leading-tight text-center sm:text-left w-full sm:w-auto">
+      <div className="mb-0.5">{COMPANY.email}</div>
+      <div className="mb-0.5">{COMPANY.address}</div>
+      <div>{COMPANY.tel}</div>
+      </div>
+      </div>
+      <div className="flex flex-col items-end w-full sm:w-auto mt-2 sm:mt-0">
+      <span className="text-xl sm:text-2xl font-extrabold text-right w-full sm:w-auto" style={{ color: ORANGE, letterSpacing: "1px" }}>Facture</span>
+      <span className="text-[11px] text-gray-500 mt-2 w-full sm:w-auto text-right">
+      Date : {new Date(order.created_at).toLocaleString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+      })}
+      </span>
+      <span className="text-[11px] text-gray-500 w-full sm:w-auto text-right">N° : <span className="font-semibold">{order.numero}</span></span>
+      </div>
+      </div>
         {/* Orange thin line */}
         <div className="w-full h-0.5 mb-4" style={{ background: ORANGE, borderRadius: 2 }} />
         {/* User credentials */}
-        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-4">
-          {/* Billing */}
-          <div className="flex-1 mb-2 sm:mb-0">
+        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-4 w-full">
+        {/* Billing */}
+        <div className="flex-1 mb-2 sm:mb-0 w-full">
             <div className="font-semibold text-[13px] text-blue-700 mb-1">Facturé à</div>
             <div className="text-[11px] text-gray-700 leading-tight">
               <div>{billing.prenom} {billing.nom}</div>
@@ -113,7 +113,7 @@ const OrderInvoice = ({ order, printRef }) => {
             </div>
           </div>
           {/* Shipping */}
-          <div className="flex-1">
+          <div className="flex-1 w-full">
             <div className="font-semibold text-[13px] text-blue-700 mb-1">Livraison</div>
             <div className="text-[11px] text-gray-700 leading-tight">
               <div>{shipping.prenom} {shipping.nom}</div>
@@ -126,8 +126,8 @@ const OrderInvoice = ({ order, printRef }) => {
           </div>
         </div>
         {/* Table: Products */}
-        <div className="overflow-x-auto mb-6">
-          <table className="w-full border rounded-lg overflow-hidden shadow-sm text-[11px] sm:text-[12px]">
+        <div className="overflow-x-auto mb-6 w-full">
+        <table className="w-full border rounded-lg overflow-hidden shadow-sm text-[11px] sm:text-[12px] min-w-[400px]">
             <thead>
               <tr className="bg-[#FF4301] text-white">
                 <th className="p-1 text-left font-semibold">Produit</th>
@@ -171,19 +171,19 @@ const OrderInvoice = ({ order, printRef }) => {
         </div>
         {/* Totals: right side */}
         <div className="flex flex-col items-end space-y-1 mb-6 text-[12px] w-full">
-          <div className="flex justify-between w-full sm:w-72 md:w-56">
+        <div className="flex flex-col sm:flex-row justify-between w-full sm:w-72 md:w-56">
             <span className="font-medium">Total HT :</span>
             <span>{totalHT.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
           </div>
-          <div className="flex justify-between w-full sm:w-72 md:w-56">
+          <div className="flex flex-col sm:flex-row justify-between w-full sm:w-72 md:w-56">
             <span className="font-medium">TVA (19%) :</span>
             <span>{totalTVA.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
           </div>
-          <div className="flex justify-between w-full sm:w-72 md:w-56">
+          <div className="flex flex-col sm:flex-row justify-between w-full sm:w-72 md:w-56">
             <span className="font-medium">TIMBRE :</span>
             <span>{totalTimbre.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
           </div>
-          <div className="flex justify-between w-full sm:w-72 md:w-56 pt-2" style={{ borderTop: `2px solid ${ORANGE}` }}>
+          <div className="flex flex-col sm:flex-row justify-between w-full sm:w-72 md:w-56 pt-2" style={{ borderTop: `2px solid ${ORANGE}` }}>
             <span className="font-bold">Total TTC :</span>
             <span className="font-bold">
               {totalTTC.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
@@ -191,10 +191,10 @@ const OrderInvoice = ({ order, printRef }) => {
           </div>
         </div>
         {/* Amount in letters: left side with orange vertical bar */}
-        <div className="mb-4 flex flex-row items-start ml-2">
-          {/* Orange vertical bar */}
-          <div
-            className="mr-2 hidden sm:block"
+        <div className="mb-4 flex flex-col sm:flex-row items-start ml-2">
+        {/* Orange vertical bar */}
+        <div
+        className="mr-2 hidden sm:block"
             style={{
               width: "6px",
               minWidth: "6px",
@@ -203,7 +203,7 @@ const OrderInvoice = ({ order, printRef }) => {
               borderRadius: "4px"
             }}
           />
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-start w-full">
             <span className="text-[12px] font-medium">
               Arrêté la présente facture à la somme de :
             </span>
@@ -213,27 +213,27 @@ const OrderInvoice = ({ order, printRef }) => {
           </div>
         </div>
         {/* QR code only (signature removed) */}
-        <div className="flex justify-end items-end mb-6">
-          <div className="flex flex-col items-center">
+        <div className="flex justify-end items-end mb-6 w-full">
+        <div className="flex flex-col items-center w-full">
             <QRCode value={qrValue} size={48} logoImage={COMPANY.logo} />
             <span className="text-[11px] text-gray-500 mt-1">Scan pour vérifier</span>
           </div>
         </div>
         {/* Thank you & rest of logic */}
-        <div className="my-6 text-center">
+        <div className="my-6 text-center w-full">
           <div className="text-base font-bold text-green-600 mb-1">Merci pour votre confiance !</div>
           <div className="text-sm text-gray-700 mb-1">Votre commande a été enregistrée avec succès.</div>
           <div className="text-xs text-blue-700">Nous vous remercions pour votre achat et espérons vous revoir bientôt.</div>
         </div>
         {/* Footer with RIB and copyright */}
-        <div className="flex flex-col sm:flex-row justify-between items-end mt-6 border-t pt-3 text-[10px] gap-2 sm:gap-0">
-          {/* RIB bank info bottom left */}
-          <div className="bg-white border border-orange-400 rounded-lg px-3 py-2 shadow text-[12px] text-gray-800 font-semibold flex items-center gap-2 mb-2 sm:mb-0">
+        <div className="flex flex-col sm:flex-row justify-between items-end mt-6 border-t pt-3 text-[10px] gap-2 sm:gap-0 w-full">
+        {/* RIB bank info bottom left */}
+        <div className="bg-white border border-orange-400 rounded-lg px-3 py-2 shadow text-[12px] text-gray-800 font-semibold flex items-center gap-2 mb-2 sm:mb-0 w-full sm:w-auto">
             <span className="text-orange-600 font-bold">Bank BAN RIB:</span>
             <span>03507065011500468753</span>
           </div>
           {/* Copyright right */}
-          <div className="text-gray-400 text-right flex-1 ml-0 sm:ml-4">
+          <div className="text-gray-400 text-right flex-1 ml-0 sm:ml-4 w-full sm:w-auto">
             &copy; {new Date().getFullYear()} Votre Société. Tous droits réservés.
           </div>
         </div>

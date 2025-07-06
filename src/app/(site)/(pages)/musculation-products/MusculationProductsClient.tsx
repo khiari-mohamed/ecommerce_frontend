@@ -60,7 +60,7 @@ const MusculationProductsClient = () => {
   }, []);
 
   return (
-    <div className="w-full mt-24">
+    <div className="w-full mt-32 sm:mt-36 md:mt-24">
       <div className="w-full mx-auto max-w-screen-2xl">
         <motion.div
           className="max-w-screen-xl px-4 mx-auto md:px-8"
@@ -73,7 +73,7 @@ const MusculationProductsClient = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            className="text-[34px] text-center text-black3 uppercase font-bold rubik mb-4"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center text-black3 uppercase font-bold rubik mb-4"
           >
             Materiel de Musculation
           </motion.h3>
@@ -99,7 +99,7 @@ const MusculationProductsClient = () => {
               1024: { slidesPerView: 3 },
               1280: { slidesPerView: 4 },
             }}
-            className="py-8"
+            className="pt-8 pb-16 sm:pb-20 md:pb-24"
           >
             {productsData.map((product, idx) => (
               <SwiperSlide key={product._id || idx}>

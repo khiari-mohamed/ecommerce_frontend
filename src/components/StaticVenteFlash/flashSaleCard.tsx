@@ -21,7 +21,7 @@ function FlashSaleCard({ product }: { product: any }) {
   return (
     <div className="w-full prod_border flex flex-col lg:flex-row bg-white shadow-sm hover:shadow-md">
       <div className="w-full relative">
-        <Link href={`/shop/${product.slug}`}>
+        <Link href={`/product-details?id=${product.id}`}>
           <div className="w-full aspect-square relative">
             <Image
               fill
@@ -41,7 +41,7 @@ function FlashSaleCard({ product }: { product: any }) {
         )}
       </div>
       <div className="w-full displayvente lkl">
-        <Link href={`/shop/${product.slug}`} className="displaylink">
+        <Link href={`/product-details?id=${product.id}`} className="displaylink">
           <h1 className="font-weight-700 text-gray-900 hover:text-primary hover:underline title-font">
             {product.designation_fr}
           </h1>

@@ -79,15 +79,15 @@ export default async function SubcategoryPage({
           </div>
           <div className="mb-2 text-lg text-gray-700">
             <span className="font-semibold">Prix: </span>
-            {Number(product.prix).toLocaleString("fr-FR", {
+            {Number(product.prix).toLocaleString("fr-TN", {
               style: "currency",
-              currency: "DZD",
+              currency: "TND",
             })}
             {product.promo && (
               <span className="ml-2 text-red-500 line-through">
-                {Number(product.promo).toLocaleString("fr-FR", {
+                {Number(product.promo).toLocaleString("fr-TN", {
                   style: "currency",
-                  currency: "DZD",
+                  currency: "TND",
                 })}
               </span>
             )}

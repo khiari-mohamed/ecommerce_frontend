@@ -50,39 +50,24 @@ const MusculationProductsClient = () => {
   const [productsData, setProductsData] = useState<MusculationProduct[]>([]);
   const { user } = useAuth();
 
-  // Dynamic header offset for mobile (robust React way)
+  // Dynamic header offset for mobile/desktop (robust React way, matches other pages)
+  function ClientHeaderOffset() {
   useEffect(() => {
-    function updateOffset() {
-      const header = document.querySelector('header');
-      if (!header) {
-        document.documentElement.style.setProperty('--header-offset-musc', '8rem');
-        return;
-      }
-      const isMobile = window.innerWidth < 640;
-      if (isMobile) {
-        // Wait for possible transitions to finish
-        setTimeout(() => {
-          const headerHeight = header.offsetHeight;
-          document.documentElement.style.setProperty('--header-offset-musc', (headerHeight > 0 ? headerHeight : 80) + 'px');
-        }, 50);
-      } else {
-        document.documentElement.style.setProperty('--header-offset-musc', '8rem');
-      }
-    }
-    updateOffset();
-    window.addEventListener('resize', updateOffset);
-    window.addEventListener('orientationchange', updateOffset);
-    // Listen for header transition end (in case of sticky/hide transitions)
-    const header = document.querySelector('header');
-    if (header) {
-      header.addEventListener('transitionend', updateOffset);
-    }
-    return () => {
-      window.removeEventListener('resize', updateOffset);
-      window.removeEventListener('orientationchange', updateOffset);
-      if (header) header.removeEventListener('transitionend', updateOffset);
-    };
+  function setOffset() {
+  const header = document.querySelector('header');
+  if (header) {
+  const rect = header.getBoundingClientRect();
+  document.documentElement.style.setProperty('--header-offset-musc', rect.height + 'px');
+  } else {
+  document.documentElement.style.setProperty('--header-offset-musc', '8rem');
+  }
+  }
+  setOffset();
+  window.addEventListener('resize', setOffset);
+  return () => window.removeEventListener('resize', setOffset);
   }, []);
+  return null;
+  }
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -93,10 +78,10 @@ const MusculationProductsClient = () => {
   }, []);
 
   return (
-    <>
-      {/* Adaptive header offset for mobile - now handled in React useEffect */}
-      <div className="w-full" style={{ marginTop: 'var(--header-offset-musc, 8rem)' }}>
-        <div className="w-full mx-auto max-w-screen-2xl">
+  <>
+  <ClientHeaderOffset />
+  <div className="w-full" style={{ marginTop: 'var(--header-offset-musc, 8rem)' }}>
+  <div className="w-full mx-auto max-w-screen-2xl">
           <motion.div
             className="max-w-screen-xl px-4 mx-auto md:px-8"
             initial={{ opacity: 0 }}

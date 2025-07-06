@@ -169,7 +169,7 @@ const MusculationProducts = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
-              className="mb-2 text-lg sm:text-xl md:text-2xl lg:text-4xl font-extrabold text-center sm:text-left uppercase"
+              className="mb-2 text-lg sm:text-xl md:text-2xl lg:text-4xl font-extrabold text-center sm:text-left uppercase text-white"
               style={{ fontFamily: 'Oswald, sans-serif' }}
             >
               Matériel de Musculation
@@ -210,9 +210,7 @@ const MusculationProducts = () => {
       <div className="w-full mx-auto max-w-screen-2xl px-2 sm:px-4 md:px-8 mt-6 sm:mt-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {sampleProducts.map((product, idx) => (
-        <Link key={product._id || idx} href={`/musculation-products/${product.slug}`}>
-        <ProductCard product={mapToProductCard(product, idx)} />
-        </Link>
+        <ProductCard product={mapToProductCard(product, idx)} typeRef="musculation-products" />
         ))}
       </div>
       </div>

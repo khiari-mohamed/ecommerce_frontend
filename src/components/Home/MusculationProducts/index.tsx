@@ -210,9 +210,9 @@ const MusculationProducts = () => {
       <div className="w-full mx-auto max-w-screen-2xl px-2 sm:px-4 md:px-8 mt-6 sm:mt-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {sampleProducts.map((product, idx) => (
-          <Link key={product._id || idx} href={`/shopdetails/${product.slug}`}>
-            <ProductCard product={mapToProductCard(product, idx)} />
-          </Link>
+        <Link key={product._id || idx} href={`/musculation-products/${product.slug}`}>
+        <ProductCard product={mapToProductCard(product, idx)} />
+        </Link>
         ))}
       </div>
       </div>

@@ -6,6 +6,7 @@ import ProductSlider from '@/components/ProductSlider';
 import SubcategoryList from '@/components/Subcategory/SubcategoryList';
 import parse from 'html-react-parser';
 import Image from 'next/image';
+import React from 'react';
 
 
 
@@ -54,26 +55,27 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
     return (
       <>
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            (function setHeaderOffset() {
-              function updateOffset() {
-                var header = document.querySelector('header');
-                if (!header) return;
-                var isMobile = window.innerWidth < 640;
-                if (isMobile) {
-                  var headerHeight = header.offsetHeight;
-                  document.documentElement.style.setProperty('--header-offset', headerHeight + 'px');
+        {/* Header offset for mobile/desktop, matches brands page */}
+        {typeof window !== 'undefined' && (() => {
+          function ClientHeaderOffset() {
+            React.useEffect(() => {
+              function setOffset() {
+                const header = document.querySelector('header');
+                if (header) {
+                  const rect = header.getBoundingClientRect();
+                  document.documentElement.style.setProperty('--header-offset', rect.height + 'px');
                 } else {
                   document.documentElement.style.setProperty('--header-offset', '140px');
                 }
               }
-              updateOffset();
-              window.addEventListener('resize', updateOffset);
-              window.addEventListener('orientationchange', updateOffset);
-            })();
-          `
-        }} />
+              setOffset();
+              window.addEventListener('resize', setOffset);
+              return () => window.removeEventListener('resize', setOffset);
+            }, []);
+            return null;
+          }
+          return <ClientHeaderOffset />;
+        })()}
         <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8" style={{ paddingTop: 'var(--header-offset, 140px)' }}>
           <div className="mb-8 sm:mb-12 relative rounded-2xl shadow-2xl bg-gradient-to-br from-blue-50 via-white to-gray-100 overflow-hidden">
             {category.cover && (

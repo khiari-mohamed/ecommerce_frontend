@@ -76,10 +76,15 @@ export default async function BrandPage({
   function ClientHeaderOffset() {
     React.useEffect(() => {
       function setOffset() {
-        // You can adjust this value to match your header height on mobile/desktop
-        const mobile = window.innerWidth < 640;
-        const offset = mobile ? 60 : 70;
-        document.documentElement.style.setProperty('--header-offset', offset + 'px');
+        // Dynamically measure the header height
+        const header = document.querySelector('header');
+        if (header) {
+          const rect = header.getBoundingClientRect();
+          document.documentElement.style.setProperty('--header-offset', rect.height + 'px');
+        } else {
+          // fallback
+          document.documentElement.style.setProperty('--header-offset', '70px');
+        }
       }
       setOffset();
       window.addEventListener('resize', setOffset);

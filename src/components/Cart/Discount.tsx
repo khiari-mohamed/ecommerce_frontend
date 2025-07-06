@@ -1,10 +1,10 @@
-import React from "react";
+/*import React from "react";
 
 const Discount = () => {
   return (
     <div className="lg:max-w-[670px] w-full">
       <form>
-        {/* <!-- coupon box --> */}
+        {/* <!-- coupon box --> 
         <div className="bg-white shadow-1 rounded-[10px]">
           <div className="border-b border-gray-3 py-5 px-4 sm:px-5.5">
             <h3 className="">Avez-vous un code de réduction?</h3>
@@ -37,3 +37,4 @@ const Discount = () => {
 };
 
 export default Discount;
+*/

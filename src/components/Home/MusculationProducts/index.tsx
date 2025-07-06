@@ -194,14 +194,12 @@ const MusculationProducts = () => {
               viewport={{ once: true, amount: 0.5 }}
               className="w-full flex justify-center sm:justify-start"
             >
-              <Link href="/musculation-products">
-                <button
-                  className="inline-flex font-medium text-white text-xs sm:text-base rounded-md bg-dark py-2 px-4 sm:py-3 sm:px-9 ease-out duration-200 hover:bg-blue mt-4 sm:mt-8"
-                >
-                  <span className="text-xs sm:text-sm font-medium md:text-base">
-                    en savoir plus
-                  </span>
-                </button>
+              <Link href="/musculation-products" passHref legacyBehavior>
+              <a className="musculation-savoir-plus-btn inline-flex font-medium text-white text-xs sm:text-base rounded-md bg-dark py-2 px-4 sm:py-3 sm:px-9 ease-out duration-200 hover:bg-blue mt-4 sm:mt-8" style={{ position: 'relative', zIndex: 20 }}>
+              <span className="text-xs sm:text-sm font-medium md:text-base">
+              en savoir plus
+              </span>
+              </a>
               </Link>
             </motion.div>
           </div>

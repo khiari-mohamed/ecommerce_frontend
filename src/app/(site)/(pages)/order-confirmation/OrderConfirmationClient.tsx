@@ -72,12 +72,12 @@ const OrderInvoice = ({ order, printRef }) => {
       ref={printRef}
       className="document-print-area min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 py-4 px-1 sm:py-8 sm:px-2 md:px-4 font-sans print:bg-white print:py-0 print:px-0"
     >
-      <div className="w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-2 sm:p-4 md:p-6 relative border border-blue-200 print:shadow-none print:border-none print:rounded-none print:p-0">
+      <div className="facture-modal w-full max-w-xs sm:max-w-md md:max-w-2xl mx-auto bg-white rounded-lg sm:rounded-2xl shadow-2xl p-1 sm:p-4 md:p-6 relative border border-blue-200 print:shadow-none print:border-none print:rounded-none print:p-0" style={{ minWidth: 0 }}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-2 sm:gap-0">
       <div className="flex flex-col items-start w-full sm:w-auto">
       <Image src={COMPANY.logo} alt="Logo Votre Société" width={96} height={96} className="h-16 w-24 sm:h-20 sm:w-32 object-contain mb-1 mx-auto sm:mx-0" loading="lazy" sizes="96px" />
-      <div className="text-[11px] text-gray-700 leading-tight text-center sm:text-left w-full sm:w-auto">
+      <div className="text-[11px] text-gray-700 leading-tight text-center sm:text-left w-full sm:w-auto break-words">
       <div className="mb-0.5">{COMPANY.email}</div>
       <div className="mb-0.5">{COMPANY.address}</div>
       <div>{COMPANY.tel}</div>
@@ -127,8 +127,8 @@ const OrderInvoice = ({ order, printRef }) => {
         </div>
         {/* Table: Products */}
         <div className="w-full mb-6">
-        <div className="overflow-x-auto rounded-lg border shadow-sm">
-        <table className="w-full min-w-[320px] text-[11px] sm:text-[12px]">
+        <div className="facture-table-container overflow-x-auto rounded-lg border shadow-sm" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <table className="facture-table w-full min-w-[320px] text-[11px] sm:text-[12px]">
         <thead>
         <tr className="bg-[#FF4301] text-white">
         <th className="p-2 text-left font-semibold whitespace-nowrap">Produit</th>
@@ -363,7 +363,7 @@ const OrderConfirmationClient = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex flex-col items-center py-2 sm:py-8 px-1 sm:px-2 md:px-4">
-    <div className="flex flex-col w-full max-w-2xl md:max-w-4xl lg:max-w-6xl gap-4 md:gap-8">
+    <div className="flex flex-col w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl gap-4 md:gap-8">
     {/* Main content */}
     <div className="flex-1 flex justify-center w-full">
     {previewDoc === "bon-livraison" ? (

@@ -52,18 +52,19 @@ const PacksSection: React.FC = () => {
       <div className="container px-2 sm:px-4 lg:px-0">
         <h2 className="text-3xl font-extrabold mb-8 text-center gradient-text">Nos Packs Exclusifs</h2>
         <Swiper
-          modules={[Navigation, Pagination]}
-          spaceBetween={24}
-          slidesPerView={1}
-          navigation
-          pagination={{ clickable: true }}
-          breakpoints={{
-            0: { slidesPerView: 1 },
-            480: { slidesPerView: 1 },
-            640: { slidesPerView: 2 },
-            900: { slidesPerView: 3 },
-            1200: { slidesPerView: 4 },
-          }}
+        modules={[Navigation, Pagination]}
+        spaceBetween={24}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true, el: '.packs-swiper-pagination' }}
+        breakpoints={{
+        0: { slidesPerView: 1 },
+        480: { slidesPerView: 1 },
+        640: { slidesPerView: 2 },
+        900: { slidesPerView: 3 },
+        1200: { slidesPerView: 4 },
+        }}
+        className="pb-12"
         >
           {packs.map((pack, idx) => (
             <SwiperSlide key={pack._id}>
@@ -106,24 +107,35 @@ const PacksSection: React.FC = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+      {/* Swiper Pagination Dots */}
+      <div className="packs-swiper-pagination flex justify-center mt-4 sm:mt-6" />
       </div>
       <style jsx>{`
-        .gradient-text {
-          background: linear-gradient(90deg, #ff8a00, #e52e71);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
+      .gradient-text {
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      }
       `}</style>
       <style global jsx>{`
-        .swiper-button-next,
-        .swiper-button-prev {
-          color: #FF4301;
-        }
-        .swiper-pagination-bullet-active {
-          background: #FF4301;
-        }
+      .swiper-button-next,
+      .swiper-button-prev {
+      color: #FF4301;
+      }
+      .swiper-pagination-bullet-active {
+      background: #FF4301;
+      }
+      .packs-swiper-pagination {
+      min-height: 32px;
+      }
+      @media (max-width: 640px) {
+      .packs-swiper-pagination {
+      margin-top: 18px !important;
+      margin-bottom: 0 !important;
+      }
+      }
       `}</style>
-    </section>
+      </section>
   );
 };
 

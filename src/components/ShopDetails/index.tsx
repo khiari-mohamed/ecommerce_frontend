@@ -476,7 +476,7 @@ const ShopDetails = () => {
                       </svg>
                     </li>
                     <li className="flex items-center gap-2.5">
-                      {/* Promo icon */}
+                      {/* Promo icon *
                       <svg
                         width="20"
                         height="20"
@@ -496,6 +496,8 @@ const ShopDetails = () => {
                         />
                       </svg>
                       {product.discountPercentage || 0}% Off
+
+                      */}
                     </li>
                   </ul>
                   <form onSubmit={(e) => e.preventDefault()}>
@@ -562,7 +564,7 @@ const ShopDetails = () => {
                         <div className="min-w-[65px]">
                           <h4 className="font-medium text-dark">Type:</h4>
                         </div>
-                        <div className="flex items-center gap-2.5">
+                        <div className="flex items-center gap-4">
                           {types.map((type: string, key: number) => (
                             <label
                               key={key}

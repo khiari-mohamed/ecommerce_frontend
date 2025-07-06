@@ -1,4 +1,4 @@
-// This file is part of the template_front project.
+
 import { notFound } from 'next/navigation';
 import { getCategoryBySlug } from '@/services/categories';
 import { getAllSubCategories } from '@/services/subcategories';
@@ -46,7 +46,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     );
 
     return (
-    <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8 pt-[70px] sm:pt-[100px] md:pt-[120px] lg:pt-[130px]">
+    <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8 pt-[100px] sm:pt-[80px] md:pt-[90px] lg:pt-[100px]">
     {/* Category Header */}
     <div className="mb-8 sm:mb-12 relative rounded-2xl shadow-2xl bg-gradient-to-br from-blue-50 via-white to-gray-100 overflow-hidden">
     {category.cover && (

@@ -110,11 +110,11 @@ const MusculationProducts = () => {
   }, []);
 
   return (
-    <div className="w-full mt-24">
+    <div className="w-full mt-16 sm:mt-20 md:mt-24">
       {/* Section Header */}
       <div className="w-full mx-auto max-w-screen-2xl">
         <motion.div
-          className="max-w-screen-xl px-4 mx-auto md:px-8"
+          className="max-w-screen-xl px-2 sm:px-4 mx-auto md:px-8"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -125,7 +125,7 @@ const MusculationProducts = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            className="text-[28px] text-center text-white uppercase font-extrabold mb-4"
+            className="text-[22px] sm:text-[28px] text-center text-white uppercase font-extrabold mb-4"
             style={{ fontFamily: 'Montserrat, sans-serif' }}
           >
             Materiel de Musculation
@@ -134,7 +134,7 @@ const MusculationProducts = () => {
       </div>
 
       {/* Banner Image Section */}
-      <div className="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] overflow-hidden">
+      <div className="relative w-full min-h-[220px] h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] overflow-hidden flex items-center justify-center">
         {/* Crossfade Images */}
         <AnimatePresence>
           {images.map((src, idx) =>
@@ -162,14 +162,14 @@ const MusculationProducts = () => {
         </AnimatePresence>
 
         {/* Gradient Overlay and Content */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/75 to-black/40 z-10">
-          <div className="absolute inset-0 flex flex-col items-start justify-center p-4 sm:p-8 md:p-16 lg:p-24 text-white max-w-8xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/75 to-black/40 z-10 flex items-center justify-center">
+          <div className="w-full flex flex-col items-center sm:items-start justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-4 sm:py-8 max-w-4xl">
             <motion.h2
               variants={fadeInVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
-              className="mb-2 text-xl font-extrabold text-left uppercase sm:mb-4 sm:text-2xl md:text-3xl lg:text-5xl"
+              className="mb-2 text-lg sm:text-xl md:text-2xl lg:text-4xl font-extrabold text-center sm:text-left uppercase"
               style={{ fontFamily: 'Oswald, sans-serif' }}
             >
               Matériel de Musculation
@@ -179,7 +179,7 @@ const MusculationProducts = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.5 }}
-              className="max-w-2xl sm:max-w-4xl mb-4 sm:mb-8 text-base sm:text-lg text-left text-gray-300 md:text-xl lg:text-2xl"
+              className="max-w-full sm:max-w-2xl mb-2 sm:mb-4 text-xs sm:text-base md:text-lg text-center sm:text-left text-gray-300"
             >
               Découvrez notre gamme complète de matériel musculation, fitness et
               cardio pour équiper votre salle de sport. Atteignez vos objectifs
@@ -192,13 +192,14 @@ const MusculationProducts = () => {
               whileInView="visible"
               whileHover="hover"
               viewport={{ once: true, amount: 0.5 }}
+              className="w-full flex justify-center sm:justify-start"
             >
               <Link href="/musculation-products">
                 <button
-                  className="inline-flex font-medium text-white text-base sm:text-lg rounded-md bg-dark py-2 px-6 sm:py-3 sm:px-9 ease-out duration-200 hover:bg-blue mt-6 sm:mt-10"
+                  className="inline-flex font-medium text-white text-xs sm:text-base rounded-md bg-dark py-2 px-4 sm:py-3 sm:px-9 ease-out duration-200 hover:bg-blue mt-4 sm:mt-8"
                 >
-                  <span className="text-sm font-medium md:text-base">
-                    Discover more
+                  <span className="text-xs sm:text-sm font-medium md:text-base">
+                    en savoir plus
                   </span>
                 </button>
               </Link>
@@ -208,8 +209,8 @@ const MusculationProducts = () => {
       </div>
 
       {/* Sample Products Grid */}
-      <div className="w-full mx-auto max-w-screen-2xl px-4 md:px-8 mt-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="w-full mx-auto max-w-screen-2xl px-2 sm:px-4 md:px-8 mt-6 sm:mt-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {sampleProducts.map((product, idx) => (
           <ProductCard key={product._id || idx} product={mapToProductCard(product, idx)} />
         ))}

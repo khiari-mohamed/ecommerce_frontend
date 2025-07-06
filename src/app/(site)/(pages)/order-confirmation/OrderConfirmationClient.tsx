@@ -70,21 +70,21 @@ const OrderInvoice = ({ order, printRef }) => {
   return (
     <main
       ref={printRef}
-      className="document-print-area min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 py-8 px-1 font-sans print:bg-white print:py-0 print:px-0"
+      className="document-print-area min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 py-4 px-1 sm:py-8 sm:px-2 md:px-4 font-sans print:bg-white print:py-0 print:px-0"
     >
-      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-6 relative border border-blue-200 print:shadow-none print:border-none print:rounded-none print:p-0">
+      <div className="w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-2 sm:p-4 md:p-6 relative border border-blue-200 print:shadow-none print:border-none print:rounded-none print:p-0">
         {/* Header */}
-        <div className="flex justify-between items-start mb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-2 sm:gap-0">
           <div className="flex flex-col items-start">
-            <Image src={COMPANY.logo} alt="Logo Votre Société" width={48} height={48} className="h-12 mb-1" loading="lazy" sizes="48px" />
+            <Image src={COMPANY.logo} alt="Logo Votre Société" width={96} height={96} className="h-16 w-24 sm:h-20 sm:w-32 object-contain mb-1" loading="lazy" sizes="96px" />
             <div className="text-[11px] text-gray-700 leading-tight">
               <div className="mb-0.5">{COMPANY.email}</div>
               <div className="mb-0.5">{COMPANY.address}</div>
               <div>{COMPANY.tel}</div>
             </div>
           </div>
-          <div className="flex flex-col items-end">
-            <span className="text-2xl font-extrabold text-right" style={{ color: ORANGE, letterSpacing: "1px" }}>Facture</span>
+          <div className="flex flex-col items-end mt-2 sm:mt-0">
+            <span className="text-xl sm:text-2xl font-extrabold text-right" style={{ color: ORANGE, letterSpacing: "1px" }}>Facture</span>
             <span className="text-[11px] text-gray-500 mt-2">
               Date : {new Date(order.created_at).toLocaleString("fr-FR", {
                 day: "2-digit",
@@ -100,9 +100,9 @@ const OrderInvoice = ({ order, printRef }) => {
         {/* Orange thin line */}
         <div className="w-full h-0.5 mb-4" style={{ background: ORANGE, borderRadius: 2 }} />
         {/* User credentials */}
-        <div className="flex flex-row justify-between gap-4 mb-4">
+        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-4">
           {/* Billing */}
-          <div className="flex-1">
+          <div className="flex-1 mb-2 sm:mb-0">
             <div className="font-semibold text-[13px] text-blue-700 mb-1">Facturé à</div>
             <div className="text-[11px] text-gray-700 leading-tight">
               <div>{billing.prenom} {billing.nom}</div>
@@ -127,7 +127,7 @@ const OrderInvoice = ({ order, printRef }) => {
         </div>
         {/* Table: Products */}
         <div className="overflow-x-auto mb-6">
-          <table className="w-full border rounded-lg overflow-hidden shadow-sm text-[12px]">
+          <table className="w-full border rounded-lg overflow-hidden shadow-sm text-[11px] sm:text-[12px]">
             <thead>
               <tr className="bg-[#FF4301] text-white">
                 <th className="p-1 text-left font-semibold">Produit</th>
@@ -141,7 +141,7 @@ const OrderInvoice = ({ order, printRef }) => {
               {cart.length > 0 ? (
                 cart.map((item, idx) => (
                   <tr key={idx} className="border-t hover:bg-orange-50">
-                    <td className="p-1">{item.title || item.name || item.product_name || "Produit"}</td>
+                    <td className="p-1 max-w-[120px] sm:max-w-none truncate">{item.title || item.name || item.product_name || "Produit"}</td>
                     <td className="p-1 text-right">{item.quantity ?? item.qty ?? 1}</td>
                     <td className="p-1 text-right">
                       {Number(item.price ?? item.unit_price ?? 0).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
@@ -170,20 +170,20 @@ const OrderInvoice = ({ order, printRef }) => {
           </table>
         </div>
         {/* Totals: right side */}
-        <div className="flex flex-col items-end space-y-1 mb-6 text-[12px]">
-          <div className="flex justify-between w-full md:w-56">
+        <div className="flex flex-col items-end space-y-1 mb-6 text-[12px] w-full">
+          <div className="flex justify-between w-full sm:w-72 md:w-56">
             <span className="font-medium">Total HT :</span>
             <span>{totalHT.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
           </div>
-          <div className="flex justify-between w-full md:w-56">
+          <div className="flex justify-between w-full sm:w-72 md:w-56">
             <span className="font-medium">TVA (19%) :</span>
             <span>{totalTVA.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
           </div>
-          <div className="flex justify-between w-full md:w-56">
+          <div className="flex justify-between w-full sm:w-72 md:w-56">
             <span className="font-medium">TIMBRE :</span>
             <span>{totalTimbre.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
           </div>
-          <div className="flex justify-between w-full md:w-56 pt-2" style={{ borderTop: `2px solid ${ORANGE}` }}>
+          <div className="flex justify-between w-full sm:w-72 md:w-56 pt-2" style={{ borderTop: `2px solid ${ORANGE}` }}>
             <span className="font-bold">Total TTC :</span>
             <span className="font-bold">
               {totalTTC.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
@@ -194,7 +194,7 @@ const OrderInvoice = ({ order, printRef }) => {
         <div className="mb-4 flex flex-row items-start ml-2">
           {/* Orange vertical bar */}
           <div
-            className="mr-2"
+            className="mr-2 hidden sm:block"
             style={{
               width: "6px",
               minWidth: "6px",
@@ -226,14 +226,14 @@ const OrderInvoice = ({ order, printRef }) => {
           <div className="text-xs text-blue-700">Nous vous remercions pour votre achat et espérons vous revoir bientôt.</div>
         </div>
         {/* Footer with RIB and copyright */}
-        <div className="flex flex-row justify-between items-end mt-6 border-t pt-3 text-[10px]">
+        <div className="flex flex-col sm:flex-row justify-between items-end mt-6 border-t pt-3 text-[10px] gap-2 sm:gap-0">
           {/* RIB bank info bottom left */}
-          <div className="bg-white border border-orange-400 rounded-lg px-3 py-2 shadow text-[12px] text-gray-800 font-semibold flex items-center gap-2">
+          <div className="bg-white border border-orange-400 rounded-lg px-3 py-2 shadow text-[12px] text-gray-800 font-semibold flex items-center gap-2 mb-2 sm:mb-0">
             <span className="text-orange-600 font-bold">Bank BAN RIB:</span>
             <span>03507065011500468753</span>
           </div>
           {/* Copyright right */}
-          <div className="text-gray-400 text-right flex-1 ml-4">
+          <div className="text-gray-400 text-right flex-1 ml-0 sm:ml-4">
             &copy; {new Date().getFullYear()} Votre Société. Tous droits réservés.
           </div>
         </div>
@@ -351,8 +351,8 @@ const OrderConfirmationClient = () => {
 
   if (!order) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-blue-50">
-        <Image src={COMPANY.logo} alt="Logo Votre Société" width={48} height={48} className="h-12 mb-4" loading="lazy" sizes="48px" />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-blue-50 px-2 text-center">
+        <Image src={COMPANY.logo} alt="Logo Votre Société" width={96} height={96} className="h-16 w-24 sm:h-20 sm:w-32 object-contain mb-4" loading="lazy" sizes="96px" />
         <div className="text-lg text-blue-700 font-bold mb-2">Chargement de votre commande...</div>
         <div className="text-gray-500 text-sm">Veuillez patienter.</div>
       </div>
@@ -360,7 +360,7 @@ const OrderConfirmationClient = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex justify-center items-start py-10 px-2">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex justify-center items-start py-4 sm:py-10 px-1 sm:px-2 md:px-4">
       <div className="flex flex-col md:flex-row gap-8 w-full max-w-6xl">
         {/* Main content */}
         <div className="flex-1 flex justify-center">

@@ -23,28 +23,29 @@ const Testimonials = () => {
   }, []);
 
   return (
-    <section className="overflow-hidden pb-16.5">
-      <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
+    <section className="overflow-hidden pb-10 sm:pb-14 md:pb-16.5 pt-8 sm:pt-12 md:pt-16 bg-white w-full">
+      <div className="max-w-[1170px] w-full mx-auto px-2 sm:px-4 md:px-8 xl:px-0">
         <div className="">
-          <div className="swiper testimonial-carousel common-carousel p-5">
+          <div className="swiper testimonial-carousel common-carousel p-2 sm:p-5 w-full">
             {/* <!-- section title --> */}
-            <div className="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="mb-8 sm:mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="w-full sm:w-auto flex flex-col">
-                <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
+                <span className="flex items-center gap-2.5 font-semibold text-dark mb-1.5 text-lg sm:text-xl md:text-2xl lg:text-3xl">
                   <Image
                     src="/images/icons/icon-08.svg"
                     alt="icon"
-                    width={17}
-                    height={17}
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 sm:w-7 sm:h-7"
                   />
                   Témoignages
                 </span>
-                <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
+                <h2 className="font-semibold text-lg sm:text-xl md:text-2xl xl:text-heading-5 text-dark">
                   Commentaires des utilisateurs
                 </h2>
               </div>
               <div className="flex items-center gap-3 justify-center sm:justify-end w-full sm:w-auto">
-                <div onClick={handlePrev} className="swiper-button-prev">
+                <div onClick={handlePrev} className="swiper-button-prev cursor-pointer">
                   <svg
                     className="fill-current"
                     width="24"
@@ -61,7 +62,7 @@ const Testimonials = () => {
                     />
                   </svg>
                 </div>
-                <div onClick={handleNext} className="swiper-button-next">
+                <div onClick={handleNext} className="swiper-button-next cursor-pointer">
                   <svg
                     className="fill-current"
                     width="24"
@@ -85,24 +86,32 @@ const Testimonials = () => {
             ) : (
               <Swiper
                 ref={sliderRef}
-                slidesPerView={4}
-                spaceBetween={20}
+                slidesPerView={1}
+                spaceBetween={12}
                 autoplay={{ delay: 2500, disableOnInteraction: false }}
                 modules={[Autoplay]}
+                direction="horizontal"
+                style={{ width: '100%' }}
                 breakpoints={{
                   0: {
                     slidesPerView: 1,
                   },
-                  1000: {
+                  600: {
+                    slidesPerView: 1.2,
+                  },
+                  800: {
                     slidesPerView: 2,
                   },
-                  1200: {
+                  1100: {
+                    slidesPerView: 3,
+                  },
+                  1400: {
                     slidesPerView: 4,
                   },
                 }}
               >
                 {testimonials.map((item, key) => (
-                  <SwiperSlide key={key}>
+                  <SwiperSlide key={key} style={{ display: 'flex', height: '100%' }}>
                     <SingleItem testimonial={item} />
                   </SwiperSlide>
                 ))}

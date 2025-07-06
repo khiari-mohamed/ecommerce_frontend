@@ -325,6 +325,7 @@ const ProductDetails = () => {
                   </svg>
                 </li>
                 <li className="flex items-center gap-2.5">
+                  {/* SVG icon for discount 
                   <svg
                     width="20"
                     height="20"
@@ -343,7 +344,9 @@ const ProductDetails = () => {
                       fill="#3C50E0"
                     />
                   </svg>
-                  {product.discountPercentage || 0}% Off
+                  {product.discountPercentage || 0}% Off 
+
+                  */}
                 </li>
               </ul>
               <form onSubmit={(e) => e.preventDefault()}>
@@ -416,15 +419,15 @@ const ProductDetails = () => {
                     <div className="min-w-[65px]">
                       <h4 className="font-medium text-dark">Type:</h4>
                     </div>
-                    <div className="flex items-center gap-2.5">
-                      {types.map((type: string, key: number) => (
-                        <label key={key} htmlFor={`type-${type}`} className="cursor-pointer select-none flex items-center">
-                          <input type="radio" name="type" id={`type-${type}`} className="sr-only" checked={activeType === type} onChange={() => setActiveType(type)} />
-                          <div className={`flex items-center justify-center w-5.5 h-5.5 rounded-full border ${activeType === type ? "border-blue" : "border-gray-4"}`}>
-                            <span className="px-2 text-xs">{type}</span>
-                          </div>
-                        </label>
-                      ))}
+                    <div className="flex items-center gap-4">
+                    {types.map((type: string, key: number) => (
+                    <label key={key} htmlFor={`type-${type}`} className="cursor-pointer select-none flex items-center">
+                    <input type="radio" name="type" id={`type-${type}`} className="sr-only" checked={activeType === type} onChange={() => setActiveType(type)} />
+                    <div className={`flex items-center justify-center w-5.5 h-5.5 rounded-full border ${activeType === type ? "border-blue" : "border-gray-4"}`}>
+                    <span className="px-2 text-xs">{type}</span>
+                    </div>
+                    </label>
+                    ))}
                     </div>
                   </div>
                 </div>

@@ -1,9 +1,9 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { brands } from "./brandData";
-
+import axios from "@/lib/axios";
 // SwiperJS imports (install: npm i swiper)
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -13,9 +13,31 @@ import { FreeMode, Navigation, Autoplay } from "swiper/modules";
 
 const BrandSection: React.FC = () => {
   const router = useRouter();
+  const [backendBrands, setBackendBrands] = useState<any[]>([]);
 
-  const handleBrandClick = (brandSlug: string) => {
-    router.push(`/brands/${brandSlug}`);
+  useEffect(() => {
+    async function fetchBrands() {
+      try {
+        const res = await axios.get("/brands");
+        setBackendBrands(res.data || []);
+      } catch {
+        setBackendBrands([]);
+      }
+    }
+    fetchBrands();
+  }, []);
+
+  // Helper to get backend slug by static brand id
+  const getBackendSlug = (staticBrand: any) => {
+    const found = backendBrands.find(
+      (b) => b.id === staticBrand.id || b.designation_fr?.toLowerCase() === staticBrand.name?.toLowerCase()
+    );
+    return found ? found.slug : staticBrand.slug;
+  };
+
+  const handleBrandClick = (staticBrand: any) => {
+    const backendSlug = getBackendSlug(staticBrand);
+    router.push(`/brands/${backendSlug}`);
   };
 
   return (
@@ -38,22 +60,22 @@ const BrandSection: React.FC = () => {
           }}
         >
           {brands.map((brand) => (
-          <SwiperSlide key={brand.slug}>
-          <div
-          className="cursor-pointer flex items-center justify-center p-2 sm:p-4 transition hover:scale-105"
-          onClick={() => handleBrandClick(brand.slug)}
-          title={brand.name}
-          >
-          <Image
-          src={brand.image}
-          alt={brand.name}
-          width={120}
-          height={64}
-          className="h-10 sm:h-16 object-contain grayscale hover:grayscale-0 transition"
-          loading="lazy"
-          />
-          </div>
-          </SwiperSlide>
+            <SwiperSlide key={brand.id}>
+              <div
+                className="cursor-pointer flex items-center justify-center p-2 sm:p-4 transition hover:scale-105"
+                onClick={() => handleBrandClick(brand)}
+                title={brand.name}
+              >
+                <Image
+                  src={brand.image}
+                  alt={brand.name}
+                  width={120}
+                  height={64}
+                  className="h-10 sm:h-16 object-contain grayscale hover:grayscale-0 transition"
+                  loading="lazy"
+                />
+              </div>
+            </SwiperSlide>
           ))}
         </Swiper>
       </div>

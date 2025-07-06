@@ -36,7 +36,9 @@ const Home = () => {
       <BestSeller />
      <CountdownBlogGrid />
        <PacksSection />
+      <div className="mb-8">
       <MusculationProducts />
+      </div>
       <Testimonials />
       <BrandSection />
       </main>

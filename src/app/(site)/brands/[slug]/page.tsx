@@ -73,27 +73,9 @@ export default async function BrandPage({
 
   return (
   <>
-  {/* Adaptive header offset for mobile */}
-  <script dangerouslySetInnerHTML={{
-  __html: `
-  (function setHeaderOffset() {
-  function updateOffset() {
-  var header = document.querySelector('header');
-  if (!header) return;
-  var isMobile = window.innerWidth < 640;
-  if (isMobile) {
-  var headerHeight = header.offsetHeight;
-  document.documentElement.style.setProperty('--header-offset', headerHeight + 'px');
-  } else {
-  document.documentElement.style.setProperty('--header-offset', '70px');
-  }
-  }
-  updateOffset();
-  window.addEventListener('resize', updateOffset);
-  window.addEventListener('orientationchange', updateOffset);
-  })();
-  `
-  }} />
+  {/* Adaptive header offset for mobile - handled in client component */}
+  {/* @ts-expect-error Async Server Component using Client Component */}
+  <ClientHeaderOffset />
   <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8" style={{ paddingTop: 'var(--header-offset, 70px)' }}>
   <div className="flex flex-col items-center">
   <Image

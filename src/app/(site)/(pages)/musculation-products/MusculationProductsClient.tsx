@@ -8,8 +8,7 @@ import { MusculationProduct } from "@/types/MusculationProducts";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/pagination";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 
 interface Product {
   _id: string;
@@ -51,6 +50,40 @@ const MusculationProductsClient = () => {
   const [productsData, setProductsData] = useState<MusculationProduct[]>([]);
   const { user } = useAuth();
 
+  // Dynamic header offset for mobile (robust React way)
+  useEffect(() => {
+    function updateOffset() {
+      const header = document.querySelector('header');
+      if (!header) {
+        document.documentElement.style.setProperty('--header-offset-musc', '8rem');
+        return;
+      }
+      const isMobile = window.innerWidth < 640;
+      if (isMobile) {
+        // Wait for possible transitions to finish
+        setTimeout(() => {
+          const headerHeight = header.offsetHeight;
+          document.documentElement.style.setProperty('--header-offset-musc', (headerHeight > 0 ? headerHeight : 80) + 'px');
+        }, 50);
+      } else {
+        document.documentElement.style.setProperty('--header-offset-musc', '8rem');
+      }
+    }
+    updateOffset();
+    window.addEventListener('resize', updateOffset);
+    window.addEventListener('orientationchange', updateOffset);
+    // Listen for header transition end (in case of sticky/hide transitions)
+    const header = document.querySelector('header');
+    if (header) {
+      header.addEventListener('transitionend', updateOffset);
+    }
+    return () => {
+      window.removeEventListener('resize', updateOffset);
+      window.removeEventListener('orientationchange', updateOffset);
+      if (header) header.removeEventListener('transitionend', updateOffset);
+    };
+  }, []);
+
   useEffect(() => {
     const fetchProducts = async () => {
       const products = await fetchMusculationProducts();
@@ -61,27 +94,7 @@ const MusculationProductsClient = () => {
 
   return (
     <>
-      {/* Adaptive header offset for mobile */}
-      <script dangerouslySetInnerHTML={{
-        __html: `
-        (function setHeaderOffset() {
-        function updateOffset() {
-        var header = document.querySelector('header');
-        if (!header) return;
-        var isMobile = window.innerWidth < 640;
-        if (isMobile) {
-        var headerHeight = header.offsetHeight;
-        document.documentElement.style.setProperty('--header-offset-musc', headerHeight + 'px');
-        } else {
-        document.documentElement.style.setProperty('--header-offset-musc', '8rem');
-        }
-        }
-        updateOffset();
-        window.addEventListener('resize', updateOffset);
-        window.addEventListener('orientationchange', updateOffset);
-        })();
-        `
-      }} />
+      {/* Adaptive header offset for mobile - now handled in React useEffect */}
       <div className="w-full" style={{ marginTop: 'var(--header-offset-musc, 8rem)' }}>
         <div className="w-full mx-auto max-w-screen-2xl">
           <motion.div
@@ -111,9 +124,8 @@ const MusculationProductsClient = () => {
             transition={{ duration: 0.8 }}
           >
             <Swiper
-              modules={[Navigation, Pagination]}
+              modules={[Navigation]}
               navigation
-              pagination={{ clickable: true }}
               spaceBetween={24}
               slidesPerView={1}
               breakpoints={{
@@ -138,56 +150,7 @@ const MusculationProductsClient = () => {
           </motion.div>
         </div>
 
-        {/* Global Swiper pagination styles */}
-        <style jsx global>{`
-          .swiper-pagination {
-            bottom: -48px !important;
-            z-index: 30;
-          }
-          .swiper-pagination-bullet {
-            width: 14px;
-            height: 14px;
-            background: #ff4000;
-            opacity: 0.4;
-            transition: all 0.2s;
-          }
-          .swiper-pagination-bullet-active {
-            width: 22px;
-            height: 14px;
-            border-radius: 8px;
-            background: #ff4000;
-            opacity: 1;
-          }
-          @media (max-width: 1024px) {
-            .swiper-pagination {
-              bottom: -36px !important;
-            }
-            .swiper-pagination-bullet {
-              width: 18px;
-              height: 18px;
-            }
-            .swiper-pagination-bullet-active {
-              width: 28px;
-              height: 18px;
-              border-radius: 10px;
-            }
-          }
-          @media (max-width: 640px) {
-            .swiper-pagination {
-              bottom: -28px !important;
-            }
-            .swiper-pagination-bullet {
-              width: 22px;
-              height: 22px;
-            }
-            .swiper-pagination-bullet-active {
-              width: 36px;
-              height: 22px;
-              border-radius: 12px;
-            }
-          }
-        `}</style>
-      </div>
+              </div>
     </>
   );
 };

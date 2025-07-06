@@ -52,19 +52,36 @@ const MusculationProductsClient = () => {
 
   // Dynamic header offset for mobile/desktop (robust React way, matches other pages)
   function ClientHeaderOffset() {
-  useEffect(() => {
+  React.useEffect(() => {
+  let lastHeight = 0;
+  let animationFrame;
   function setOffset() {
   const header = document.querySelector('header');
   if (header) {
   const rect = header.getBoundingClientRect();
+  if (rect.height !== lastHeight) {
   document.documentElement.style.setProperty('--header-offset-musc', rect.height + 'px');
+  lastHeight = rect.height;
+  }
   } else {
   document.documentElement.style.setProperty('--header-offset-musc', '8rem');
+  lastHeight = 0;
   }
+  animationFrame = requestAnimationFrame(setOffset);
   }
   setOffset();
   window.addEventListener('resize', setOffset);
-  return () => window.removeEventListener('resize', setOffset);
+  window.addEventListener('orientationchange', setOffset);
+  const header = document.querySelector('header');
+  if (header) {
+  header.addEventListener('transitionend', setOffset);
+  }
+  return () => {
+  window.removeEventListener('resize', setOffset);
+  window.removeEventListener('orientationchange', setOffset);
+  if (header) header.removeEventListener('transitionend', setOffset);
+  cancelAnimationFrame(animationFrame);
+  };
   }, []);
   return null;
   }

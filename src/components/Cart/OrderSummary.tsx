@@ -19,27 +19,27 @@ return (
 
 <div className="pt-2.5 pb-8.5 px-4 sm:px-8.5">
 {/* <!-- title --> */}
-<div className="flex items-center justify-between py-5 border-b border-gray-3">
-<div>
-<h4 className="font-medium text-dark">Produit</h4>
-</div>
-<div>
-<h4 className="font-medium text-dark text-right">total</h4>
-</div>
+<div className="flex flex-col xs:flex-row items-start xs:items-center justify-between py-5 border-b border-gray-3 gap-2 xs:gap-0">
+  <div>
+    <h4 className="font-medium text-dark">Produit</h4>
+  </div>
+  <div>
+    <h4 className="font-medium text-dark text-right xs:text-left">total</h4>
+  </div>
 </div>
 
 {/* <!-- product item --> */}
 {cartItems.map((item, key) => (
-<div key={key} className="flex items-center justify-between py-5 border-b border-gray-3">
-<div>
-<p className="text-dark">{item.title}</p>
-</div>
-<div>
-<p className="text-dark text-right">
-{Number(item.discountedPrice * item.quantity).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
-</p>
-</div>
-</div>
+  <div key={key} className="flex flex-col xs:flex-row items-start xs:items-center justify-between py-5 border-b border-gray-3 gap-2 xs:gap-0">
+    <div className="w-full xs:w-auto">
+      <p className="text-dark break-words max-w-[180px] xs:max-w-none">{item.title}</p>
+    </div>
+    <div className="w-full xs:w-auto">
+      <p className="text-dark text-right xs:text-left">
+        {Number(item.discountedPrice * item.quantity).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+      </p>
+    </div>
+  </div>
 ))}
 
 {/* <!-- total --> */}

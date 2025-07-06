@@ -28,21 +28,21 @@ const Cart = () => {
               <div className="w-full overflow-x-auto">
                 <div className="min-w-full">
                   {/* <!-- table header --> */}
-                  <div className="cart-table-header flex flex-wrap items-center py-4 px-2 sm:px-4 md:px-7.5 text-xs sm:text-sm md:text-base">
-                    <div className="cart-th cart-th-produit w-full sm:w-[40%] min-w-[180px] mb-2 sm:mb-0">
-                      <p className="text-dark text-left">Produit</p>
+                  <div className="cart-table-header flex flex-wrap items-center py-5 px-2 sm:px-4 md:px-7.5 text-xs sm:text-sm md:text-base border-b border-gray-3 max-[480px]:gap-y-2">
+                    <div className="cart-th cart-th-produit w-full sm:w-[40%] min-w-[180px] mb-2 sm:mb-0 max-[480px]:mb-1 max-[480px]:pt-2">
+                      <p className="text-dark text-left max-[480px]:text-base max-[480px]:font-semibold">Produit</p>
                     </div>
-                    <div className="cart-th cart-th-prix w-1/2 sm:w-[15%] min-w-[100px] mb-2 sm:mb-0">
-                      <p className="text-dark text-left">Prix</p>
+                    <div className="cart-th cart-th-prix w-1/2 sm:w-[15%] min-w-[100px] mb-2 sm:mb-0 max-[480px]:mb-1">
+                      <p className="text-dark text-left max-[480px]:text-base">Prix</p>
                     </div>
-                    <div className="cart-th cart-th-quantite w-1/2 sm:w-[25%] min-w-[120px] mb-2 sm:mb-0">
-                      <p className="text-dark text-left">Quantité</p>
+                    <div className="cart-th cart-th-quantite w-1/2 sm:w-[25%] min-w-[120px] mb-2 sm:mb-0 max-[480px]:mb-1">
+                      <p className="text-dark text-left max-[480px]:text-base">Quantité</p>
                     </div>
-                    <div className="cart-th cart-th-soustotal w-1/2 sm:w-[15%] min-w-[80px] mb-2 sm:mb-0">
-                      <p className="text-dark text-left">Sous-total</p>
+                    <div className="cart-th cart-th-soustotal w-1/2 sm:w-[15%] min-w-[80px] mb-2 sm:mb-0 max-[480px]:mb-1">
+                      <p className="text-dark text-left max-[480px]:text-base">Sous-total</p>
                     </div>
-                    <div className="cart-th cart-th-action w-1/2 sm:w-[5%] min-w-[40px] flex justify-end">
-                      <p className="text-dark text-right">Action</p>
+                    <div className="cart-th cart-th-action w-1/2 sm:w-[5%] min-w-[40px] flex justify-end max-[480px]:mb-1">
+                      <p className="text-dark text-right max-[480px]:text-base">Action</p>
                     </div>
                   </div>
 

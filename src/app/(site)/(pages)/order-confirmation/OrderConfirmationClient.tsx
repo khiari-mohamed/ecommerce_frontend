@@ -363,7 +363,7 @@ const OrderConfirmationClient = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex flex-col items-center py-2 sm:py-8 px-1 sm:px-2 md:px-4">
-    <div className="flex flex-col w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl gap-4 md:gap-8">
+    <div className="flex flex-col w-full gap-4 md:gap-8">
     {/* Main content */}
     <div className="flex-1 flex justify-center w-full">
     {previewDoc === "bon-livraison" ? (

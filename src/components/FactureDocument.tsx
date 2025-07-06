@@ -77,7 +77,7 @@ const FactureDocument = (props) => {
       ref={printRef}
       className="document-print-area bg-white py-8 px-1 font-sans print:py-0 print:px-0"
     >
-      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-6 relative border border-blue-200 print:shadow-none print:border-none print:rounded-none print:p-0">
+      <div className="facture-modal w-full max-w-xs sm:max-w-md md:max-w-2xl mx-auto bg-white rounded-lg sm:rounded-2xl shadow-2xl p-1 sm:p-4 md:p-6 relative border border-blue-200 print:shadow-none print:border-none print:rounded-none print:p-0" style={{ minWidth: 0 }}>
         {/* Header */}
         <div className="flex justify-between items-start mb-4">
           <div className="flex flex-col items-start">
@@ -121,8 +121,8 @@ const FactureDocument = (props) => {
           </div>
         </div>
         {/* Table: Products */}
-        <div className="overflow-x-auto mb-6">
-          <table className="w-full border rounded-lg overflow-hidden shadow-sm text-[12px]">
+        <div className="facture-table-container overflow-x-auto mb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <table className="facture-table w-full min-w-[320px] border rounded-lg overflow-hidden shadow-sm text-[12px]">
             <thead>
               <tr className="bg-[#FF4301] text-white">
                 <th className="p-1 text-left font-semibold">Produit</th>

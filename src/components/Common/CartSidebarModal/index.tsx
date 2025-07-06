@@ -91,7 +91,9 @@ const CartSidebarModal = () => {
             </div>
           </div>
 
-          <div className="border-t border-gray-3 bg-white pt-5 pb-4 sm:pb-7.5 lg:pb-11 mt-7.5 sticky bottom-0 z-50">
+          <div className="border-t border-gray-3 bg-white pt-5 pb-4 sm:pb-7.5 lg:pb-11 mt-7.5
+  sticky bottom-0 z-50
+  max-[480px]:static max-[480px]:pt-3 max-[480px]:pb-3 max-[480px]:mt-3">
           <div className="flex items-center justify-between gap-5 mb-6">
           <p className="font-medium text-xl text-dark">total:</p>
           
@@ -100,7 +102,7 @@ const CartSidebarModal = () => {
           </p>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 max-[480px]:flex-col max-[480px]:gap-2">
           <Link
           onClick={() => closeCartModal()}
           href="/cart"

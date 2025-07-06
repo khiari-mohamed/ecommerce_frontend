@@ -74,7 +74,7 @@ const OrderInvoice = ({ order, printRef }) => {
     >
       <div className="w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-2 sm:p-4 md:p-6 relative border border-blue-200 print:shadow-none print:border-none print:rounded-none print:p-0">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-4 sm:gap-0">
+      <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-2 sm:gap-0">
       <div className="flex flex-col items-start w-full sm:w-auto">
       <Image src={COMPANY.logo} alt="Logo Votre Société" width={96} height={96} className="h-16 w-24 sm:h-20 sm:w-32 object-contain mb-1 mx-auto sm:mx-0" loading="lazy" sizes="96px" />
       <div className="text-[11px] text-gray-700 leading-tight text-center sm:text-left w-full sm:w-auto">
@@ -100,124 +100,126 @@ const OrderInvoice = ({ order, printRef }) => {
         {/* Orange thin line */}
         <div className="w-full h-0.5 mb-4" style={{ background: ORANGE, borderRadius: 2 }} />
         {/* User credentials */}
-        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-4 w-full">
+        <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4 mb-4 w-full">
         {/* Billing */}
         <div className="flex-1 mb-2 sm:mb-0 w-full">
-            <div className="font-semibold text-[13px] text-blue-700 mb-1">Facturé à</div>
-            <div className="text-[11px] text-gray-700 leading-tight">
-              <div>{billing.prenom} {billing.nom}</div>
-              <div>{billing.adresse1}</div>
-              <div>{billing.pays}</div>
-              <div>Email : {billing.email}</div>
-              <div>Tél : {billing.phone}</div>
-            </div>
-          </div>
-          {/* Shipping */}
-          <div className="flex-1 w-full">
-            <div className="font-semibold text-[13px] text-blue-700 mb-1">Livraison</div>
-            <div className="text-[11px] text-gray-700 leading-tight">
-              <div>{shipping.prenom} {shipping.nom}</div>
-              <div>{shipping.adresse1}</div>
-              {shipping.adresse2 && <div>{shipping.adresse2}</div>}
-              <div>{shipping.ville}{shipping.code_postale ? `, ${shipping.code_postale}` : ""}</div>
-              <div>{shipping.pays}</div>
-              <div>Tél : {shipping.phone || "N/A"}</div>
-            </div>
-          </div>
+        <div className="font-semibold text-[13px] text-blue-700 mb-1">Facturé à</div>
+        <div className="text-[11px] text-gray-700 leading-tight break-words">
+        <div>{billing.prenom} {billing.nom}</div>
+        <div>{billing.adresse1}</div>
+        <div>{billing.pays}</div>
+        <div>Email : {billing.email}</div>
+        <div>Tél : {billing.phone}</div>
+        </div>
+        </div>
+        {/* Shipping */}
+        <div className="flex-1 w-full">
+        <div className="font-semibold text-[13px] text-blue-700 mb-1">Livraison</div>
+        <div className="text-[11px] text-gray-700 leading-tight break-words">
+        <div>{shipping.prenom} {shipping.nom}</div>
+        <div>{shipping.adresse1}</div>
+        {shipping.adresse2 && <div>{shipping.adresse2}</div>}
+        <div>{shipping.ville}{shipping.code_postale ? `, ${shipping.code_postale}` : ""}</div>
+        <div>{shipping.pays}</div>
+        <div>Tél : {shipping.phone || "N/A"}</div>
+        </div>
+        </div>
         </div>
         {/* Table: Products */}
-        <div className="overflow-x-auto mb-6 w-full">
-        <table className="w-full border rounded-lg overflow-hidden shadow-sm text-[11px] sm:text-[12px] min-w-[400px]">
-            <thead>
-              <tr className="bg-[#FF4301] text-white">
-                <th className="p-1 text-left font-semibold">Produit</th>
-                <th className="p-1 text-right font-semibold">Quantité</th>
-                <th className="p-1 text-right font-semibold">PU HT</th>
-                <th className="p-1 text-right font-semibold">TVA</th>
-                <th className="p-1 text-right font-semibold">Total HT</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cart.length > 0 ? (
-                cart.map((item, idx) => (
-                  <tr key={idx} className="border-t hover:bg-orange-50">
-                    <td className="p-1 max-w-[120px] sm:max-w-none truncate">{item.title || item.name || item.product_name || "Produit"}</td>
-                    <td className="p-1 text-right">{item.quantity ?? item.qty ?? 1}</td>
-                    <td className="p-1 text-right">
-                      {Number(item.price ?? item.unit_price ?? 0).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
-                    </td>
-                    <td className="p-1 text-right">
-                      {item.tva
-                        ? Number(item.tva).toLocaleString("fr-TN", { style: "currency", currency: "TND" })
-                        : "0,000 TND"}
-                    </td>
-                    <td className="p-1 text-right">
-                      {Number(
-                        (item.price ?? item.unit_price ?? 0) * (item.quantity ?? item.qty ?? 1)
-                      ).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className="text-center text-gray-400 py-2">
-                    Aucun produit trouvé dans cette commande.<br />
-                    <span className="text-xs text-red-400">Vérifiez la structure de la commande dans la console.</span>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+        <div className="w-full mb-6">
+        <div className="overflow-x-auto rounded-lg border shadow-sm">
+        <table className="w-full min-w-[320px] text-[11px] sm:text-[12px]">
+        <thead>
+        <tr className="bg-[#FF4301] text-white">
+        <th className="p-2 text-left font-semibold whitespace-nowrap">Produit</th>
+        <th className="p-2 text-right font-semibold whitespace-nowrap">Quantité</th>
+        <th className="p-2 text-right font-semibold whitespace-nowrap">PU HT</th>
+        <th className="p-2 text-right font-semibold whitespace-nowrap">TVA</th>
+        <th className="p-2 text-right font-semibold whitespace-nowrap">Total HT</th>
+        </tr>
+        </thead>
+        <tbody>
+        {cart.length > 0 ? (
+        cart.map((item, idx) => (
+        <tr key={idx} className="border-t hover:bg-orange-50">
+        <td className="p-2 max-w-[120px] sm:max-w-none truncate whitespace-normal break-words">{item.title || item.name || item.product_name || "Produit"}</td>
+        <td className="p-2 text-right">{item.quantity ?? item.qty ?? 1}</td>
+        <td className="p-2 text-right">
+        {Number(item.price ?? item.unit_price ?? 0).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+        </td>
+        <td className="p-2 text-right">
+        {item.tva
+        ? Number(item.tva).toLocaleString("fr-TN", { style: "currency", currency: "TND" })
+        : "0,000 TND"}
+        </td>
+        <td className="p-2 text-right">
+        {Number(
+        (item.price ?? item.unit_price ?? 0) * (item.quantity ?? item.qty ?? 1)
+        ).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+        </td>
+        </tr>
+        ))
+        ) : (
+        <tr>
+        <td colSpan={5} className="text-center text-gray-400 py-2">
+        Aucun produit trouvé dans cette commande.<br />
+        <span className="text-xs text-red-400">Vérifiez la structure de la commande dans la console.</span>
+        </td>
+        </tr>
+        )}
+        </tbody>
+        </table>
+        </div>
         </div>
         {/* Totals: right side */}
         <div className="flex flex-col items-end space-y-1 mb-6 text-[12px] w-full">
-        <div className="flex flex-col sm:flex-row justify-between w-full sm:w-72 md:w-56">
-            <span className="font-medium">Total HT :</span>
-            <span>{totalHT.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
-          </div>
-          <div className="flex flex-col sm:flex-row justify-between w-full sm:w-72 md:w-56">
-            <span className="font-medium">TVA (19%) :</span>
-            <span>{totalTVA.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
-          </div>
-          <div className="flex flex-col sm:flex-row justify-between w-full sm:w-72 md:w-56">
-            <span className="font-medium">TIMBRE :</span>
-            <span>{totalTimbre.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
-          </div>
-          <div className="flex flex-col sm:flex-row justify-between w-full sm:w-72 md:w-56 pt-2" style={{ borderTop: `2px solid ${ORANGE}` }}>
-            <span className="font-bold">Total TTC :</span>
-            <span className="font-bold">
-              {totalTTC.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
-            </span>
-          </div>
+        <div className="flex flex-col xs:flex-row justify-between w-full xs:w-72 md:w-56">
+        <span className="font-medium">Total HT :</span>
+        <span>{totalHT.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
+        </div>
+        <div className="flex flex-col xs:flex-row justify-between w-full xs:w-72 md:w-56">
+        <span className="font-medium">TVA (19%) :</span>
+        <span>{totalTVA.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
+        </div>
+        <div className="flex flex-col xs:flex-row justify-between w-full xs:w-72 md:w-56">
+        <span className="font-medium">TIMBRE :</span>
+        <span>{totalTimbre.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}</span>
+        </div>
+        <div className="flex flex-col xs:flex-row justify-between w-full xs:w-72 md:w-56 pt-2 border-t-2" style={{ borderTopColor: ORANGE }}>
+        <span className="font-bold">Total TTC :</span>
+        <span className="font-bold">
+        {totalTTC.toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+        </span>
+        </div>
         </div>
         {/* Amount in letters: left side with orange vertical bar */}
-        <div className="mb-4 flex flex-col sm:flex-row items-start ml-2">
+        <div className="mb-4 flex flex-col sm:flex-row items-start ml-0 sm:ml-2">
         {/* Orange vertical bar */}
         <div
         className="mr-2 hidden sm:block"
-            style={{
-              width: "6px",
-              minWidth: "6px",
-              height: "40px",
-              background: ORANGE,
-              borderRadius: "4px"
-            }}
-          />
-          <div className="flex flex-col items-start w-full">
-            <span className="text-[12px] font-medium">
-              Arrêté la présente facture à la somme de :
-            </span>
-            <span className="italic text-orange-700 font-semibold text-[12px]">
-              {totalTTCWords}
-            </span>
-          </div>
+        style={{
+        width: "6px",
+        minWidth: "6px",
+        height: "40px",
+        background: ORANGE,
+        borderRadius: "4px"
+        }}
+        />
+        <div className="flex flex-col items-start w-full">
+        <span className="text-[12px] font-medium">
+        Arrêté la présente facture à la somme de :
+        </span>
+        <span className="italic text-orange-700 font-semibold text-[12px]">
+        {totalTTCWords}
+        </span>
+        </div>
         </div>
         {/* QR code only (signature removed) */}
         <div className="flex justify-end items-end mb-6 w-full">
         <div className="flex flex-col items-center w-full">
-            <QRCode value={qrValue} size={48} logoImage={COMPANY.logo} />
-            <span className="text-[11px] text-gray-500 mt-1">Scan pour vérifier</span>
-          </div>
+        <QRCode value={qrValue} size={48} logoImage={COMPANY.logo} />
+        <span className="text-[11px] text-gray-500 mt-1">Scan pour vérifier</span>
+        </div>
         </div>
         {/* Thank you & rest of logic */}
         <div className="my-6 text-center w-full">
@@ -229,13 +231,13 @@ const OrderInvoice = ({ order, printRef }) => {
         <div className="flex flex-col sm:flex-row justify-between items-end mt-6 border-t pt-3 text-[10px] gap-2 sm:gap-0 w-full">
         {/* RIB bank info bottom left */}
         <div className="bg-white border border-orange-400 rounded-lg px-3 py-2 shadow text-[12px] text-gray-800 font-semibold flex items-center gap-2 mb-2 sm:mb-0 w-full sm:w-auto">
-            <span className="text-orange-600 font-bold">Bank BAN RIB:</span>
-            <span>03507065011500468753</span>
-          </div>
-          {/* Copyright right */}
-          <div className="text-gray-400 text-right flex-1 ml-0 sm:ml-4 w-full sm:w-auto">
-            &copy; {new Date().getFullYear()} Votre Société. Tous droits réservés.
-          </div>
+        <span className="text-orange-600 font-bold">Bank BAN RIB:</span>
+        <span>03507065011500468753</span>
+        </div>
+        {/* Copyright right */}
+        <div className="text-gray-400 text-right flex-1 ml-0 sm:ml-4 w-full sm:w-auto">
+        &copy; {new Date().getFullYear()} Votre Société. Tous droits réservés.
+        </div>
         </div>
       </div>
     </main>
@@ -360,27 +362,27 @@ const OrderConfirmationClient = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex justify-center items-start py-4 sm:py-10 px-1 sm:px-2 md:px-4">
-      <div className="flex flex-col md:flex-row gap-8 w-full max-w-6xl">
-        {/* Main content */}
-        <div className="flex-1 flex justify-center">
-          {previewDoc === "bon-livraison" ? (
-            <BonLivraisonDocument order={order} printRef={printRef} />
-          ) : previewDoc === "devis" ? (
-            <DevisDocument order={order} printRef={printRef} />
-          ) : previewDoc === "facture-boutique" ? (
-            <FactureDocument order={order} printRef={printRef} />
-          ) : (
-            <OrderInvoice order={order} printRef={printRef} />
-          )}
-        </div>
-      </div>
-      {/* Floating actions */}
-      <FloatingActions 
-        key={popupKey} 
-        onHome={handleHome} 
-        setPreviewDoc={setPreviewDoc} 
-      />
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex flex-col items-center py-2 sm:py-8 px-1 sm:px-2 md:px-4">
+    <div className="flex flex-col w-full max-w-2xl md:max-w-4xl lg:max-w-6xl gap-4 md:gap-8">
+    {/* Main content */}
+    <div className="flex-1 flex justify-center w-full">
+    {previewDoc === "bon-livraison" ? (
+    <BonLivraisonDocument order={order} printRef={printRef} />
+    ) : previewDoc === "devis" ? (
+    <DevisDocument order={order} printRef={printRef} />
+    ) : previewDoc === "facture-boutique" ? (
+    <FactureDocument order={order} printRef={printRef} />
+    ) : (
+    <OrderInvoice order={order} printRef={printRef} />
+    )}
+    </div>
+    </div>
+    {/* Floating actions */}
+    <FloatingActions 
+    key={popupKey} 
+    onHome={handleHome} 
+    setPreviewDoc={setPreviewDoc} 
+    />
     </div>
   );
 };

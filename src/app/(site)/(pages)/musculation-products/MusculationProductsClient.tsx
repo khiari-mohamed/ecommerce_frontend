@@ -60,61 +60,135 @@ const MusculationProductsClient = () => {
   }, []);
 
   return (
-    <div className="w-full mt-32 sm:mt-36 md:mt-24">
-      <div className="w-full mx-auto max-w-screen-2xl">
-        <motion.div
-          className="max-w-screen-xl px-4 mx-auto md:px-8"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.h3
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center text-black3 uppercase font-bold rubik mb-4"
+    <>
+      {/* Adaptive header offset for mobile */}
+      <script dangerouslySetInnerHTML={{
+        __html: `
+        (function setHeaderOffset() {
+        function updateOffset() {
+        var header = document.querySelector('header');
+        if (!header) return;
+        var isMobile = window.innerWidth < 640;
+        if (isMobile) {
+        var headerHeight = header.offsetHeight;
+        document.documentElement.style.setProperty('--header-offset-musc', headerHeight + 'px');
+        } else {
+        document.documentElement.style.setProperty('--header-offset-musc', '8rem');
+        }
+        }
+        updateOffset();
+        window.addEventListener('resize', updateOffset);
+        window.addEventListener('orientationchange', updateOffset);
+        })();
+        `
+      }} />
+      <div className="w-full" style={{ marginTop: 'var(--header-offset-musc, 8rem)' }}>
+        <div className="w-full mx-auto max-w-screen-2xl">
+          <motion.div
+            className="max-w-screen-xl px-4 mx-auto md:px-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
-            Materiel de Musculation
-          </motion.h3>
-        </motion.div>
-      </div>
-      <div className="w-full mx-auto max-w-screen-2xl">
-        <motion.div
-          className="max-w-screen-xl px-4 mx-auto mt-16 mb-24 md:px-8"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <Swiper
-            modules={[Navigation, Pagination]}
-            navigation
-            pagination={{ clickable: true }}
-            spaceBetween={24}
-            slidesPerView={1}
-            breakpoints={{
-              640: { slidesPerView: 1 },
-              768: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-              1280: { slidesPerView: 4 },
-            }}
-            className="pt-8 pb-16 sm:pb-20 md:pb-24"
+            <motion.h3
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center text-black3 uppercase font-bold rubik mb-4"
+            >
+              Materiel de Musculation
+            </motion.h3>
+          </motion.div>
+        </div>
+
+        <div className="w-full mx-auto max-w-screen-2xl">
+          <motion.div
+            className="max-w-screen-xl px-4 mx-auto mt-16 mb-24 md:px-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
-            {productsData.map((product, idx) => (
-              <SwiperSlide key={product._id || idx}>
-                <ProductCard
-                  user={user}
-                  product={mapToProductCard(product, idx)}
-                  typeRef="musculation-products"
-                  fallbackImage={getFallbackImageByIndex(idx)}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </motion.div>
+            <Swiper
+              modules={[Navigation, Pagination]}
+              navigation
+              pagination={{ clickable: true }}
+              spaceBetween={24}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+                1280: { slidesPerView: 4 },
+              }}
+              className="pt-8 pb-16 sm:pb-20 md:pb-24"
+            >
+              {productsData.map((product, idx) => (
+                <SwiperSlide key={product._id || idx}>
+                  <ProductCard
+                    user={user}
+                    product={mapToProductCard(product, idx)}
+                    typeRef="musculation-products"
+                    fallbackImage={getFallbackImageByIndex(idx)}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </motion.div>
+        </div>
+
+        {/* Global Swiper pagination styles */}
+        <style jsx global>{`
+          .swiper-pagination {
+            bottom: -48px !important;
+            z-index: 30;
+          }
+          .swiper-pagination-bullet {
+            width: 14px;
+            height: 14px;
+            background: #ff4000;
+            opacity: 0.4;
+            transition: all 0.2s;
+          }
+          .swiper-pagination-bullet-active {
+            width: 22px;
+            height: 14px;
+            border-radius: 8px;
+            background: #ff4000;
+            opacity: 1;
+          }
+          @media (max-width: 1024px) {
+            .swiper-pagination {
+              bottom: -36px !important;
+            }
+            .swiper-pagination-bullet {
+              width: 18px;
+              height: 18px;
+            }
+            .swiper-pagination-bullet-active {
+              width: 28px;
+              height: 18px;
+              border-radius: 10px;
+            }
+          }
+          @media (max-width: 640px) {
+            .swiper-pagination {
+              bottom: -28px !important;
+            }
+            .swiper-pagination-bullet {
+              width: 22px;
+              height: 22px;
+            }
+            .swiper-pagination-bullet-active {
+              width: 36px;
+              height: 22px;
+              border-radius: 12px;
+            }
+          }
+        `}</style>
       </div>
-    </div>
+    </>
   );
 };
 

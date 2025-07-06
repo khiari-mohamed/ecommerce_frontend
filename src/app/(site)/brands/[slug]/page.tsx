@@ -72,26 +72,49 @@ export default async function BrandPage({
   }
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8 pt-[70px] sm:pt-[100px] md:pt-[120px] lg:pt-[130px]">
-      <div className="flex flex-col items-center">
-        <Image
-          src={`/images/brand/${brand.logo}`}
-          alt={brand.designation_fr}
-          width={128}
-          height={128}
-          className="w-24 h-24 md:w-32 md:h-32 object-contain mb-4"
-        />
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center break-words">
-          <Link href={`/brands/${encodeURIComponent(brand.slug)}`}>{brand.designation_fr}</Link>
-        </h1>
-        {brand.description_fr && (
-          <div
-            className="prose prose-blue max-w-none text-gray-700 text-center mb-4"
-            dangerouslySetInnerHTML={{ __html: brand.description_fr }}
-          />
-        )}
-      </div>
-      <BrandProductGrid products={products} />
-    </div>
+  <>
+  {/* Adaptive header offset for mobile */}
+  <script dangerouslySetInnerHTML={{
+  __html: `
+  (function setHeaderOffset() {
+  function updateOffset() {
+  var header = document.querySelector('header');
+  if (!header) return;
+  var isMobile = window.innerWidth < 640;
+  if (isMobile) {
+  var headerHeight = header.offsetHeight;
+  document.documentElement.style.setProperty('--header-offset', headerHeight + 'px');
+  } else {
+  document.documentElement.style.setProperty('--header-offset', '70px');
+  }
+  }
+  updateOffset();
+  window.addEventListener('resize', updateOffset);
+  window.addEventListener('orientationchange', updateOffset);
+  })();
+  `
+  }} />
+  <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8" style={{ paddingTop: 'var(--header-offset, 70px)' }}>
+  <div className="flex flex-col items-center">
+  <Image
+  src={`/images/brand/${brand.logo}`}
+  alt={brand.designation_fr}
+  width={128}
+  height={128}
+  className="w-24 h-24 md:w-32 md:h-32 object-contain mb-4"
+  />
+  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center break-words">
+  <Link href={`/brands/${encodeURIComponent(brand.slug)}`}>{brand.designation_fr}</Link>
+  </h1>
+  {brand.description_fr && (
+  <div
+  className="prose prose-blue max-w-none text-gray-700 text-center mb-4"
+  dangerouslySetInnerHTML={{ __html: brand.description_fr }}
+  />
+  )}
+  </div>
+  <BrandProductGrid products={products} />
+  </div>
+  </>
   );
-}
+  }

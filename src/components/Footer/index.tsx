@@ -153,30 +153,13 @@ function Footer() {
             ) : categories.length === 0 ? (
               <li>Aucune catégorie</li>
             ) : (
-              [
-                { label: "ACIDES AMINES", key: "acides-amines" },
-                { label: "PERTE DE POIDS", key: "perte-de-poids" },
-                { label: "PRISE DE MASSE", key: "prise-de-masse" },
-                { label: "PROTEINES", key: "proteines" },
-                { label: "PRE, INTRA & POST WORKOUT", key: "pre-intra-and-post-workout" },
-                { label: "VÊTEMENTS ET ACCESSOIRES", key: "vetements-et-accessoires" },
-                { label: "MATÉRIEL ET ACCESSOIRES", key: "materiel-et-accessoires" },
-              ].map((item) => {
-                const cat = categories.find(
-                  (c) => c.slug === item.key || c.name.toLowerCase().replace(/[^a-z0-9]+/gi, "-") === item.key
-                );
-                return (
-                  <li key={item.key}>
-                    {cat ? (
-                      <Link href={`/categories/${cat.slug}`} className="hover:underline">
-                        {item.label}
-                      </Link>
-                    ) : (
-                      <span className="text-gray-400 cursor-not-allowed">{item.label}</span>
-                    )}
-                  </li>
-                );
-              })
+              categories.map((cat) => (
+                <li key={cat._id}>
+                  <Link href={`/categories/${cat.slug}`} className="hover:underline">
+                    {cat.name}
+                  </Link>
+                </li>
+              ))
             )}
           </ul>
         </div>

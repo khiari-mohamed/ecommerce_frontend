@@ -1,4 +1,3 @@
-
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
@@ -17,7 +16,13 @@ type CartItem = {
     previews: string[];
   };
   type?: string;
-  image: string; // <-- Add this line for the main image used in cart
+  image: string; 
+  cover?: string; // <-- Add this
+  mainImage?: { url: string }; // <-- Add this
+  images?: { url: string }[];  // <-- Add this
+  designation_fr?: string;     // <-- Optional, for display
+  designation?: string;  
+  // <-- Add this line for the main image used in cart
 };
 
 const initialState: InitialState = {
@@ -34,18 +39,23 @@ export const cart = createSlice({
     const existingItem = state.items.find((item) => item.id === id);
     
     if (existingItem) {
-    existingItem.quantity += quantity;
+      existingItem.quantity += quantity;
     } else {
-    state.items.push({
-    id,
-    title,
-    price,
-    quantity,
-    discountedPrice,
-    imgs,
-    type,
-    image, // <-- Add this line
-    });
+      state.items.push({
+        id,
+        title,
+        price,
+        quantity,
+        discountedPrice,
+        imgs,
+        type,
+        image,
+        cover: action.payload.cover,           // <-- Add this line
+        mainImage: action.payload.mainImage,   // <-- Add this line
+        images: action.payload.images,         // <-- Add this line
+        designation_fr: action.payload.designation_fr, // (optional, for display)
+        designation: action.payload.designation,       // (optional, for display)
+      });
     }
     },
     removeItemFromCart: (state, action: PayloadAction<number>) => {

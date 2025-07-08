@@ -31,12 +31,20 @@ function normalizeProduct(item: any) {
 }
 
 function getProductImageSrc(item: any): string {
-  if (typeof item.cover === "string" && item.cover.trim() !== "") return item.cover;
-  if (item.imgs?.previews?.[0]) return item.imgs.previews[0];
-  if (item.imgs?.thumbnails?.[0]) return item.imgs.thumbnails[0];
-  if (item.mainImage && typeof item.mainImage === "object" && item.mainImage.url) return item.mainImage.url;
-  if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]?.url) return item.images[0].url;
-  return "/images/placeholder.png";
+  let src = "";
+  if (typeof item.cover === "string" && item.cover.trim() !== "") src = item.cover;
+  else if (item.imgs?.previews?.[0]) src = item.imgs.previews[0];
+  else if (item.imgs?.thumbnails?.[0]) src = item.imgs.thumbnails[0];
+  else if (item.mainImage && typeof item.mainImage === "object" && item.mainImage.url) src = item.mainImage.url;
+  else if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]?.url) src = item.images[0].url;
+  else src = "/images/placeholder.png";
+
+  // Ensure src is absolute or starts with "/"
+  if (src && !src.startsWith("http") && !src.startsWith("/")) {
+    src = "/" + src;
+  }
+
+  return src;
 }
 
 const SingleItem = ({ item, removeItemFromCart }) => {

@@ -185,7 +185,7 @@ function Footer() {
           <div className="flex flex-col sm:flex-row gap-3">
             <Link href={coordonnees.playstore_link} target="_blank">
               <Image
-                src="/img/icon/icon-app.jpg"
+                src="/img/icon/appstore-336-119.webp"
                 width={150}
                 height={50}
                 alt="Disponible sur Google Play"
@@ -194,7 +194,7 @@ function Footer() {
             </Link>
             <Link href={coordonnees.appstore_link} target="_blank">
               <Image
-                src="/img/icon/icon1-app.jpg"
+                src="/img/icon/fr_badge_web_generic.png"
                 width={150}
                 height={50}
                 alt="Disponible sur App Store"

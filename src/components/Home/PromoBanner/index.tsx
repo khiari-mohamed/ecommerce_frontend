@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -151,7 +151,7 @@ const PromoBanner = () => {
   return (
     <section className="overflow-hidden py-20">
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-        {/* Big promo banner */}
+        {/* Big promo banner 
         <div
           className={`relative z-1 overflow-hidden rounded-lg ${slot0.bg} py-12.5 lg:py-17.5 xl:py-22.5 px-4 sm:px-7.5 lg:px-14 xl:px-19 mb-7.5 flex flex-col md:flex-row items-center md:items-start`}
         >
@@ -189,7 +189,7 @@ const PromoBanner = () => {
         </div>
 
         <div className="grid gap-7.5 grid-cols-1 lg:grid-cols-2">
-          {/* Small promo banner 1 - LIPO 6 */}
+          {/* Small promo banner 1 - LIPO 6 
           <div
             className={`relative z-1 overflow-hidden rounded-lg ${slot1.bg} py-10 xl:py-16 px-4 sm:px-7.5 xl:px-10 flex flex-col sm:flex-row items-center`}
           >
@@ -226,7 +226,7 @@ const PromoBanner = () => {
             </div>
           </div>
 
-          {/* Small promo banner 2 - Treadmill */}
+          {/* Small promo banner 2 - Treadmill 
           <div
             className={`relative z-1 overflow-hidden rounded-lg ${slot2.bg} py-10 xl:py-16 px-4 sm:px-7.5 xl:px-10 flex flex-col sm:flex-row items-center`}
           >
@@ -269,3 +269,6 @@ const PromoBanner = () => {
 };
 
 export default PromoBanner;
+
+
+*/

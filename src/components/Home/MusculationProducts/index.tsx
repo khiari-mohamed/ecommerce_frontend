@@ -77,7 +77,6 @@ const buttonVariants = {
 // Add your images here
 const images = [
   "/img/v2.jpg",
-  "/img/v3.jpg",
   "/img/v4.jpg",
   "/img/vv7.jpg",
 ];

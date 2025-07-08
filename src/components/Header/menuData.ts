@@ -94,46 +94,12 @@ export const menuData: Menu[] = [
         path: "/shop-without-sidebar",
         showBadge: undefined
       },
-      {
-        id: 64,
-        title: "Paiement",
-        newTab: false,
-        path: "/checkout",
-        showBadge: undefined
-      },
+ 
       {
         id: 65,
         title: "Panier",
         newTab: false,
         path: "/cart",
-        showBadge: undefined
-      },
-      {
-        id: 66,
-        title: "Liste de souhaits",
-        newTab: false,
-        path: "/wishlist",
-        showBadge: undefined
-      },
-      {
-        id: 67,
-        title: "Se connecter",
-        newTab: false,
-        path: "/signin",
-        showBadge: undefined
-      },
-      {
-        id: 68,
-        title: "S'inscrire",
-        newTab: false,
-        path: "/signup",
-        showBadge: undefined
-      },
-      {
-        id: 69,
-        title: "Mon compte",
-        newTab: false,
-        path: "/my-account",
         showBadge: undefined
       },
       {
@@ -143,20 +109,8 @@ export const menuData: Menu[] = [
         path: "/contact",
         showBadge: undefined
       },
-      {
-        id: 62,
-        title: "Erreur",
-        newTab: false,
-        path: "/error",
-        showBadge: undefined
-      },
-      {
-        id: 63,
-        title: "Mail envoyé",
-        newTab: false,
-        path: "/mail-success",
-        showBadge: undefined
-      },
+     
+     
     ],
     showBadge: undefined
   },

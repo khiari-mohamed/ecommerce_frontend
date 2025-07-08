@@ -4,10 +4,12 @@ import Link from "next/link";
 
 const Dropdown = ({ menuItem, stickyMenu }) => {
   const [dropdownToggler, setDropdownToggler] = useState(false);
+  const [desktopOpen, setDesktopOpen] = useState(false);
   const pathUrl = usePathname();
   const dropdownRef = useRef<HTMLUListElement>(null);
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Close dropdown on scroll or click outside
+  // Close dropdown on scroll or click outside (mobile only)
   useEffect(() => {
     if (!dropdownToggler) return;
     const handleScroll = () => setDropdownToggler(false);
@@ -24,11 +26,27 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
     };
   }, [dropdownToggler]);
 
+  // Desktop hover handlers with delay
+  const handleMouseEnter = () => {
+    if (window.innerWidth >= 1280) {
+      if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+      setDesktopOpen(true);
+    }
+  };
+  const handleMouseLeave = () => {
+    if (window.innerWidth >= 1280) {
+      if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+      hoverTimeout.current = setTimeout(() => setDesktopOpen(false), 200);
+    }
+  };
+
   return (
     <li
       className={`group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full ${
         pathUrl.includes(menuItem.title) && "before:!w-full"
       }`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <a
         href="#"
@@ -58,18 +76,17 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
       {/* <!-- Dropdown Start --> */}
       <ul
         ref={dropdownRef}
-        className={`dropdown w-full sm:w-[95vw] md:w-[420px] xl:w-[193px] ${dropdownToggler ? "flex max-h-[350px] overflow-y-auto opacity-100 translate-y-0" : "hidden opacity-0 -translate-y-2"} ${
-          stickyMenu
-            ? "xl:group-hover:translate-y-0"
-            : "xl:group-hover:translate-y-0"
-        }`}
+        className={`dropdown w-full sm:w-[95vw] md:w-[420px] xl:w-[193px] 
+          ${dropdownToggler ? 'flex max-h-[350px] overflow-y-auto opacity-100 translate-y-0 xl:hidden' : 'hidden opacity-0 -translate-y-2'}
+          ${desktopOpen ? 'xl:flex xl:opacity-100 xl:translate-y-0' : 'xl:hidden xl:opacity-0 xl:-translate-y-2'}
+          xl:absolute xl:left-0 xl:top-full xl:mt-2 xl:shadow-lg xl:rounded-md xl:min-w-[180px] xl:z-[10030]`}
         style={{ minWidth: '0' }}
       >
         {/* Mobile close button */}
         <button
-          className="header-mobile-close xl:hidden show-on-mobile mb-2 ml-auto"
+          className="header-mobile-close xl:hidden absolute top-2 right-2 z-10 bg-gray-200 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center text-2xl"
           aria-label="Fermer le menu"
-          style={{ display: 'block' }}
+          type="button"
           onClick={() => setDropdownToggler(false)}
         >
           &times;

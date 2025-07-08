@@ -184,7 +184,7 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
         </div>
         <div className="sm:col-span-2">
           <label className="block mb-2.5 text-[#515151] font-medium">
-            Renseigne ta date d'anniversaire et gagne des points de fidélité chaque année (réservé aux clients enregistrés) ! (facultatif)
+            Renseigne ta date d&apos;anniversaire et gagne des points de fidélité chaque année (réservé aux clients enregistrés) ! (facultatif)
           </label>
           <input
             type="text"

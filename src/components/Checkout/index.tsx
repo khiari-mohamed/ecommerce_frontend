@@ -123,7 +123,7 @@ const Checkout = () => {
         return;
       }
     } catch (err: any) {
-      toast.error("Échec de l'envoi de la commande");
+      toast.error("Échec de lenvoi de la commande");
     } finally {
       setLoading(false);
     }
@@ -140,7 +140,7 @@ const Checkout = () => {
       {/* Progress Bar */}
       <div className="bg-white py-4 px-2 sm:px-8 flex flex-col items-center border-b border-gray-200">
         <div className="mb-2 text-[#FF4301] font-semibold text-base sm:text-lg text-center">
-          Temps écoulé ! Mais nous avons prolongé l'état de ta commande 🙂
+          Temps écoulé ! Mais nous avons prolongé l&apos;état de ta commande 🙂
         </div>
         <div className="flex items-center w-full max-w-2xl justify-between mt-2">
           {steps.map((step, idx) => {
@@ -352,7 +352,7 @@ const Checkout = () => {
 
                     {/* Upsell Section (optional, demo only) */}
                     <div className="mt-8 bg-gray-100 rounded p-4">
-                      <div className="font-medium text-dark mb-2">Ceci pourrait t'intéresser</div>
+                      <div className="font-medium text-dark mb-2">Ceci pourrait t&apos;intéresser</div>
                       {recommended ? (
                         <div className="flex items-center gap-4">
                           {/* Recommendation image */}
@@ -387,7 +387,7 @@ const Checkout = () => {
                             href={`/product/${recommended.slug}`}
                             className="bg-[#FF4301] text-white text-xs px-3 py-1 rounded hover:bg-[#e03c00] transition"
                           >
-                            J'achète
+                            J&apos;achète
                           </a>
                         </div>
                       ) : (

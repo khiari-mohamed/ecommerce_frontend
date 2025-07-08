@@ -10,17 +10,25 @@ import { resetQuickView } from "@/redux/features/quickView-slice";
 import { updateproductDetails } from "@/redux/features/product-details";
 // Robust image selection for all product shapes
 const getValidImageSrc = (product, idx = 0) => {
+  let src = "";
   if (product?.imgs?.thumbnails && product.imgs.thumbnails.length > 0)
-    return product.imgs.thumbnails[idx] || product.imgs.thumbnails[0];
-  if (product?.imgs?.previews && product.imgs.previews.length > 0)
-    return product.imgs.previews[idx] || product.imgs.previews[0];
-  const cover = product?.cover;
-  if (cover !== undefined && cover !== null) {
-    if (typeof cover === "string" && cover.trim() !== "") return cover;
-    if (typeof cover === "object" && cover.url) return cover.url;
+    src = product.imgs.thumbnails[idx] || product.imgs.thumbnails[0];
+  else if (product?.imgs?.previews && product.imgs.previews.length > 0)
+    src = product.imgs.previews[idx] || product.imgs.previews[0];
+  else if (product?.cover !== undefined && product?.cover !== null) {
+    if (typeof product.cover === "string" && product.cover.trim() !== "") src = product.cover;
+    else if (typeof product.cover === "object" && product.cover.url) src = product.cover.url;
   }
-  if (product?.mainImage && typeof product.mainImage === "object" && product.mainImage.url) return product.mainImage.url;
-  return "/images/placeholder.png";
+  else if (product?.mainImage && typeof product.mainImage === "object" && product.mainImage.url)
+    src = product.mainImage.url;
+  else
+    src = "/images/placeholder.png";
+
+  // Ensure src is absolute or starts with "/"
+  if (src && !src.startsWith("http") && !src.startsWith("/")) {
+    src = "/" + src.replace(/^\/+/, "");
+  }
+  return src;
 };
 
 // Helper to get all preview images for the modal
@@ -645,7 +653,7 @@ const QuickViewModal = () => {
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path d="M3.9 12c0-2.24 1.82-4.06 4.06-4.06h4.06V6.06H7.96A5.94 5.94 0 0 0 2 12c0 3.28 2.68 5.94 5.96 5.94h4.06v-1.88H7.96A4.06 4.06 0 0 1 3.9 12zm3.06.94h10.08v-1.88H6.96v1.88zm6.08-7.88v1.88h4.06A4.06 4.06 0 0 1 21.1 12c0 2.24-1.82 4.06-4.06 4.06h-4.06v1.88h4.06A5.94 5.94 0 0 0 22 12c0-3.28-2.68-5.94-5.96-5.94h-4.06z" />
+                    <path d="M3.9 12c0-2.24 1.82-4.06 4.06-4.06h4.06V6.06H7.96A5.94 5.94 0 0 0 2 12c0 3.28 2.68 5.94 5.96 5.94h4.06v-1.88H7.96v1.88zm6.08-7.88v1.88h4.06A4.06 4.06 0 0 1 21.1 12c0 2.24-1.82 4.06-4.06 4.06h-4.06v1.88h4.06A5.94 5.94 0 0 0 22 12c0-3.28-2.68-5.94-5.96-5.94h-4.06z" />
                 </svg>
                 </button>
               </div>

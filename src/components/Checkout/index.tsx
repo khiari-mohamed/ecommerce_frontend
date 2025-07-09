@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { FaCheckCircle } from "react-icons/fa";
 import Login from "./Login";
-
+import Link from "next/link";
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const fraisLivraison = 10;
 
@@ -204,7 +204,7 @@ const Checkout = () => {
           }}>MENU</span>
         </button>
         {/* Logo: left-aligned with margin */}
-        <a
+        <Link
         href="/"
         className="custom-logo-link flex items-center h-8 sm:h-10 ml-0 sm:ml-6 md:ml-12 lg:ml-24"
         >
@@ -215,7 +215,7 @@ const Checkout = () => {
         className="custom-logo h-8 sm:h-10 w-auto max-w-full"
         alt="Votre Logo"
         />
-        </a>
+        </Link>
       </div>
 
       {/* Progress Bar */}
@@ -290,9 +290,12 @@ const Checkout = () => {
       <div className="bg-[#f08c14] rounded-lg py-2 px-3 flex items-center w-full">
         <span className="text-white font-medium text-xs sm:text-sm w-full break-words leading-tight">
           Connecte-toi sur{' '}
-          <a href="/account" className="underline text-[#fff] hover:no-underline transition font-bold">
+          <Link
+            href="/account"
+            className="underline text-[#fff] hover:no-underline transition font-bold"
+          >
             MonCompte
-          </a>{' '}
+          </Link>{' '}
           et profite pleinement du Programme SOBITAS Fidélité
         </span>
       </div>
@@ -449,7 +452,8 @@ const Checkout = () => {
                         className="accent-[#FF4301] mt-1"
                       />
                       <label htmlFor="cgv" className="text-xs text-dark">
-                        J’ai lu et j’accepte les <a href="/conditions-generales" className="underline text-[#FF4301]" target="_blank" rel="noopener noreferrer">conditions générales</a> <span className="text-[#FF4301]">*</span>
+                        J&apos;ai lu et j&apos;accepte les
+                        <Link href="/conditions-generales" className="underline text-[#FF4301]" target="_blank" rel="noopener noreferrer">conditions générales</Link> <span className="text-[#FF4301]">*</span>
                       </label>
                     </div>
 
@@ -497,12 +501,12 @@ const Checkout = () => {
                               })()}
                             </div>
                           </div>
-                          <a
+                          <Link
                             href={`/product/${recommended.slug}`}
                             className="bg-[#FF4301] text-white text-xs px-3 py-1 rounded hover:bg-[#e03c00] transition"
                           >
                             J&apos;achète
-                          </a>
+                          </Link>
                         </div>
                       ) : (
                         <div className="text-xs text-gray-500">Aucune recommandation disponible.</div>

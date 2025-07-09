@@ -728,3 +728,34 @@
   vertical-align: middle;
   box-shadow: 0 0 5px rgba(249, 115, 22, 0.5);
 }
+
+
+
+
+/*header of the payment paeg */ 
+/* Hide menu button on desktop, show on mobile */
+.menu-toggle {
+  display: flex;
+}
+@media (min-width: 1024px) {
+  .menu-toggle {
+    display: none !important;
+  }
+}
+
+/* Center logo on mobile, left-align with margin on desktop */
+.site-branding .custom-logo-link {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+@media (min-width: 1024px) {
+  .site-branding .custom-logo-link {
+    justify-content: flex-start;
+    margin-left: 180px;
+    width: auto;
+  }
+}
+
+
+

@@ -29,6 +29,7 @@ export default function ClientLayout({
 
   const pathname = usePathname();
   const isHomePage = pathname === "/" || pathname === "/fr" || pathname === "/en";
+  const isCheckout = pathname === "/checkout";
 
   return (
     <>
@@ -41,8 +42,8 @@ export default function ClientLayout({
                 <CartModalProvider>
                   <ModalProvider>
                     <PreviewSliderProvider>
-                      <Header />
-                    <div className={isHomePage ? '' : 'pt-[70px] sm:pt-[100px] md:pt-[120px] lg:pt-[130px]'}>
+                      {!isCheckout && <Header />}
+                    <div className={isHomePage || isCheckout ? '' : 'pt-[70px] sm:pt-[100px] md:pt-[120px] lg:pt-[130px]'}>
                         {children}
                       </div>
                       <QuickViewModal />

@@ -37,17 +37,28 @@ const Checkout = () => {
   }, [selectedPayment]);
 
   useEffect(() => {
-    async function fetchRecommendation() {
+    async function fetchRecommendation(excludeCart = true) {
+      // If cart is empty, still try to fetch a product (fallback)
+      const cartIds = excludeCart && cart && cart.length > 0
+        ? cart.map((item: any) => String(item._id ?? item.id))
+        : [];
       try {
-        const cartIds = cart.map((item: any) => String(item._id ?? item.id));
         const res = await axios.post(`${API_BASE}/products/recommendation`, { exclude: cartIds });
-        setRecommended(res.data.product || res.data);
+        let product = null;
+        if (res.data && typeof res.data === "object" && "product" in res.data) {
+          product = res.data.product;
+        }
+        // If no product found, try fallback (no exclusions)
+        if (!product && excludeCart) {
+          fetchRecommendation(false);
+        } else {
+          setRecommended(product || null);
+        }
       } catch (err) {
-        // If error, try again without exclude (fallback)
-        try {
-          const res = await axios.post(`${API_BASE}/products/recommendation`, {});
-          setRecommended(res.data.product || res.data);
-        } catch {
+        // On error, try fallback once
+        if (excludeCart) {
+          fetchRecommendation(false);
+        } else {
           setRecommended(null);
         }
       }
@@ -137,62 +148,154 @@ const Checkout = () => {
 
   return (
     <>
+      {/* Site Branding Bar */}
+      <div
+        className="site-branding w-full bg-white border-b border-[#e5e5e5] flex items-center justify-start px-4 sm:px-8"
+        style={{
+          padding: "12px 0",
+          zIndex: 20,
+          minHeight: 64,
+        }}
+      >
+        {/* Menu button: show only on mobile */}
+        <button
+          className="menu-toggle flex flex-col items-center mr-6 lg:hidden"
+          aria-label="Menu"
+          aria-controls="site-navigation"
+          aria-expanded="false"
+          style={{
+            background: "none",
+            border: "none",
+            outline: "none",
+            cursor: "pointer",
+            padding: 0,
+          }}
+        >
+          <span className="bar" style={{
+            display: "block",
+            width: 24,
+            height: 3,
+            background: "#1a237e",
+            margin: "3px 0",
+            borderRadius: 2
+          }}></span>
+          <span className="bar" style={{
+            display: "block",
+            width: 24,
+            height: 3,
+            background: "#1a237e",
+            margin: "3px 0",
+            borderRadius: 2
+          }}></span>
+          <span className="bar" style={{
+            display: "block",
+            width: 24,
+            height: 3,
+            background: "#1a237e",
+            margin: "3px 0",
+            borderRadius: 2
+          }}></span>
+          <span className="bar-text" style={{
+            fontSize: 11,
+            color: "#1a237e",
+            fontWeight: 700,
+            letterSpacing: 1,
+            marginTop: 2
+          }}>MENU</span>
+        </button>
+        {/* Logo: left-aligned with margin */}
+        <a
+        href="/"
+        className="custom-logo-link flex items-center h-8 sm:h-10 ml-0 sm:ml-6 md:ml-12 lg:ml-24"
+        >
+        <img
+        width={180}
+        height={46}
+        src="/images/logo/logo.png"
+        className="custom-logo h-8 sm:h-10 w-auto max-w-full"
+        alt="Votre Logo"
+        />
+        </a>
+      </div>
+
       {/* Progress Bar */}
       <div className="bg-white py-4 px-2 sm:px-8 flex flex-col items-center border-b border-gray-200">
-        <div className="mb-2 text-[#FF4301] font-semibold text-base sm:text-lg text-center">
-          Temps écoulé ! Mais nous avons prolongé l&apos;état de ta commande 🙂
+        <div className="max-w-full md:max-w-3xl lg:max-w-5xl xl:max-w-[1170px] w-full mx-auto px-2 sm:px-4 md:px-8 xl:px-0">
+          <div
+            id="commercekit-timer-message"
+            className="non-product checkout"
+            style={{
+              display: "block",
+              background: "#f8f6db",
+              color: "#111",
+              borderRadius: "8px",
+              padding: "14px 18px",
+              fontWeight: 500,
+              fontSize: "1rem",
+              textAlign: "center",
+              marginBottom: "12px"
+            }}
+          >
+            Temps écoulé ! Mais nous avons prolongé l&apos;état de ta commande 🙂
+          </div>
         </div>
-        <div className="flex items-center w-full max-w-2xl justify-between mt-2">
-          {steps.map((step, idx) => {
-            const isActive = idx === 1;
-            const isCompleted = idx < 1;
-            return (
-              <div key={step.label} className="flex-1 flex items-center">
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`rounded-full w-8 h-8 flex items-center justify-center border-2 ${
-                      isActive
-                        ? "border-[#FF4301] bg-[#FF4301] text-white"
-                        : isCompleted
-                        ? "border-[#FF4301] bg-[#FF4301] text-white"
-                        : "border-gray-300 bg-white text-gray-400"
-                    } font-bold text-base`}
-                  >
-                    {isCompleted ? <FaCheckCircle className="text-white" /> : idx + 1}
-                  </div>
-                  <span
-                    className={`mt-2 text-xs sm:text-sm font-medium ${
-                      isActive
-                        ? "text-[#FF4301]"
-                        : isCompleted
-                        ? "text-[#FF4301]"
-                        : "text-gray-400"
-                    }`}
-                    style={{ minWidth: 80, textAlign: "center" }}
-                  >
-                    {step.label}
-                  </span>
-                </div>
-                {idx < steps.length - 1 && (
-                  <div
-                    className={`flex-1 h-1 mx-2 sm:mx-4 rounded ${
-                      isCompleted
-                        ? "bg-[#FF4301]"
-                        : isActive
-                        ? "bg-[#FF4301]"
-                        : "bg-gray-300"
-                    }`}
-                  ></div>
-                )}
-              </div>
-            );
-          })}
+        <div className="w-full max-w-2xl relative flex items-center justify-between mt-2" style={{minHeight: 56}}>
+        {/* Continuous line behind circles */}
+      <div
+  style={{
+    position: 'absolute',
+    top: '50%',
+    left: 0,
+    right: 0,
+    height: '1px',
+    background: '#3074cc',
+    zIndex: 1,
+    transform: 'translateY(-50%)',
+    // Add this to ensure perfect centering:
+   
+  }}
+></div>
+        {steps.map((step, idx) => {
+        const isActive = idx === 1;
+        const isCompleted = idx < 1;
+        return (
+        <div key={step.label} className="flex-1 flex flex-col items-center z-10" style={{position: 'relative' , marginTop: '24px'}}>
+        <div
+        className="rounded-full w-8 h-8 flex items-center justify-center border-2 font-bold text-base"
+        style={{ background: '#111', borderColor: '#111', color: '#fff' }}
+        
+        >
+        {isCompleted ? <FaCheckCircle className="text-white" /> : idx + 1}
+        </div>
+        <span
+        className="mt-2 text-xs sm:text-sm font-medium"
+        style={{ minWidth: 80, textAlign: "center", color: "#111" }}
+        >
+        {step.label}
+        </span>
+        </div>
+        );
+        })}
         </div>
       </div>
 
       {/* Login Section */}
       <div className="max-w-full md:max-w-3xl lg:max-w-5xl xl:max-w-[1170px] w-full mx-auto px-2 sm:px-4 md:px-8 xl:px-0 mt-8">
         <Login />
+      </div>
+      {/* SOBITAS Fidelity Section - separate container */}
+      <div
+      className="max-w-full md:max-w-3xl lg:max-w-5xl xl:max-w-[1170px] w-full mx-auto px-2 sm:px-4 md:px-8 xl:px-0 mt-3"
+      >
+      <div className="bg-[#f08c14] rounded-lg py-2 px-3 flex items-center w-full">
+        <span className="text-white font-medium text-xs sm:text-sm w-full break-words leading-tight">
+          Connecte-toi sur{' '}
+          <a href="/account" className="underline text-[#fff] hover:no-underline transition font-bold">
+            MonCompte
+          </a>{' '}
+          et profite pleinement du Programme SOBITAS Fidélité
+        </span>
+      </div>
       </div>
 
       <section className="overflow-hidden py-10 sm:py-16 md:py-20 bg-gray-2">
@@ -204,7 +307,7 @@ const Checkout = () => {
                 <Billing value={billingInfo} onChange={setBillingInfo} />
                 <div className="bg-white shadow-1 rounded-[10px] p-4 sm:p-8.5 mt-7.5">
                   <div>
-                    <label htmlFor="notes" className="block mb-2.5" style={{ color: '#FF4301' }}>
+                    <label htmlFor="notes" className="block mb-2.5" style={{ color: '#000' }}>
                       Autres remarques (optionnel)
                     </label>
                     <textarea
@@ -380,7 +483,18 @@ const Checkout = () => {
                               {recommended.designation_fr || recommended.designation}
                             </div>
                             <div className="text-xs text-gray-500">
-                              {Number(recommended.promo && recommended.promo > 0 ? recommended.promo : recommended.prix).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+                              {(() => {
+                                // Prefer promo if it's a positive number, else fallback to price/prix
+                                const promo = Number(recommended?.promo);
+                                const price = Number(recommended?.price ?? recommended?.prix);
+                                const displayPrice =
+                                  !isNaN(promo) && promo > 0
+                                    ? promo
+                                    : !isNaN(price) && price > 0
+                                    ? price
+                                    : 0;
+                                return displayPrice.toLocaleString("fr-TN", { style: "currency", currency: "TND" });
+                              })()}
                             </div>
                           </div>
                           <a
@@ -398,9 +512,9 @@ const Checkout = () => {
                   <button
                     type="submit"
                     className="w-full flex justify-center font-medium text-white py-3 px-6 rounded-md ease-out duration-200 mt-7.5"
-                    style={{ backgroundColor: '#FF4301', border: 'none' }}
-                    onMouseOver={e => (e.currentTarget.style.backgroundColor = '#e03c00')}
-                    onMouseOut={e => (e.currentTarget.style.backgroundColor = '#FF4301')}
+                    style={{ backgroundColor: '#3074fc', border: 'none' }}
+                    onMouseOver={e => (e.currentTarget.style.backgroundColor = '#255dcc')}
+                    onMouseOut={e => (e.currentTarget.style.backgroundColor = '#3074fc')}
                     disabled={loading}
                   >
                     {loading ? "Traitement..." : "Commander"}

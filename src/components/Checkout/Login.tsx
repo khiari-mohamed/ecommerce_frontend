@@ -39,15 +39,15 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full bg-[#f7f6f7] border border-[#ebe9eb] rounded p-6 mb-8">
+    <div className="w-full" style={{ background: '#f08c14', borderRadius: '8px', padding: '12px', marginBottom: '32px' }}>
       <div
         onClick={() => setDropdown(!dropdown)}
-        className="flex items-center justify-between cursor-pointer"
-        style={{ fontWeight: 500, fontSize: "1.05rem", color: "#515151" }}
+        className="flex items-center justify-between cursor-pointer text-sm"
+        style={{ fontWeight: 500, color: "#fff" }}
       >
         <span>
           Déjà client ?{" "}
-          <span className="text-[#ff4301] underline hover:no-underline transition">
+          <span className="text-[#fff] underline hover:no-underline transition">
             Cliquez ici pour vous connecter
           </span>
         </span>
@@ -69,19 +69,21 @@ const Login = () => {
           />
         </svg>
       </div>
+    
       {dropdown && (
         <div className="pt-6">
-          <p className="mb-4 text-sm text-[#515151]">
+          <p className="mb-4 text-sm" style={{ color: '#fff' }}>
             Si vous avez déjà un compte, connectez-vous ci-dessous.
           </p>
           <form onSubmit={handleLogin}>
             <div className="mb-4">
               <label
                 htmlFor="name"
-                className="block mb-1 text-sm font-medium text-[#515151]"
+                className="block mb-1 text-sm font-medium"
+                style={{ color: '#fff' }}
               >
                 Nom d&apos;utilisateur ou e-mail&nbsp;
-                <span className="text-[#ff4301]">*</span>
+                <span className="text-[#fff]">*</span>
               </label>
               <input
                 type="text"
@@ -97,10 +99,11 @@ const Login = () => {
             <div className="mb-4">
               <label
                 htmlFor="password"
-                className="block mb-1 text-sm font-medium text-[#515151]"
+                className="block mb-1 text-sm font-medium"
+                style={{ color: '#fff' }}
               >
                 Mot de passe&nbsp;
-                <span className="text-[#ff4301]">*</span>
+                <span className="text-[#fff]">*</span>
               </label>
               <input
                 type="password"
@@ -116,7 +119,7 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="bg-[#ff4301] hover:bg-[#e03c00] text-white font-semibold rounded px-6 py-2 transition"
+              className="bg-[#3074fc] hover:bg-[#255dcc] text-white font-semibold rounded px-6 py-2 transition"
               disabled={loading}
             >
               {loading ? "Connexion..." : "Se connecter"}

@@ -484,7 +484,7 @@ const Checkout = () => {
                             </div>
                             <div className="text-xs text-gray-500">
                               {(() => {
-                                // Prefer promo if it's a positive number, else fallback to price/prix
+                                // Prefer promo if its a positive number, else fallback to price/prix
                                 const promo = Number(recommended?.promo);
                                 const price = Number(recommended?.price ?? recommended?.prix);
                                 const displayPrice =

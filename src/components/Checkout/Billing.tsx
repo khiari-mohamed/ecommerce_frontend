@@ -33,38 +33,38 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
   // Update delegations when gouvernorat changes
   useEffect(() => {
     if (value.gouvernorat && tunisiaData[value.gouvernorat]) {
-      const uniqueDelegations = Array.from(
-        new Set(tunisiaData[value.gouvernorat].map((item: any) => item.delegation))
-      );
-      setDelegations(uniqueDelegations);
+    const uniqueDelegations = Array.from(
+    new Set(tunisiaData[value.gouvernorat].map((item: any) => item.delegation))
+    ) as string[];
+    setDelegations(uniqueDelegations);
     } else {
-      setDelegations([]);
+    setDelegations([]);
     }
     setLocalites([]);
     onChange({ ...value, delegation: "", localite: "", codePostal: "" });
     // eslint-disable-next-line
-  }, [value.gouvernorat, tunisiaData]);
-
-  // Update localites when delegation changes
-  useEffect(() => {
+    }, [value.gouvernorat, tunisiaData]);
+    
+    // Update localites when delegation changes
+    useEffect(() => {
     if (
-      value.gouvernorat &&
-      value.delegation &&
-      tunisiaData[value.gouvernorat]
+    value.gouvernorat &&
+    value.delegation &&
+    tunisiaData[value.gouvernorat]
     ) {
-      const filtered = tunisiaData[value.gouvernorat].filter(
-        (item: any) => item.delegation === value.delegation
-      );
-      const uniqueLocalites = Array.from(
-        new Set(filtered.map((item: any) => item.localite))
-      );
-      setLocalites(uniqueLocalites);
+    const filtered = tunisiaData[value.gouvernorat].filter(
+    (item: any) => item.delegation === value.delegation
+    );
+    const uniqueLocalites = Array.from(
+    new Set(filtered.map((item: any) => item.localite))
+    ) as string[];
+    setLocalites(uniqueLocalites);
     } else {
-      setLocalites([]);
+    setLocalites([]);
     }
     onChange({ ...value, localite: "", codePostal: "" });
     // eslint-disable-next-line
-  }, [value.delegation]);
+    }, [value.delegation]);
 
   // Auto-fill code postal when localite changes
   useEffect(() => {
@@ -251,7 +251,7 @@ const Billing: React.FC<BillingProps> = ({ value, onChange }) => {
         </div>
         <div className="sm:col-span-2">
           <label className="block mb-2.5 text-[#000] font-medium">
-            Renseigne ta date d'anniversaire et gagne des points de fidélité chaque année (réservé aux clients enregistrés) ! (facultatif)
+            Renseigne ta date de anniversaire et gagne des points de fidélité chaque année (réservé aux clients enregistrés) ! (facultatif)
           </label>
           <input
             type="date"

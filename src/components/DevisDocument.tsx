@@ -20,10 +20,12 @@ function numberToFrenchWords(n: number): string {
 const DevisDocument = ({ order, printRef }) => {
   const cart = Array.isArray(order.cart) ? order.cart : [];
 
-  const totalHT = Number(order.prix_ht || 0);
-  // TVA is always 19% of totalHT (like Facture)
-  const totalTVA = totalHT * 0.19;
   const totalTTC = Number(order.prix_ttc || 0);
+const totalTimbre = order.timbre !== undefined ? Number(order.timbre) : 0.6;
+const baseTTC = totalTTC - totalTimbre;
+const totalHT = baseTTC / 1.19;
+const totalTVA = baseTTC - totalHT;
+
 
   const totalTTCInt = Math.floor(totalTTC);
   const totalTTCDec = Math.round((totalTTC - totalTTCInt) * 100);

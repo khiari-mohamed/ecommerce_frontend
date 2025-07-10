@@ -34,10 +34,12 @@ function getProductArray(order: any): any[] {
 
 const OrderInvoice = ({ order, printRef }) => {
   const cart = getProductArray(order);
-  const totalHT = Number(order.prix_ht || 0);
-  const totalTVA = totalHT * 0.19;
-  const totalTimbre = 1;
   const totalTTC = Number(order.prix_ttc || 0);
+const totalTimbre = order.timbre !== undefined ? Number(order.timbre) : 0.6;
+const baseTTC = totalTTC - totalTimbre;
+const totalHT = parseFloat((baseTTC / 1.19).toFixed(3));
+const totalTVA = parseFloat((baseTTC - totalHT).toFixed(3));
+
   const totalTTCInt = Math.floor(totalTTC);
   const totalTTCDec = Math.round((totalTTC - totalTTCInt) * 100);
   const totalTTCWords =

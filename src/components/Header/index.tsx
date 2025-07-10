@@ -12,6 +12,7 @@ import axios from "@/lib/axios";
 import { useRouter } from "next/navigation";
 
 interface Subcategory {
+  designation_fr: string;
   _id: string;
   slug: string;
   name: string;
@@ -25,6 +26,32 @@ interface Category {
   subcategories?: Subcategory[];
   designation: string;
 }
+// OldTopHeaderBand: Black band with left text and right social icons, desktop only
+const OldTopHeaderBand = () => (
+  <div className="hidden xl:flex w-full bg-[#222] h-[36px] items-center justify-between px-8 text-white text-sm font-medium z-[10000]">
+    <div className="flex-1 flex items-center">
+      Contactez-nous&nbsp;
+      <a href="tel:+21627612500" className="hover:text-[#0a58ca] underline">+216 27 612 500</a>
+      &nbsp;|&nbsp;
+      <a href="tel:+21673200169" className="hover:text-[#0a58ca] underline">+216 73 200 169</a>
+    </div>
+    <div className="flex-1 flex items-center justify-center">
+      <a
+        href="https://www.google.tn/maps/place/PROTEINE+TUNISIE+%E2%80%93+SOBITAS+%7C+Creatine,+Mat%C3%A9riel+de+Musculation+%26+Whey+%C3%A0+Sousse/@35.8363493,10.630565,17z/data=!3m1!4b1!4m6!3m5!1s0x1302131b30e891b1:0x51dae0f25849b20c!8m2!3d35.8363493!4d10.630565!16s%2Fg%2F11g4j5rl1d?hl=fr&entry=ttu&g_ep=EgoyMDI1MDcwNy4wIKXMDSoASAFQAw%3D%3D"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-1 hover:text-[#0a58ca]"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" className="inline-block mr-1"><path d="M12 2C7.031 2 3 6.031 3 11.001c0 5.25 7.125 10.575 7.426 10.792a1 1 0 0 0 1.148 0C13.875 21.576 21 16.251 21 11.001 21 6.031 16.969 2 12 2zm0 18.684C9.375 18.001 5 14.251 5 11.001 5 7.14 8.14 4 12 4s7 3.14 7 7.001c0 3.25-4.375 7-7 9.683z"/><path d="M12 6.5A4.505 4.505 0 0 0 7.5 11c0 2.481 2.019 4.5 4.5 4.5s4.5-2.019 4.5-4.5A4.505 4.505 0 0 0 12 6.5zm0 7A2.503 2.503 0 0 1 9.5 11c0-1.378 1.122-2.5 2.5-2.5s2.5 1.122 2.5 2.5A2.503 2.503 0 0 1 12 13.5z"/></svg>
+        Rue Ribat, 4000 Sousse Tunisie
+      </a>
+    </div>
+    <div className="flex-1 flex items-center justify-end">
+      Livraison gratuite à partir de 300 DT
+    </div>
+  </div>
+);
+
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -130,18 +157,20 @@ const Header = () => {
   };
 
   return (
-    <header
-      className="fixed left-0 top-0 w-full z-[9999] bg-white transition-all ease-in-out duration-300"
-      style={{
-        pointerEvents: hideTopHeader ? 'none' : (navigationOpen ? 'auto' : undefined),
-        height: hideTopHeader ? 0 : undefined,
-        minHeight: hideTopHeader ? 0 : undefined,
-        maxHeight: hideTopHeader ? 0 : undefined,
-        padding: hideTopHeader ? 0 : undefined,
-        overflow: hideTopHeader ? 'hidden' : undefined,
-        transition: 'height 0.3s, min-height 0.3s, max-height 0.3s, padding 0.3s, pointer-events 0.3s',
-      }}
-    >
+    <>
+      <header
+        className="fixed left-0 top-0 w-full z-[9999] bg-white transition-all ease-in-out duration-300"
+        style={{
+          pointerEvents: hideTopHeader ? 'none' : (navigationOpen ? 'auto' : undefined),
+          height: hideTopHeader ? 0 : undefined,
+          minHeight: hideTopHeader ? 0 : undefined,
+          maxHeight: hideTopHeader ? 0 : undefined,
+          padding: hideTopHeader ? 0 : undefined,
+          overflow: hideTopHeader ? 'hidden' : undefined,
+          transition: 'height 0.3s, min-height 0.3s, max-height 0.3s, padding 0.3s, pointer-events 0.3s',
+        }}
+      >
+        <OldTopHeaderBand />
       {/* Hamburger Mobile Menu (mobile only, must be outside main header row to avoid clipping) */}
       <div className={`fixed top-0 left-0 w-screen h-screen z-[99999] transition-opacity duration-300 ${navigationOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} xl:hidden overflow-y-auto`} style={{ background: navigationOpen ? 'rgba(0,0,0,0.95)' : 'transparent', display: navigationOpen ? 'block' : 'none' }}>
         <div className="relative min-h-screen w-full flex flex-col bg-white max-w-none" style={{ zIndex: 100000, minWidth: 0, maxWidth: '100vw', padding: 0 }}>
@@ -267,50 +296,54 @@ const Header = () => {
                 aria-expanded={showCategoryDropdownDesktop}
               >
                 {selectedCategory
-                  ? (categories.find(cat => cat.slug === selectedCategory)?.name || "Toutes catégories")
+                  ? (categories.find(cat => cat.slug === selectedCategory)?.designation_fr || categories.find(cat => cat.slug === selectedCategory)?.name || "Toutes catégories")
                   : "Toutes catégories"}
                 <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
               </button>
               {showCategoryDropdownDesktop && (
-                <ul className="absolute left-0 top-full w-full bg-white border border-gray-3 rounded-b shadow-lg max-h-60 overflow-y-auto z-[40000]"
-                  style={{
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
-                    overflow: 'visible',
-                  }}
-                  role="listbox"
-                >
-                  <li
-                    className={`px-4 py-2 cursor-pointer hover:bg-gray-2 ${!selectedCategory ? 'font-bold text-blue' : ''}`}
-                    onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); }}
-                    role="option"
-                    aria-selected={!selectedCategory}
-                  >
-                    Toutes catégories
-                  </li>
-                  {categories.map(cat => (
-                    <React.Fragment key={cat._id}>
-                      <li
-                        className={`px-4 py-2 cursor-pointer hover:bg-gray-2 font-medium ${selectedCategory === cat.slug ? 'text-blue font-bold' : ''}`}
-                        onClick={() => { setSelectedCategory(cat.slug); setShowCategoryDropdownDesktop(false); router.push(`/categories/${cat.slug}`); }}
-                        role="option"
-                        aria-selected={selectedCategory === cat.slug}
-                      >
-                       {cat.designation_fr || cat.designation}
-                      </li>
-                      {cat.subcategories && Array.isArray(cat.subcategories) && cat.subcategories.map(subcat => (
-                        <li
-                          key={subcat._id}
-                          className="pl-8 pr-4 py-2 cursor-pointer hover:bg-gray-1 text-sm text-gray-700"
-                          onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); router.push(`/subcategories/${subcat.slug}`); }}
+                <div className="absolute left-0 top-full w-[340px] bg-white border border-gray-3 rounded-b shadow-lg max-h-80 overflow-y-auto z-[40000]" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.10)', overflow: 'visible' }}>
+                  <ul role="listbox">
+                    <li
+                      className={`px-4 py-2 cursor-pointer hover:bg-gray-2 ${!selectedCategory ? 'font-bold text-blue' : ''}`}
+                      onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); }}
+                      role="option"
+                      aria-selected={!selectedCategory}
+                    >
+                      Toutes catégories
+                    </li>
+                    {categories.map(cat => (
+                      <li key={cat._id}>
+                        <div
+                          className={`px-4 py-2 cursor-pointer hover:bg-gray-2 font-medium flex items-center justify-between ${selectedCategory === cat.slug ? 'text-blue font-bold' : ''}`}
+                          onClick={() => { setSelectedCategory(cat.slug); setShowCategoryDropdownDesktop(false); router.push(`/categories/${cat.slug}`); }}
                           role="option"
-                          aria-selected={false}
+                          aria-selected={selectedCategory === cat.slug}
                         >
-                          {subcat.name}
-                        </li>
-                      ))}
-                    </React.Fragment>
-                  ))}
-                </ul>
+                          {cat.designation_fr || cat.name}
+                          {(cat.subcategories && cat.subcategories.length > 0) && (
+                            <svg className="ml-2 w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
+                          )}
+                        </div>
+                        {/* Subcategories */}
+                        {(cat.subcategories && cat.subcategories.length > 0) && (
+                          <ul className="pl-6">
+                            {cat.subcategories.map((subcat, idx) => (
+                              <li
+                                key={subcat._id || idx}
+                                className="pr-4 py-2 cursor-pointer hover:bg-gray-1 text-sm text-gray-700"
+                                onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); router.push(`/subcategories/${subcat.slug}`); }}
+                                role="option"
+                                aria-selected={false}
+                              >
+                                {subcat.designation_fr || subcat.name}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
             <input
@@ -431,6 +464,7 @@ const Header = () => {
         </div>
       </div>
     </header>
+    </>
   );
 };
 

@@ -22,7 +22,7 @@ const BestSeller = () => {
 
   return (
     <section className="overflow-hidden">
-      <div className="max-w-[1170px] w-full mx-auto px-2 sm:px-4 xl:px-0">
+      <div className="w-full mx-auto px-2 sm:px-4 pb-10 sm:pb-15 border-b border-gray-3">
         {/* <!-- section title --> */}
         <div className="mb-6 sm:mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="w-full sm:w-auto flex flex-col">

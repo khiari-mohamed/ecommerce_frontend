@@ -110,7 +110,7 @@ const Categories = () => {
 
   return (
     <section className="overflow-hidden pt-17.5">
-      <div className="max-w-[1170px] w-full mx-auto px-2 sm:px-4 xl:px-0 pb-10 sm:pb-15 border-b border-gray-3">
+      <div className="w-full mx-auto px-2 sm:px-4 pb-10 sm:pb-15 border-b border-gray-3">
         <div className="swiper categories-carousel common-carousel">
           <div className="mb-6 sm:mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
             <div>
@@ -215,6 +215,7 @@ const Categories = () => {
 
           <Swiper
             ref={sliderRef}
+            spaceBetween={32}
             slidesPerView={1}
             breakpoints={{
               0: { slidesPerView: 1 },
@@ -222,7 +223,9 @@ const Categories = () => {
               768: { slidesPerView: 3 },
               1024: { slidesPerView: 4 },
               1280: { slidesPerView: 6 },
+              1536: { slidesPerView: 6 },
             }}
+            style={{ width: "100%" }}
           >
             {categories.map((category) => (
               <SwiperSlide key={category._id}>

@@ -19,10 +19,10 @@ function FlashSaleCard({ product }: { product: any }) {
   };
 
   return (
-    <div className="w-full prod_border flex flex-col lg:flex-row bg-white shadow-sm hover:shadow-md">
+    <div className="w-full max-w-[920px] sm:max-w-[700px] prod_border flex flex-col lg:flex-row bg-white shadow-sm hover:shadow-md mx-auto">
       <div className="w-full relative">
         <Link href={`/product-details?id=${product.id}`}>
-          <div className="w-full aspect-square relative">
+          <div className="w-full aspect-square relative max-w-[260px] max-h-[260px] mx-auto">
             <Image
               fill
               alt={product.alt_cover || product.designation_fr}
@@ -31,6 +31,7 @@ function FlashSaleCard({ product }: { product: any }) {
                   ? storage + product.cover
                   : "/public/img/product/p1.webp"
               }
+              className="object-contain"
             />
           </div>
         </Link>
@@ -69,12 +70,12 @@ function FlashSaleCard({ product }: { product: any }) {
           <span className="text-primary font-semibold fontprix">{product.prix} DT</span>
         )}
 
-        <p className="text-black font-semibold">
-          dépêchez-vous! Les offres se terminent en :
-        </p>
-        
-        {/* Pass promo_expiration_date dynamically */}
-        <CountdownTimer endDate={product.promo_expiration_date} />
+        <div className="flex items-center flex-wrap">
+          <span className="text-black font-semibold mr-2">
+            dépêchez-vous! Les offres se terminent en :
+          </span>
+          <CountdownTimer endDate={product.promo_expiration_date} />
+        </div>
       </div>
     </div>
   );

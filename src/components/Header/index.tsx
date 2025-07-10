@@ -109,7 +109,8 @@ const Header = () => {
     async function fetchCategories() {
       try {
         const res = await axios.get("/categories?populate=subcategories");
-        setCategories(res.data.data || []);
+        setCategories(res.data || []);
+        console.log("CATEGORIES:", res.data.data);
       } catch (error) {
         setCategories([]);
       } finally {
@@ -301,49 +302,43 @@ const Header = () => {
                 <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
               </button>
               {showCategoryDropdownDesktop && (
-                <div className="absolute left-0 top-full w-[340px] bg-white border border-gray-3 rounded-b shadow-lg max-h-80 overflow-y-auto z-[40000]" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.10)', overflow: 'visible' }}>
-                  <ul role="listbox">
-                    <li
-                      className={`px-4 py-2 cursor-pointer hover:bg-gray-2 ${!selectedCategory ? 'font-bold text-blue' : ''}`}
-                      onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); }}
-                      role="option"
-                      aria-selected={!selectedCategory}
-                    >
-                      Toutes catégories
-                    </li>
-                    {categories.map(cat => (
-                      <li key={cat._id}>
-                        <div
-                          className={`px-4 py-2 cursor-pointer hover:bg-gray-2 font-medium flex items-center justify-between ${selectedCategory === cat.slug ? 'text-blue font-bold' : ''}`}
-                          onClick={() => { setSelectedCategory(cat.slug); setShowCategoryDropdownDesktop(false); router.push(`/categories/${cat.slug}`); }}
-                          role="option"
-                          aria-selected={selectedCategory === cat.slug}
-                        >
-                          {cat.designation_fr || cat.name}
-                          {(cat.subCategories && cat.subCategories.length > 0) && (
-                          <svg className="ml-2 w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
-                          )}
-                        </div>
-                        {/* Subcategories */}
-                        {(cat.subCategories && cat.subCategories.length > 0) && (
-                        <ul className="pl-6">
-                        {cat.subCategories.map((subcat, idx) => (
-                        <li
-                        key={subcat._id || idx}
-                        className="pr-4 py-2 cursor-pointer hover:bg-gray-1 text-sm text-gray-700"
-                        onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); router.push(`/subcategories/${subcat.slug}`); }}
-                        role="option"
-                        aria-selected={false}
-                        >
-                        {subcat.designation_fr || subcat.name}
-                        </li>
-                        ))}
-                        </ul>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="absolute left-0 top-full w-[340px] bg-white border border-gray-3 rounded-b shadow-lg max-h-80 overflow-y-auto z-[40000]" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.10)', overflow: 'auto' }}>
+              <ul role="listbox" className="max-h-80 overflow-y-auto">
+              <li
+              className={`px-4 py-2 cursor-pointer hover:bg-gray-2 ${!selectedCategory ? 'font-bold text-blue' : ''}`}
+              onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); }}
+              role="option"
+              aria-selected={!selectedCategory}
+              >
+              Toutes catégories
+              </li>
+              {categories.map(cat => (
+              <li key={cat._id} className="">
+              <div
+              className="px-4 pt-3 pb-1 font-bold text-base text-[#222]"
+              style={{ fontWeight: 700, fontSize: '1.08rem' }}
+              >
+              {cat.designation_fr || cat.name}
+              </div>
+              {cat.subCategories && cat.subCategories.length > 0 && (
+              <ul className="pl-6 pb-2">
+              {cat.subCategories.map((subcat, idx) => (
+              <li
+              key={subcat._id || idx}
+              className="pr-4 py-1 cursor-pointer hover:bg-gray-1 text-sm text-gray-700"
+              onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); router.push(`/subcategories/${subcat.slug}`); }}
+              role="option"
+              aria-selected={false}
+              >
+              {subcat.designation_fr || subcat.name}
+              </li>
+              ))}
+              </ul>
+              )}
+              </li>
+              ))}
+              </ul>
+              </div>
               )}
             </div>
             <input
@@ -436,27 +431,13 @@ const Header = () => {
           <div className={`w-[288px] absolute right-4 top-full xl:static xl:w-auto h-0 xl:h-auto invisible xl:visible xl:flex items-center justify-between header-mobile-nav`} style={{ zIndex: 12000, background: 'white', overflow: 'visible' }}>
             <nav>
               <ul className="flex xl:items-center flex-col xl:flex-row gap-5 xl:gap-6">
-                {loadingCategories ? (<li>Chargement...</li>) : (categories.map((category) => (
-                  <li key={category._id} className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full">
-                    <Link href={`/categories/${category.slug}`} className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center gap-1.5 capitalize ${stickyMenu ? "xl:py-4" : "xl:py-6"}`}>{category.designation_fr || category.designation}{category.subCategories && category.subCategories.length > 0 && (<svg className="fill-current cursor-pointer" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M2.95363 5.67461C3.13334 5.46495 3.44899 5.44067 3.65866 5.62038L7.99993 9.34147L12.3412 5.62038C12.5509 5.44067 12.8665 5.46495 13.0462 5.67461C13.2259 5.88428 13.2017 6.19993 12.992 6.37964L8.32532 10.3796C8.13808 10.5401 7.86178 10.5401 7.67453 10.3796L3.00787 6.37964C2.7982 6.19993 2.77392 5.88428 2.95363 5.67461Z" fill=""/></svg>)}</Link>
-                    {category.subCategories && category.subCategories.length > 0 && (
-                      <ul className="dropdown absolute left-0 top-full mt-2 bg-white shadow-lg rounded-md min-w-[180px] z-[10050] hidden group-hover:flex flex-col" style={{boxShadow: '0 8px 32px rgba(0,0,0,0.10)', overflow: 'visible'}}>
-                        {category.subCategories.map((subcat) => (
-                          <li key={subcat._id}>
-                            <Link href={`/subcategories/${subcat.slug}`} className="block px-4 py-2 text-custom-sm hover:text-blue hover:bg-gray-1">{subcat.designation_fr || subcat.name}</Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                )))}
-                {menuData.map((menuItem, i) => menuItem.submenu ? (
-                  <Dropdown key={`static-${i}`} menuItem={menuItem} stickyMenu={stickyMenu} />
-                ) : (
-                  <li key={`static-${i}`} className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full ">
-                    <Link href={menuItem.path} className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center ${stickyMenu ? "xl:py-4" : "xl:py-6"}`}>{menuItem.title}{menuItem.showBadge && (<span className="intense-flashing-badge text-xs px-1 py-0.5" style={{ fontSize: '0.65rem', position: 'relative', top: '-4px' }}>Limitée!</span>)}</Link>
-                  </li>
-                ))}
+              {menuData.map((menuItem, i) => menuItem.submenu ? (
+              <Dropdown key={`static-${i}`} menuItem={menuItem} stickyMenu={stickyMenu} />
+              ) : (
+              <li key={`static-${i}`} className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full ">
+              <Link href={menuItem.path} className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center ${stickyMenu ? "xl:py-4" : "xl:py-6"}`}>{menuItem.title}{menuItem.showBadge && (<span className="intense-flashing-badge text-xs px-1 py-0.5" style={{ fontSize: '0.65rem', position: 'relative', top: '-4px' }}>Limitée!</span>)}</Link>
+              </li>
+              ))}
               </ul>
             </nav>
           </div>

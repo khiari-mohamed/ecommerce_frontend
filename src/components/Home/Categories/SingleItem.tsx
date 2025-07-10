@@ -10,13 +10,13 @@ const SingleItem = ({ item }: { item: Category }) => {
       className="group flex flex-col items-center"
       passHref
     >
-      <div className="max-w-[130px] w-full bg-[#F2F3F8] h-32.5 rounded-full flex items-center justify-center mb-4 overflow-hidden">
+      <div className="w-[222px] h-[144px] bg-[#F2F3F8] rounded-lg flex items-center justify-center mb-4 overflow-hidden">
         {item.image?.url ? (
           <Image
             src={item.image.url}
             alt={item.designation}
-            width={82}
-            height={62}
+            width={222}
+            height={144}
             className="object-cover w-full h-full"
             unoptimized={process.env.NODE_ENV !== "production"}
           />

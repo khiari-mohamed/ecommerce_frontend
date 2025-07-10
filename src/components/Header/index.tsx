@@ -23,7 +23,7 @@ interface Category {
   _id: string;
   slug: string;
   name: string;
-  subcategories?: Subcategory[];
+  subCategories?: Subcategory[];
   designation: string;
 }
 // OldTopHeaderBand: Black band with left text and right social icons, desktop only
@@ -219,16 +219,16 @@ const Header = () => {
                         >
                           {cat.designation_fr || cat.designation}
                         </li>
-                        {cat.subcategories && Array.isArray(cat.subcategories) && cat.subcategories.map(subcat => (
-                          <li
-                            key={subcat._id}
-                            className="pl-8 pr-4 py-2 cursor-pointer hover:bg-gray-1 text-sm text-gray-700"
-                            onClick={() => { setSelectedCategory(""); setShowCategoryDropdownMobile(false); router.push(`/subcategories/${subcat.slug}`); }}
-                            role="option"
-                            aria-selected={false}
-                          >
-                            {subcat.name}
-                          </li>
+                        {cat.subCategories && Array.isArray(cat.subCategories) && cat.subCategories.map(subcat => (
+                        <li
+                        key={subcat._id}
+                        className="pl-8 pr-4 py-2 cursor-pointer hover:bg-gray-1 text-sm text-gray-700"
+                        onClick={() => { setSelectedCategory(""); setShowCategoryDropdownMobile(false); router.push(`/subcategories/${subcat.slug}`); }}
+                        role="option"
+                        aria-selected={false}
+                        >
+                        {subcat.designation_fr || subcat.name}
+                        </li>
                         ))}
                       </React.Fragment>
                     ))}
@@ -246,14 +246,14 @@ const Header = () => {
                 {loadingCategories ? (<li>Chargement...</li>) : (categories.map((category) => (
                   <li key={category._id} className="group relative">
                     <Link href={`/categories/${category.slug}`} className="hover:text-blue text-custom-sm font-medium text-dark flex items-center gap-1.5 capitalize" onClick={() => setNavigationOpen(false)}>{category.designation_fr || category.designation}</Link>
-                    {category.subcategories && category.subcategories.length > 0 && (
-                      <ul className="pl-4 mt-1">
-                        {category.subcategories.map((subcat) => (
-                          <li key={subcat._id}>
-                            <Link href={`/subcategories/${subcat.slug}`} className="block px-2 py-1 text-custom-sm hover:text-blue hover:bg-gray-1" onClick={() => setNavigationOpen(false)}>{subcat.name}</Link>
-                          </li>
-                        ))}
-                      </ul>
+                    {category.subCategories && category.subCategories.length > 0 && (
+                    <ul className="pl-4 mt-1">
+                    {category.subCategories.map((subcat) => (
+                    <li key={subcat._id}>
+                    <Link href={`/subcategories/${subcat.slug}`} className="block px-2 py-1 text-custom-sm hover:text-blue hover:bg-gray-1" onClick={() => setNavigationOpen(false)}>{subcat.designation_fr || subcat.name}</Link>
+                    </li>
+                    ))}
+                    </ul>
                     )}
                   </li>
                 )))}
@@ -320,25 +320,25 @@ const Header = () => {
                           aria-selected={selectedCategory === cat.slug}
                         >
                           {cat.designation_fr || cat.name}
-                          {(cat.subcategories && cat.subcategories.length > 0) && (
-                            <svg className="ml-2 w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
+                          {(cat.subCategories && cat.subCategories.length > 0) && (
+                          <svg className="ml-2 w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
                           )}
                         </div>
                         {/* Subcategories */}
-                        {(cat.subcategories && cat.subcategories.length > 0) && (
-                          <ul className="pl-6">
-                            {cat.subcategories.map((subcat, idx) => (
-                              <li
-                                key={subcat._id || idx}
-                                className="pr-4 py-2 cursor-pointer hover:bg-gray-1 text-sm text-gray-700"
-                                onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); router.push(`/subcategories/${subcat.slug}`); }}
-                                role="option"
-                                aria-selected={false}
-                              >
-                                {subcat.designation_fr || subcat.name}
-                              </li>
-                            ))}
-                          </ul>
+                        {(cat.subCategories && cat.subCategories.length > 0) && (
+                        <ul className="pl-6">
+                        {cat.subCategories.map((subcat, idx) => (
+                        <li
+                        key={subcat._id || idx}
+                        className="pr-4 py-2 cursor-pointer hover:bg-gray-1 text-sm text-gray-700"
+                        onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); router.push(`/subcategories/${subcat.slug}`); }}
+                        role="option"
+                        aria-selected={false}
+                        >
+                        {subcat.designation_fr || subcat.name}
+                        </li>
+                        ))}
+                        </ul>
                         )}
                       </li>
                     ))}
@@ -438,12 +438,12 @@ const Header = () => {
               <ul className="flex xl:items-center flex-col xl:flex-row gap-5 xl:gap-6">
                 {loadingCategories ? (<li>Chargement...</li>) : (categories.map((category) => (
                   <li key={category._id} className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full">
-                    <Link href={`/categories/${category.slug}`} className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center gap-1.5 capitalize ${stickyMenu ? "xl:py-4" : "xl:py-6"}`}>{category.designation_fr || category.designation}{category.subcategories && category.subcategories.length > 0 && (<svg className="fill-current cursor-pointer" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M2.95363 5.67461C3.13334 5.46495 3.44899 5.44067 3.65866 5.62038L7.99993 9.34147L12.3412 5.62038C12.5509 5.44067 12.8665 5.46495 13.0462 5.67461C13.2259 5.88428 13.2017 6.19993 12.992 6.37964L8.32532 10.3796C8.13808 10.5401 7.86178 10.5401 7.67453 10.3796L3.00787 6.37964C2.7982 6.19993 2.77392 5.88428 2.95363 5.67461Z" fill=""/></svg>)}</Link>
-                    {category.subcategories && category.subcategories.length > 0 && (
+                    <Link href={`/categories/${category.slug}`} className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center gap-1.5 capitalize ${stickyMenu ? "xl:py-4" : "xl:py-6"}`}>{category.designation_fr || category.designation}{category.subCategories && category.subCategories.length > 0 && (<svg className="fill-current cursor-pointer" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M2.95363 5.67461C3.13334 5.46495 3.44899 5.44067 3.65866 5.62038L7.99993 9.34147L12.3412 5.62038C12.5509 5.44067 12.8665 5.46495 13.0462 5.67461C13.2259 5.88428 13.2017 6.19993 12.992 6.37964L8.32532 10.3796C8.13808 10.5401 7.86178 10.5401 7.67453 10.3796L3.00787 6.37964C2.7982 6.19993 2.77392 5.88428 2.95363 5.67461Z" fill=""/></svg>)}</Link>
+                    {category.subCategories && category.subCategories.length > 0 && (
                       <ul className="dropdown absolute left-0 top-full mt-2 bg-white shadow-lg rounded-md min-w-[180px] z-[10050] hidden group-hover:flex flex-col" style={{boxShadow: '0 8px 32px rgba(0,0,0,0.10)', overflow: 'visible'}}>
-                        {category.subcategories.map((subcat) => (
+                        {category.subCategories.map((subcat) => (
                           <li key={subcat._id}>
-                            <Link href={`/subcategories/${subcat.slug}`} className="block px-4 py-2 text-custom-sm hover:text-blue hover:bg-gray-1">{subcat.name}</Link>
+                            <Link href={`/subcategories/${subcat.slug}`} className="block px-4 py-2 text-custom-sm hover:text-blue hover:bg-gray-1">{subcat.designation_fr || subcat.name}</Link>
                           </li>
                         ))}
                       </ul>

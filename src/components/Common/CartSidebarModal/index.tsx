@@ -37,15 +37,16 @@ const CartSidebarModal = () => {
 
   return (
     <div
-    className={`fixed top-0 left-0 z-99999 overflow-y-auto no-scrollbar w-full h-screen bg-dark/70 ease-linear duration-300 ${
-    isCartModalOpen ? "translate-x-0" : "translate-x-full"
-    }`}
+      className={`fixed top-0 left-0 z-99999 overflow-y-auto no-scrollbar w-full h-screen bg-dark/70 ease-linear duration-300 ${
+        isCartModalOpen ? "translate-x-0" : "translate-x-full"
+      }`}
     >
-    <div className="flex items-center justify-end">
-    <div className="w-full max-w-[500px] shadow-1 bg-white px-4 sm:px-7.5 lg:px-11 relative modal-content z-50 max-h-screen">
-    <div className="sticky top-0 bg-white flex items-center justify-between pb-7 pt-4 sm:pt-7.5 lg:pt-11 border-b border-gray-3 mb-7.5">
+      <div className="flex items-center justify-end">
+        {/* Make modal-content scrollable */}
+        <div className="w-full max-w-[500px] shadow-1 bg-white px-4 sm:px-7.5 lg:px-11 relative modal-content z-50 max-h-screen overflow-y-auto h-screen flex flex-col">
+          <div className="sticky top-0 bg-white flex items-center justify-between pb-7 pt-4 sm:pt-7.5 lg:pt-11 border-b border-gray-3 mb-7.5">
             <h2 className="font-medium text-dark text-lg sm:text-2xl">
-            Voir le panier
+              Voir le panier
             </h2>
             <button
               onClick={() => closeCartModal()}
@@ -74,51 +75,48 @@ const CartSidebarModal = () => {
             </button>
           </div>
 
-          <div className="h-[66vh] overflow-y-auto no-scrollbar">
-            <div className="flex flex-col gap-6">
-              {/* <!-- cart item --> */}
-              {cartItems.length > 0 ? (
-                cartItems.map((item, key) => (
-                  <SingleItem
-                    key={key}
-                    item={item}
-                    removeItemFromCart={removeItemFromCart}
-                  />
-                ))
-              ) : (
-                <EmptyCart />
-              )}
-            </div>
+          {/* Remove overflow-y-auto and h-[66vh] from here */}
+          <div className="flex flex-col gap-6">
+            {/* <!-- cart item --> */}
+            {cartItems.length > 0 ? (
+              cartItems.map((item, key) => (
+                <SingleItem
+                  key={key}
+                  item={item}
+                  removeItemFromCart={removeItemFromCart}
+                />
+              ))
+            ) : (
+              <EmptyCart />
+            )}
           </div>
 
-          <div className="border-t border-gray-3 bg-white pt-5 pb-4 sm:pb-7.5 lg:pb-11 mt-7.5
-  sticky bottom-0 z-50
-  max-[480px]:static max-[480px]:pt-3 max-[480px]:pb-3 max-[480px]:mt-3">
-          <div className="flex items-center justify-between gap-5 mb-6">
-          <p className="font-medium text-xl text-dark">total:</p>
-          
-          <p className="font-medium text-xl text-dark">
-          {Number(totalPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
-          </p>
-          </div>
-          
-          <div className="flex items-center gap-4 max-[480px]:flex-col max-[480px]:gap-2">
-          <Link
-          onClick={() => closeCartModal()}
-          href="/cart"
-          className="w-full flex justify-center font-medium text-white bg-blue py-[13px] px-6 rounded-md ease-out duration-200 hover:bg-blue-dark"
-          >
-          Voir le panier
-          </Link>
-          
-          <Link
-          onClick={() => closeCartModal()}
-          href="/checkout"
-          className="w-full flex justify-center font-medium text-white bg-dark py-[13px] px-6 rounded-md ease-out duration-200 hover:bg-opacity-95"
-          >
-          Vérifier
-          </Link>
-          </div>
+          <div className="border-t border-gray-3 bg-white pt-5 pb-4 sm:pb-7.5 lg:pb-11 mt-7.5 max-[480px]:pt-3 max-[480px]:pb-3 max-[480px]:mt-3">
+            <div className="flex items-center justify-between gap-5 mb-6">
+              <p className="font-medium text-xl text-dark">total:</p>
+              <p className="font-medium text-xl text-dark">
+                {Number(totalPrice).toLocaleString("fr-TN", {
+                  style: "currency",
+                  currency: "TND",
+                })}
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 w-full">
+              <Link
+                onClick={() => closeCartModal()}
+                href="/cart"
+                className="w-full flex justify-center font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark text-base sm:text-lg"
+              >
+                Voir le panier
+              </Link>
+              <Link
+                onClick={() => closeCartModal()}
+                href="/checkout"
+                className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-md ease-out duration-200 hover:bg-opacity-95 text-base sm:text-lg"
+              >
+                Vérifier
+              </Link>
+            </div>
           </div>
         </div>
       </div>

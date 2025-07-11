@@ -24,6 +24,7 @@ const SingleItem = ({ item }: { item: Product }) => {
     dispatch(
       addItemToCart({
         ...item,
+        id: typeof item._id === "string" ? Number(item._id) : item._id ?? item.id,
         quantity: 1,
         image: imageSrc
       })

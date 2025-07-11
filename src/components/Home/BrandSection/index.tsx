@@ -41,37 +41,42 @@ const BrandSection: React.FC = () => {
   };
 
   return (
-    <section className="py-10 bg-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-bold mb-6 text-center">Nos Marques</h2>
+    <section className="py-8 sm:py-10 bg-white w-full">
+      <div className="max-w-7xl w-full mx-auto px-2 sm:px-4 md:px-8 xl:px-0">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-center">Nos Marques</h2>
         <Swiper
           slidesPerView={2}
-          spaceBetween={12}
+          spaceBetween={8}
           freeMode={true}
           navigation={true}
           autoplay={{ delay: 2000, disableOnInteraction: false }}
           modules={[FreeMode, Navigation, Autoplay]}
           className="brand-swiper"
           breakpoints={{
-            0: { slidesPerView: 2 },
-            480: { slidesPerView: 3 },
-            768: { slidesPerView: 4 },
-            1024: { slidesPerView: 6 },
+            0: { slidesPerView: 2, spaceBetween: 8 },
+            320: { slidesPerView: 2.2, spaceBetween: 8 },
+            375: { slidesPerView: 2.5, spaceBetween: 8 },
+            425: { slidesPerView: 3, spaceBetween: 10 },
+            480: { slidesPerView: 3.2, spaceBetween: 10 },
+            640: { slidesPerView: 4, spaceBetween: 12 },
+            768: { slidesPerView: 5, spaceBetween: 14 },
+            1024: { slidesPerView: 6, spaceBetween: 16 },
+            1280: { slidesPerView: 7, spaceBetween: 18 },
           }}
         >
           {brands.map((brand) => (
             <SwiperSlide key={brand.id}>
               <div
-                className="cursor-pointer flex items-center justify-center p-2 sm:p-4 transition hover:scale-105"
+                className="cursor-pointer flex items-center justify-center p-2 sm:p-3 md:p-4 transition hover:scale-105 h-16 sm:h-20 md:h-24"
                 onClick={() => handleBrandClick(brand)}
                 title={brand.name}
               >
                 <Image
                   src={brand.image}
                   alt={brand.name}
-                  width={120}
-                  height={64}
-                  className="h-10 sm:h-16 object-contain grayscale hover:grayscale-0 transition"
+                  width={100}
+                  height={48}
+                  className="object-contain w-full h-full max-h-12 sm:max-h-16 md:max-h-20"
                   loading="lazy"
                 />
               </div>

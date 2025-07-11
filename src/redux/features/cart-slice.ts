@@ -17,16 +17,23 @@ type CartItem = {
   };
   type?: string;
   image: string; 
-  cover?: string; // <-- Add this
-  mainImage?: { url: string }; // <-- Add this
-  images?: { url: string }[];  // <-- Add this
-  designation_fr?: string;     // <-- Optional, for display
-  designation?: string;  
-  // <-- Add this line for the main image used in cart
+  cover?: string;
+  mainImage?: { url: string };
+  images?: { url: string }[];
+  designation_fr?: string;
+  designation?: string;
 };
 
+function loadCartItems(): CartItem[] {
+  if (typeof window !== "undefined") {
+    const data = localStorage.getItem("cartItems");
+    if (data) return JSON.parse(data);
+  }
+  return [];
+}
+
 const initialState: InitialState = {
-  items: [],
+  items: loadCartItems(),
 };
 
 export const cart = createSlice({
@@ -34,33 +41,38 @@ export const cart = createSlice({
   initialState,
   reducers: {
     addItemToCart: (state, action: PayloadAction<CartItem>) => {
-    const { id, title, price, quantity, discountedPrice, imgs, type, image } =
-    action.payload;
-    const existingItem = state.items.find((item) => item.id === id);
-    
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      state.items.push({
-        id,
-        title,
-        price,
-        quantity,
-        discountedPrice,
-        imgs,
-        type,
-        image,
-        cover: action.payload.cover,           // <-- Add this line
-        mainImage: action.payload.mainImage,   // <-- Add this line
-        images: action.payload.images,         // <-- Add this line
-        designation_fr: action.payload.designation_fr, // (optional, for display)
-        designation: action.payload.designation,       // (optional, for display)
-      });
-    }
+      const { id, title, price, quantity, discountedPrice, imgs, type, image } = action.payload;
+      const existingItem = state.items.find((item) => item.id === id);
+
+      if (existingItem) {
+        existingItem.quantity += quantity;
+      } else {
+        state.items.push({
+          id,
+          title,
+          price,
+          quantity,
+          discountedPrice,
+          imgs,
+          type,
+          image,
+          cover: action.payload.cover,
+          mainImage: action.payload.mainImage,
+          images: action.payload.images,
+          designation_fr: action.payload.designation_fr,
+          designation: action.payload.designation,
+        });
+      }
+      if (typeof window !== "undefined") {
+        localStorage.setItem("cartItems", JSON.stringify(state.items));
+      }
     },
     removeItemFromCart: (state, action: PayloadAction<number>) => {
       const itemId = action.payload;
       state.items = state.items.filter((item) => item.id !== itemId);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("cartItems", JSON.stringify(state.items));
+      }
     },
     updateCartItemQuantity: (
       state,
@@ -72,10 +84,16 @@ export const cart = createSlice({
       if (existingItem) {
         existingItem.quantity = quantity;
       }
+      if (typeof window !== "undefined") {
+        localStorage.setItem("cartItems", JSON.stringify(state.items));
+      }
     },
 
     removeAllItemsFromCart: (state) => {
       state.items = [];
+      if (typeof window !== "undefined") {
+        localStorage.setItem("cartItems", JSON.stringify(state.items));
+      }
     },
   },
 });

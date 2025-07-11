@@ -91,10 +91,14 @@ const Testimonials = () => {
                 autoplay={{ delay: 2500, disableOnInteraction: false }}
                 modules={[Autoplay]}
                 direction="horizontal"
+                loop={false}
                 style={{ width: '100%' }}
                 breakpoints={{
                   0: {
                     slidesPerView: 1,
+                  },
+                  480: {
+                    slidesPerView: 1.1,
                   },
                   600: {
                     slidesPerView: 1.2,
@@ -109,9 +113,10 @@ const Testimonials = () => {
                     slidesPerView: 4,
                   },
                 }}
+                className="!pb-8 md:!pb-10"
               >
                 {testimonials.map((item, key) => (
-                  <SwiperSlide key={key} style={{ display: 'flex', height: '100%' }}>
+                  <SwiperSlide key={key} style={{ display: 'flex', height: '100%', minWidth: 0 }}>
                     <SingleItem testimonial={item} />
                   </SwiperSlide>
                 ))}

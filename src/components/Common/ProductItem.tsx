@@ -231,13 +231,12 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
             width={14}
             height={14}
           />
+          <span className="text-custom-sm ml-1">
+            {`(${(item.reviews?.length && item.reviews.length > 0)
+              ? item.reviews.length
+              : getFakeReviewCount(item._id || item.id)})`}
+          </span>
         </div>
-
-        <p className="text-custom-sm">
-  {(item.reviews?.length && item.reviews.length > 0)
-    ? item.reviews.length
-    : getFakeReviewCount(item._id || item.id)}
-</p>
       </div>
 
       <h3

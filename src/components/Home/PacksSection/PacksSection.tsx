@@ -2,10 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchAllPacks } from "@/services/pack";
 import { Pack } from "@/types/pack";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
-import { Navigation, Pagination } from "swiper/modules";
 import Image from 'next/image';
 
 const fallbackImages = [
@@ -48,43 +44,30 @@ const PacksSection: React.FC = () => {
   };
 
   return (
-    <section className="packs-section my-12">
-      <div className="container px-2 sm:px-4 lg:px-0">
-        <h2 className="text-3xl font-extrabold mb-8 text-center gradient-text">Nos Packs Exclusifs</h2>
-        <Swiper
-        modules={[Navigation, Pagination]}
-        spaceBetween={24}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: true, el: '.packs-swiper-pagination' }}
-        breakpoints={{
-        0: { slidesPerView: 1 },
-        480: { slidesPerView: 1 },
-        640: { slidesPerView: 2 },
-        900: { slidesPerView: 3 },
-        1200: { slidesPerView: 4 },
-        }}
-        className="pb-12"
-        >
+    <section className="overflow-hidden py-20 bg-gray-2">
+      <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-8 xl:px-0">
+        <h2 className="text-2xl sm:text-3xl font-bold text-dark mb-10 text-center gradient-text">Nos Packs Exclusifs</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-10">
           {packs.map((pack, idx) => (
-            <SwiperSlide key={pack._id}>
-              <div className="bg-white rounded-xl shadow-xl p-4 sm:p-6 flex flex-col items-center transition-transform hover:scale-105 hover:shadow-2xl duration-300 w-full max-w-xs mx-auto">
-                <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 relative mb-4 overflow-hidden rounded-lg border-4 border-orange-100 bg-gray-100">
-                  <Image
-                    src={getImageSrc(pack, idx)}
-                    alt={pack.alt_cover || pack.designation_fr || `Pack ${idx + 1}`}
-                    fill
-                    className="object-cover"
-                    priority={idx < 4}
-                    loading={idx < 4 ? 'eager' : 'lazy'}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1200px) 25vw, 192px"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = fallbackImages[idx % fallbackImages.length];
-                      target.onerror = null;
-                    }}
-                  />
-                </div>
+            <div key={pack._id} className="bg-white rounded-xl shadow-xl flex flex-col items-center transition-transform hover:scale-105 hover:shadow-2xl duration-300 w-full h-full">
+              <div className="relative w-full aspect-[4/3] overflow-hidden rounded-xl mb-4 bg-gray-100">
+                <Image
+                  src={getImageSrc(pack, idx)}
+                  alt={pack.alt_cover || pack.designation_fr || `Pack ${idx + 1}`}
+                  fill
+                  className="object-cover"
+                  priority={idx < 4}
+                  loading={idx < 4 ? 'eager' : 'lazy'}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1200px) 25vw, 340px"
+                  style={{ objectFit: "cover" }}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = fallbackImages[idx % fallbackImages.length];
+                    target.onerror = null;
+                  }}
+                />
+              </div>
+              <div className="p-4 w-full flex flex-col items-center">
                 <h3 className="text-lg sm:text-xl font-bold mb-2 text-center">{pack.designation_fr}</h3>
                 <div className="text-primary text-base sm:text-xl font-semibold mb-1">
                   {pack.promo ? (
@@ -104,38 +87,18 @@ const PacksSection: React.FC = () => {
                   Voir le pack
                 </a>
               </div>
-            </SwiperSlide>
+            </div>
           ))}
-        </Swiper>
-      {/* Swiper Pagination Dots */}
-      <div className="packs-swiper-pagination flex justify-center mt-4 sm:mt-6" />
+        </div>
       </div>
       <style jsx>{`
-      .gradient-text {
-      background: linear-gradient(90deg, #ff8a00, #e52e71);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      }
+        .gradient-text {
+          background: linear-gradient(90deg, #ff8a00, #e52e71);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
       `}</style>
-      <style global jsx>{`
-      .swiper-button-next,
-      .swiper-button-prev {
-      color: #FF4301;
-      }
-      .swiper-pagination-bullet-active {
-      background: #FF4301;
-      }
-      .packs-swiper-pagination {
-      min-height: 32px;
-      }
-      @media (max-width: 640px) {
-      .packs-swiper-pagination {
-      margin-top: 18px !important;
-      margin-bottom: 0 !important;
-      }
-      }
-      `}</style>
-      </section>
+    </section>
   );
 };
 

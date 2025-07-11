@@ -82,7 +82,15 @@ const HeroCarousal = () => {
       </div>
 
       {/* Mobile Swiper - only shows on mobile */}
-      <div className="block sm:hidden w-full">
+      <div
+        className="block sm:hidden w-full"
+        style={{
+          minHeight: "100vh",
+          height: "100vh",
+          boxSizing: "border-box",
+          background: "var(--background)",
+        }}
+      >
         <Swiper
           spaceBetween={30}
           centeredSlides={true}
@@ -97,36 +105,33 @@ const HeroCarousal = () => {
           className="hero-carousel"
         >
           <SwiperSlide>
-            <div className="relative w-full h-[90vh] max-h-screen">
-              <div className="absolute inset-0">
-                <img
-                  src="/images/hero/slides/1m.webp"
-                  alt="slide 1 mobile"
-                  className="object-cover w-full h-full"
-                />
-              </div>
+            <div className="relative w-full h-full">
+              <img
+                src="/images/hero/slides/1m.webp"
+                alt="slide 1 mobile"
+                className="object-cover w-full h-full"
+                style={{ minHeight: "100vh", height: "100vh" }}
+              />
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="relative w-full h-[90vh] max-h-screen">
-              <div className="absolute inset-0">
-                <img
-                  src="/images/hero/slides/2m.webp"
-                  alt="slide 2 mobile"
-                  className="object-cover w-full h-full"
-                />
-              </div>
+            <div className="relative w-full h-full">
+              <img
+                src="/images/hero/slides/2m.webp"
+                alt="slide 2 mobile"
+                className="object-cover w-full h-full"
+                style={{ minHeight: "100vh", height: "100vh" }}
+              />
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="relative w-full h-[90vh] max-h-screen">
-              <div className="absolute inset-0">
-                <img
-                  src="/images/hero/slides/4m.webp"
-                  alt="slide 4 mobile"
-                  className="object-cover w-full h-full"
-                />
-              </div>
+            <div className="relative w-full h-full">
+              <img
+                src="/images/hero/slides/4m.webp"
+                alt="slide 4 mobile"
+                className="object-cover w-full h-full"
+                style={{ minHeight: "100vh", height: "100vh" }}
+              />
             </div>
           </SwiperSlide>
         </Swiper>

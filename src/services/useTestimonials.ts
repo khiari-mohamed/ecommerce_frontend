@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Testimonial } from "@/types/testimonial";
 import testimonialsData from "./../components/Home/Testimonials/testimonialsData";
@@ -33,38 +32,26 @@ export function useTestimonials() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/reviews?publishedOnly=true`);
         if (!res.ok) throw new Error("Network error");
-        const data: ReviewApiResponse[] = await res.json();
+        const data = await res.json();
 
-        // Filter out reviews with null/empty comment
-        const filtered = data.filter((t) => t.comment && t.comment.trim() !== "");
-
-        // If there are reviews, map each to a random static author
         let mapped: Testimonial[] = [];
-        if (filtered.length > 0) {
-          // Shuffle static data to randomize author assignment
-          const shuffledAuthors = shuffleArray(testimonialsData);
-
-          mapped = filtered.map((review, idx) => {
-            // Cycle through shuffledAuthors if there are more reviews than authors
-            const author = shuffledAuthors[idx % shuffledAuthors.length];
-            return {
-              review: review.comment!,
-              authorName: author.authorName,
-              authorRole: author.authorRole,
-              authorImg: author.authorImg,
-            };
-          });
-
-          // Shuffle the mapped testimonials for random display order
-          mapped = shuffleArray(mapped);
+        if (Array.isArray(data) && data.length > 0) {
+          mapped = data
+            .filter((t: any) => t.comment && t.comment.trim() !== "") // Only reviews with comments
+            .map((review: any) => ({
+              review: review.comment,
+              authorName: review.user?.name || "Utilisateur",
+              authorRole: review.user?.role || "",
+              authorImg: review.user?.avatar || "",
+              stars: review.stars || "5",
+            }));
         }
 
         if (isMounted) {
-          setTestimonials(mapped.length > 0 ? mapped : shuffleArray(testimonialsData));
+          setTestimonials(mapped);
         }
       } catch (e) {
-        // Fallback to shuffled static data
-        if (isMounted) setTestimonials(shuffleArray(testimonialsData));
+        if (isMounted) setTestimonials([]);
       } finally {
         if (isMounted) setLoading(false);
       }

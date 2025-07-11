@@ -56,35 +56,35 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ endDate }) => {
     <div className="flex space-x-2 items-center max-w-full">
       <div className="flex -mx-4 px-1 flex-wrap gap-y-1">
         <div className="px-1">
-          <div className="bg-white prod_border w-12 h-12 sm:w-[60px] sm:h-[60px] flex items-center justify-center flex-col">
-            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-3 sm:py-1 rounded text-lg sm:text-xl tracking-wide shadow-md">
+          <div className="bg-white prod_border w-14 h-14 sm:w-[72px] sm:h-[72px] flex items-center justify-center flex-col">
+            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-4 sm:py-2 rounded text-xl sm:text-2xl tracking-wide shadow-md">
               {timeLeft.jours}
             </p>
-            <span className="uppercase text-[9px] sm:text-[10px]">jours</span>
+            <span className="uppercase text-[10px] sm:text-[12px]">jours</span>
           </div>
         </div>
         <div className="px-1">
-          <div className="bg-white prod_border w-12 h-12 sm:w-[60px] sm:h-[60px] flex items-center justify-center flex-col">
-            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-3 sm:py-1 rounded text-lg sm:text-xl tracking-wide shadow-md">
+          <div className="bg-white prod_border w-14 h-14 sm:w-[72px] sm:h-[72px] flex items-center justify-center flex-col">
+            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-4 sm:py-2 rounded text-xl sm:text-2xl tracking-wide shadow-md">
               {timeLeft.heures}
             </p>
-            <span className="uppercase text-[9px] sm:text-[10px]">heures</span>
+            <span className="uppercase text-[10px] sm:text-[12px]">heures</span>
           </div>
         </div>
         <div className="px-1">
-          <div className="bg-white prod_border w-12 h-12 sm:w-[60px] sm:h-[60px] flex items-center justify-center flex-col">
-            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-3 sm:py-1 rounded text-lg sm:text-xl tracking-wide shadow-md">
+          <div className="bg-white prod_border w-14 h-14 sm:w-[72px] sm:h-[72px] flex items-center justify-center flex-col">
+            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-4 sm:py-2 rounded text-xl sm:text-2xl tracking-wide shadow-md">
               {timeLeft.mins}
             </p>
-            <span className="uppercase text-[9px] sm:text-[10px]">mins</span>
+            <span className="uppercase text-[10px] sm:text-[12px]">mins</span>
           </div>
         </div>
         <div className="px-1">
-          <div className="bg-white prod_border w-12 h-12 sm:w-[60px] sm:h-[60px] flex items-center justify-center flex-col">
-            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-3 sm:py-1 rounded text-lg sm:text-xl tracking-wide shadow-md">
+          <div className="bg-white prod_border w-14 h-14 sm:w-[72px] sm:h-[72px] flex items-center justify-center flex-col">
+            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-4 sm:py-2 rounded text-xl sm:text-2xl tracking-wide shadow-md">
               {timeLeft.secs}
             </p>
-            <span className="uppercase text-[9px] sm:text-[10px]">secs</span>
+            <span className="uppercase text-[10px] sm:text-[12px]">secs</span>
           </div>
         </div>
       </div>

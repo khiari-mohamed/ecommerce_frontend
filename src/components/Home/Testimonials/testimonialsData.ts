@@ -47,60 +47,7 @@ const testimonialsData: Testimonial[] = [
     authorImg: "/images/users/user-01.jpg",
     authorRole: "Coach Sportif",
   },
-  {
-    review: `chrit Whey menhòm el goût zèina barcha paiement sécurisé w livraison fi 2 jours.`,
-    authorName: "Wilson Dias",
-    authorImg: "/images/users/user-02.jpg",
-    authorRole: "Backend Developer",
-  },
-  {
-    review: `N’heb l’site haka, 3andkom kol chay: pre-workout, BCAA, protéine… même snacks`,
-    authorName: "Miracle Exterm",
-    authorImg: "/images/users/user-03.jpg",
-    authorRole: "Serial Entrepreneur",
-  },
-  {
-    review: `prix mta3kom compétitif barcha par rapport l’marché, w qualité meilleure. Bravo!`,
-    authorName: "Ahmed Ben 3isa",
-    authorImg: "/images/users/user-04.jpg",
-    authorRole: "Nutrition Enthusiast",
-  },
-  {
-    review: `qualite tayara w livrasion rappide basara7a`,
-    authorName: "Gymgirl",
-    authorImg: "/images/users/user-05.jpg",
-    authorRole: "Entrepreneur",
-  },
-  {
-    review: `Service client très réactif, je recommande!`,
-    authorName: "Sonia Messaoud",
-    authorImg: "/images/users/user-06.jpg",
-    authorRole: "Fitness Blogger",
-  },
-  {
-    review: `Livraison rapide et produits bien emballés.`,
-    authorName: "Karim Jaziri",
-    authorImg: "/images/users/user-07.jpg",
-    authorRole: "Personal Trainer",
-  },
-  {
-    review: `J'ai adoré la variété des produits proposés.`,
-    authorName: "Fatma Ben Romdhane",
-    authorImg: "/images/users/user-08.jpg",
-    authorRole: "Yoga Instructor",
-  },
-  {
-    review: `Site fiable, paiement sécurisé, rien à dire.`,
-    authorName: "Youssef Trabelsi",
-    authorImg: "/images/users/user-09.jpg",
-    authorRole: "Crossfit Coach",
-  },
-  {
-    review: `Merci pour les conseils nutritionnels personnalisés!`,
-    authorName: "Leila Chikhaoui",
-    authorImg: "/images/users/user-10.jpg",
-    authorRole: "Dietitian",
-  },
+
   // Add more testimonials as needed...
 ];
 

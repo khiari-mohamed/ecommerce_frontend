@@ -5,9 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import Star from "./stars";
 import CountdownTimer from "./flasSaleCounter";
+import ReviewForm from "../ProductDetails/ReviewForm";
 
 function FlashSaleCard({ product }: { product: any }) {
   const [rating, setRating] = useState(0); // Always start with no stars selected
+  const [showReview, setShowReview] = useState(false);
   const productPromoPercentage = Math.ceil(
     ((product.prix - product.promo) / product.prix) * 100
   );
@@ -15,7 +17,7 @@ function FlashSaleCard({ product }: { product: any }) {
   // Function to handle star click
   const handleStarClick = (newRating: number) => {
     setRating(newRating);
-    // You could send this rating to your backend or update it in the store if needed
+    setShowReview(true);
   };
 
   return (
@@ -81,6 +83,20 @@ function FlashSaleCard({ product }: { product: any }) {
           <CountdownTimer endDate={product.promo_expiration_date} />
         </div>
       </div>
+      {showReview && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-lg shadow-lg max-w-full w-[95vw] sm:w-[400px] p-4 relative">
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-xl font-bold"
+              onClick={() => setShowReview(false)}
+              aria-label="Fermer"
+            >
+              ×
+            </button>
+            <ReviewForm productId={String(product.id || product._id || "")}/>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

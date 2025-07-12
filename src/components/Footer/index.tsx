@@ -234,24 +234,30 @@ function Footer() {
               </li>
             </ul>
             <h4 className="font-bold mb-4 mt-6">TÉLÉCHARGER NOTRE APPLICATION</h4>
-            <div className="flex flex-col sm:flex-row gap-3 mb-4">
-              <Link href={coordonnees.playstore_link} target="_blank">
-                <Image
-                  src="/img/icon/appstore-336-119.webp"
-                  width={150}
-                  height={50}
-                  alt="Disponible sur Google Play"
-                  className="mb-2 sm:mb-0 rounded shadow"
-                />
+            <div className="flex flex-row gap-3 mb-4 items-center justify-center">
+              <Link href={coordonnees.playstore_link} target="_blank" className="flex items-center">
+                <div style={{ width: '160px', height: '62px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Image
+                    src="/img/icon/appstore-336-119.webp"
+                    width={160}
+                    height={62}
+                    alt="Disponible sur Google Play"
+                    className="rounded shadow object-contain"
+                    style={{ width: '160px', height: '62px', objectFit: 'contain' }}
+                  />
+                </div>
               </Link>
-              <Link href={coordonnees.appstore_link} target="_blank">
-                <Image
-                  src="/img/icon/fr_badge_web_generic.png"
-                  width={150}
-                  height={50}
-                  alt="Disponible sur App Store"
-                  className="mb-2 sm:mb-0 rounded shadow"
-                />
+              <Link href={coordonnees.appstore_link} target="_blank" className="flex items-center">
+                <div style={{ width: '160px', height: '62px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Image
+                    src="/img/icon/fr_badge_web_generic.png"
+                    width={160}
+                    height={62}
+                    alt="Disponible sur App Store"
+                    className="rounded shadow object-contain"
+                    style={{ width: '160px', height: '62px', objectFit: 'contain' }}
+                  />
+                </div>
               </Link>
             </div>
             <h4 className="font-bold mb-4 mt-6">GÉOLOCALISATION</h4>

@@ -22,7 +22,7 @@ function FlashSaleCard({ product }: { product: any }) {
     <div className="w-full max-w-[920px] sm:max-w-[700px] prod_border flex flex-col lg:flex-row bg-white shadow-sm hover:shadow-md mx-auto">
       <div className="w-full relative">
         <Link href={`/product-details?id=${product.id}`}>
-          <div className="w-full aspect-square relative mx-auto overflow-hidden">
+          <div className="w-full aspect-[5/6] sm:aspect-square max-w-[160px] sm:max-w-full relative mx-auto overflow-hidden">
             <Image
               fill
               alt={product.alt_cover || product.designation_fr}
@@ -45,7 +45,7 @@ function FlashSaleCard({ product }: { product: any }) {
       </div>
       <div className="w-full displayvente lkl">
         <Link href={`/product-details?id=${product.id}`} className="displaylink">
-          <h1 className="font-weight-700 text-gray-900 hover:text-primary hover:underline title-font mb-2 sm:mb-4 text-sm sm:text-base lg:text-xl">
+          <h1 className="font-weight-700 text-gray-900 hover:text-primary hover:underline title-font mb-4 sm:mb-4 text-[11px] sm:text-base lg:text-xl">
             {product.designation_fr}
           </h1>
         </Link>

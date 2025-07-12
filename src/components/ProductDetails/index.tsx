@@ -14,6 +14,7 @@ import { addItemToCart } from "@/redux/features/cart-slice";
 import { useRouter } from "next/navigation";
 import ProductFlavors from "@/components/product/ProductFlavors";
 import type { Aroma } from "@/types/aroma"; // Add this import // <-- import the flavors component
+import ReviewForm from "./ReviewForm";
 
 // Helper to ensure only local images or fallback to placeholder
 function getValidImageSrc(src?: string): string {
@@ -133,9 +134,7 @@ const ProductDetails = () => {
       : 0;
 
   const flavors = product?.features || ["Vanilla", "Chocolate", "Strawberry"];
-  const sizes = (product as any)?.sizes || ["1kg", "2kg", "120caps"];
-  const types = (product as any)?.types || ["Powder", "Capsule"];
-
+  
   if (loading) {
   return <div className="flex justify-center items-center min-h-[400px]">Chargement...</div>;
   }
@@ -352,8 +351,6 @@ const ProductDetails = () => {
               <form onSubmit={(e) => e.preventDefault()}>
                 <div className="flex flex-col gap-4.5 border-y border-gray-3 mt-7.5 mb-9 py-9">
 
-
-
                   
                   {/* Flavor */}
                  {product && Array.isArray(product.aroma_ids) && product.aroma_ids.length > 0 && aromas.length > 0 && (
@@ -365,7 +362,7 @@ const ProductDetails = () => {
     return (
       <div className="flex items-center gap-4">
         <div className="min-w-[65px]">
-          <h4 className="font-medium text-dark">Flavor:</h4>
+          <h4 className="font-medium text-dark">saveur:</h4>
         </div>
         <div className="flex flex-wrap gap-2">
           <ProductFlavors
@@ -379,58 +376,7 @@ const ProductDetails = () => {
     );
   })()
 )}
-                  {/* Size */}
-                  {hasDiscount && discount > 0 && (
-                  <div className="flex items-center gap-2.5 text-sm text-blue-700 mb-2">
-                  <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  >
-                  <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M10.0003 1.04169C5.05277 1.04169 1.04199 5.05247 1.04199 10C1.04199 14.9476 5.05277 18.9584 10.0003 18.9584C14.9479 18.9584 18.9587 14.9476 18.9587 10C18.9587 5.05247 14.9479 1.04169 10.0003 1.04169ZM2.29199 10C2.29199 5.74283 5.74313 2.29169 10.0003 2.29169C14.2575 2.29169 17.7087 5.74283 17.7087 10C17.7087 14.2572 14.2575 17.7084 10.0003 17.7084C5.74313 17.7084 2.29199 14.2572 2.29199 10Z"
-                  fill="#3C50E0"
-                  />
-                  </svg>
-                  {discount}% Off
-                  </div>
-                  )}
-                  <div className="flex items-center gap-4">
-                  <div className="min-w-[65px]">
-                  <h4 className="font-medium text-dark">Size:</h4>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                      {sizes.map((size: string, key: number) => (
-                        <label key={key} htmlFor={`size-${size}`} className="cursor-pointer select-none flex items-center">
-                          <input type="radio" name="size" id={`size-${size}`} className="sr-only" checked={activeSize === size} onChange={() => setActiveSize(size)} />
-                          <div className={`flex items-center justify-center w-5.5 h-5.5 rounded-full border ${activeSize === size ? "border-blue" : "border-gray-4"}`}>
-                            <span className="px-2 text-xs">{size}</span>
-                          </div>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                  {/* Type */}
-                  <div className="flex items-center gap-4">
-                    <div className="min-w-[65px]">
-                      <h4 className="font-medium text-dark">Type:</h4>
-                    </div>
-                    <div className="flex items-center gap-4">
-                    {types.map((type: string, key: number) => (
-                    <label key={key} htmlFor={`type-${type}`} className="cursor-pointer select-none flex items-center">
-                    <input type="radio" name="type" id={`type-${type}`} className="sr-only" checked={activeType === type} onChange={() => setActiveType(type)} />
-                    <div className={`flex items-center justify-center w-5.5 h-5.5 rounded-full border ${activeType === type ? "border-blue" : "border-gray-4"}`}>
-                    <span className="px-2 text-xs">{type}</span>
-                    </div>
-                    </label>
-                    ))}
-                    </div>
-                  </div>
-                </div>
+                                  </div>
                 <div className="flex flex-row flex-wrap items-center gap-4.5">
                   <div className="flex items-center rounded-md border border-gray-3">
                     <button aria-label="button for remove product" className="flex items-center justify-center w-12 h-12 ease-out duration-200 hover:text-blue" onClick={() => quantity > 1 && setQuantity(quantity - 1)}>
@@ -680,41 +626,7 @@ const ProductDetails = () => {
                 </div>
               </div>
               <div className="w-full max-w-xl">
-                <form>
-                  <h2 className="font-medium text-2xl text-dark mb-3.5">Ajouter un avis</h2>
-                  <p className="mb-6">Votre adresse e-mail ne sera pas publiée. Les champs obligatoires sont indiqués. *</p>
-                  <div className="flex items-center gap-3 mb-7.5">
-                    <span>Your Rating*</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <span key={i} className="cursor-pointer text-gray-5">
-                          <svg className="fill-current" width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.6604 5.90785L9.97461 5.18335L7.85178 0.732874C7.69645 0.422375 7.28224 0.422375 7.12691 0.732874L5.00407 5.20923L0.344191 5.90785C0.0076444 5.9596 -0.121797 6.39947 0.137085 6.63235L3.52844 10.1255L2.72591 15.0158C2.67413 15.3522 3.01068 15.6368 3.32134 15.4298L7.54112 13.1269L11.735 15.4298C12.0198 15.5851 12.3822 15.3263 12.3046 15.0158L11.502 10.1255L14.8934 6.63235C15.1005 6.39947 14.9969 5.9596 14.6604 5.90785Z" fill=""/></svg>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="rounded-xl bg-white shadow-1 p-4 sm:p-6">
-                    <div className="mb-5">
-                      <label htmlFor="comments" className="block mb-2.5">Commentaires</label>
-                      <textarea name="comments" id="comments" rows={5} placeholder="Your comments" className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full p-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"></textarea>
-                      <span className="flex items-center justify-between mt-2.5">
-                        <span className="text-custom-sm text-dark-4">Maximum</span>
-                        <span className="text-custom-sm text-dark-4">0/250</span>
-                      </span>
-                    </div>
-                    <div className="flex flex-col lg:flex-row gap-5 sm:gap-7.5 mb-5.5">
-                      <div>
-                        <label htmlFor="name" className="block mb-2.5">Nom</label>
-                        <input type="text" name="name" id="name" placeholder="Your name" className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20" />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="block mb-2.5">Email</label>
-                        <input type="email" name="email" id="email" placeholder="Your email" className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20" />
-                      </div>
-                    </div>
-                    <button type="submit" className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark">Soumettre des avis</button>
-                  </div>
-                </form>
+                <ReviewForm productId={String(product?.id || product?._id || "")} />
               </div>
             </div>
           </div>  

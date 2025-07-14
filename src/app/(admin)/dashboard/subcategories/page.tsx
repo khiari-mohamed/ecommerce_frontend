@@ -10,7 +10,7 @@ export default function SubcategoriesPage() {
   const [openForm, setOpenForm] = useState(false);
   const [openView, setOpenView] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState<import('@/types/subcategory').SubCategory | null>(null);
 
   return (
     <div className="dashboard-section dashboard-section--with-sidebar">

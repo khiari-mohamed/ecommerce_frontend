@@ -45,7 +45,7 @@ export default function VenteFlashFormModal({ open, onClose, venteFlash }: Props
           : ""
       );
       setProducts(
-        Array.isArray(venteFlash?.products)
+        venteFlash && Array.isArray(venteFlash.products)
           ? (venteFlash.products as unknown as any[]).map(String)
           : []
       );

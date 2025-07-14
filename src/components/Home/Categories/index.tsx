@@ -14,15 +14,15 @@ const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<any>(null);
 
   const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return;
+    if (!sliderRef.current || !('swiper' in sliderRef.current)) return;
     sliderRef.current.swiper.slidePrev();
   }, []);
 
   const handleNext = useCallback(() => {
-    if (!sliderRef.current) return;
+    if (!sliderRef.current || !('swiper' in sliderRef.current)) return;
     sliderRef.current.swiper.slideNext();
   }, []);
 
@@ -34,7 +34,7 @@ const Categories = () => {
         // Merge static data with database data
         const mergedData = data.map((dbCategory: Category) => {
           const staticCategory = categoryData.find(
-            (staticCat) => staticCat.id === dbCategory.id.toString()
+            (staticCat) => dbCategory.id !== undefined && staticCat.id === dbCategory.id.toString()
           );
 
           return {

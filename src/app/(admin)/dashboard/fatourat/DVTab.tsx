@@ -5,8 +5,20 @@ import DVPrintable from "./printables/DVPrintable";
 import ReactDOM from "react-dom/client";
 import orderService from "@/services/orders"; // Make sure this is imported
 
+interface Devis {
+  _id?: string;
+  id?: string;
+  numero_devis?: string;
+  numero?: string;
+  client?: { name?: string };
+  nom?: string;
+  date?: string;
+  total?: number;
+  prix_ttc?: number;
+}
+
 const DevisTab = () => {
-  const [devis, setDevis] = useState([]);
+  const [devis, setDevis] = useState<Devis[]>([]);
   const [selected, setSelected] = useState<any | null>(null);
   const [fullDevis, setFullDevis] = useState<any | null>(null);
   const [loadingFullDevis, setLoadingFullDevis] = useState(false);
@@ -57,9 +69,12 @@ const DevisTab = () => {
       `);
       printWindow.document.close();
       printWindow.onload = () => {
-        ReactDOM.createRoot(printWindow.document.getElementById("print-root")).render(
-          <DVPrintable order={fullDevis} />
-        );
+        const printRoot = printWindow.document.getElementById("print-root");
+        if (printRoot) {
+          ReactDOM.createRoot(printRoot).render(
+            <DVPrintable order={fullDevis} />
+          );
+        }
         setTimeout(() => {
           printWindow.focus();
           printWindow.print();

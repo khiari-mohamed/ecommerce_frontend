@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { JSX, useEffect } from "react";
 import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { updateQuickView } from "@/redux/features/quickView-slice";
@@ -98,8 +98,8 @@ const SingleGridItem = ({ item }: { item: Product }) => {
   : 0;
 
   // Render star ratings based on average rating
-  const renderStars = () => {
-    const stars = [];
+  const renderStars = (): JSX.Element[] => {
+    const stars: JSX.Element[] = [];
     const fullStars = Math.floor(averageRating);
     const hasHalfStar = averageRating % 1 >= 0.5;
 

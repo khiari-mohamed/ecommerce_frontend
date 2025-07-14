@@ -21,9 +21,10 @@ interface BrandPageProps {
 export async function generateMetadata({
   params,
 }: {
-  params?: { slug: string };
+  params: Promise<any>;
 }): Promise<Metadata> {
-  const slug = params?.slug;
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
 
   try {
     const res = await axios.get(
@@ -46,9 +47,10 @@ export async function generateMetadata({
 export default async function BrandPage({
   params,
 }: {
-  params?: { slug: string };
+  params: Promise<any>;
 }) {
-  const slug = params?.slug;
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
 
   let brand: Brand | null = null;
   let products: any[] = [];

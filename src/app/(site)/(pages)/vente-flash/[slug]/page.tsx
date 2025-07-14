@@ -5,12 +5,23 @@ import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export default function VenteFlashSlugPage({ params }: { params?: { slug: string } }) {
-  const slug = params?.slug;
+export default function VenteFlashSlugPage({ params }: { params: Promise<any> }) {
+  const [slug, setSlug] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
+    let isMounted = true;
+    async function resolveParams() {
+      const resolvedParams = await params;
+      if (isMounted) setSlug(resolvedParams.slug);
+    }
+    resolveParams();
+    return () => { isMounted = false; };
+  }, [params]);
+
+  useEffect(() => {
+    if (!slug) return;
     async function fetchData() {
       try {
         // Fetch all flash sale products and find the one with the matching slug

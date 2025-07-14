@@ -98,7 +98,7 @@ const ShopDetails = () => {
 
   // Get slug from URL
   const searchParams = useSearchParams();
-  const slug = searchParams.get("slug");
+  const slug = searchParams?.get("slug");
 
   useEffect(() => {
     if (!slug) {
@@ -152,17 +152,16 @@ const ShopDetails = () => {
               reviews: pack.reviews || [],
               inStock: pack.inStock ?? true,
               currency: "TND",
-              discountPercentage:
-                !isNaN(promo) && promo > 0 && !isNaN(prix) && prix > 0
-                  ? Math.round(100 - (promo / prix) * 100)
-                  : 0,
+              discountPercentage: !isNaN(promo) && promo > 0 && !isNaN(prix) && prix > 0
+                ? Math.round(100 - (promo / prix) * 100)
+                : 0,
               mainImage: pack.cover
                 ? {
-                    url: getValidImageSrc(pack.cover),
-                    img_id: ""
-                  }
+                  url: getValidImageSrc(pack.cover),
+                  img_id: ""
+                }
                 : undefined,
-            } as Product);
+            } as unknown as Product);
             setActiveFlavor("");
             setActiveSize("");
             setActiveType("");
@@ -849,7 +848,7 @@ const ShopDetails = () => {
                                 <span
                                 key={i}
                                 className={`cursor-pointer ${
-                                i < (parseInt(review.stars, 10) || 0)
+                                i < (parseInt(review.stars ?? "0", 10) || 0)
                                 ? "text-[#FBB040]"
                                 : "text-gray-5"
                                 }`}

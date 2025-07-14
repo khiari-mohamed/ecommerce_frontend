@@ -33,7 +33,7 @@ const BannerProductDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const slug = searchParams.get("slug");
+  const slug = searchParams?.get("slug");
   const [banner, setBanner] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 

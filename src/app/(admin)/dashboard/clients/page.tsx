@@ -27,13 +27,17 @@ export default function ClientsPage() {
 
   const handleSmsSend = async (message: string) => {
     if (smsClient) {
+      if (!smsClient.phone_1) {
+        alert("Numéro de téléphone manquant pour ce client.");
+        return;
+      }
       await sendSmsToClient(smsClient.phone_1, message);
       alert("SMS sent!");
     } else if (selectedClientIds.length > 0) {
       const selectedClients = clients.filter((c) =>
         selectedClientIds.includes(c._id)
       );
-      const phones = selectedClients.map((c) => c.phone_1).filter(Boolean);
+      const phones = selectedClients.map((c) => c.phone_1).filter(Boolean) as string[];
       await sendBulkSmsToClients(phones, message);
       alert("Bulk SMS sent!");
     }

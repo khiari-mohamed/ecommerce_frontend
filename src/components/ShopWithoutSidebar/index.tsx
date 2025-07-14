@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, JSX } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import SingleGridItem from "../Shop/SingleGridItem";
 import SingleListItem from "../Shop/SingleListItem";
@@ -50,8 +50,8 @@ const ShopWithoutSidebar = () => {
   ];
 
   // Pagination rendering logic with ellipsis
-  const renderPagination = () => {
-    const pages = [];
+  const renderPagination = (): JSX.Element[] => {
+    const pages: JSX.Element[] = [];
     const maxPageButtons = 5;
     let startPage = Math.max(1, currentPage - 2);
     let endPage = Math.min(totalPages, currentPage + 2);

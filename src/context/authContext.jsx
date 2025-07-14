@@ -11,6 +11,18 @@ import {
 } from '@/redux/authstore'; // lowercase 's'
 
 
+/**
+ * @typedef AuthContextType
+ * @type {object}
+ * @property {any} user
+ * @property {boolean} isLoggedIn
+ * @property {boolean} isLoading
+ * @property {(email: string, password: string) => Promise<any>} login
+ * @property {() => Promise<void>} logout
+ * @property {(data: any) => Promise<any>} register
+ */
+
+/** @type {import('react').Context<AuthContextType | undefined>} */
 const AuthContext = createContext(undefined);
 
 export const AuthProvider = ({ children }) => {

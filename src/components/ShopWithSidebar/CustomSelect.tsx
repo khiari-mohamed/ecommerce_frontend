@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 
 const CustomSelect = ({ options, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const selectRef = useRef(null);
+  const selectRef = useRef<HTMLDivElement | null>(null); // <-- Add type
 
   // Find the selected option from value
   const selectedOption = options.find(opt => opt.value === value) || options[0];
 
   // Function to close the dropdown when a click occurs outside the component
-  const handleClickOutside = (event) => {
-    if (selectRef.current && !selectRef.current.contains(event.target)) {
+  const handleClickOutside = (event: MouseEvent) => { // <-- Add type
+    if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
       setIsOpen(false);
     }
   };

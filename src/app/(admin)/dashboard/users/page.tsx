@@ -4,10 +4,15 @@ import { fetchUsers, addUser, updateUser, deleteUser } from "../utils/users";
 import UserTable from "./UserTable";
 import UserModal from "./UserModal";
 import "../styles/dashboard.css";
+
+interface User {
+  _id: string;
+  // ...other properties you use
+}
 export default function UsersPage() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
 
   useEffect(() => {
     fetchUsers().then(setUsers);

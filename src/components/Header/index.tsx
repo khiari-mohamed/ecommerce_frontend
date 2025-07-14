@@ -263,9 +263,11 @@ const Header = () => {
                 {menuData.map((menuItem, i) => menuItem.submenu ? (
                   <Dropdown key={`static-mobile-${i}`} menuItem={menuItem} stickyMenu={stickyMenu} />
                 ) : (
-                  <li key={`static-mobile-${i}`} className="group relative">
-                    <Link href={menuItem.path} className="hover:text-blue text-custom-sm font-medium text-dark flex items-center" onClick={() => setNavigationOpen(false)}>{menuItem.title}{menuItem.showBadge && (<span className="intense-flashing-badge text-xs px-1 py-0.5" style={{ fontSize: '0.65rem', position: 'relative', top: '-4px' }}>Limitée!</span>)}</Link>
-                  </li>
+                  menuItem.path ? (
+                    <li key={`static-mobile-${i}`} className="group relative">
+                      <Link href={menuItem.path as string} className="hover:text-blue text-custom-sm font-medium text-dark flex items-center" onClick={() => setNavigationOpen(false)}>{menuItem.title}{menuItem.showBadge && (<span className="intense-flashing-badge text-xs px-1 py-0.5" style={{ fontSize: '0.65rem', position: 'relative', top: '-4px' }}>Limitée!</span>)}</Link>
+                    </li>
+                  ) : null
                 ))}
               </ul>
             </nav>
@@ -442,7 +444,9 @@ const Header = () => {
               <Dropdown key={`static-${i}`} menuItem={menuItem} stickyMenu={stickyMenu} />
               ) : (
               <li key={`static-${i}`} className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full ">
-              <Link href={menuItem.path} className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center ${stickyMenu ? "xl:py-4" : "xl:py-6"}`}>{menuItem.title}{menuItem.showBadge && (<span className="intense-flashing-badge text-xs px-1 py-0.5" style={{ fontSize: '0.65rem', position: 'relative', top: '-4px' }}>Limitée!</span>)}</Link>
+              {menuItem.path && (
+                <Link href={menuItem.path as string} className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center ${stickyMenu ? "xl:py-4" : "xl:py-6"}`}>{menuItem.title}{menuItem.showBadge && (<span className="intense-flashing-badge text-xs px-1 py-0.5" style={{ fontSize: '0.65rem', position: 'relative', top: '-4px' }}>Limitée!</span>)}</Link>
+              )}
               </li>
               ))}
               </ul>

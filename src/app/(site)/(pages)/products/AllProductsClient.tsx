@@ -27,7 +27,7 @@ const AllProductsClient = () => {
   const [error, setError] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
-  const brand = searchParams.get("brand");
+ const brand = searchParams?.get("brand") ?? undefined;
 
   useEffect(() => {
     setLoading(true);

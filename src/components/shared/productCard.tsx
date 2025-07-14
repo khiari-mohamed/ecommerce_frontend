@@ -106,7 +106,8 @@ const ProductCard = memo(
     const totalRating = product?.reviews?.reduce(
       (sum, review) => sum + review.rating,
       0
-    );
+    ) ?? 0;
+
     const averageRating =
       reviewsCount > 0
         ? Math.round((totalRating / reviewsCount) * 2) / 2
@@ -114,9 +115,10 @@ const ProductCard = memo(
 
     const calculateDiscount = () => {
       if (product?.discountPercentage) return product.discountPercentage;
-      if (!product?.oldPrice || product.oldPrice <= product.price) return 0;
+      const oldPrice = product?.oldPrice ?? 0;
+      if (!oldPrice || oldPrice <= product.price) return 0;
       return Math.round(
-        ((product.oldPrice - product.price) / product.oldPrice) * 100
+        ((oldPrice - product.price) / oldPrice) * 100
       );
     };
 
@@ -286,9 +288,9 @@ const ProductCard = memo(
               <span className="text-base font-semibold text-[#EF837B]">
                 {formatCurrency(product?.price)}
               </span>
-              {(product?.oldPrice || (isFlashSale && product?.price < product?.oldPrice)) && (
+              {(product?.oldPrice || (isFlashSale && product?.price < (product?.oldPrice ?? 0))) && (
                 <span className="mt-1 text-sm text-gray-400 line-through">
-                  {formatCurrency(product?.oldPrice)}
+                  {formatCurrency(product?.oldPrice ?? 0)}
                 </span>
               )}
             </div>

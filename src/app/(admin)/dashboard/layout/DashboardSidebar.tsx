@@ -122,7 +122,7 @@ export default function DashboardSidebar({ open, onClose }: { open?: boolean; on
             const isActive =
               link.href === "/dashboard"
                 ? pathname === link.href
-                : pathname.startsWith(link.href);
+                : pathname && pathname.startsWith(link.href);
 
             return (
               <li key={link.name}>

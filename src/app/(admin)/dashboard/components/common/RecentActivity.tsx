@@ -2,8 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { fetchRecentActivity } from "../../utils/fetchDashboardData";
 
+interface ActivityItem {
+  user: string;
+  action: string;
+  time: string | number | Date;
+}
+
 export default function RecentActivity({ limit = 10 }) {
-  const [activity, setActivity] = useState([]);
+  const [activity, setActivity] = useState<ActivityItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -17,7 +17,7 @@ const DashboardResetPasswordPageContent = () => {
   const [success, setSuccess] = useState("");
 
   // Get token from query string
-  const token = searchParams.get("token") || "";
+  const token = searchParams?.get("token") || "";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

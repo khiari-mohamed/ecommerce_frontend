@@ -5,10 +5,22 @@ import BLPrintable from "./printables/BLPrintable";
 import ReactDOM from "react-dom/client";
 import orderService from "@/services/orders";
 
+
+
+interface Bon {
+  _id?: string;
+  id?: string;
+  numero_bl?: string;
+  numero?: string;
+  nom?: string;
+  prenom?: string;
+  created_at?: string;
+}
+
 const BLTab = () => {
-  const [bons, setBons] = useState([]);
-  const [selected, setSelected] = useState<any | null>(null);
-  const [fullBon, setFullBon] = useState<any | null>(null);
+  const [bons, setBons] = useState<Bon[]>([]);
+  const [selected, setSelected] = useState<Bon | null>(null);
+  const [fullBon, setFullBon] = useState<Bon | null>(null);
   const [loadingFullBon, setLoadingFullBon] = useState(false);
 
   useEffect(() => {
@@ -59,9 +71,12 @@ const BLTab = () => {
       `);
       printWindow.document.close();
       printWindow.onload = () => {
-        ReactDOM.createRoot(printWindow.document.getElementById("print-root")).render(
-          <BLPrintable order={fullBon} />
-        );
+        const printRoot = printWindow.document.getElementById("print-root");
+        if (printRoot) {
+          ReactDOM.createRoot(printRoot).render(
+            <BLPrintable order={fullBon} />
+          );
+        }
         setTimeout(() => {
           printWindow.focus();
           printWindow.print();

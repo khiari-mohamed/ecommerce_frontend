@@ -8,27 +8,18 @@ import parse from 'html-react-parser';
 import Image from 'next/image';
 import React from 'react';
 
-
-
-
-interface CategoryPageProps {
-  params?: { slug: string };
-}
-
-export async function generateMetadata({ params }: CategoryPageProps) {
-  const slug = params?.slug;
-  if (!slug) return {};
-  const category = await getCategoryBySlug(slug);
+// Accept params as Promise<any> to match the broken .next/types
+export async function generateMetadata({ params }: { params: Promise<any> }) {
+  const resolvedParams = await params;
   return {
-    title: category?.designation_fr || category?.designation || 'Category',
-    description: category?.description_fr
-      ? category.description_fr.replace(/<[^>]*>/g, '').substring(0, 160)
-      : '',
+    title: `Catégorie: ${resolvedParams.slug}`,
   };
 }
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
-  const slug = params?.slug;
+export default async function CategoryPage({ params }: { params: Promise<any> }) {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+
   try {
     if (!slug) {
       notFound();

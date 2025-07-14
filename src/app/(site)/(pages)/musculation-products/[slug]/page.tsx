@@ -9,19 +9,21 @@ import { Review } from "@/types/reviews";
 
 const FALLBACK_IMAGE = "/placeholder.svg";
 
-// ✅ Only this now — NO "interface MusculationProductPageProps"
-export default async function SubcategoryPage({
-  params,
-}: {
-  params?: { slug: string } | Promise<{ slug: string }>;
-}) {
-  let resolvedParams: { slug: string } | undefined;
-  if (params && typeof (params as Promise<any>).then === "function") {
-    resolvedParams = await params as { slug: string };
-  } else {
-    resolvedParams = params as { slug: string } | undefined;
+// Accept params as Promise<any> to match the broken .next/types
+export async function generateMetadata({ params }: { params: Promise<any> }) {
+  const resolvedParams = await params;
+  return {
+    title: `Produit: ${resolvedParams.slug}`,
+  };
+}
+
+export default async function SubcategoryPage({ params }: { params: Promise<any> }) {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+
+  if (!slug) {
+    notFound();
   }
-  const slug = resolvedParams?.slug;
 
   let product: MusculationProduct | null = null;
   let reviews: Review[] = [];
@@ -45,22 +47,19 @@ export default async function SubcategoryPage({
   }
 
   const getImageSrc = () => {
-    if (product.cover && product.cover.trim() !== "") {
+    if (product && product.cover && product.cover.trim() !== "") {
       return product.cover.startsWith("/") ? product.cover : "/" + product.cover;
     }
     return FALLBACK_IMAGE;
   };
 
   return (
-    // ...rest of your JSX stays exactly the same
-  
-
     <div className="max-w-4xl mx-auto py-12 px-4">
       <div className="flex flex-col md:flex-row gap-8">
         <div className="flex-shrink-0 w-full md:w-1/2">
           <Image
             src={getImageSrc()}
-            alt={product.designation_fr}
+            alt={product?.designation_fr || "Produit"}
             width={500}
             height={500}
             className="object-contain w-full h-auto rounded-lg bg-gray-50"
@@ -68,7 +67,7 @@ export default async function SubcategoryPage({
           />
         </div>
         <div className="flex-1">
-          <h1 className="text-3xl font-bold mb-4">{product.designation_fr}</h1>
+          <h1 className="text-3xl font-bold mb-4">{product?.designation_fr}</h1>
           <div className="flex items-center mb-2">
             <StarRating rating={averageRating} />
             <span className="ml-2 text-sm text-gray-500">
@@ -79,11 +78,11 @@ export default async function SubcategoryPage({
           </div>
           <div className="mb-2 text-lg text-gray-700">
             <span className="font-semibold">Prix: </span>
-            {Number(product.prix).toLocaleString("fr-TN", {
+            {product && Number(product.prix).toLocaleString("fr-TN", {
               style: "currency",
               currency: "TND",
             })}
-            {product.promo && (
+            {product?.promo && (
               <span className="ml-2 text-red-500 line-through">
                 {Number(product.promo).toLocaleString("fr-TN", {
                   style: "currency",
@@ -94,11 +93,11 @@ export default async function SubcategoryPage({
           </div>
           <div className="mb-2">
             <span className="font-semibold">Marque: </span>
-            {product.brand_id || "N/A"}
+            {product?.brand_id || "N/A"}
           </div>
           <div className="mb-2">
             <span className="font-semibold">Stock: </span>
-            {product.qte && Number(product.qte) > 0
+            {product?.qte && Number(product.qte) > 0
               ? "En stock"
               : "Rupture de stock"}
           </div>
@@ -107,7 +106,7 @@ export default async function SubcategoryPage({
             <div
               className="text-gray-600"
               dangerouslySetInnerHTML={{
-                __html: product.description_fr || "Aucune description disponible.",
+                __html: product?.description_fr || "Aucune description disponible.",
               }}
             />
           </div>

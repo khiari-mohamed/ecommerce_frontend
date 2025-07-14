@@ -5,9 +5,16 @@ import { useEffect, useState } from "react";
 import { fetchOrders } from "@/services/orders";
 import "../styles/dashboard.css";
 
+interface Order {
+  // define the properties you use, e.g.:
+  id?: string;
+  _id?: string;
+  // ...other properties
+}
 export default function AdminOrdersPage() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     fetchOrders({ type: "all" })

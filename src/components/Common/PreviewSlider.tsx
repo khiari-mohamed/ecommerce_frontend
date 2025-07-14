@@ -39,7 +39,7 @@ const PreviewSliderModal = () => {
   // Get images array from data (support both previews and thumbnails)
   const images = useMemo(() => {
     if (!data) return [];
-    let imageUrls = [];
+    let imageUrls: string[] = [];
     if (data.imgs?.previews?.length) {
       imageUrls = data.imgs.previews;
     } else if (data.imgs?.thumbnails?.length) {

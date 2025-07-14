@@ -72,9 +72,9 @@ const SingleOrder: React.FC<SingleOrderProps> = ({
       <div className="text-gray-900 mb-2">{title}</div>
       <div className="font-bold text-purple-700 mb-2">{total}</div>
       <OrderActions
-        toggleDetails={onShowDetails}
-        toggleEdit={onShowEdit}
-      />
+  toggleDetails={onShowDetails ?? (() => {})}
+  toggleEdit={onShowEdit ?? (() => {})}
+/>
     </div>
   ) : (
     <tr className="hover:bg-gray-50 transition">
@@ -91,8 +91,8 @@ const SingleOrder: React.FC<SingleOrderProps> = ({
       <td className="px-6 py-4 font-bold text-purple-700">{total}</td>
       <td className="px-6 py-4">
         <OrderActions
-          toggleDetails={onShowDetails}
-          toggleEdit={onShowEdit}
+          toggleDetails={onShowDetails ?? (() => {})}
+          toggleEdit={onShowEdit ?? (() => {})}
         />
       </td>
     </tr>

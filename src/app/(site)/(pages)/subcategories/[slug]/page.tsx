@@ -25,8 +25,9 @@ async function getSubCategoryBySlug(slug: string): Promise<SubCategory | null> {
 
 import { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params?: { slug: string } }): Promise<Metadata> {
-  const slug = params?.slug;
+export async function generateMetadata({ params }: { params: Promise<any> }) {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
   if (!slug) return {};
   try {
     const res = await axios.get(`/sub-categories?slug=${encodeURIComponent(slug)}`);
@@ -44,21 +45,22 @@ export async function generateMetadata({ params }: { params?: { slug: string } }
   }
 }
 
-export default async function SubcategoryPage({ params }: { params?: { slug: string } }) {
-  const slug = params?.slug;
+export default async function SubcategoryPage({ params }: { params: Promise<any> }) {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
   if (!slug) notFound();
   const subcategory = await getSubCategoryBySlug(slug);
   if (!subcategory) notFound();
 
   // Fetch categories and subcategories for sidebar (dynamic)
-  let categories = [];
+  let categories: any[] = [];
   try {
     const res = await axios.get('/categories?populate=subcategories');
     categories = res.data?.data || res.data || [];
   } catch {}
 
   // Fetch brands server-side
-  let brands = [];
+  let brands: any[] = [];
   try {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands`);
     if (Array.isArray(res.data)) {
@@ -72,7 +74,7 @@ export default async function SubcategoryPage({ params }: { params?: { slug: str
   const motsCles = ["Sans sucre", "Vegan", "Protéiné", "Énergie", "Récupération"];
 
   // Fetch aromas server-side
-  let aromas = [];
+  let aromas: any[] = [];
   try {
     const res = await axios.get('/aromas');
     if (Array.isArray(res.data)) {
@@ -86,7 +88,7 @@ export default async function SubcategoryPage({ params }: { params?: { slug: str
 
   // Fetch products for the subcategory dynamically
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  let products = [];
+  let products: any[] = [];
   try {
    const subcatId = subcategory?.id; // Use the string id, not the slug
 const res = await axios.get(`${API_URL}/products?sous_categorie_id=${subcatId}`);

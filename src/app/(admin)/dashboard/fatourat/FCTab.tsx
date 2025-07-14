@@ -12,11 +12,23 @@ const subTabs = [
   { key: "boutique", label: "Facture Boutique" },
 ];
 
+interface Facture {
+  _id?: string;
+  id?: string;
+  invoiceNumber?: string;
+  numero?: string;
+  client?: { name?: string };
+  nom?: string;
+  date?: string;
+  total?: number;
+  prix_ttc?: number;
+}
+
 const FactureTab = () => {
   const [activeSubTab, setActiveSubTab] = useState("client");
-  const [invoices, setInvoices] = useState([]);
+  const [invoices, setInvoices] = useState<Facture[]>([]);
   // Store both the selected invoice and the sub-tab at the time of selection
-  const [selected, setSelected] = useState<{ invoice: any, tab: string } | null>(null);
+  const [selected, setSelected] = useState<{ invoice: Facture, tab: string } | null>(null);
   const [fullInvoice, setFullInvoice] = useState<any | null>(null);
   const [loadingFullInvoice, setLoadingFullInvoice] = useState(false);
 
@@ -71,11 +83,14 @@ const FactureTab = () => {
     `);
       printWindow.document.close();
       printWindow.onload = () => {
-        ReactDOM.createRoot(printWindow.document.getElementById("print-root")).render(
-          selected.tab === "client"
-            ? <FactureClientPrintable order={fullInvoice} />
-            : <FactureBoutiquePrintable order={fullInvoice} />
-        );
+        const printRoot = printWindow.document.getElementById("print-root");
+        if (printRoot && selected) {
+          ReactDOM.createRoot(printRoot).render(
+            selected.tab === "client"
+              ? <FactureClientPrintable order={fullInvoice} />
+              : <FactureBoutiquePrintable order={fullInvoice} />
+          );
+        }
         setTimeout(() => {
           printWindow.focus();
           printWindow.print();
@@ -143,7 +158,7 @@ const FactureTab = () => {
         {loadingFullInvoice ? (
           <div className="text-center text-gray-400 py-6">Chargement...</div>
         ) : (
-          fullInvoice &&
+          fullInvoice && selected &&
           (selected.tab === "client"
             ? <FactureClientPrintable order={fullInvoice} />
             : <FactureBoutiquePrintable order={fullInvoice} />)

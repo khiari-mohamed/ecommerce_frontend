@@ -25,8 +25,9 @@ function getFallbackImageByIndex(idx: number): string {
 }
 
 const mapToProductCard = (product: MusculationProduct, idx: number): Product => ({
-  _id: product._id,
+
   ...product,
+  _id: product._id,
   designation: product.designation_fr,
   mainImage: {
     url: product.cover
@@ -37,7 +38,7 @@ const mapToProductCard = (product: MusculationProduct, idx: number): Product => 
   },
   price: Number(product.prix),
   oldPrice: product.promo ? Number(product.promo) : undefined,
-  inStock: product.qte && Number(product.qte) > 0,
+inStock: product.qte ? Number(product.qte) > 0 : undefined,
   slug: product.slug,
   brand: product.brand_id,
   reviews: [],

@@ -5,8 +5,18 @@ import BDCPrintable from "./printables/BDCPrintable";
 import ReactDOM from "react-dom/client";
 import orderService from "@/services/orders";
 
+interface Bon {
+  _id?: string;
+  id?: string;
+  numero_bl?: string;
+  numero?: string;
+  nom?: string;
+  prenom?: string;
+  created_at?: string;
+}
+
 const BDTab = () => {
-  const [bons, setBons] = useState([]);
+  const [bons, setBons] = useState<Bon[]>([]);
   const [selected, setSelected] = useState<any | null>(null);
   const [fullBDC, setFullBDC] = useState<any | null>(null);
   const [loadingFullBDC, setLoadingFullBDC] = useState(false);
@@ -58,9 +68,12 @@ const BDTab = () => {
       `);
       printWindow.document.close();
       printWindow.onload = () => {
-        ReactDOM.createRoot(printWindow.document.getElementById("print-root")).render(
-          <BDCPrintable order={fullBDC} />
-        );
+        const printRoot = printWindow.document.getElementById("print-root");
+        if (printRoot) {
+          ReactDOM.createRoot(printRoot).render(
+            <BDCPrintable order={fullBDC} />
+          );
+        }
         setTimeout(() => {
           printWindow.focus();
           printWindow.print();

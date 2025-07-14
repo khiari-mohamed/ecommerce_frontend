@@ -17,7 +17,7 @@ import HeroFeature from "./Hero/HeroFeature";
 
 const Home = () => {
 
-   const [ventesFlash, setVentesFlash] = useState([]);
+   const [ventesFlash, setVentesFlash] = useState<import("@/types/venteFlash").VenteFlash[]>([]);
 
   useEffect(() => {
     getVenteFlashList().then(setVentesFlash);

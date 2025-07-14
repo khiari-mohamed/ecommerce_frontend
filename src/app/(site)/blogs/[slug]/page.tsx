@@ -4,9 +4,10 @@ import BlogDetailsWithSidebar from "@/components/BlogDetailsWithSidebar";
 export default async function BlogDetailsPage({
   params,
 }: {
-  params?: { slug: string };
+  params: Promise<any>;
 }) {
-  const slug = params?.slug;
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
 
   // Toggle this flag to switch between components
   const useSidebar = true;

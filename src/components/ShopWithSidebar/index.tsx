@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, JSX } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import CustomSelect from "./CustomSelect";
 import CategoryDropdown from "./CategoryDropdown";
@@ -63,7 +63,8 @@ const ShopWithSidebar = () => {
     if (selectedCategories.length > 0) {
       subCategoryDesignations = subcategories
         .filter(sub => selectedCategories.includes(String(sub.id)))
-        .map(sub => sub.designation); // or sub.designation_fr if that's the field
+        .map(sub => sub.designation)
+        .filter((d): d is string => typeof d === "string"); // <-- filter out undefined
       if (subCategoryDesignations.length > 0) {
         params.push(`subCategory=${subCategoryDesignations.join(",")}`);
       }
@@ -152,7 +153,7 @@ const ShopWithSidebar = () => {
       startPage = Math.max(1, totalPages - maxPageButtons + 1);
     }
 
-    const pages = [];
+    const pages: JSX.Element[] = []; // <-- type the array
 
     // First page
     if (startPage > 1) {

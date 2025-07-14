@@ -4,7 +4,7 @@ import Image from "next/image";
 
 interface FactureClientDocumentProps {
   order: any;
-  printRef: React.RefObject<HTMLDivElement>;
+  printRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const COMPANY = {

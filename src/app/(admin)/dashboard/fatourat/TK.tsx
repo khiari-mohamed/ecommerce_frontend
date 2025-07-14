@@ -4,9 +4,18 @@ import PrintModal from "./PrintModal";
 import TKPrintable from "./printables/TKPrintable";
 import ReactDOM from "react-dom/client";
 
+interface Ticket {
+  _id?: string;
+  id?: string;
+  numero?: string;
+  created_at?: string;
+  prix_ttc?: number;
+  total?: number;
+}
+
 const TKTab = () => {
-  const [tickets, setTickets] = useState([]);
-  const [selected, setSelected] = useState<any | null>(null);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [selected, setSelected] = useState<Ticket | null>(null);
 
   useEffect(() => {
     fetchInvoices().then(data => setTickets(data));
@@ -29,9 +38,12 @@ const TKTab = () => {
 `);
       printWindow.document.close();
       printWindow.onload = () => {
-        ReactDOM.createRoot(printWindow.document.getElementById("print-root")).render(
-  <TKPrintable order={selected} />
-);
+        const printRoot = printWindow.document.getElementById("print-root");
+        if (printRoot) {
+          ReactDOM.createRoot(printRoot).render(
+            <TKPrintable order={selected} />
+          );
+        }
         setTimeout(() => {
           printWindow.focus();
           printWindow.print();

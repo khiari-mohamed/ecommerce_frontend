@@ -1,8 +1,8 @@
 // src/components/ShopDetails/RecentlyViewd/index.tsx
 "use client";
-import React from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef } from "react";
+import type { Swiper as SwiperClass } from "swiper"; // <-- Add this import
 import "swiper/css/navigation";
 import "swiper/css";
 import Image from "next/image";
@@ -10,12 +10,11 @@ import Link from "next/link";
 import ProductItem from "@/components/Common/ProductItem";
 import { useAppSelector } from "@/redux/store";
 import { getRelatedProducts } from "@/services/products";
-import { useState, useEffect } from 'react';
 import { Product } from '@/types/product';
 
 
 const RecentlyViewdItems = () => {
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<SwiperClass | null>(null); // <-- Type the ref
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const currentProduct = useAppSelector((state) => state.productDetailsReducer.value);
 
@@ -33,12 +32,12 @@ const RecentlyViewdItems = () => {
 
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return;
-    sliderRef.current.swiper.slidePrev();
+    sliderRef.current.slidePrev(); // <-- Use slidePrev directly
   }, []);
 
   const handleNext = useCallback(() => {
     if (!sliderRef.current) return;
-    sliderRef.current.swiper.slideNext();
+    sliderRef.current.slideNext(); // <-- Use slideNext directly
   }, []);
 
   return (
@@ -102,7 +101,7 @@ const RecentlyViewdItems = () => {
           </div>
 
           <Swiper
-            ref={sliderRef}
+            onSwiper={(swiper) => { sliderRef.current = swiper; }} // <-- Set ref here
             slidesPerView={1}
             breakpoints={{
               768: { slidesPerView: 2 },

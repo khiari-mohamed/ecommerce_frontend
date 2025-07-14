@@ -326,7 +326,7 @@ const FloatingActions = ({ onHome, setPreviewDoc }) => {
 const OrderConfirmationClient = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const orderNumber = searchParams.get("orderNumber");
+  const orderNumber = searchParams?.get("orderNumber");
   const [order, setOrder] = useState(null);
   const printRef = useRef(null);
   const [previewDoc, setPreviewDoc] = useState<null | "bon-livraison" | "devis" | "facture-boutique">(null);

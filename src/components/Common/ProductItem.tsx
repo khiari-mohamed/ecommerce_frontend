@@ -122,17 +122,17 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
   }
 
   return (
-    <div className="group">
-      <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-[#F6F7FB] min-h-[270px] mb-4">
+    <div className={"group relative flex flex-col h-full bg-white rounded-md overflow-hidden border transition-all duration-300 hover:border-primary/20 hover:shadow-lg"}>
+      <div className="relative flex items-center justify-center p-2 sm:p-4 aspect-square bg-gray-50">
         {/* Discount badge */}
         {item.price > item.discountedPrice && (
-          <span className="intense-flashing-badge absolute top-2 left-2 z-10 text-xs px-2 py-0.5">
+          <span className="intense-flashing-badge absolute top-2 left-2 z-10 text-xs px-2 py-0.5 bg-[#ef837b] rounded-sm animate-pulse">
             -{Math.round(((item.price - item.discountedPrice) / item.price) * 100)}%
           </span>
         )}
-        <Image src={imageSrc} alt={item.title || item.designation || ""} width={250} height={250} />
+        <Image src={imageSrc} alt={item.title || item.designation || ""} width={250} height={250} className="object-contain h-full w-auto max-w-full transition-all duration-500" />
 
-        <div className="absolute left-0 bottom-0 translate-y-full w-full flex flex-row flex-nowrap items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0 overflow-x-auto">
+        <div className="absolute right-0 bottom-0 translate-x-full w-full flex flex-row flex-nowrap gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0 overflow-x-auto z-20">
           <button
             onClick={() => {
               openModal();
@@ -199,7 +199,7 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
         </div>
       </div>
 
-      <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 mb-2">
+      <div className="flex flex-row flex-nowrap items-center justify-center gap-2 mb-2 mt-2">
         <div className="flex flex-row flex-nowrap items-center gap-1">
           <Image
             src="/images/icons/icon-star.svg"
@@ -240,22 +240,20 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
       </div>
 
       <h3
-        className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5 text-center w-full"
+        className="mb-2.5 text-sm font-medium text-center w-full transition-colors sm:text-base line-clamp-2 group-hover:text-primary"
         onClick={() => handleProductDetails()}
       >
         <Link href={`/product-details?id=${item._id || item.id}`}>{item.title || item.designation || item.designation_fr || "Produit"}</Link>
       </h3>
 
-      
-
-      <span className="flex flex-row flex-nowrap items-center gap-2 font-medium text-lg justify-center">
-        <span className="text-dark">
+      <div className="flex flex-row flex-nowrap items-center justify-center gap-2 mb-3">
+        <span className="text-base font-semibold text-[#EF837B]">
           {Number(item.discountedPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
         </span>
-        <span className="text-dark-4 line-through">
+        <span className="mt-1 text-sm text-gray-400 line-through">
           {Number(item.price).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
         </span>
-      </span>
+      </div>
     </div>
   );
 };

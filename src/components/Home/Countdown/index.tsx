@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import BlogItem from "../../Blog/BlogItem";
 import { getLandingPageBlogs, getBlogs } from "@/services/blog.service";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,6 +11,7 @@ import { Navigation } from "swiper/modules";
 const CountdownBlogGrid = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const swiperRef = useRef<any>(null);
 
   useEffect(() => {
     getLandingPageBlogs().then((data) => {
@@ -26,6 +27,14 @@ const CountdownBlogGrid = () => {
     });
   }, []);
 
+  // Handler for custom mobile navigation
+  const handlePrev = () => {
+    if (swiperRef.current) swiperRef.current.slidePrev();
+  };
+  const handleNext = () => {
+    if (swiperRef.current) swiperRef.current.slideNext();
+  };
+
   return (
     <section className="overflow-hidden py-20 bg-gray-2">
       <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -35,25 +44,51 @@ const CountdownBlogGrid = () => {
         ) : blogs.length === 0 ? (
           <div className="text-center py-10 text-gray-400">Aucun blog à afficher.</div>
         ) : (
-          <Swiper
-            modules={[Navigation]}
-            spaceBetween={24}
-            slidesPerView={4}
-            navigation
-            breakpoints={{
-              0: { slidesPerView: 1 },
-              640: { slidesPerView: 2 },
-              900: { slidesPerView: 3 },
-              1200: { slidesPerView: 4 },
-            }}
-            className="pb-12"
-          >
-            {blogs.map((blog, key) => (
-              <SwiperSlide key={key}>
-                <BlogItem blog={blog} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <div className="relative">
+            <Swiper
+              modules={[Navigation]}
+              spaceBetween={24}
+              slidesPerView={4}
+              navigation
+              breakpoints={{
+                0: { slidesPerView: 1 },
+                640: { slidesPerView: 2 },
+                900: { slidesPerView: 3 },
+                1200: { slidesPerView: 4 },
+              }}
+              className="pb-12"
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+            >
+              {blogs.map((blog, key) => (
+                <SwiperSlide key={key}>
+                  <BlogItem blog={blog} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            {/* Custom mobile nav */}
+            <div className="flex justify-center gap-4 mt-4 sm:hidden">
+              <button
+                aria-label="Previous"
+                onClick={handlePrev}
+                className="w-10 h-4 flex items-center justify-center rounded-full bg-gray-300 hover:bg-[#FF4301] transition-colors duration-200"
+              >
+                <span className="sr-only">Previous</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M10 12L6 8L10 4" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <button
+                aria-label="Next"
+                onClick={handleNext}
+                className="w-10 h-4 flex items-center justify-center rounded-full bg-gray-300 hover:bg-[#FF4301] transition-colors duration-200"
+              >
+                <span className="sr-only">Next</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M6 12L10 8L6 4" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         )}
       </div>
       <style global jsx>{`
@@ -63,6 +98,13 @@ const CountdownBlogGrid = () => {
         }
         .swiper-pagination-bullet-active {
           background: #FF4301;
+        }
+        /* Hide arrows on mobile */
+        @media (max-width: 639px) {
+          .swiper-button-next,
+          .swiper-button-prev {
+            display: none !important;
+          }
         }
       `}</style>
     </section>

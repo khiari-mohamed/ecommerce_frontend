@@ -27,7 +27,7 @@ const HeroCarousal = () => {
             <div className="relative w-full h-[90vh] max-h-screen">
               <div className="absolute inset-0">
                 <img
-                  src="/images/hero/slides/1.jpg"
+                  src="/images/hero/slides/sld1.jpg"
                   alt="slide 1 desktop"
                   className="object-cover w-full h-full"
                 />
@@ -38,7 +38,7 @@ const HeroCarousal = () => {
             <div className="relative w-full h-[90vh] max-h-screen">
               <div className="absolute inset-0">
                 <img
-                  src="/images/hero/slides/slider5.png"
+                  src="/images/hero/slides/sld2.jpg"
                   alt="slide 2 desktop"
                   className="object-cover w-full h-full"
                 />
@@ -49,7 +49,7 @@ const HeroCarousal = () => {
             <div className="relative w-full h-[90vh] max-h-screen">
               <div className="absolute inset-0">
                 <img
-                  src="/images/hero/slides/2.webp"
+                  src="/images/hero/slides/sld3.jpg"
                   alt="slide 3 desktop"
                   className="object-cover w-full h-full"
                 />
@@ -60,7 +60,7 @@ const HeroCarousal = () => {
             <div className="relative w-full h-[90vh] max-h-screen">
               <div className="absolute inset-0">
                 <img
-                  src="/images/hero/slides/3.webp"
+                  src="/images/hero/slides/sld4.jpg"
                   alt="slide 4 desktop"
                   className="object-cover w-full h-full"
                 />

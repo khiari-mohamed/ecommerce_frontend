@@ -10,18 +10,19 @@ const SingleItem = ({ item }: { item: Category }) => {
       className="group flex flex-col items-center"
       passHref
     >
-      <div className="w-[222px] h-[144px] bg-[#F2F3F8] rounded-lg flex items-center justify-center mb-4 overflow-hidden">
+      <div className="w-[150px] h-[150px] rounded-full flex items-center justify-center mb-4 bg-[#FF4500] shadow-lg transition-transform duration-300 group-hover:bounce-custom">
         {item.image?.url ? (
-          <Image
+          <img
             src={item.image.url}
             alt={item.designation}
-            width={222}
-            height={144}
-            className="object-cover w-full h-full"
-            unoptimized={process.env.NODE_ENV !== "production"}
+            width={90}
+            height={90}
+            className="icon-white w-[90px] h-[90px] object-contain"
+            loading="lazy"
+            decoding="async"
           />
         ) : (
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center rounded-full">
             <span className="text-gray-500">Aucune image</span>
           </div>
         )}

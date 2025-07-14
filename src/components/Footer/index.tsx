@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import axios from "@/lib/axios";
 import { toast } from "react-toastify";
+import GoogleReviewsPill from "../GoogleReviewsPill";
 
 const coordonnees = {
   logo: "images/logo/logo.png",
@@ -261,16 +262,20 @@ function Footer() {
               </Link>
             </div>
             <h4 className="font-bold mb-4 mt-6">GÉOLOCALISATION</h4>
-            <div className="map-container w-full rounded overflow-hidden" style={{ minHeight: '180px', height: '180px', maxWidth: '100%' }}>
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3200.2782693572457!2d10.628494814994378!3d35.836371480160744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1302131b30e891b1%3A0x51dae0f25849b20c!2sPROTEINE%20TUNISIE%20(%20PROTEIN%20SOUSSE%20-%20TUNISIE%3A%20Vente%20Proteine%20%C3%A0%20Sousse%2C%20Tunisie)%20SOBITAS!5e0!3m2!1sfr!2stn!4v1693395736857!5m2!1sfr!2stn"
-                width="100%"
-                height="100%"
-                style={{ border: "0", minHeight: '180px', height: '180px', maxWidth: '100%' }}
-                allowFullScreen={true}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
+            <div className="map-container w-full rounded overflow-hidden relative"
+  style={{ height: '250px', width: '100%', maxWidth: '1200px' }}
+>
+            <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3074.4748320799786!2d10.630564999999997!3d35.836349299999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1302131b30e891b1%3A0x51dae0f25849b20c!2sPROTEINE%20TUNISIE%20%E2%80%93%20SOBITAS%20%7C%20Creatine%2C%20Mat%C3%A9riel%20de%20Musculation%20%26%20Whey%20%C3%A0%20Sousse!5e1!3m2!1sfr!2sus!4v1752469342748!5m2!1sfr!2sus"
+            width={800}
+            height={600}
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            />
+            <div className="absolute left-3 bottom-3 z-10 bg-white/95 rounded-lg p-3 shadow flex flex-col gap-1" style={{ maxWidth: 400 }}>
+            </div>
             </div>
           </div>
         </div>

@@ -22,6 +22,7 @@ type ProductReference = {
  * Base SubCategory Reference Type (can be expanded in subCategory.ts)
  */
 type SubCategoryReference = {
+  subCategories(subCategories: any): unknown;
   _id: string;
   designation?: string;
   designation_fr?: string;

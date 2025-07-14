@@ -60,20 +60,22 @@ const SingleItem = ({ item, removeItemFromCart }) => {
   return (
     <div className="flex items-center justify-between gap-5">
       <div className="w-full flex items-center gap-6">
-        <div className="flex items-center justify-center rounded-[10px] bg-gray-3 max-w-[90px] w-full h-22.5">
+        <div className="flex items-center justify-center rounded-[10px] bg-gray-3 max-w-[90px] w-full h-22.5 min-w-[64px] min-h-[64px] sm:min-w-[90px] sm:min-h-[90px]">
           <Image
             src={imgSrc}
             alt="product"
-            width={100}
-            height={100}
+            width={90}
+            height={90}
+            className="object-contain w-[64px] h-[64px] sm:w-[90px] sm:h-[90px] max-w-full max-h-full"
+            priority={false}
           />
         </div>
 
-        <div>
-          <h3 className="font-medium text-dark mb-1 ease-out duration-200 hover:text-blue">
+        <div className="min-w-0">
+          <h3 className="font-medium text-dark mb-1 ease-out duration-200 hover:text-blue text-sm sm:text-base line-clamp-2 break-words">
             <a href="#"> {item.title} </a>
           </h3>
-          <p className="text-custom-sm">
+          <p className="text-xs sm:text-sm">
             Prix: {Number(item.discountedPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
           </p>
         </div>

@@ -85,9 +85,9 @@ const handleKeywordsChange = (keywords: string[]) => {
   return (
     <>
       {/* Mobile filter button and modal */}
-      <div className="block lg:hidden w-full mb-4 flex justify-center">
+      <div className="block lg:hidden w-full mb-4 flex justify-center mt-4">
         <button
-          className="bg-[#FF4301] text-white rounded-md px-8 py-3 text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-[#FF4301]/50"
+          className="bg-[#FF4301] text-white rounded-md px-6 py-2 text-sm sm:text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-[#FF4301]/50"
           onClick={() => setShowSidebar(true)}
         >
           Filtrer
@@ -99,7 +99,7 @@ const handleKeywordsChange = (keywords: string[]) => {
           onClick={() => setShowSidebar(false)}
         >
           <div
-            className="w-full max-w-[95vw] sm:max-w-sm mx-2 bg-white rounded-2xl shadow-lg p-3 sm:p-6 animate-slideInUp max-h-[90vh] overflow-y-auto relative mt-16"
+            className="w-full max-w-[98vw] sm:max-w-sm mx-1 bg-white rounded-2xl shadow-lg p-2 sm:p-4 animate-slideInUp max-h-[92vh] overflow-y-auto relative mt-24"
             onClick={e => e.stopPropagation()}
           >
             <button
@@ -111,16 +111,16 @@ const handleKeywordsChange = (keywords: string[]) => {
               ×
             </button>
             <div className="flex justify-between items-center mb-4 pr-10">
-              <h2 className="text-lg font-bold text-gray-800">Filtrer</h2>
+              <h2 className="text-base sm:text-lg font-bold text-gray-800">Filtrer</h2>
             </div>
             {/* Categories (always open) */}
             <div className="mb-4 border-b border-gray-200">
-              <h3 className="font-semibold text-gray-700 mb-2">Catégories</h3>
+              <h3 className="font-semibold text-gray-700 mb-2 text-xs sm:text-sm">Catégories</h3>
               <ul className="space-y-1">
                 {categories.map(cat => (
                   isPopulatedSubCategory(cat) ? (
                     <li key={cat._id}>
-                      <a href={`/categories/${cat.slug}`} className="block px-2 py-2 rounded hover:bg-blue-50 text-gray-700 font-medium text-base">
+                      <a href={`/categories/${cat.slug}`} className="block px-2 py-2 rounded hover:bg-blue-50 text-gray-700 font-medium text-xs sm:text-base">
                         {cat.designation_fr || cat.name}
                       </a>
                     </li>
@@ -130,12 +130,12 @@ const handleKeywordsChange = (keywords: string[]) => {
             </div>
             {/* Subcategories (always open) */}
             <div className="mb-4 border-b border-gray-200">
-              <h3 className="font-semibold text-gray-700 mb-2">Sous-catégories</h3>
+              <h3 className="font-semibold text-gray-700 mb-2 text-xs sm:text-sm">Sous-catégories</h3>
               <ul className="space-y-1">
                 {categories.flatMap(cat => isPopulatedSubCategory(cat) && Array.isArray(cat.subCategories) ? cat.subCategories : []).map(subcat => (
                   isPopulatedSubCategory(subcat) ? (
                     <li key={subcat._id}>
-                      <a href={`/subcategories/${subcat.slug}`} className="block px-2 py-2 rounded hover:bg-blue-50 text-gray-700 text-base">
+                      <a href={`/subcategories/${subcat.slug}`} className="block px-2 py-2 rounded hover:bg-blue-50 text-gray-700 text-xs sm:text-base">
                         {subcat.designation_fr || subcat.name}
                       </a>
                     </li>
@@ -153,7 +153,7 @@ const handleKeywordsChange = (keywords: string[]) => {
         </div>
       )}
       {/* Desktop sidebar */}
-      <aside className="hidden lg:block w-full lg:w-[320px] xl:w-[360px] flex-shrink-0 bg-white rounded-lg shadow-md p-4 xl:p-6 mb-8 lg:mb-0">
+      <aside className="hidden lg:block w-full lg:w-[320px] xl:w-[360px] flex-shrink-0 bg-white rounded-lg shadow-md p-4 xl:p-6 mb-8 lg:mb-0 mt-8">
         <h2 className="text-lg font-bold mb-4 text-gray-800">Filtrer</h2>
         {/* Categories (always open) */}
         <div className="mb-4 border-b border-gray-200">

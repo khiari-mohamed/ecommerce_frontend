@@ -195,8 +195,10 @@ keywordsData = await keywordsRes.json();
             <div className="border-b border-gray-200 mb-3 sm:mb-4">
               <button className="px-4 sm:px-6 py-2 font-semibold text-gray-700 bg-white rounded-t focus:outline-none">Description</button>
             </div>
-            <div className="prose max-w-none mx-auto text-sm sm:text-base">
-              {subcategory.description_fr ? parse(subcategory.description_fr) : <span className="text-gray-500">Aucune description disponible.</span>}
+            <div className="prose max-w-none mx-auto text-sm sm:text-base leading-relaxed sm:leading-normal">
+              {subcategory.description_fr
+                ? parse(subcategory.description_fr)
+                : <span className="text-gray-500">Aucune description disponible.</span>}
             </div>
           </div>
 
@@ -206,7 +208,7 @@ keywordsData = await keywordsRes.json();
               <div className="border-b border-gray-200 mb-3 sm:mb-4">
                 <button className="px-4 sm:px-6 py-2 font-semibold text-gray-700 bg-white rounded-t focus:outline-none">Valeurs Nutritionnelles</button>
               </div>
-              <div className="prose max-w-none mx-auto text-sm sm:text-base">
+              <div className="prose max-w-none mx-auto text-sm sm:text-base leading-relaxed sm:leading-normal">
                 {parse(subcategory.nutrition_values)}
               </div>
             </div>
@@ -218,7 +220,7 @@ keywordsData = await keywordsRes.json();
               <div className="border-b border-gray-200 mb-3 sm:mb-4">
                 <button className="px-4 sm:px-6 py-2 font-semibold text-gray-700 bg-white rounded-t focus:outline-none">Plus de détails</button>
               </div>
-              <div className="prose max-w-none mx-auto text-sm sm:text-base">
+              <div className="prose max-w-none mx-auto text-sm sm:text-base leading-relaxed sm:leading-normal">
                 {parse(subcategory.more_details)}
               </div>
             </div>

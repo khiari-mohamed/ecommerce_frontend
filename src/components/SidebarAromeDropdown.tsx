@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 
 interface Aroma {
   _id?: string;
@@ -15,12 +15,14 @@ interface SidebarAromeDropdownProps {
 
 const SidebarAromeDropdown: React.FC<SidebarAromeDropdownProps> = ({ aromas, value, onChange }) => {
   return (
-    <div className="mb-4 border-b border-gray-200">
-      <h3 className="font-semibold text-gray-700 mb-2 text-base sm:text-sm">Arômes</h3>
+    <div className="mb-4 border-b border-gray-200 w-full max-w-full px-0 sm:px-1 overflow-x-auto">
+      <h3 className="font-semibold text-gray-700 mb-2 text-xs sm:text-sm md:text-base">
+        Arômes
+      </h3>
       <div className="w-full min-w-0">
         <select
           id="arome-select"
-          className="block w-full min-w-0 px-2 py-1.5 rounded-md border border-gray-300 bg-white text-gray-900 text-sm sm:text-xs shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+          className="block w-full max-w-full min-w-0 px-1 py-0.5 rounded border border-gray-300 bg-white text-gray-900 text-xs sm:text-sm md:text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
           value={value}
           onChange={e => onChange(e.target.value)}
           aria-label="Arômes"

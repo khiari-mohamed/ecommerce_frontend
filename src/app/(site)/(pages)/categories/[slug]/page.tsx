@@ -2,10 +2,7 @@ import { notFound } from 'next/navigation';
 import { getCategoryBySlug } from '@/services/categories';
 import { getAllSubCategories } from '@/services/subcategories';
 import { getProductListPage } from '@/services/products';
-import ProductSlider from '@/components/ProductSlider';
-import SubcategoryList from '@/components/Subcategory/SubcategoryList';
-import parse from 'html-react-parser';
-import Image from 'next/image';
+import CategoriesClient from '@/components/CategoriesClient';
 import React from 'react';
 
 // Accept params as Promise<any> to match the broken .next/types
@@ -37,103 +34,85 @@ export default async function CategoryPage({ params }: { params: Promise<any> })
       (subcat) => String(subcat.categorie_id) === String(category.id)
     );
 
+    // Fetch all categories (with subcategories) for sidebar navigation
+    let categories = [];
+    try {
+      const res = await (await import('@/lib/axios')).default.get('/categories?populate=subcategories');
+      categories = res.data?.data || res.data || [];
+    } catch {}
+
+    // Fetch brands
+    let brands: any[] = [];
+    try {
+      const res = await (await import('@/lib/axios')).default.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands`);
+      if (Array.isArray(res.data)) {
+        brands = res.data;
+      } else if (res.data && Array.isArray(res.data.data)) {
+        brands = res.data.data;
+      }
+    } catch {}
+
+    // Fetch aromas
+    let aromas: any[] = [];
+    try {
+      const res = await (await import('@/lib/axios')).default.get('/aromas');
+      if (Array.isArray(res.data)) {
+        aromas = res.data;
+      } else if (res.data && Array.isArray(res.data.aromas)) {
+        aromas = res.data.aromas;
+      }
+    } catch {}
+
+    // Fetch keywords
+    let keywordsData = [];
+    try {
+      const keywordsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/keywords`, { cache: 'no-store' });
+      keywordsData = await keywordsRes.json();
+    } catch {}
+
     const { products: allProducts } = await getProductListPage("limit=1000");
     const subcategoryIds = subcategories.map(sub => String(sub.id));
-
-    const products = allProducts.filter(prod =>
-      prod.sous_categorie_id && subcategoryIds.includes(String(prod.sous_categorie_id))
-    );
+    
+    // Prefer category.products if populated, else filter allProducts or fetch with brand filter
+    let products: any[] = [];
+    const { isPopulatedProduct } = await import('@/types/category');
+    // Extract brandId from resolvedParams (URL query)
+    let brandId = '';
+    if (typeof resolvedParams === 'object' && resolvedParams.brand) {
+      brandId = resolvedParams.brand;
+    }
+    if (Array.isArray(category.products) && category.products.length > 0 && isPopulatedProduct(category.products[0])) {
+      products = (category.products as any[]).filter(isPopulatedProduct);
+    } else if (brandId) {
+      const axios = (await import('@/lib/axios')).default;
+      let url = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/products?sous_categorie_id=${subcategoryIds.join(',')}&brand=${brandId}`;
+      console.log('API URL:', url);
+      const res = await axios.get(url);
+      console.log('API Response:', res.data);
+      products = res.data?.data?.products || [];
+    } else {
+      products = allProducts.filter(prod =>
+        prod.sous_categorie_id && subcategoryIds.includes(String(prod.sous_categorie_id))
+      );
+    }
+    // Normalize product names: use title as fallback for name
+    products = products.map(prod => ({
+      ...prod,
+      designation_fr: prod.designation_fr || prod.designation || prod.title || prod.name,
+      designation: prod.designation || prod.title || prod.name || prod.designation_fr,
+      name: prod.name || prod.title || prod.designation || prod.designation_fr
+    }));
 
     return (
-      <>
-        {/* Header offset for mobile/desktop, matches brands page */}
-        {typeof window !== 'undefined' && (() => {
-          function ClientHeaderOffset() {
-            React.useEffect(() => {
-              function setOffset() {
-                const header = document.querySelector('header');
-                if (header) {
-                  const rect = header.getBoundingClientRect();
-                  document.documentElement.style.setProperty('--header-offset', rect.height + 'px');
-                } else {
-                  document.documentElement.style.setProperty('--header-offset', '140px');
-                }
-              }
-              setOffset();
-              window.addEventListener('resize', setOffset);
-              return () => window.removeEventListener('resize', setOffset);
-            }, []);
-            return null;
-          }
-          return <ClientHeaderOffset />;
-        })()}
-        <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8" style={{ paddingTop: 'var(--header-offset, 140px)' }}>
-          <div className="mb-8 sm:mb-12 relative rounded-2xl shadow-2xl bg-gradient-to-br from-blue-50 via-white to-gray-100 overflow-hidden">
-            {category.cover && (
-              <div className="absolute inset-0 z-0">
-                <Image
-                  src={category.cover || '/default-cover.jpg'}
-                  alt={category.designation_fr || category.designation || 'Category'}
-                  width={1200}
-                  height={400}
-                  className="w-full h-full object-cover opacity-40 blur-[2px] scale-105"
-                  fetchPriority="high"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent" />
-              </div>
-            )}
-            <div className="relative z-10 p-4 sm:p-8 flex flex-col items-center justify-center">
-              <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-blue-900 drop-shadow-lg mb-3 tracking-tight text-center break-words">
-                {category.designation_fr || category.designation}
-              </h1>
-              {category.description_fr && (
-                <div className="prose max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-none text-center text-gray-700 mb-2 mx-auto !text-[15px] sm:!text-base !leading-tight">
-                  {parse(category.description_fr)}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div id="products" className="mb-16 animate-fade-in">
-            <h2 className="text-3xl font-bold mb-8 text-blue-800 tracking-tight flex items-center gap-2">
-              <svg className="w-7 h-7 text-blue-400 drop-shadow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2" /><rect x="14" y="3" width="7" height="7" rx="2" /><rect x="14" y="14" width="7" height="7" rx="2" /><rect x="3" y="14" width="7" height="7" rx="2" /></svg>
-              Produits
-            </h2>
-            {products.length > 0 ? (
-              <ProductSlider products={products} />
-            ) : (
-              <div className="flex flex-col items-center justify-center py-24 text-center bg-white/80 rounded-xl shadow-inner border border-dashed border-blue-100">
-                <svg className="w-16 h-16 text-blue-200 mb-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M8 12h8M12 8v8" /></svg>
-                <p className="text-xl text-gray-400 font-medium">Aucun produit dans cette catégorie</p>
-              </div>
-            )}
-          </div>
-
-          {subcategories && subcategories.length > 0 && (
-            <div className="mb-12">
-              <div className="bg-white/80 rounded-xl shadow-lg p-6 border border-blue-100">
-                <SubcategoryList subcategories={subcategories} />
-              </div>
-            </div>
-          )}
-
-          {category.nutrition_values && (
-            <div className="mb-8 bg-gradient-to-br from-blue-50 via-white to-gray-100 rounded-xl shadow-lg p-8 border border-blue-100">
-              <h2 className="text-2xl font-semibold mb-4 text-blue-700">Valeurs Nutritionnelles</h2>
-              <div className="prose max-w-none">
-                {parse(category.nutrition_values)}
-              </div>
-            </div>
-          )}
-
-          {category.more_details && (
-            <div className="prose max-w-none bg-white/80 rounded-xl shadow p-8 border border-blue-100">
-              {parse(category.more_details)}
-            </div>
-          )}
-        </div>
-      </>
+      <CategoriesClient
+        category={category}
+        subcategories={subcategories}
+        products={products}
+        categories={categories}
+        brands={brands}
+        aromas={aromas}
+        keywordsData={keywordsData}
+      />
     );
   } catch (err) {
     console.error('Category page error:', err);

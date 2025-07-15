@@ -3,6 +3,7 @@ import SidebarAromeDropdown from '@/components/SidebarAromeDropdown';
 import SidebarBrandDropdown from '@/components/SidebarBrandDropdown';
 import SidebarKeywords from '@/components/SidebarKeywords';
 import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // Helper moved here because you can't pass functions from server to client
 function isPopulatedSubCategory(cat: any) {
@@ -19,8 +20,54 @@ export default function SubcategoryFiltersClient({
   aromas: any[];
 }) {
   const [showSidebar, setShowSidebar] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialBrandId = searchParams?.get('brand') || '';
+  const [selectedBrand, setSelectedBrand] = useState(initialBrandId);
+  const initialArome = searchParams?.get('arome') || '';
+  const [selectedArome, setSelectedArome] = useState(initialArome);
+  const initialKeywords = (searchParams?.get('keywords') || '').split(',').filter(Boolean);
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>(initialKeywords);
 
-  // Close modal on Escape key and prevent background scroll
+  // Update URL when brand changes
+  const handleBrandChange = (brandId: string) => {
+  setSelectedBrand(brandId);
+  const params = new URLSearchParams(Array.from((searchParams?.entries() ?? [])));
+  if (brandId) {
+  params.set('brand', brandId);
+  params.delete('brand_id'); // Remove old param if present
+  } else {
+  params.delete('brand');
+  params.delete('brand_id');
+  }
+  router.replace(`?${params.toString()}`);
+  };
+  
+  // Update URL when aroma changes
+  const handleAromeChange = (arome: string) => {
+  setSelectedArome(arome);
+  const params = new URLSearchParams(Array.from((searchParams?.entries() ?? [])));
+  if (arome) {
+  params.set('arome', arome);
+  } else {
+  params.delete('arome');
+  }
+  router.replace(`?${params.toString()}`);
+  };
+
+  // Update URL when keywords change
+const handleKeywordsChange = (keywords: string[]) => {
+  setSelectedKeywords(keywords);
+  const params = new URLSearchParams(Array.from((searchParams?.entries() ?? [])));
+  if (keywords.length > 0) {
+    params.set('keywords', keywords.join(','));
+  } else {
+    params.delete('keywords');
+  }
+  router.replace(`?${params.toString()}`);
+};
+
+// Close modal on Escape key and prevent background scroll
   useEffect(() => {
     if (!showSidebar) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -52,7 +99,7 @@ export default function SubcategoryFiltersClient({
           onClick={() => setShowSidebar(false)}
         >
           <div
-            className="w-full max-w-[95vw] sm:max-w-sm mx-2 bg-white rounded-2xl shadow-lg p-3 sm:p-6 animate-slideInUp max-h-[90vh] overflow-y-auto relative mt-10"
+            className="w-full max-w-[95vw] sm:max-w-sm mx-2 bg-white rounded-2xl shadow-lg p-3 sm:p-6 animate-slideInUp max-h-[90vh] overflow-y-auto relative mt-16"
             onClick={e => e.stopPropagation()}
           >
             <button
@@ -97,11 +144,11 @@ export default function SubcategoryFiltersClient({
               </ul>
             </div>
             {/* Fabricants (dynamic dropdown, client component) */}
-            <SidebarBrandDropdown brands={brands} />
+            <SidebarBrandDropdown brands={brands} value={selectedBrand} onChange={handleBrandChange} />
             {/* Arômes (selectable dropdown, dynamic, client component) */}
-            <SidebarAromeDropdown aromas={aromas} />
+            <SidebarAromeDropdown aromas={aromas} value={selectedArome} onChange={handleAromeChange} />
             {/* Mots clés (dynamic keywords filter) */}
-            <SidebarKeywords />
+            <SidebarKeywords value={selectedKeywords} onChange={handleKeywordsChange} />
           </div>
         </div>
       )}
@@ -139,11 +186,11 @@ export default function SubcategoryFiltersClient({
           </ul>
         </div>
         {/* Fabricants (dynamic dropdown, client component) */}
-        <SidebarBrandDropdown brands={brands} />
+        <SidebarBrandDropdown brands={brands} value={selectedBrand} onChange={handleBrandChange} />
         {/* Arômes (selectable dropdown, dynamic, client component) */}
-        <SidebarAromeDropdown aromas={aromas} />
+        <SidebarAromeDropdown aromas={aromas} value={selectedArome} onChange={handleAromeChange} />
         {/* Mots clés (dynamic keywords filter) */}
-        <SidebarKeywords />
+        <SidebarKeywords value={selectedKeywords} onChange={handleKeywordsChange} />
       </aside>
     </>
   );

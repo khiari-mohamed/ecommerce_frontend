@@ -1,12 +1,10 @@
 import { notFound } from 'next/navigation';
 import { SubCategory } from '@/types/subcategory';
-import { isPopulatedProduct, isPopulatedSubCategory } from '@/types/category';
+//import { isPopulatedProduct, isPopulatedSubCategory } from '@/types/category';
 import axios from '@/lib/axios';
 import parse from 'html-react-parser';
 import Image from 'next/image';
-import SidebarAromeDropdown from '@/components/SidebarAromeDropdown';
-import SidebarBrandDropdown from '@/components/SidebarBrandDropdown';
-import SidebarKeywords from "@/components/SidebarKeywords";
+import { Metadata } from "next";
 import SubcategoryProductCard from "@/components/SubcategoryProductCard";
 import SubcategoryFiltersClient from "@/components/SubcategoryFiltersClient";
 async function getSubCategoryBySlug(slug: string): Promise<SubCategory | null> {
@@ -23,7 +21,6 @@ async function getSubCategoryBySlug(slug: string): Promise<SubCategory | null> {
   }
 }
 
-import { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<any> }) {
   const resolvedParams = await params;
@@ -45,8 +42,12 @@ export async function generateMetadata({ params }: { params: Promise<any> }) {
   }
 }
 
-export default async function SubcategoryPage({ params }: { params: Promise<any> }) {
+import { cookies } from 'next/headers';
+import { useSearchParams } from 'next/navigation';
+
+export default async function SubcategoryPage({ params, searchParams }: { params: Promise<any>, searchParams?: Promise<any> }) {
   const resolvedParams = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : {};
   const slug = resolvedParams.slug;
   if (!slug) notFound();
   const subcategory = await getSubCategoryBySlug(slug);
@@ -89,10 +90,59 @@ export default async function SubcategoryPage({ params }: { params: Promise<any>
   // Fetch products for the subcategory dynamically
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   let products: any[] = [];
+  let brandId = '';
+  let arome = '';
+  let keywordsParam: string[] = [];
+  let keywordsData: any[] = [];
+  if (typeof window === 'undefined') {
+    // On server, get brand/arome/keywords from resolvedSearchParams if available
+    if (resolvedSearchParams && resolvedSearchParams.brand) {
+      brandId = resolvedSearchParams.brand;
+    } else {
+      const cookieStore = cookies();
+      brandId = (await cookieStore).get('brand')?.value || '';
+    }
+    if (resolvedSearchParams && resolvedSearchParams.arome) {
+      arome = resolvedSearchParams.arome;
+    } else {
+      const cookieStore = cookies();
+      arome = (await cookieStore).get('arome')?.value || '';
+    }
+    if (resolvedSearchParams && resolvedSearchParams.keywords) {
+      keywordsParam = String(resolvedSearchParams.keywords).split(',').filter(Boolean);
+    } else {
+      const cookieStore = cookies();
+      const kw = (await cookieStore).get('keywords')?.value || '';
+      keywordsParam = kw.split(',').filter(Boolean);
+    }
+  }
   try {
-   const subcatId = subcategory?.id; // Use the string id, not the slug
-const res = await axios.get(`${API_URL}/products?sous_categorie_id=${subcatId}`);
-products = res.data?.data?.products || [];
+    // Fetch keywords data
+    const keywordsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/keywords`, { cache: 'no-store' });
+keywordsData = await keywordsRes.json();
+    const subcatId = subcategory?.id; // Use the string id, not the slug
+    let url = `${API_URL}/products?sous_categorie_id=${subcatId}`;
+    if (brandId) {
+      url += `&brand=${brandId}`;
+    }
+    // Do NOT filter by aroma or keywords in the backend
+    const res = await axios.get(url);
+    products = res.data?.data?.products || [];
+    // Client-side aroma filter
+    if (arome) {
+      products = products.filter(
+        (product: any) => Array.isArray(product.aroma_ids) && product.aroma_ids.includes(arome)
+      );
+    }
+    // Client-side keywords filter
+    if (keywordsParam.length > 0 && keywordsData.length > 0) {
+      const allowedProductIds = new Set(
+        keywordsData
+          .filter((kw: any) => keywordsParam.includes(kw.keyword))
+          .flatMap((kw: any) => kw.product_ids)
+      );
+      products = products.filter((product: any) => allowedProductIds.has(String(product.id)));
+    }
   } catch {
     products = [];
   }

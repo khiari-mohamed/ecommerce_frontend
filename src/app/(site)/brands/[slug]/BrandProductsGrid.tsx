@@ -36,7 +36,7 @@ const BrandProductGrid: React.FC<BrandProductGridProps> = ({ products }) => {
               brand: product.brand_id,
               reviews: product.reviews ?? [],
             };
-            return <ProductCard key={product._id} product={mappedProduct} typeRef={"shop-details?slug"} />;
+            return <ProductCard key={product._id} product={mappedProduct} typeRef={"products"} />;
           })}
         </div>
       )}

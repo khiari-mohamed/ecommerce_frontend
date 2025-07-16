@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import axios from "@/lib/axios";
 import BrandProductGrid from "./BrandProductsGrid";
+import BrandClient from "./BrandClient";
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
@@ -54,6 +55,9 @@ export default async function BrandPage({
 
   let brand: Brand | null = null;
   let products: any[] = [];
+  let categories: any[] = [];
+  let brands: any[] = [];
+  let aromas: any[] = [];
   try {
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(slug)}`
@@ -64,62 +68,33 @@ export default async function BrandPage({
         `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/products?brand=${brand.id}`
       );
       products = Array.isArray(prodRes.data?.data?.products) ? prodRes.data.data.products : [];
+      // Fetch categories
+      const catRes = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/categories`
+      );
+      categories = Array.isArray(catRes.data) ? catRes.data : [];
+      // Fetch brands
+      const brandsRes = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands`
+      );
+      brands = Array.isArray(brandsRes.data) ? brandsRes.data : [];
+      // Fetch aromas
+      const aromasRes = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/aromas`
+      );
+      aromas = Array.isArray(aromasRes.data) ? aromasRes.data : [];
     }
   } catch {
     brand = null;
     products = [];
+    categories = [];
+    brands = [];
+    aromas = [];
   }
 
   if (!brand) {
     notFound();
   }
 
-  // Minimal ClientHeaderOffset implementation
-  function ClientHeaderOffset() {
-    React.useEffect(() => {
-      function setOffset() {
-        // Dynamically measure the header height
-        const header = document.querySelector('header');
-        if (header) {
-          const rect = header.getBoundingClientRect();
-          document.documentElement.style.setProperty('--header-offset', rect.height + 'px');
-        } else {
-          // fallback
-          document.documentElement.style.setProperty('--header-offset', '70px');
-        }
-      }
-      setOffset();
-      window.addEventListener('resize', setOffset);
-      return () => window.removeEventListener('resize', setOffset);
-    }, []);
-    return null;
-  }
-
-  return (
-  <>
-  {/* Adaptive header offset for mobile - handled in client component */}
-  <ClientHeaderOffset />
-  <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-8" style={{ paddingTop: 'var(--header-offset, 70px)' }}>
-  <div className="flex flex-col items-center">
-  <Image
-  src={`/images/brand/${brand.logo}`}
-  alt={brand.designation_fr}
-  width={128}
-  height={128}
-  className="w-24 h-24 md:w-32 md:h-32 object-contain mb-4"
-  />
-  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center break-words">
-  <Link href={`/brands/${encodeURIComponent(brand.slug)}`}>{brand.designation_fr}</Link>
-  </h1>
-  {brand.description_fr && (
-  <div
-  className="prose prose-blue max-w-none text-gray-700 text-center mb-4"
-  dangerouslySetInnerHTML={{ __html: brand.description_fr }}
-  />
-  )}
-  </div>
-  <BrandProductGrid products={products} />
-  </div>
-  </>
-  );
-  }
+  return <BrandClient brand={brand} products={products} categories={categories} brands={brands} aromas={aromas} />;
+}

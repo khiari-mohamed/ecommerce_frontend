@@ -102,16 +102,29 @@ const ProductCard = memo(
 
     const isMobile = useIsMobile();
 
-    const reviewsCount = product?.reviews?.length || 0;
-    const totalRating = product?.reviews?.reduce(
-      (sum, review) => sum + review.rating,
-      0
-    ) ?? 0;
-
-    const averageRating =
-      reviewsCount > 0
-        ? Math.round((totalRating / reviewsCount) * 2) / 2
-        : 0;
+    // --- FAKE REVIEWS LOGIC (like subcategory) ---
+    function getFakeReviewData(id: string | number) {
+      const hash = typeof id === "string"
+        ? id.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0)
+        : Number(id);
+      const reviewsCount = 8 + (hash % 113); // 8 to 120
+      const stars = 3 + (hash % 3); // 3 to 5 stars
+      return { reviewsCount, stars };
+    }
+    let reviewsCount = product?.reviews?.length || 0;
+    let averageRating = 0;
+    if (reviewsCount > 0) {
+      const totalRating = product?.reviews?.reduce(
+        (sum, review) => sum + review.rating,
+        0
+      ) ?? 0;
+      averageRating = Math.round((totalRating / reviewsCount) * 2) / 2;
+    } else {
+      // Use fake data if no real reviews
+      const fake = getFakeReviewData(product._id || product.id || product.designation || product.slug || "");
+      reviewsCount = fake.reviewsCount;
+      averageRating = fake.stars;
+    }
 
     const calculateDiscount = () => {
       if (product?.discountPercentage) return product.discountPercentage;
@@ -295,12 +308,13 @@ const ProductCard = memo(
               )}
             </div>
 
-            <div className="flex flex-row flex-nowrap items-center justify-center mb-3">
+            <div className="flex flex-row flex-nowrap items-center justify-center mb-3 min-h-[32px] min-w-[80px] w-full">
               <Rate
                 value={averageRating}
                 disabled
                 allowHalf
                 className="text-xs sm:text-sm custom-rate"
+                count={5}
               />
               <span className="ml-2 text-xs text-gray-400">
                 ({reviewsCount})

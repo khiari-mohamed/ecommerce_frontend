@@ -1,4 +1,4 @@
-
+/*
 export interface Brand {
   id: string;      // <-- Add this for backend filtering
   name: string;
@@ -34,4 +34,4 @@ export const brands: Brand[] = [
   { id: "61", name: "Brand 25", image: "/images/brand/25.webp", slug: "brand-25" },
   { id: "62", name: "Brand 26", image: "/images/brand/26.webp", slug: "brand-26" },
   { id: "63", name: "Brand 27", image: "/images/brand/27.webp", slug: "brand-27" },
-];
+];*/

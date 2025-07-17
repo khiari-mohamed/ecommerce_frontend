@@ -13,6 +13,7 @@ import BrandSection from "@/components/Home/BrandSection";
 import StaticVenteFlash from "../StaticVenteFlash/StaticVenteFlash";
 import { getVenteFlashList } from "@/services/venteFlash";
 import HeroFeature from "./Hero/HeroFeature";
+import TopPromotionSection from "./TopPromotion";
 
 
 const Home = () => {
@@ -26,6 +27,7 @@ const Home = () => {
     <main>
       <Hero />
       <Categories />
+      <TopPromotionSection />
        <BestSeller />
         <NewArrival />
       <StaticVenteFlash products={ventesFlash} />

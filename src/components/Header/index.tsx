@@ -441,14 +441,31 @@ const Header = () => {
             <nav>
               <ul className="flex xl:items-center flex-col xl:flex-row gap-5 xl:gap-6">
               {menuData.map((menuItem, i) => menuItem.submenu ? (
-              <Dropdown key={`static-${i}`} menuItem={menuItem} stickyMenu={stickyMenu} />
-              ) : (
-              <li key={`static-${i}`} className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full ">
-              {menuItem.path && (
-                <Link href={menuItem.path as string} className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center ${stickyMenu ? "xl:py-4" : "xl:py-6"}`}>{menuItem.title}{menuItem.showBadge && (<span className="intense-flashing-badge text-xs px-1 py-0.5" style={{ fontSize: '0.65rem', position: 'relative', top: '-4px' }}>Limitée!</span>)}</Link>
-              )}
-              </li>
-              ))}
+  menuItem.title === "Boutique" ? (
+    <Dropdown
+      key={`static-${i}`}
+      menuItem={menuItem}
+      stickyMenu={stickyMenu}
+      categories={categories}
+      loadingCategories={loadingCategories}
+    />
+  ) : (
+    <Dropdown key={`static-${i}`} menuItem={menuItem} stickyMenu={stickyMenu} />
+  )
+) : (
+  <li key={`static-${i}`} className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full ">
+    {menuItem.path && (
+      <Link href={menuItem.path as string} className={`hover:text-blue text-base xl:text-lg font-medium text-dark flex items-center justify-center px-4 xl:px-7 ${stickyMenu ? "xl:py-4" : "xl:py-5"} transition-all duration-150 relative`}>{menuItem.title}{menuItem.showBadge && (
+        <span
+          className="intense-flashing-badge px-1 py-0.5 text-[0.60rem] leading-none font-bold bg-[#FF4500] text-white rounded absolute top-1 -right-3 shadow-md border border-white z-10 animate-pulse"
+          style={{ minWidth: '1.2rem', minHeight: '1rem', boxShadow: '0 2px 8px rgba(255,69,0,0.18)' }}
+        >
+          Limitée!
+        </span>
+      )}</Link>
+    )}
+  </li>
+))}
               </ul>
             </nav>
           </div>

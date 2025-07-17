@@ -76,79 +76,16 @@ export const menuData: Menu[] = [
   },
   {
     id: 6,
-    title: "Pages",
+    title: "Marques",
     newTab: false,
-    path: "/",
-    submenu: [
-      {
-        id: 61,
-        title: "Boutique avec barre latérale",
-        newTab: false,
-        path: "/shop-with-sidebar",
-        showBadge: undefined
-      },
-      {
-        id: 62,
-        title: "Boutique sans barre latérale",
-        newTab: false,
-        path: "/shop-without-sidebar",
-        showBadge: undefined
-      },
- 
-      {
-        id: 65,
-        title: "Panier",
-        newTab: false,
-        path: "/cart",
-        showBadge: undefined
-      },
-      {
-        id: 70,
-        title: "Contact",
-        newTab: false,
-        path: "/contact",
-        showBadge: undefined
-      },
-     
-     
-    ],
+    path: "/brands",
     showBadge: undefined
   },
   {
     id: 7,
     title: "Blogs",
     newTab: false,
-    path: "/",
-    submenu: [
-      {
-        id: 71,
-        title: "Blog grille avec barre latérale",
-        newTab: false,
-        path: "/blogs/blog-grid-with-sidebar",
-        showBadge: undefined
-      },
-      {
-        id: 72,
-        title: "Blog grille",
-        newTab: false,
-        path: "/blogs/blog-grid",
-        showBadge: undefined
-      },
-      {
-        id: 73,
-        title: "Détails du blog avec barre latérale",
-        newTab: false,
-        path: "/blogs/blog-details-with-sidebar",
-        showBadge: undefined
-      },
-      {
-        id: 74,
-        title: "Détails du blog",
-        newTab: false,
-        path: "/blogs/blog-details",
-        showBadge: undefined
-      },
-    ],
+    path: "/blogs/blog-grid",
     showBadge: undefined
   },
 ];

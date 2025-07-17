@@ -1,11 +1,36 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, RefObject } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-const Dropdown = ({ menuItem, stickyMenu }) => {
+interface Subcategory {
+  designation_fr: string;
+  _id: string;
+  slug: string;
+  name: string;
+}
+
+interface Category {
+  designation_fr: any;
+  _id: string;
+  slug: string;
+  name: string;
+  subCategories?: Subcategory[];
+  designation: string;
+}
+
+interface DropdownProps {
+  menuItem: any;
+  stickyMenu: boolean;
+  categories?: Category[];
+  loadingCategories?: boolean;
+}
+
+const Dropdown = ({ menuItem, stickyMenu, categories = [], loadingCategories = false }: DropdownProps) => {
   const [dropdownToggler, setDropdownToggler] = useState(false);
   const [desktopOpen, setDesktopOpen] = useState(false);
   const pathUrl = usePathname();
+  // Use correct ref type for each dropdown variant
+  const megaMenuRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
   const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -40,6 +65,9 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
     }
   };
 
+  // Mega menu for "Boutique"
+  const isBoutique = menuItem.title === "Boutique";
+
   return (
     <li
       className={`group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full ${
@@ -50,9 +78,7 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
     >
       <a
         href="#"
-        className={`hover:text-blue text-custom-sm font-medium text-dark flex items-center gap-1.5 capitalize ${
-          stickyMenu ? "xl:py-4" : "xl:py-6"
-        } ${pathUrl && pathUrl.includes(menuItem.title) && "!text-blue"}`}
+        className={`hover:text-blue text-base xl:text-lg font-medium text-dark flex items-center justify-center px-4 xl:px-7 ${stickyMenu ? "xl:py-4" : "xl:py-5"} transition-all duration-150 ${pathUrl && pathUrl.includes(menuItem.title) ? "!text-blue" : ""}`}
         onClick={e => { e.preventDefault(); setDropdownToggler(!dropdownToggler); }}
       >
         {menuItem.title}
@@ -73,38 +99,99 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
         </svg>
       </a>
 
-      {/* <!-- Dropdown Start --> */}
-      <ul
-        ref={dropdownRef}
-        className={`dropdown w-full sm:w-[95vw] md:w-[420px] xl:w-[193px] 
-          ${dropdownToggler ? 'flex max-h-[350px] overflow-y-auto opacity-100 translate-y-0 xl:hidden' : 'hidden opacity-0 -translate-y-2'}
-          ${desktopOpen ? 'xl:flex xl:opacity-100 xl:translate-y-0' : 'xl:hidden xl:opacity-0 xl:-translate-y-2'}
-          xl:absolute xl:left-0 xl:top-full xl:mt-2 xl:shadow-lg xl:rounded-md xl:min-w-[180px] xl:z-[10030]`}
-        style={{ minWidth: '0' }}
-      >
-        {/* Mobile close button */}
-        <button
-          className="header-mobile-close xl:hidden absolute top-2 right-2 z-10 bg-gray-200 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center text-2xl"
-          aria-label="Fermer le menu"
-          type="button"
-          onClick={() => setDropdownToggler(false)}
+      {/* Mega Menu for Boutique */}
+      {isBoutique ? (
+        <div
+          ref={megaMenuRef}
+          className={`fixed left-0 top-0 w-screen h-screen z-[99999] bg-white bg-opacity-95 transition-all duration-300 ease-in-out xl:flex hidden ${desktopOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+          style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.10)', overflowY: 'auto' }}
         >
-          &times;
-        </button>
-        {menuItem.submenu.map((item, i) => (
-          <li key={i}>
-            <Link
-              href={item.path}
-              className={`flex text-custom-sm hover:text-blue hover:bg-gray-1 py-[7px] px-4.5 ${
-                pathUrl && pathUrl === item.path && "text-blue bg-gray-1"
-              } `}
-              onClick={() => setDropdownToggler(false)}
-            >
-              {item.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
+          <div
+            className="w-full max-w-[1300px] mx-auto grid grid-cols-7 gap-4 py-12 px-4"
+            style={{ alignItems: 'flex-start' }}
+          >
+            {/* Render categories as columns */}
+            {loadingCategories ? (
+              <div className="text-gray-500">Chargement...</div>
+            ) : categories && categories.length > 0 ? (
+              categories.map((cat) => (
+                <div key={cat._id} className="min-w-[180px] max-w-[220px] mr-8">
+                  <Link
+                    href={`/categories/${cat.slug}`}
+                    className="font-bold text-base mb-2 block transition-colors"
+                    style={{ color: '#FF4500' }}
+                  >
+                    <span className="group/category block px-1 py-1 rounded cursor-pointer transition-colors hover:bg-[#FFF1E6]" style={{ color: '#FF4500' }}>
+                      {cat.designation_fr || cat.name}
+                    </span>
+                  </Link>
+                  {cat.subCategories && cat.subCategories.length > 0 && (
+                    <ul className="pl-0">
+                      {cat.subCategories.map((subcat) => (
+                        <li key={subcat._id} className="py-1 px-2 cursor-pointer hover:bg-[#FF4500] hover:text-white text-sm text-gray-700 rounded transition">
+                          <Link href={`/subcategories/${subcat.slug}`}>{subcat.designation_fr || subcat.name}</Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))
+            ) : null}
+            {/* Last column: static links from menuItem.submenu */}
+            <div className="min-w-[220px] max-w-[260px]">
+              <Link
+                href={menuItem.path || "/shop-with-sidebar"}
+                className="font-bold text-base mb-2 block transition-colors"
+                style={{ color: '#FF4500' }}
+              >
+                <span className="group/category block px-1 py-1 rounded cursor-pointer transition-colors hover:bg-[#FFF1E6]" style={{ color: '#FF4500' }}>
+                  Boutique
+                </span>
+              </Link>
+              <ul className="pl-0">
+                {menuItem.submenu && menuItem.submenu.map((item, i) => (
+                  <li key={i} className="py-1 px-2 cursor-pointer hover:bg-[#FF4500] hover:text-white text-sm text-gray-700 rounded transition">
+                    <Link href={item.path}>{item.title}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      ) : (
+        // Default dropdown for other menu items
+        <ul
+          ref={dropdownRef}
+          className={`dropdown w-full sm:w-[95vw] md:w-[420px] xl:w-[193px] 
+            ${dropdownToggler ? 'flex max-h-[350px] overflow-y-auto opacity-100 translate-y-0 xl:hidden' : 'hidden opacity-0 -translate-y-2'}
+            ${desktopOpen ? 'xl:flex xl:opacity-100 xl:translate-y-0' : 'xl:hidden xl:opacity-0 xl:-translate-y-2'}
+            xl:absolute xl:left-0 xl:top-full xl:mt-2 xl:shadow-lg xl:rounded-md xl:min-w-[180px] xl:z-[10030]`}
+          style={{ minWidth: '0' }}
+        >
+          {/* Mobile close button */}
+          <button
+            className="header-mobile-close xl:hidden absolute top-2 right-2 z-10 bg-gray-200 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center text-2xl"
+            aria-label="Fermer le menu"
+            type="button"
+            onClick={() => setDropdownToggler(false)}
+          >
+            &times;
+          </button>
+          {menuItem.submenu.map((item, i) => (
+            <li key={i}>
+              <Link
+                href={item.path}
+                className={`flex text-custom-sm hover:text-blue hover:bg-gray-1 py-[7px] px-4.5 ${
+                  pathUrl && pathUrl === item.path && "text-blue bg-gray-1"
+                } `}
+                onClick={() => setDropdownToggler(false)}
+              >
+                {item.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </li>
   );
 };

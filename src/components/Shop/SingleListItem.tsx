@@ -1,4 +1,3 @@
-
 "use client";
 import React from "react";
 import { Product } from "@/types/product";
@@ -77,13 +76,13 @@ const SingleListItem = ({ item }: { item: Product }) => {
   return (
     <div className="group rounded-lg bg-white shadow-1">
       <div className="flex">
-        <div className="shadow-list relative overflow-hidden flex items-center justify-center max-w-[270px] w-full sm:min-h-[270px] p-4">
+        <div className="shadow-list relative overflow-hidden flex items-center justify-center max-w-[270px] w-full min-h-[180px] aspect-square p-4">
           <Image
             src={getProductImageSrc(item)}
             alt={item.designation || item.title || "Product image"}
             width={250}
             height={250}
-            className="object-contain h-full"
+            className="w-full h-full object-contain"
             priority={false}
           />
 
@@ -168,8 +167,7 @@ const SingleListItem = ({ item }: { item: Product }) => {
 
           <div className="flex items-center gap-2.5 mb-2">
             <StarRating rating={averageRating} />
-            <p className="text-custom-sm">({reviewsCount})</p>
-          </div>
+                      </div>
         </div>
       </div>
     </div>

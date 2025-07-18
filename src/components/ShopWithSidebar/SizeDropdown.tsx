@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import React, { useState } from "react";
 
 const SizeDropdown = () => {
@@ -37,7 +37,7 @@ const SizeDropdown = () => {
         </button>
       </div>
 
-      {/* // <!-- dropdown menu --> */}
+      {/* // <!-- dropdown menu --> 
       <div
         className={`flex-wrap gap-2.5 p-6 ${
           toggleDropdown ? "flex" : "hidden"
@@ -96,3 +96,5 @@ const SizeDropdown = () => {
 };
 
 export default SizeDropdown;
+
+*/

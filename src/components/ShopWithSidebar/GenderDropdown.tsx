@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import React, { useState } from "react";
 
 const GenderItem = ({ category }) => {
@@ -85,7 +85,7 @@ const GenderDropdown = ({ genders }) => {
         </button>
       </div>
 
-      {/* <!-- dropdown menu --> */}
+      {/* <!-- dropdown menu --> 
       <div
         className={`flex-col gap-3 py-6 pl-6 pr-5.5 ${
           toggleDropdown ? "flex" : "hidden"
@@ -100,3 +100,4 @@ const GenderDropdown = ({ genders }) => {
 };
 
 export default GenderDropdown;
+*/

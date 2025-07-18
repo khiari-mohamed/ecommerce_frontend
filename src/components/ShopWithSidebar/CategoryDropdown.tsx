@@ -1,4 +1,4 @@
-
+/*
 "use client";
 import { useState, useEffect } from "react";
 import { getCategories } from "@/services/categories";
@@ -179,3 +179,4 @@ const CategoryDropdown = ({
 };
 
 export default CategoryDropdown;
+*/

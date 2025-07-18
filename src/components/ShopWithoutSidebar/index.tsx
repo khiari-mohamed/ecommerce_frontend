@@ -15,13 +15,24 @@ const ShopWithoutSidebar = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
 
+  const options = [
+    { label: "Derniers produits", value: "0" },
+    { label: "Meilleures ventes", value: "1" },
+    { label: "Anciens produits", value: "2" },
+  ];
+  const [selectedSort, setSelectedSort] = useState(options[0].value);
+  const handleSortChange = (value: string) => {
+    setSelectedSort(value);
+    // Add sorting logic here if needed
+  };
+
   // Fetch products for the current page
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        // Pass page as query param, e.g. ?page=2
-        const response = await getProductListPage(`page=${currentPage}`);
+        // Pass page and sort as query params
+        const response = await getProductListPage(`page=${currentPage}&sort=${selectedSort}`);
         // Use the normalized product object directly!
         setShopData(response.products);
 
@@ -41,13 +52,7 @@ const ShopWithoutSidebar = () => {
     };
 
     fetchProducts();
-  }, [currentPage]);
-
-  const options = [
-    { label: "Latest Products", value: "0" },
-    { label: "Best Selling", value: "1" },
-    { label: "Old Products", value: "2" },
-  ];
+  }, [currentPage, selectedSort]);
 
   // Pagination rendering logic with ellipsis
   const renderPagination = (): JSX.Element[] => {
@@ -154,7 +159,7 @@ const ShopWithoutSidebar = () => {
               <div className="rounded-lg bg-white shadow-1 pl-3 pr-2.5 py-2.5 mb-6">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-wrap items-center gap-4">
-                    <CustomSelect options={options} value={undefined} onChange={undefined} />
+                    <CustomSelect options={options} value={selectedSort} onChange={handleSortChange} />
 
                     <p>
                       Showing <span className="text-dark">{shopData.length} of {totalProducts}</span>{" "}

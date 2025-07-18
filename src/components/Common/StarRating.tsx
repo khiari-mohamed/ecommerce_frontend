@@ -90,9 +90,6 @@ const StarRating: React.FC<StarRatingProps> = ({
         <span key={`full-${i}`}>{fullStar}</span>
       ))}
       {hasHalfStar && <span key="half">{halfStar}</span>}
-      {[...Array(emptyStars)].map((_, i) => (
-        <span key={`empty-${i}`}>{emptyStar}</span>
-      ))}
     </span>
   );
 };

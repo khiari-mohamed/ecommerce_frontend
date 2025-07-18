@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import React, { useState, useEffect, JSX } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import CustomSelect from "./CustomSelect";
@@ -238,7 +238,7 @@ const ShopWithSidebar = () => {
       />
       <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28 bg-[#f3f4f6]">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-          {/* Filtres open button (mobile only) */}
+          {/* Filtres open button (mobile only) 
           <button
             onClick={() => setProductSidebar(true)}
             className="xl:hidden mb-4 px-4 py-2 bg-blue text-white rounded-md font-semibold"
@@ -247,7 +247,7 @@ const ShopWithSidebar = () => {
             Filtres
           </button>
           <div className="flex flex-col xl:flex-row gap-7.5">
-            {/* <!-- Sidebar Start --> */}
+            {/* <!-- Sidebar Start --> 
             <div
               className={`sidebar-content fixed xl:z-1 z-9999 left-0 top-0 xl:translate-x-0 xl:static w-full max-w-full xl:max-w-[270px] xl:w-[270px] ease-out duration-200 ${
                 productSidebar
@@ -255,7 +255,7 @@ const ShopWithSidebar = () => {
                   : "-translate-x-full xl:translate-x-0"
               }`}
             >
-              {/* Close button (mobile only) */}
+              {/* Close button (mobile only) 
               <button
                 onClick={() => setProductSidebar(false)}
                 aria-label="Fermer les filtres"
@@ -268,7 +268,7 @@ const ShopWithSidebar = () => {
 
               <form onSubmit={(e) => e.preventDefault()}>
                 <div className="flex flex-col gap-6">
-                  {/* <!-- filter box --> */}
+                  {/* <!-- filter box --> 
                   <div className="bg-white shadow-1 rounded-lg py-4 px-5">
                     <div className="flex items-center justify-between">
                       <p>Filters:</p>
@@ -286,8 +286,8 @@ const ShopWithSidebar = () => {
                     </div>
                   </div>
 
-                  {/* <!-- category box --> */}
-                  {/* <!-- Catégories box --> */}
+                  {/* <!-- category box --> 
+                  {/* <!-- Catégories box --> 
                   <div className="bg-white shadow-1 rounded-lg">
                   <CategoryDropdown
                   selectedCategories={selectedCategories}
@@ -297,9 +297,9 @@ const ShopWithSidebar = () => {
                   />
                   </div>
 
-                  {/* <!-- aromas box removed --> */}
+                  {/* <!-- aromas box removed --> 
 
-                  {/* <!-- Marques box (replaces color) --> */}
+                  {/* <!-- Marques box (replaces color) --> 
                   <div className="bg-white shadow-1 rounded-lg">
                   <div
                   className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5"
@@ -351,7 +351,7 @@ const ShopWithSidebar = () => {
                   </div>
                   </div>
 
-                  {/* <!-- Prix box --> */}
+                  {/* <!-- Prix box --> 
                   <div className="bg-white shadow-1 rounded-lg">
                   <div className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5">
                   <p className="text-dark">Prix</p>
@@ -368,13 +368,13 @@ const ShopWithSidebar = () => {
                 </div>
               </form>
             </div>
-            {/* // <!-- Sidebar End --> */}
+            {/* // <!-- Sidebar End --> 
 
-            {/* // <!-- Content Start --> */}
+            {/* // <!-- Content Start --> 
             <div className="xl:max-w-[870px] w-full">
               <div className="rounded-lg bg-white shadow-1 pl-3 pr-2.5 py-2.5 mb-6">
                 <div className="flex items-center justify-between">
-                  {/* <!-- top bar left --> */}
+                  {/* <!-- top bar left --> 
                   <div className="flex flex-wrap items-center gap-4">
                     <CustomSelect options={options} value={selectedSort} onChange={setSelectedSort} />
 
@@ -387,7 +387,7 @@ const ShopWithSidebar = () => {
                     </p>
                   </div>
 
-                  {/* <!-- top bar right --> */}
+                  {/* <!-- top bar right --> 
                   <div className="flex items-center gap-2.5">
                     <button
                       onClick={() => setProductStyle("grid")}
@@ -439,7 +439,7 @@ const ShopWithSidebar = () => {
                 </div>
               </div>
 
-              {/* <!-- Products Grid/List Tab Content Start --> */}
+              {/* <!-- Products Grid/List Tab Content Start --> 
               <div
                 className={`${
                   productStyle === "grid"
@@ -503,13 +503,13 @@ const ShopWithSidebar = () => {
                   })
                 )}
               </div>
-              {/* <!-- Products Grid/List Tab Content End --> */}
+              {/* <!-- Products Grid/List Tab Content End --> 
 
-              {/* <!-- Products Pagination Start --> */}
+              {/* <!-- Products Pagination Start --> 
               <div className="flex justify-center mt-15">
                 <div className="bg-white shadow-1 rounded-md p-2">
                   <ul className="flex items-center">
-                    {/* Previous Button */}
+                    {/* Previous Button 
                     <li>
                       <button
                         id="paginationLeft"
@@ -534,9 +534,9 @@ const ShopWithSidebar = () => {
                         </svg>
                       </button>
                     </li>
-                    {/* Page Numbers */}
+                    {/* Page Numbers 
                     {renderPagination()}
-                    {/* Next Button */}
+                    {/* Next Button 
                     <li>
                       <button
                         id="paginationRight"
@@ -564,9 +564,9 @@ const ShopWithSidebar = () => {
                   </ul>
                 </div>
               </div>
-              {/* <!-- Products Pagination End --> */}
+              {/* <!-- Products Pagination End --> 
             </div>
-            {/* // <!-- Content End --> */}
+            {/* // <!-- Content End --> 
           </div>
         </div>
       </section>
@@ -575,3 +575,4 @@ const ShopWithSidebar = () => {
 };
 
 export default ShopWithSidebar;
+*/

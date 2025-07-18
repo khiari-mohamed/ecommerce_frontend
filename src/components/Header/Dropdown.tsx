@@ -149,10 +149,12 @@ const Dropdown = ({ menuItem, stickyMenu, categories = [], loadingCategories = f
                 </span>
               </Link>
               <ul className="pl-0">
-                {menuItem.submenu && menuItem.submenu.map((item, i) => (
-                  <li key={i} className="py-1 px-2 cursor-pointer hover:bg-[#FF4500] hover:text-white text-sm text-gray-700 rounded transition">
-                    <Link href={item.path}>{item.title}</Link>
-                  </li>
+                {menuItem.submenu && menuItem.submenu
+                .filter((item) => item.path !== "/shop-with-sidebar")
+                .map((item, i) => (
+                <li key={i} className="py-1 px-2 cursor-pointer hover:bg-[#FF4500] hover:text-white text-sm text-gray-700 rounded transition">
+                <Link href={item.path}>{item.title}</Link>
+                </li>
                 ))}
               </ul>
             </div>

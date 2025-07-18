@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import ShopWithSidebar from "@/components/ShopWithSidebar";
 import { Metadata } from "next";
 
@@ -40,3 +40,8 @@ const ShopWithSidebarPage = () => {
 };
 
 export default ShopWithSidebarPage;
+*/
+
+export default function PlaceholderShopWithSidebar() {
+  return null;
+}

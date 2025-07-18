@@ -220,8 +220,7 @@ const SingleGridItem = ({ item }: { item: Product }) => {
 
       <div className="flex items-center gap-2.5 mb-2">
   <StarRating rating={averageRating} />
-  <p className="text-custom-sm">({reviewsCount})</p>
-</div>
+  </div>
      
       <ProductBrandAroma brandId={item.brand?.['_id'] || item.brand || ""} />
             <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">

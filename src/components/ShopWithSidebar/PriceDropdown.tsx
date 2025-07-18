@@ -1,4 +1,4 @@
-import { useState } from 'react';
+/*import { useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 
@@ -57,7 +57,7 @@ const PriceDropdown = ({ minPrice, maxPrice, onChange }: PriceDropdownProps) => 
         </button>
       </div>
 
-      {/* // <!-- dropdown menu --> */}
+      {/* // <!-- dropdown menu --> 
       <div className={`p-6 ${toggleDropdown ? 'block' : 'hidden'}`}>
         <div id="pricingOne">
           <div className="price-range">
@@ -98,3 +98,4 @@ const PriceDropdown = ({ minPrice, maxPrice, onChange }: PriceDropdownProps) => 
 };
 
 export default PriceDropdown;
+*/

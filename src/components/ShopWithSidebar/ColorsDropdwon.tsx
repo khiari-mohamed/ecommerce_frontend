@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import React, { useState } from "react";
 
 const ColorsDropdwon = () => {
@@ -40,7 +40,7 @@ const ColorsDropdwon = () => {
         </button>
       </div>
 
-      {/* <!-- dropdown menu --> */}
+      {/* <!-- dropdown menu --> 
       <div
         className={`flex-wrap gap-2.5 p-6 ${
           toggleDropdown ? "flex" : "hidden"
@@ -80,3 +80,4 @@ const ColorsDropdwon = () => {
 };
 
 export default ColorsDropdwon;
+*/

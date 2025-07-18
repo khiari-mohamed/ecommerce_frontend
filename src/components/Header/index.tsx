@@ -55,7 +55,7 @@ const OldTopHeaderBand = () => (
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [suggestions, setSuggestions] = useState<{ name: string; slug: string }[]>([]);
+  const [suggestions, setSuggestions] = useState<{ name: string; slug: string; _id?: string; image?: string }[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showCategoryDropdownDesktop, setShowCategoryDropdownDesktop] = useState(false);
   const [showCategoryDropdownMobile, setShowCategoryDropdownMobile] = useState(false);
@@ -130,7 +130,16 @@ const Header = () => {
     const timeout = setTimeout(async () => {
       try {
         const res = await axios.get(`/products/autocomplete?query=${encodeURIComponent(searchQuery.trim())}`);
-        setSuggestions(res.data || []);
+        // Ensure each suggestion includes id/_id
+        const data = Array.isArray(res.data)
+          ? res.data.map((item: any) => ({
+              name: item.name || item.designation_fr || item.designation,
+              slug: item.slug,
+              _id: item._id,
+              image: item.mainImage?.url || item.cover,
+            }))
+          : [];
+        setSuggestions(data); // <-- THIS LINE FIXES THE ISSUE
         setShowSuggestions(true);
       } catch {
         setSuggestions([]);
@@ -142,11 +151,12 @@ const Header = () => {
     return () => clearTimeout(timeout);
   }, [searchQuery]);
 
-  const handleSuggestionClick = (suggestion: { name: string; slug: string }) => {
+  const handleSuggestionClick = (suggestion: { name: string; slug: string; id?: string; _id?: string }) => {
     if (!suggestion.slug) return;
     setSearchQuery(suggestion.name || "");
     setShowSuggestions(false);
-    router.push(`/produits/${suggestion.slug}`);
+    //router.push(`/product-details?id=${suggestion.id || suggestion._id}`);
+    router.push(`/product-details?id=${suggestion._id}`);
   };
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -239,6 +249,40 @@ const Header = () => {
                 )}
               </div>
               <input onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery ?? ""} type="search" name="search" id="search-mobile" placeholder="je fais des emplettes pour..." autoComplete="off" className="flex-1 border-0 outline-none px-4 py-3 text-sm min-w-0 bg-white" onFocus={() => searchQuery && setShowSuggestions(true)} onBlur={() => setTimeout(() => setShowSuggestions(false), 150)} style={{height: '48px'}} />
+              {/* FIX: Suggestions dropdown for mobile */}
+              {showSuggestions && (
+                <ul
+                  className="absolute left-0 top-full w-full bg-white border border-gray-3 rounded-b shadow-lg max-h-60 overflow-y-auto z-[40000]"
+                  style={{
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
+                  }}
+                >
+                  {loadingSuggestions ? (
+                    <li className="px-4 py-2 text-gray-500">Chargement...</li>
+                  ) : suggestions.length === 0 ? (
+                    <li className="px-4 py-2 text-gray-400">Aucune suggestion</li>
+                  ) : (
+                    suggestions.map((suggestion, idx) => (
+                      <li
+                        key={idx}
+                        className="px-4 py-2 cursor-pointer hover:bg-gray-2"
+                        onMouseDown={() => handleSuggestionClick(suggestion)}
+                      >
+
+                        {suggestion.image && (
+            <img
+              src={`/${suggestion.image}`}
+              alt={suggestion.name}
+              className="w-10 h-10 object-cover rounded"
+              style={{ minWidth: 40, minHeight: 40 }}
+            />
+          )}
+                        {suggestion.name || "Produit sans nom"}
+                      </li>
+                    ))
+                  )}
+                </ul>
+              )}
               <button id="search-btn-mobile" aria-label="Search" className="flex items-center justify-center px-4 h-12 text-blue hover:text-blue-700" type="submit">
                 <svg className="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.2687 15.6656L12.6281 11.8969C14.5406 9.28123 14.3437 5.5406 11.9531 3.1781C10.6875 1.91248 8.99995 1.20935 7.19995 1.20935C5.39995 1.20935 3.71245 1.91248 2.44683 3.1781C-0.168799 5.79373 -0.168799 10.0687 2.44683 12.6844C3.71245 13.95 5.39995 14.6531 7.19995 14.6531C8.91558 14.6531 10.5187 14.0062 11.7843 12.8531L16.4812 16.65C16.5937 16.7344 16.7343 16.7906 16.875 16.7906C17.0718 16.7906 17.2406 16.7062 17.3531 16.5656C17.5781 16.2844 17.55 15.8906 17.2687 15.6656ZM7.19995 13.3875C5.73745 13.3875 4.38745 12.825 3.34683 11.7844C1.20933 9.64685 1.20933 6.18748 3.34683 4.0781C4.38745 3.03748 5.73745 2.47498 7.19995 2.47498C8.66245 2.47498 10.0125 3.03748 11.0531 4.0781C13.1906 6.2156 13.1906 9.67498 11.0531 11.7844C10.0406 12.825 8.66245 13.3875 7.19995 13.3875Z" fill=""/></svg>
               </button>
@@ -358,16 +402,14 @@ const Header = () => {
               onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
               style={{height: '48px'}}
             />
-            <button
-              id="search-btn"
-              aria-label="Search"
-              className="flex items-center justify-center px-4 h-12 text-blue hover:text-blue-700"
-              type="submit"
-            >
-              <svg className="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.2687 15.6656L12.6281 11.8969C14.5406 9.28123 14.3437 5.5406 11.9531 3.1781C10.6875 1.91248 8.99995 1.20935 7.19995 1.20935C5.39995 1.20935 3.71245 1.91248 2.44683 3.1781C-0.168799 5.79373 -0.168799 10.0687 2.44683 12.6844C3.71245 13.95 5.39995 14.6531 7.19995 14.6531C8.91558 14.6531 10.5187 14.0062 11.7843 12.8531L16.4812 16.65C16.5937 16.7344 16.7343 16.7906 16.875 16.7906C17.0718 16.7906 17.2406 16.7062 17.3531 16.5656C17.5781 16.2844 17.55 15.8906 17.2687 15.6656ZM7.19995 13.3875C5.73745 13.3875 4.38745 12.825 3.34683 11.7844C1.20933 9.64685 1.20933 6.18748 3.34683 4.0781C4.38745 3.03748 5.73745 2.47498 7.19995 2.47498C8.66245 2.47498 10.0125 3.03748 11.0531 4.0781C13.1906 6.2156 13.1906 9.67498 11.0531 11.7844C10.0406 12.825 8.66245 13.3875 7.19995 13.3875Z" fill=""/></svg>
-            </button>
+            {/* Suggestions dropdown */}
             {showSuggestions && (
-              <ul className="absolute left-0 top-full z-50 w-full bg-white border border-gray-3 rounded-b shadow-lg max-h-60 overflow-y-auto">
+              <ul
+                className="absolute left-0 top-full w-full bg-white border border-gray-3 rounded-b shadow-lg max-h-60 overflow-y-auto z-[40000]"
+                style={{
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
+                }}
+              >
                 {loadingSuggestions ? (
                   <li className="px-4 py-2 text-gray-500">Chargement...</li>
                 ) : suggestions.length === 0 ? (
@@ -379,12 +421,29 @@ const Header = () => {
                       className="px-4 py-2 cursor-pointer hover:bg-gray-2"
                       onMouseDown={() => handleSuggestionClick(suggestion)}
                     >
+
+                      {suggestion.image && (
+            <img
+              src={`/${suggestion.image}`}
+              alt={suggestion.name}
+              className="w-10 h-10 object-cover rounded"
+              style={{ minWidth: 40, minHeight: 40 }}
+            />
+          )}
                       {suggestion.name || "Produit sans nom"}
                     </li>
                   ))
                 )}
               </ul>
             )}
+            <button
+              id="search-btn"
+              aria-label="Search"
+              className="flex items-center justify-center px-4 h-12 text-blue hover:text-blue-700"
+              type="submit"
+            >
+              <svg className="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.2687 15.6656L12.6281 11.8969C14.5406 9.28123 14.3437 5.5406 11.9531 3.1781C10.6875 1.91248 8.99995 1.20935 7.19995 1.20935C5.39995 1.20935 3.71245 1.91248 2.44683 3.1781C-0.168799 5.79373 -0.168799 10.0687 2.44683 12.6844C3.71245 13.95 5.39995 14.6531 7.19995 14.6531C8.91558 14.6531 10.5187 14.0062 11.7843 12.8531L16.4812 16.65C16.5937 16.7344 16.7343 16.7906 16.875 16.7906C17.0718 16.7906 17.2406 16.7062 17.3531 16.5656C17.5781 16.2844 17.55 15.8906 17.2687 15.6656ZM7.19995 13.3875C5.73745 13.3875 4.38745 12.825 3.34683 11.7844C1.20933 9.64685 1.20933 6.18748 3.34683 4.0781C4.38745 3.03748 5.73745 2.47498 7.19995 2.47498C8.66245 2.47498 10.0125 3.03748 11.0531 4.0781C13.1906 6.2156 13.1906 9.67498 11.0531 11.7844C10.0406 12.825 8.66245 13.3875 7.19995 13.3875Z" fill=""/></svg>
+            </button>
           </form>
         </div>
         {/* Right controls: user, panier, hamburger */}

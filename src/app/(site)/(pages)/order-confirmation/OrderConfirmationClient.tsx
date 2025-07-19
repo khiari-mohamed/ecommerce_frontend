@@ -8,6 +8,7 @@ import BonLivraisonDocument from "@/components/BonLivraisonDocument";
 import DevisDocument from "@/components/DevisDocument";
 import FactureDocument from "@/components/FactureDocument";
 import Image from "next/image";
+import OrderConfirmationReplica from "./OrderConfirmationReplica";
 
 const COMPANY = {
   logo: "/images/logo/logo.png",
@@ -331,6 +332,7 @@ const OrderConfirmationClient = () => {
   const printRef = useRef(null);
   const [previewDoc, setPreviewDoc] = useState<null | "bon-livraison" | "devis" | "facture-boutique">(null);
   const [popupKey, setPopupKey] = useState(0);
+  const [showOriginal, setShowOriginal] = useState(false);
 
   useEffect(() => {
     if (orderNumber) {
@@ -363,28 +365,44 @@ const OrderConfirmationClient = () => {
     );
   }
 
+  if (!showOriginal) {
+    return (
+      <OrderConfirmationReplica order={order} onShowOriginal={() => setShowOriginal(true)} />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex flex-col items-center py-2 sm:py-8 px-1 sm:px-2 md:px-4">
-    <div className="flex flex-col w-full gap-4 md:gap-8">
-    {/* Main content */}
-    <div className="flex-1 flex justify-center w-full">
-    {previewDoc === "bon-livraison" ? (
-    <BonLivraisonDocument order={order} printRef={printRef} />
-    ) : previewDoc === "devis" ? (
-    <DevisDocument order={order} printRef={printRef} />
-    ) : previewDoc === "facture-boutique" ? (
-    <FactureDocument order={order} printRef={printRef} />
-    ) : (
-    <OrderInvoice order={order} printRef={printRef} />
-    )}
-    </div>
-    </div>
-    {/* Floating actions */}
-    <FloatingActions 
-    key={popupKey} 
-    onHome={handleHome} 
-    setPreviewDoc={setPreviewDoc} 
-    />
+      <div className="flex flex-col w-full gap-4 md:gap-8">
+        {/* Main content */}
+        <div className="flex-1 flex justify-center w-full">
+          {previewDoc === "bon-livraison" ? (
+            <BonLivraisonDocument order={order} printRef={printRef} />
+          ) : previewDoc === "devis" ? (
+            <DevisDocument order={order} printRef={printRef} />
+          ) : previewDoc === "facture-boutique" ? (
+            <FactureDocument order={order} printRef={printRef} />
+          ) : (
+            <>
+              <OrderInvoice order={order} printRef={printRef} />
+              <div className="my-8 text-center">
+                <button
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-6 py-2 rounded-lg shadow transition mt-4"
+                  onClick={() => setShowOriginal(false)}
+                >
+                  Retour à la nouvelle version (pixel-perfect)
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      {/* Floating actions */}
+      <FloatingActions
+        key={popupKey}
+        onHome={handleHome}
+        setPreviewDoc={setPreviewDoc}
+      />
     </div>
   );
 };

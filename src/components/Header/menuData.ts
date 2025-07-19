@@ -1,21 +1,6 @@
-
 import { Menu } from "@/types/Menu";
 
 export const menuData: Menu[] = [
-  {
-    id: 1,
-    title: "Packs",
-    newTab: false,
-    path: "/packs",
-    showBadge: undefined
-  },
-  {
-    id: 99,
-    title: "Promotions",
-    newTab: false,
-    path: "/promotions",
-     showBadge: true, // Add this line
-  },
   {
     id: 2,
     title: "Boutique",
@@ -68,10 +53,17 @@ export const menuData: Menu[] = [
     showBadge: undefined
   },
   {
-    id: 3,
-    title: "Contact",
+    id: 99,
+    title: "Top Promo",
     newTab: false,
-    path: "/contact",
+    path: "/promotions",
+    showBadge: true,
+  },
+  {
+    id: 1,
+    title: "Packs",
+    newTab: false,
+    path: "/packs",
     showBadge: undefined
   },
   {
@@ -86,6 +78,13 @@ export const menuData: Menu[] = [
     title: "Blogs",
     newTab: false,
     path: "/blogs/blog-grid",
+    showBadge: undefined
+  },
+  {
+    id: 3,
+    title: "Contact",
+    newTab: false,
+    path: "/contact",
     showBadge: undefined
   },
 ];

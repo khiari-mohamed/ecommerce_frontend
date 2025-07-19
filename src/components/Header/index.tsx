@@ -320,8 +320,9 @@ const Header = () => {
       </div>
       {/* Main header row */}
       <div className="flex items-center justify-between w-full px-2 sm:px-4 xl:px-16 min-h-[56px] h-[56px] xl:min-h-[80px] xl:h-[80px] bg-white overflow-visible" style={{overflow: 'visible'}}>
-        {/* Logo */}
-        <div className="flex-shrink-0 flex items-center min-w-0 w-auto overflow-visible h-[40px] xl:h-[80px]">
+        {/* Logo + Dropdown + Search bar (desktop/tablet only) */}
+        <div className="flex items-center min-w-0 w-auto overflow-visible h-[40px] xl:h-[80px]">
+          {/* Logo */}
           <Link href="/">
             <Image
               src="/images/logo/logo.png"
@@ -332,119 +333,131 @@ const Header = () => {
               priority
             />
           </Link>
-        </div>
-        {/* Search bar (desktop/tablet only) */}
-        <div className="flex-1 flex items-center justify-center mx-2 min-w-0 hidden xl:flex" style={{overflow: 'visible'}}>
-          <form onSubmit={handleSearch} autoComplete="off" className="w-full max-w-[500px] flex items-center rounded-md border border-gray-3 bg-white relative" style={{overflow: 'visible'}}>
-            <div className="relative w-[140px] z-[30000]">
-              <button
-                type="button"
-                className="h-12 px-3 text-sm bg-white border-0 outline-none w-full text-left flex items-center justify-between border border-gray-3 rounded-md"
-                onClick={() => setShowCategoryDropdownDesktop(prev => !prev)}
-                aria-haspopup="listbox"
-                aria-expanded={showCategoryDropdownDesktop}
-              >
-                {selectedCategory
+          {/* Small space between logo and search+dropdown */}
+          <div className="hidden xl:block" style={{ width: 30 }} /> {/* 20px gap, slightly bigger than before */}
+          {/* Dropdown + Search bar (desktop/tablet only) */}
+          <div className="hidden xl:flex items-center min-w-0">
+            <form
+              onSubmit={handleSearch}
+              autoComplete="off"
+              className={`search-bar-header flex items-center rounded-md border border-gray-3 bg-white relative transition-all duration-200 w-[220px] focus-within:w-[520px]`}
+              style={{overflow: 'visible', maxWidth: 520}}
+            >
+              <div className="relative w-[110px] z-[30000]">
+                <button
+                  type="button"
+                  className="h-10 px-2 text-xs bg-white border-0 outline-none w-full text-left flex items-center justify-between border border-gray-3 rounded-md"
+                  onClick={() => setShowCategoryDropdownDesktop(prev => !prev)}
+                  aria-haspopup="listbox"
+                  aria-expanded={showCategoryDropdownDesktop}
+                >
+                  {selectedCategory
                   ? (categories.find(cat => cat.slug === selectedCategory)?.designation_fr || categories.find(cat => cat.slug === selectedCategory)?.name || "Toutes catégories")
                   : "Toutes catégories"}
-                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
-              </button>
-              {showCategoryDropdownDesktop && (
-              <div className="absolute left-0 top-full w-[340px] bg-white border border-gray-3 rounded-b shadow-lg max-h-80 overflow-y-auto z-[40000]" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.10)', overflow: 'auto' }}>
-              <ul role="listbox" className="max-h-80 overflow-y-auto">
-              <li
-              className={`px-4 py-2 cursor-pointer hover:bg-gray-2 ${!selectedCategory ? 'font-bold text-blue' : ''}`}
-              onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); }}
-              role="option"
-              aria-selected={!selectedCategory}
-              >
-              Toutes catégories
-              </li>
-              {categories.map(cat => (
-              <li key={cat._id} className="">
-              <div
-              className="px-4 pt-3 pb-1 font-bold text-base text-[#222]"
-              style={{ fontWeight: 700, fontSize: '1.08rem' }}
-              >
-              {cat.designation_fr || cat.name}
+                  <svg className="ml-2 w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                {showCategoryDropdownDesktop && (
+                <div className="absolute left-0 top-full w-[220px] bg-white border border-gray-3 rounded-b shadow-lg max-h-80 overflow-y-auto z-[40000]" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.10)', overflow: 'auto' }}>
+                  <ul role="listbox" className="max-h-80 overflow-y-auto">
+                  <li
+                  className={`px-4 py-2 cursor-pointer hover:bg-gray-2 ${!selectedCategory ? 'font-bold text-blue' : ''}`}
+                  onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); }}
+                  role="option"
+                  aria-selected={!selectedCategory}
+                  >
+                  Toutes catégories
+                  </li>
+                  {categories.map(cat => (
+                  <li key={cat._id} className="">
+                  <div
+                  className="px-4 pt-3 pb-1 font-bold text-base text-[#222]"
+                  style={{ fontWeight: 700, fontSize: '1.08rem' }}
+                  >
+                  {cat.designation_fr || cat.name}
+                  </div>
+                  {cat.subCategories && cat.subCategories.length > 0 && (
+                  <ul className="pl-6 pb-2">
+                  {cat.subCategories.map((subcat, idx) => (
+                  <li
+                  key={subcat._id || idx}
+                  className="pr-4 py-1 cursor-pointer hover:bg-gray-1 text-sm text-gray-700"
+                  onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); router.push(`/subcategories/${subcat.slug}`); }}
+                  role="option"
+                  aria-selected={false}
+                  >
+                  {subcat.designation_fr || subcat.name}
+                  </li>
+                  ))}
+                  </ul>
+                  )}
+                  </li>
+                  ))}
+                  </ul>
+                </div>
+                )}
               </div>
-              {cat.subCategories && cat.subCategories.length > 0 && (
-              <ul className="pl-6 pb-2">
-              {cat.subCategories.map((subcat, idx) => (
-              <li
-              key={subcat._id || idx}
-              className="pr-4 py-1 cursor-pointer hover:bg-gray-1 text-sm text-gray-700"
-              onClick={() => { setSelectedCategory(""); setShowCategoryDropdownDesktop(false); router.push(`/subcategories/${subcat.slug}`); }}
-              role="option"
-              aria-selected={false}
-              >
-              {subcat.designation_fr || subcat.name}
-              </li>
-              ))}
-              </ul>
-              )}
-              </li>
-              ))}
-              </ul>
-              </div>
-              )}
-            </div>
-            <input
-              onChange={(e) => setSearchQuery(e.target.value)}
-              value={searchQuery ?? ""}
-              type="search"
-              name="search"
-              id="search"
-              placeholder="je fais des emplettes pour..."
-              autoComplete="off"
-              className="flex-1 border-0 outline-none px-4 py-3 text-sm min-w-0 bg-white"
-              onFocus={() => searchQuery && setShowSuggestions(true)}
-              onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-              style={{height: '48px'}}
-            />
-            {/* Suggestions dropdown */}
-            {showSuggestions && (
-              <ul
-                className="absolute left-0 top-full w-full bg-white border border-gray-3 rounded-b shadow-lg max-h-60 overflow-y-auto z-[40000]"
+              <input
+                onChange={(e) => setSearchQuery(e.target.value)}
+                value={searchQuery ?? ""}
+                type="search"
+                name="search"
+                id="search"
+                placeholder="Rechercher produit..."
+                autoComplete="off"
+                className="flex-1 border-0 outline-none px-3 py-2 text-sm min-w-0 bg-white search-field commercekit-ajax-search transition-all duration-200"
                 style={{
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
+                  height: '40px',
+                  backgroundImage: 'none',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: '50% 50%',
+                  minWidth: 0,
                 }}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+              />
+              {/* Suggestions dropdown */}
+              {showSuggestions && (
+              <ul
+              className="absolute left-0 top-full w-full bg-white border border-gray-3 rounded-b shadow-lg max-h-60 overflow-y-auto z-[40000]"
+              style={{
+              boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
+              }}
               >
-                {loadingSuggestions ? (
-                  <li className="px-4 py-2 text-gray-500">Chargement...</li>
-                ) : suggestions.length === 0 ? (
-                  <li className="px-4 py-2 text-gray-400">Aucune suggestion</li>
-                ) : (
-                  suggestions.map((suggestion, idx) => (
-                    <li
-                      key={idx}
-                      className="px-4 py-2 cursor-pointer hover:bg-gray-2"
-                      onMouseDown={() => handleSuggestionClick(suggestion)}
-                    >
-
-                      {suggestion.image && (
-            <img
+              {loadingSuggestions ? (
+              <li className="px-4 py-2 text-gray-500">Chargement...</li>
+              ) : suggestions.length === 0 ? (
+              <li className="px-4 py-2 text-gray-400">Aucune suggestion</li>
+              ) : (
+              suggestions.map((suggestion, idx) => (
+              <li
+              key={idx}
+              className="px-4 py-2 cursor-pointer hover:bg-gray-2"
+              onMouseDown={() => handleSuggestionClick(suggestion)}
+              >
+              {suggestion.image && (
+              <img
               src={`/${suggestion.image}`}
               alt={suggestion.name}
               className="w-10 h-10 object-cover rounded"
               style={{ minWidth: 40, minHeight: 40 }}
-            />
-          )}
-                      {suggestion.name || "Produit sans nom"}
-                    </li>
-                  ))
-                )}
+              />
+              )}
+              {suggestion.name || "Produit sans nom"}
+              </li>
+              ))
+              )}
               </ul>
-            )}
-            <button
+              )}
+              <button
               id="search-btn"
               aria-label="Search"
-              className="flex items-center justify-center px-4 h-12 text-blue hover:text-blue-700"
+              className="flex items-center justify-center px-3 h-10 text-blue hover:text-blue-700"
               type="submit"
-            >
+              >
               <svg className="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.2687 15.6656L12.6281 11.8969C14.5406 9.28123 14.3437 5.5406 11.9531 3.1781C10.6875 1.91248 8.99995 1.20935 7.19995 1.20935C5.39995 1.20935 3.71245 1.91248 2.44683 3.1781C-0.168799 5.79373 -0.168799 10.0687 2.44683 12.6844C3.71245 13.95 5.39995 14.6531 7.19995 14.6531C8.91558 14.6531 10.5187 14.0062 11.7843 12.8531L16.4812 16.65C16.5937 16.7344 16.7343 16.7906 16.875 16.7906C17.0718 16.7906 17.2406 16.7062 17.3531 16.5656C17.5781 16.2844 17.55 15.8906 17.2687 15.6656ZM7.19995 13.3875C5.73745 13.3875 4.38745 12.825 3.34683 11.7844C1.20933 9.64685 1.20933 6.18748 3.34683 4.0781C4.38745 3.03748 5.73745 2.47498 7.19995 2.47498C8.66245 2.47498 10.0125 3.03748 11.0531 4.0781C13.1906 6.2156 13.1906 9.67498 11.0531 11.7844C10.0406 12.825 8.66245 13.3875 7.19995 13.3875Z" fill=""/></svg>
-            </button>
-          </form>
+              </button>
+            </form>
+          </div>
         </div>
         {/* Right controls: user, panier, hamburger */}
         <div className="flex items-center gap-2 xl:gap-8 pr-1 xl:pr-0 min-w-0 overflow-visible mt-1 xl:mt-2">

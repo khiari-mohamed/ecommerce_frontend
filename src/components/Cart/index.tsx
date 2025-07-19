@@ -26,23 +26,36 @@ const Cart = () => {
 
             <div className="cart-main-card bg-white rounded-[10px] shadow-1">
               <div className="w-full overflow-x-auto">
-                <div className="min-w-full">
+                <div className="min-w-[1100px]"> {/* <-- Make table wider */}
                   {/* <!-- table header --> */}
-                  <div className="cart-table-header flex flex-wrap items-center py-5 px-2 sm:px-4 md:px-7.5 text-xs sm:text-sm md:text-base border-b border-gray-3 max-[480px]:gap-y-2">
-                    <div className="cart-th cart-th-produit w-full sm:w-[40%] min-w-[180px] mb-2 sm:mb-0 max-[480px]:mb-1 max-[480px]:pt-2">
-                      <p className="text-dark text-left max-[480px]:text-base max-[480px]:font-semibold">Produit</p>
+                  <div className="cart-table-header flex flex-col sm:flex-row items-start sm:items-center py-5 px-2 sm:px-4 md:px-7.5 text-xs sm:text-sm md:text-base border-b border-gray-3 w-full">
+                    {/* Mobile: Only show Produit, then stack the rest below */}
+                    <div className="block sm:hidden w-full">
+                      <p className="text-dark text-left font-semibold w-full">Produit</p>
+                      <div className="flex flex-col mt-4 space-y-4">
+                        <p className="text-dark text-left">Prix</p>
+                        <p className="text-dark text-left">Quantité</p>
+                        <p className="text-dark text-left">Sous-total</p>
+                        <p className="text-dark text-left">Action</p>
+                      </div>
                     </div>
-                    <div className="cart-th cart-th-prix w-1/2 sm:w-[15%] min-w-[100px] mb-2 sm:mb-0 max-[480px]:mb-1">
-                      <p className="text-dark text-left max-[480px]:text-base">Prix</p>
-                    </div>
-                    <div className="cart-th cart-th-quantite w-1/2 sm:w-[25%] min-w-[120px] mb-2 sm:mb-0 max-[480px]:mb-1">
-                      <p className="text-dark text-left max-[480px]:text-base">Quantité</p>
-                    </div>
-                    <div className="cart-th cart-th-soustotal w-1/2 sm:w-[15%] min-w-[80px] mb-2 sm:mb-0 max-[480px]:mb-1">
-                      <p className="text-dark text-left max-[480px]:text-base">Sous-total</p>
-                    </div>
-                    <div className="cart-th cart-th-action w-1/2 sm:w-[5%] min-w-[40px] flex justify-end max-[480px]:mb-1">
-                      <p className="text-dark text-right max-[480px]:text-base">Action</p>
+                    {/* Desktop: All columns in one flex row, only on sm+ */}
+                    <div className="hidden sm:flex w-full">
+                      <div className="cart-th cart-th-produit items-center sm:w-[35%] min-w-[180px] flex">
+                        <p className="text-dark text-left whitespace-nowrap overflow-hidden text-ellipsis w-full">Produit</p>
+                      </div>
+                      <div className="cart-th cart-th-prix items-center justify-center sm:w-[15%] min-w-[100px] flex">
+                        <p className="text-dark text-center w-full">Prix</p>
+                      </div>
+                      <div className="cart-th cart-th-quantite items-center justify-center sm:w-[20%] min-w-[100px] flex">
+                        <p className="text-dark text-center w-full">Quantité</p>
+                      </div>
+                      <div className="cart-th cart-th-soustotal items-center justify-center sm:w-[15%] min-w-[100px] flex">
+                        <p className="text-dark text-center w-full">Sous-total</p>
+                      </div>
+                      <div className="cart-th cart-th-action items-center justify-center sm:w-[5%] min-w-[60px] flex">
+                        <p className="text-dark text-center w-full">Action</p>
+                      </div>
                     </div>
                   </div>
 

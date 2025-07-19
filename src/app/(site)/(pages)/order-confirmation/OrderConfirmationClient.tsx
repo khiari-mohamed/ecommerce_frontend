@@ -384,15 +384,7 @@ const OrderConfirmationClient = () => {
             <FactureDocument order={order} printRef={printRef} />
           ) : (
             <>
-              <OrderInvoice order={order} printRef={printRef} />
-              <div className="my-8 text-center">
-                <button
-                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-6 py-2 rounded-lg shadow transition mt-4"
-                  onClick={() => setShowOriginal(false)}
-                >
-                  Retour à la nouvelle version (pixel-perfect)
-                </button>
-              </div>
+            <OrderInvoice order={order} printRef={printRef} />
             </>
           )}
         </div>

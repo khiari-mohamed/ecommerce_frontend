@@ -44,7 +44,7 @@ const SingleGridItem = ({ item }: { item: Product }) => {
     const allImgs = getAllImageUrls();
     dispatch(updateQuickView({ 
       ...item,
-      title: item.designation,
+      title: item.designation || item.designation_fr || item.title || "",
       discountedPrice: item.price,
       price: item.oldPrice || item.price,
       imgs: {

@@ -57,7 +57,6 @@ export default async function BrandPage({
   let products: any[] = [];
   let categories: any[] = [];
   let brands: any[] = [];
-  let aromas: any[] = [];
   try {
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands?slug=${encodeURIComponent(slug)}`
@@ -78,23 +77,17 @@ export default async function BrandPage({
         `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/brands`
       );
       brands = Array.isArray(brandsRes.data) ? brandsRes.data : [];
-      // Fetch aromas
-      const aromasRes = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/aromas`
-      );
-      aromas = Array.isArray(aromasRes.data) ? aromasRes.data : [];
     }
   } catch {
     brand = null;
     products = [];
     categories = [];
     brands = [];
-    aromas = [];
   }
 
   if (!brand) {
     notFound();
   }
 
-  return <BrandClient brand={brand} products={products} categories={categories} brands={brands} aromas={aromas} />;
+  return <BrandClient brand={brand} products={products} categories={categories} brands={brands} />;
 }

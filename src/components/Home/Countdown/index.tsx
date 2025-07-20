@@ -39,7 +39,7 @@ const CountdownBlogGrid = () => {
   return (
     <section className="overflow-hidden py-20 bg-gray-2">
       <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-        <h2 className="text-2xl sm:text-3xl font-bold text-dark mb-10 text-center">Blog</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-dark mb-10 text-center" style={{ color: '#FF4500' }}>Blog</h2>
         {loading ? (
           <div className="text-center py-10 text-gray-400">Chargement...</div>
         ) : blogs.length === 0 ? (

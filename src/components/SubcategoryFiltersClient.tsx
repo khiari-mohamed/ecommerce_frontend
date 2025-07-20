@@ -1,5 +1,4 @@
 "use client";
-import SidebarAromeDropdown from '@/components/SidebarAromeDropdown';
 import SidebarBrandDropdown from '@/components/SidebarBrandDropdown';
 import SidebarKeywords from '@/components/SidebarKeywords';
 import { useState, useEffect } from 'react';
@@ -13,20 +12,16 @@ function isPopulatedSubCategory(cat: any) {
 export default function SubcategoryFiltersClient({
   categories,
   brands,
-  aromas
-}: {
+  }: {
   categories: any[];
   brands: any[];
-  aromas: any[];
 }) {
   const [showSidebar, setShowSidebar] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialBrandId = searchParams?.get('brand') || '';
   const [selectedBrand, setSelectedBrand] = useState(initialBrandId);
-  const initialArome = searchParams?.get('arome') || '';
-  const [selectedArome, setSelectedArome] = useState(initialArome);
-  const initialKeywords = (searchParams?.get('keywords') || '').split(',').filter(Boolean);
+    const initialKeywords = (searchParams?.get('keywords') || '').split(',').filter(Boolean);
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>(initialKeywords);
 
   // Update URL when brand changes
@@ -43,18 +38,7 @@ export default function SubcategoryFiltersClient({
   router.replace(`?${params.toString()}`);
   };
   
-  // Update URL when aroma changes
-  const handleAromeChange = (arome: string) => {
-  setSelectedArome(arome);
-  const params = new URLSearchParams(Array.from((searchParams?.entries() ?? [])));
-  if (arome) {
-  params.set('arome', arome);
-  } else {
-  params.delete('arome');
-  }
-  router.replace(`?${params.toString()}`);
-  };
-
+  
   // Update URL when keywords change
 const handleKeywordsChange = (keywords: string[]) => {
   setSelectedKeywords(keywords);
@@ -145,8 +129,6 @@ const handleKeywordsChange = (keywords: string[]) => {
             </div>
             {/* Fabricants (dynamic dropdown, client component) */}
             <SidebarBrandDropdown brands={brands} value={selectedBrand} onChange={handleBrandChange} />
-            {/* Arômes (selectable dropdown, dynamic, client component) */}
-            <SidebarAromeDropdown aromas={aromas} value={selectedArome} onChange={handleAromeChange} />
             {/* Mots clés (dynamic keywords filter) */}
             <SidebarKeywords value={selectedKeywords} onChange={handleKeywordsChange} />
           </div>
@@ -187,8 +169,6 @@ const handleKeywordsChange = (keywords: string[]) => {
         </div>
         {/* Fabricants (dynamic dropdown, client component) */}
         <SidebarBrandDropdown brands={brands} value={selectedBrand} onChange={handleBrandChange} />
-        {/* Arômes (selectable dropdown, dynamic, client component) */}
-        <SidebarAromeDropdown aromas={aromas} value={selectedArome} onChange={handleAromeChange} />
         {/* Mots clés (dynamic keywords filter) */}
         <SidebarKeywords value={selectedKeywords} onChange={handleKeywordsChange} />
       </aside>

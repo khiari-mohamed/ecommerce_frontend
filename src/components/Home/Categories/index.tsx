@@ -155,8 +155,8 @@ const Categories = () => {
               </div>
                 catégories
               </span>
-              <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
-              Parcourir par catégorie
+              <h2 className="font-semibold text-xl xl:text-heading-5 w-full text-center" style={{ color: '#FF4500' }}>
+                Parcourir par catégorie
               </h2>
             </div>
 

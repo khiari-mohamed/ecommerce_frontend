@@ -74,39 +74,19 @@ export default async function SubcategoryPage({ params, searchParams }: { params
   }
   const motsCles = ["Sans sucre", "Vegan", "Protéiné", "Énergie", "Récupération"];
 
-  // Fetch aromas server-side
-  let aromas: any[] = [];
-  try {
-    const res = await axios.get('/aromas');
-    if (Array.isArray(res.data)) {
-      aromas = res.data;
-    } else if (res.data && Array.isArray(res.data.aromas)) {
-      aromas = res.data.aromas;
-    }
-  } catch {
-    aromas = [];
-  }
-
   // Fetch products for the subcategory dynamically
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   let products: any[] = [];
   let brandId = '';
-  let arome = '';
   let keywordsParam: string[] = [];
   let keywordsData: any[] = [];
   if (typeof window === 'undefined') {
-    // On server, get brand/arome/keywords from resolvedSearchParams if available
+    // On server, get brand/keywords from resolvedSearchParams if available
     if (resolvedSearchParams && resolvedSearchParams.brand) {
       brandId = resolvedSearchParams.brand;
     } else {
       const cookieStore = cookies();
       brandId = (await cookieStore).get('brand')?.value || '';
-    }
-    if (resolvedSearchParams && resolvedSearchParams.arome) {
-      arome = resolvedSearchParams.arome;
-    } else {
-      const cookieStore = cookies();
-      arome = (await cookieStore).get('arome')?.value || '';
     }
     if (resolvedSearchParams && resolvedSearchParams.keywords) {
       keywordsParam = String(resolvedSearchParams.keywords).split(',').filter(Boolean);
@@ -125,15 +105,9 @@ keywordsData = await keywordsRes.json();
     if (brandId) {
       url += `&brand=${brandId}`;
     }
-    // Do NOT filter by aroma or keywords in the backend
+    // Do NOT filter by keywords in the backend
     const res = await axios.get(url);
     products = res.data?.data?.products || [];
-    // Client-side aroma filter
-    if (arome) {
-      products = products.filter(
-        (product: any) => Array.isArray(product.aroma_ids) && product.aroma_ids.includes(arome)
-      );
-    }
     // Client-side keywords filter
     if (keywordsParam.length > 0 && keywordsData.length > 0) {
       const allowedProductIds = new Set(
@@ -154,7 +128,6 @@ keywordsData = await keywordsRes.json();
         <SubcategoryFiltersClient
           categories={categories}
           brands={brands}
-          aromas={aromas}
         />
 
         {/* Main Content */}

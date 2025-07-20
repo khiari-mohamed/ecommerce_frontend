@@ -35,7 +35,7 @@ const BestSeller = () => {
               />
               Ce mois-ci
             </span>
-            <h2 className="font-semibold text-lg sm:text-xl xl:text-heading-5 text-dark">
+            <h2 className="font-semibold text-lg sm:text-xl xl:text-heading-5 text-dark" style={{ color: '#FF4500' }}>
             Meilleures ventes
             </h2>
           </div>  

@@ -164,16 +164,22 @@ const ProductCard = memo(
 
           dispatch(
             addItemToCart({
-              id: Number(product._id),
-              title: product.designation,
-              price: product.price,
-              discountedPrice: product.oldPrice && product.oldPrice > product.price ? product.price : product.price,
+              id: Number(normalizedProduct._id),
+              title: normalizedProduct.designation,
+              price: normalizedProduct.price,
+              discountedPrice: normalizedProduct.oldPrice && normalizedProduct.oldPrice > normalizedProduct.price ? normalizedProduct.price : normalizedProduct.price,
               quantity: 1,
-              imgs: product.mainImage
-                ? { thumbnails: [product.mainImage.url], previews: [product.mainImage.url] }
+              imgs: normalizedProduct.mainImage
+                ? { thumbnails: [normalizedProduct.mainImage.url], previews: [normalizedProduct.mainImage.url] }
                 : undefined,
               type: type === "pack" ? "Pack" : "Product",
-              image: getProductImageSrc(normalizedProduct), // <-- HERE
+              image: getProductImageSrc(normalizedProduct),
+              mainImage: normalizedProduct.mainImage,
+              cover: normalizedProduct.cover,
+              slug: normalizedProduct.slug,
+              brand: normalizedProduct.brand,
+              inStock: normalizedProduct.inStock,
+              // add any other normalized fields you want to persist
             })
           );
 

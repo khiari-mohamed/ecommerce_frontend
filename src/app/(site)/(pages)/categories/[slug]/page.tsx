@@ -52,17 +52,6 @@ export default async function CategoryPage({ params }: { params: Promise<any> })
       }
     } catch {}
 
-    // Fetch aromas
-    let aromas: any[] = [];
-    try {
-      const res = await (await import('@/lib/axios')).default.get('/aromas');
-      if (Array.isArray(res.data)) {
-        aromas = res.data;
-      } else if (res.data && Array.isArray(res.data.aromas)) {
-        aromas = res.data.aromas;
-      }
-    } catch {}
-
     // Fetch keywords
     let keywordsData = [];
     try {
@@ -110,7 +99,6 @@ export default async function CategoryPage({ params }: { params: Promise<any> })
         products={products}
         categories={categories}
         brands={brands}
-        aromas={aromas}
         keywordsData={keywordsData}
       />
     );

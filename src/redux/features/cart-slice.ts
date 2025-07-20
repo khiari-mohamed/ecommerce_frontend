@@ -22,6 +22,9 @@ type CartItem = {
   images?: { url: string }[];
   designation_fr?: string;
   designation?: string;
+  slug?: string;
+  brand?: string;
+  inStock?: boolean;
 };
 
 function loadCartItems(): CartItem[] {

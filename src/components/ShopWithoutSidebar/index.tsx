@@ -210,6 +210,8 @@ const ShopWithoutSidebar = () => {
                   // Robust normalization logic
                   const normalized = {
                     ...item,
+                    designation: item.designation || item.designation_fr || item.title || "",
+                    title: item.title || item.designation || item.designation_fr || "",
                     imgs: item.imgs && item.imgs.thumbnails?.length > 0 && item.imgs.previews?.length > 0
                       ? item.imgs
                       : {

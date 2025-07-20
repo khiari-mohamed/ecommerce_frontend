@@ -80,7 +80,7 @@ const TopPromotionSection = () => {
               />
               Promotions du moment
             </span>
-            <h2 className="font-semibold text-lg sm:text-xl xl:text-heading-5 text-dark">
+            <h2 className="font-semibold text-lg sm:text-xl xl:text-heading-5 text-dark" style={{ color: '#FF4500' }}>
               Top Promos
             </h2>
           </div>
@@ -92,7 +92,7 @@ const TopPromotionSection = () => {
               <span>Chargement...</span>
             </div>
           ) : (
-            promotions.slice(0, 4).map((promo, key) => {
+            promotions.slice(1, 5).map((promo, key) => {
               return (
                 <div
                   key={promo._id || key}

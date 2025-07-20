@@ -20,26 +20,16 @@ interface BrandClientProps {
   products: any[];
   categories: any[];
   brands?: any[];
-  aromas?: any[];
 }
 
-const BrandClient: React.FC<BrandClientProps> = ({ brand, products, categories = [], brands = [], aromas = [] }) => {
+const BrandClient: React.FC<BrandClientProps> = ({ brand, products, categories = [], brands = [] }) => {
   const [activeTab, setActiveTab] = useState<'description' | 'more'>('description');
-  const searchParams = useSearchParams();
-  const selectedArome = searchParams?.get('arome') || '';
-
-  // Client-side aroma filtering (like subcategory page)
-  const filteredProducts = selectedArome
-    ? products.filter((product: any) =>
-        Array.isArray(product.aroma_ids) && product.aroma_ids.includes(selectedArome)
-      )
-    : products;
 
   return (
     <div className="max-w-[1400px] mx-auto px-2 sm:px-4 py-4 sm:py-8 pt-[70px] sm:pt-[100px] md:pt-[120px] lg:pt-[130px]">
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         {/* Sidebar Filters (mobile and desktop) - using the same as subcategory page */}
-        <BrandFiltersClient categories={categories} brands={brands} aromas={aromas} />
+        <BrandFiltersClient categories={categories} brands={brands} />
         {/* Main Content */}
         <main className="flex-1 min-w-0">
           {/* Top Image */}
@@ -61,7 +51,7 @@ const BrandClient: React.FC<BrandClientProps> = ({ brand, products, categories =
           {/* Product Grid */}
           <div className="mb-8 sm:mb-10">
             <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-800">Produits</h2>
-            <BrandProductGrid products={filteredProducts} />
+            <BrandProductGrid products={products} />
           </div>
           {/* Tabs */}
           <div className="mb-8 sm:mb-10">

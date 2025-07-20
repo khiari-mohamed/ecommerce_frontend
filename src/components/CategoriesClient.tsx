@@ -23,7 +23,6 @@ interface CategoriesClientProps {
   products: any[];
   categories: any[];
   brands: any[];
-  aromas: any[];
   keywordsData: any[];
 }
 
@@ -33,7 +32,6 @@ const CategoriesClient: React.FC<CategoriesClientProps> = ({
   products: initialProducts,
   categories,
   brands,
-  aromas,
   keywordsData
 }) => {
   // Filters state from URL
@@ -41,24 +39,17 @@ const CategoriesClient: React.FC<CategoriesClientProps> = ({
   const searchParams = useSearchParams();
   const initialBrandId = searchParams?.get('brand') || '';
   const [selectedBrand, setSelectedBrand] = useState(initialBrandId);
-  const initialArome = searchParams?.get('arome') || '';
-  const [selectedArome, setSelectedArome] = useState(initialArome);
   const initialKeywords = (searchParams?.get('keywords') || '').split(',').filter(Boolean);
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>(initialKeywords);
   const [showSidebar, setShowSidebar] = useState(false);
 
-  // Filtering logic (client-side for aroma/keywords)
+  // Filtering logic (client-side for keywords)
   let filteredProducts = initialProducts;
   if (selectedBrand) {
     filteredProducts = filteredProducts.filter(
       (product: any) =>
         String(product.brand_id) === String(selectedBrand) ||
         String(product.brand) === String(selectedBrand)
-    );
-  }
-  if (selectedArome) {
-    filteredProducts = filteredProducts.filter(
-      (product: any) => Array.isArray(product.aroma_ids) && product.aroma_ids.includes(selectedArome)
     );
   }
   if (selectedKeywords.length > 0 && keywordsData.length > 0) {
@@ -80,16 +71,6 @@ const CategoriesClient: React.FC<CategoriesClientProps> = ({
     } else {
       params.delete('brand');
       params.delete('brand_id');
-    }
-    router.replace(`?${params.toString()}`);
-  };
-  const handleAromeChange = (arome: string) => {
-    setSelectedArome(arome);
-    const params = new URLSearchParams(Array.from((searchParams?.entries() ?? [])));
-    if (arome) {
-      params.set('arome', arome);
-    } else {
-      params.delete('arome');
     }
     router.replace(`?${params.toString()}`);
   };
@@ -182,7 +163,6 @@ const CategoriesClient: React.FC<CategoriesClientProps> = ({
                 </ul>
               </div>
               <SidebarBrandDropdown brands={brands} value={selectedBrand} onChange={handleBrandChange} />
-              <SidebarAromeDropdown aromas={aromas} value={selectedArome} onChange={handleAromeChange} />
               <SidebarKeywords value={selectedKeywords} onChange={handleKeywordsChange} />
             </div>
           </div>
@@ -219,7 +199,6 @@ const CategoriesClient: React.FC<CategoriesClientProps> = ({
             </ul>
           </div>
           <SidebarBrandDropdown brands={brands} value={selectedBrand} onChange={handleBrandChange} />
-          <SidebarAromeDropdown aromas={aromas} value={selectedArome} onChange={handleAromeChange} />
           <SidebarKeywords value={selectedKeywords} onChange={handleKeywordsChange} />
         </aside>
         {/* Main Content */}

@@ -280,9 +280,11 @@ function Footer() {
           </div>
         </div>
       </div>
-      <p className="text-center text-sm mt-6" style={{ color: '#FF4500' }}>
-        © 2024 PROTEINE TUNISIE
-      </p>
+
+      <Link href="/" className="text-center text-sm mt-6 block" style={{ color: '#FF4500', textDecoration: 'none' }}>
+        <span>© 2025 SOBITAS-PROTEINE TUNISIE</span><br />
+        <strong>Tous droits réservés</strong>
+      </Link>
     </footer>
   );
 }

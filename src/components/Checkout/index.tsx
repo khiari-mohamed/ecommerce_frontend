@@ -502,10 +502,10 @@ const Checkout = () => {
                             </div>
                           </div>
                           <Link
-                            href={`/product/${recommended.slug}`}
-                            className="bg-[#FF4301] text-white text-xs px-3 py-1 rounded hover:bg-[#e03c00] transition"
+                          href={`/products/${recommended.slug}`}
+                          className="bg-[#FF4301] text-white text-xs px-3 py-1 rounded hover:bg-[#e03c00] transition"
                           >
-                            J&apos;achète
+                          J&apos;achète
                           </Link>
                         </div>
                       ) : (

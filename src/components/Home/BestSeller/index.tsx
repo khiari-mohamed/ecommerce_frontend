@@ -48,28 +48,29 @@ const BestSeller = () => {
             </div>
           ) : (
             products.slice(0, 4).map((item, key) => {
-            const normalizedItem = {
-            ...item,
-            imgs: item.imgs && item.imgs.thumbnails.length > 0 && item.imgs.previews.length > 0
-            ? item.imgs
-            : {
-            thumbnails: (
-            item.images && Array.isArray(item.images) && item.images.length > 0
-            ? item.images.map((img: any) => img.url)
-            : item.mainImage?.url
-            ? [item.mainImage.url]
-            : []
-            ),
-            previews: (
-            item.images && Array.isArray(item.images) && item.images.length > 0
-            ? item.images.map((img: any) => img.url)
-            : item.mainImage?.url
-            ? [item.mainImage.url]
-            : []
-            ),
-            },
-            };
-            return <ProductItem item={normalizedItem} key={key} />;
+              const normalizedItem = {
+                ...item,
+                id: typeof item._id === "string" ? Number(item._id) : item._id ?? item.id, // <-- force id to number
+                imgs: item.imgs && item.imgs.thumbnails.length > 0 && item.imgs.previews.length > 0
+                  ? item.imgs
+                  : {
+                      thumbnails: (
+                        item.images && Array.isArray(item.images) && item.images.length > 0
+                          ? item.images.map((img: any) => img.url)
+                          : item.mainImage?.url
+                          ? [item.mainImage.url]
+                          : []
+                      ),
+                      previews: (
+                        item.images && Array.isArray(item.images) && item.images.length > 0
+                          ? item.images.map((img: any) => img.url)
+                          : item.mainImage?.url
+                          ? [item.mainImage.url]
+                          : []
+                      ),
+                    },
+              };
+              return <ProductItem item={normalizedItem} key={key} />;
             })
           )}
         </div>

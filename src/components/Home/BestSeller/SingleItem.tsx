@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { useDispatch } from "react-redux";
@@ -20,15 +20,28 @@ const SingleItem = ({ item }: { item: Product }) => {
   };
 
   // add to cart
+  const [rerender, setRerender] = useState(0);
   const handleAddToCart = () => {
+    // Always use a numeric id for cart consistency
+    let numericId = item.id;
+    if (typeof numericId !== "number") {
+      if (typeof item._id === "string" && !isNaN(Number(item._id))) {
+        numericId = Number(item._id);
+      } else if (typeof item._id === "number") {
+        numericId = item._id;
+      } else if (typeof item.id === "string" && !isNaN(Number(item.id))) {
+        numericId = Number(item.id);
+      }
+    }
     dispatch(
       addItemToCart({
         ...item,
-        id: typeof item._id === "string" ? Number(item._id) : item._id ?? item.id,
+        id: numericId,
         quantity: 1,
         image: imageSrc
       })
     );
+    setRerender(r => r + 1); // force local rerender to update cart UI
   };
 
   const handleItemToWishList = () => {

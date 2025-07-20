@@ -62,30 +62,17 @@ const BrandClient: React.FC<BrandClientProps> = ({ brand, products, categories =
               >
                 Description
               </button>
-              {brand.more_details && (
-                <button
-                  className={`px-4 sm:px-6 py-2 font-semibold text-gray-700 bg-white rounded-t focus:outline-none ${activeTab === 'more' ? 'border-b-2 border-blue-500' : ''}`}
-                  onClick={() => setActiveTab('more')}
-                >
-                  Plus de détails
-                </button>
+              </div>
+              {activeTab === 'description' && (
+              <div className="prose max-w-none mx-auto text-sm sm:text-base leading-relaxed sm:leading-normal">
+              {brand.description_fr ? (
+              <div dangerouslySetInnerHTML={{ __html: brand.description_fr }} />
+              ) : (
+              <span className="text-gray-500">Aucune description disponible.</span>
               )}
-            </div>
-            {activeTab === 'description' && (
-              <div className="prose max-w-none mx-auto text-sm sm:text-base leading-relaxed sm:leading-normal">
-                {brand.description_fr ? (
-                  <div dangerouslySetInnerHTML={{ __html: brand.description_fr }} />
-                ) : (
-                  <span className="text-gray-500">Aucune description disponible.</span>
-                )}
               </div>
-            )}
-            {activeTab === 'more' && brand.more_details && (
-              <div className="prose max-w-none mx-auto text-sm sm:text-base leading-relaxed sm:leading-normal">
-                <div dangerouslySetInnerHTML={{ __html: brand.more_details }} />
+              )}
               </div>
-            )}
-          </div>
         </main>
       </div>
     </div>

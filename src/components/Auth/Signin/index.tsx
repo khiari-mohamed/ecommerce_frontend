@@ -40,9 +40,9 @@ const Signin = () => {
           <div className="max-w-[570px] w-full mx-auto rounded-xl bg-white shadow-1 p-4 sm:p-7.5 xl:p-11">
             <div className="text-center mb-11">
               <h2 className="font-semibold text-xl sm:text-2xl xl:text-heading-5 text-dark mb-1.5">
-                Sign In to Your Account
+                Connectez-vous à votre compte
               </h2>
-              <p>Enter your detail below</p>
+              <p>Entrez vos coordonnées ci-dessous</p>
               {error && (
                 <p className="text-red-500 mt-2">{error}</p>
               )}
@@ -69,7 +69,7 @@ const Signin = () => {
 
                 <div className="mb-5">
                   <label htmlFor="password" className="block mb-2.5">
-                    Password
+                    Mot de passe
                   </label>
 
                   <input
@@ -97,7 +97,7 @@ const Signin = () => {
                   href="#"
                   className="block text-center text-dark-4 mt-4.5 ease-out duration-200 hover:text-dark"
                 >
-                  Forget your password?
+                  Mot de passe oublié?
                 </a>
 
                 <span className="relative z-1 block font-medium text-center mt-4.5">
@@ -153,7 +153,7 @@ const Signin = () => {
                         </clipPath>
                       </defs>
                     </svg>
-                    Sign In with Google
+                    Connectez-vous avec Google
                   </button>
 
                   <button 
@@ -172,17 +172,17 @@ const Signin = () => {
                         fill="#15171A"
                       />
                     </svg>
-                    Sign Up with Github
+                    Inscrivez-vous avec Github
                   </button>
                 </div>
 
                 <p className="text-center mt-6">
-                  Don&apos;t have an account?
+                  Vous n'avez pas de compte ?
                   <Link
                     href="/signup"
                     className="text-dark ease-out duration-200 hover:text-blue pl-2"
                   >
-                    Sign Up Now!
+                    Inscrivez-vous maintenant!
                   </Link>
                 </p>
               </form>

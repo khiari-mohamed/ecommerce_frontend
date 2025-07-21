@@ -68,9 +68,9 @@ const Signup = () => {
           <div className="max-w-[570px] w-full mx-auto rounded-xl bg-white shadow-1 p-4 sm:p-7.5 xl:p-11">
             <div className="text-center mb-11">
               <h2 className="font-semibold text-xl sm:text-2xl xl:text-heading-5 text-dark mb-1.5">
-                Create an Account
+                Créer un compte
               </h2>
-              <p>Enter your detail below</p>
+              <p>Entrez vos coordonnées ci-dessous</p>
               {error && <p className="text-red-500 mt-2">{error}</p>}
             </div>
 
@@ -119,7 +119,7 @@ const Signup = () => {
                     </clipPath>
                   </defs>
                 </svg>
-                Sign Up with Google
+                Inscrivez-vous avec Google
               </button>
 
               <button className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2">
@@ -135,7 +135,7 @@ const Signup = () => {
                     fill="#15171A"
                   />
                 </svg>
-                Sign Up with Github
+                Inscrivez-vous avec Github
               </button>
             </div>
 
@@ -148,7 +148,7 @@ const Signup = () => {
               <form onSubmit={handleSubmit}>
                 <div className="mb-5">
                   <label htmlFor="name" className="block mb-2.5">
-                    Full Name <span className="text-red">*</span>
+                    Nom et prénom <span className="text-red">*</span>
                   </label>
                   <input
                     type="text"
@@ -164,7 +164,7 @@ const Signup = () => {
 
                 <div className="mb-5">
                   <label htmlFor="email" className="block mb-2.5">
-                    Email Address <span className="text-red">*</span>
+                    Adresse email <span className="text-red">*</span>
                   </label>
                   <input
                     type="email"
@@ -180,7 +180,7 @@ const Signup = () => {
 
                 <div className="mb-5">
                   <label htmlFor="password" className="block mb-2.5">
-                    Password <span className="text-red">*</span>
+                    Mot de passe <span className="text-red">*</span>
                   </label>
                   <input
                     type="password"
@@ -197,7 +197,7 @@ const Signup = () => {
 
                 <div className="mb-5">
                   <label htmlFor="confirmPassword" className="block mb-2.5">
-                    Confirm Password <span className="text-red">*</span>
+                    Confirmez le mot de passe <span className="text-red">*</span>
                   </label>
                   <input
                     type="password"
@@ -214,7 +214,7 @@ const Signup = () => {
 
                 <div className="mb-5">
                   <label htmlFor="phone1" className="block mb-2.5">
-                    Phone Number <span className="text-red">*</span>
+                    Numéro de téléphone <span className="text-red">*</span>
                   </label>
                   <input
                     type="text"
@@ -230,7 +230,7 @@ const Signup = () => {
 
                 <div className="mb-5">
                   <label htmlFor="ville" className="block mb-2.5">
-                    City <span className="text-red">*</span>
+                    Ville <span className="text-red">*</span>
                   </label>
                   <input
                     type="text"
@@ -246,7 +246,7 @@ const Signup = () => {
 
                 <div className="mb-5">
                   <label htmlFor="address" className="block mb-2.5">
-                    Address <span className="text-red">*</span>
+                    Adresse <span className="text-red">*</span>
                   </label>
                   <input
                     type="text"
@@ -270,12 +270,12 @@ const Signup = () => {
               </form>
 
               <p className="text-center mt-6">
-                Already have an account?
+                Vous avez déjà un compte ?
                 <Link
                   href="/signin"
                   className="text-dark ease-out duration-200 hover:text-blue pl-2"
                 >
-                  Sign in Now
+                  Connectez-vous maintenant
                 </Link>
               </p>
             </div>

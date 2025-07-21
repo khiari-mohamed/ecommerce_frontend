@@ -19,7 +19,7 @@ const Signin = () => {
     setError("");
 
     try {
-      const result = await login(email, password); // Use the context's login function
+      const result = await login(email, password); // Use the context login function
       
       if (result?.status === "ok") {
         router.push("/"); // Redirect on success
@@ -177,7 +177,7 @@ const Signin = () => {
                 </div>
 
                 <p className="text-center mt-6">
-                  Vous n'avez pas de compte ?
+                  Vous navez pas de compte ?
                   <Link
                     href="/signup"
                     className="text-dark ease-out duration-200 hover:text-blue pl-2"

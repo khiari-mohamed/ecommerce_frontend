@@ -29,20 +29,6 @@ export const menuData: Menu[] = [
         showBadge: undefined
       },
       {
-        id: 24,
-        title: "Panier",
-        newTab: false,
-        path: "/cart",
-        showBadge: undefined
-      },
-      {
-        id: 25,
-        title: "Paiement",
-        newTab: false,
-        path: "/checkout",
-        showBadge: undefined
-      },
-      {
         id: 26,
         title: "Liste de souhaits",
         newTab: false,

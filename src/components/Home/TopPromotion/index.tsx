@@ -40,17 +40,21 @@ const TopPromotionSection = () => {
 
   // Normalize product for cart/preview/wishlist
   const normalizeProduct = (promo: TopPromotion) => {
-    const product = promo.product || {};
-    return {
-      ...product,
-      // Fallbacks from promo if missing in product
-      price: product.price ?? promo.prix ?? 0,
-      discountedPrice: product.discountedPrice ?? promo.promo ?? product.price ?? promo.prix ?? 0,
-      title: product.title ?? product.designation ?? promo.designation_fr ?? "Produit",
-      designation: product.designation ?? promo.designation_fr ?? product.title ?? "Produit",
-      cover: product.cover ?? promo.cover ?? getImageUrl(promo),
-      _id: product._id ?? promo.productId ?? promo._id,
-    };
+  const product = promo.product || {};
+  const imageUrl = getImageUrl(promo);
+  return {
+  ...product,
+  // Fallbacks from promo if missing in product
+  price: product.price ?? promo.prix ?? 0,
+  discountedPrice: product.discountedPrice ?? promo.promo ?? product.price ?? promo.prix ?? 0,
+  title: product.title ?? product.designation ?? promo.designation_fr ?? "Produit",
+  designation: product.designation ?? promo.designation_fr ?? product.title ?? "Produit",
+  cover: product.cover ?? promo.cover ?? imageUrl,
+  imgs: product.imgs ?? { thumbnails: [imageUrl] },
+  mainImage: product.mainImage ?? { url: imageUrl },
+  images: product.images ?? [{ url: imageUrl }],
+  _id: product._id ?? promo.productId ?? promo._id,
+  };
   };
 
   // Handlers for promo.product

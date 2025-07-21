@@ -33,70 +33,33 @@ const SingleItem = ({ item }) => {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row items-center border-t border-gray-3 py-4 sm:py-5 px-2 sm:px-4 md:px-8" role="row">
-      <div className="w-12 min-w-[48px] sm:min-w-[83px]">
-        <button
-          onClick={handleRemoveFromWishlist}
-          aria-label="Supprimer le produit de la liste de souhaits"
-          className="flex items-center justify-center rounded-lg max-w-[32px] sm:max-w-[38px] w-full h-8 sm:h-9.5 bg-gray-2 border border-gray-3 ease-out duration-200 hover:bg-red-light-6 hover:border-red-light-4 hover:text-red"
-        >
-          <svg
-            className="fill-current"
-            width="22"
-            height="22"
-            viewBox="0 0 22 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              d="M9.19509 8.22222C8.92661 7.95374 8.49131 7.95374 8.22282 8.22222C7.95433 8.49071 7.95433 8.92601 8.22282 9.1945L10.0284 11L8.22284 12.8056C7.95435 13.074 7.95435 13.5093 8.22284 13.7778C8.49133 14.0463 8.92663 14.0463 9.19511 13.7778L11.0006 11.9723L12.8061 13.7778C13.0746 14.0463 13.5099 14.0463 13.7784 13.7778C14.0469 13.5093 14.0469 13.074 13.7784 12.8055L11.9729 11L13.7784 9.19451C14.0469 8.92603 14.0469 8.49073 13.7784 8.22224C13.5099 7.95376 13.0746 7.95376 12.8062 8.22224L11.0006 10.0278L9.19509 8.22222Z"
-              fill=""
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center border-t border-gray-3 py-4 sm:py-5 px-0 sm:px-4 md:px-8" role="row">
+      {/* Mobile: single column layout */}
+      <div className="flex flex-col w-full sm:hidden px-4">
+        <div className="flex justify-center mb-2">
+          <div className="flex items-center justify-center rounded-[5px] bg-gray-2 w-16 h-16">
+            <Image
+              src={
+                item?.imgs?.thumbnails?.[0] ||
+                item?.imgs?.previews?.[0] ||
+                item?.mainImage?.url ||
+                (item?.images && item.images[0]?.url) ||
+                "/default-product.jpg"
+              }
+              alt={item.title || "Produit"}
+              width={64}
+              height={64}
+              className="object-contain w-16 h-16"
             />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M11.0007 1.14587C5.55835 1.14587 1.14648 5.55773 1.14648 11C1.14648 16.4423 5.55835 20.8542 11.0007 20.8542C16.443 20.8542 20.8548 16.4423 20.8548 11C20.8548 5.55773 16.443 1.14587 11.0007 1.14587ZM2.52148 11C2.52148 6.31713 6.31774 2.52087 11.0007 2.52087C15.6836 2.52087 19.4798 6.31713 19.4798 11C19.4798 15.683 15.6836 19.4792 11.0007 19.4792C6.31774 19.4792 2.52148 15.683 2.52148 11Z"
-              fill=""
-            />
-          </svg>
-        </button>
-      </div>
-
-      <div className="flex-1 min-w-[180px] sm:min-w-[250px] md:min-w-[320px] lg:min-w-[387px]">
-        <div className="flex items-center justify-between gap-5">
-          <div className="w-full flex items-center gap-3 sm:gap-5.5">
-            <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[60px] sm:max-w-[80px] w-full h-14 sm:h-17.5">
-              <Image
-  src={
-    item?.imgs?.thumbnails?.[0] ||
-    item?.imgs?.previews?.[0] ||
-    item?.mainImage?.url ||
-    (item?.images && item.images[0]?.url) ||
-    "/default-product.jpg"
-  }
-  alt={item.title || "Produit"}
-  width={200}
-  height={200}
-/>
-            </div>
-            <div>
-              <h3 className="text-dark ease-out duration-200 hover:text-blue">
-                <span>{item.title}</span>
-              </h3>
-            </div>
           </div>
         </div>
-      </div>
-
-      <div className="min-w-[100px] sm:min-w-[150px] md:min-w-[180px] lg:min-w-[205px]">
-        <p className="text-dark">
+        <h3 className="text-dark text-center text-base font-medium mb-1">
+          <span>{item.title}</span>
+        </h3>
+        <p className="text-dark text-center text-base font-semibold mb-1">
           {Number(item.discountedPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
         </p>
-      </div>
-
-      <div className="min-w-[120px] sm:min-w-[180px] md:min-w-[220px] lg:min-w-[265px]">
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center justify-center gap-1.5 mb-1">
           <svg
             width="20"
             height="20"
@@ -126,18 +89,142 @@ const SingleItem = ({ item }) => {
             <span className="text-red">Rupture de stock</span>
           )}
         </div>
-      </div>
-
-      <div className="min-w-[80px] sm:min-w-[120px] md:min-w-[150px] flex justify-end">
         <button
           onClick={handleAddToCart}
-          className="inline-flex text-dark hover:text-white bg-gray-1 border border-gray-3 py-2.5 px-6 rounded-md ease-out duration-200 hover:bg-blue hover:border-gray-3 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex mx-auto text-dark hover:text-white bg-gray-1 border border-gray-3 py-1.5 px-3 text-xs rounded-md ease-out duration-200 hover:bg-blue hover:border-gray-3 disabled:opacity-50 disabled:cursor-not-allowed mb-2"
           disabled={!inStock}
           aria-disabled={!inStock}
           aria-label={inStock ? "Ajouter au panier" : "Indisponible"}
         >
           Ajouter au panier
         </button>
+        <div className="flex justify-center">
+          <button
+            onClick={handleRemoveFromWishlist}
+            aria-label="Supprimer le produit de la liste de souhaits"
+            className="flex items-center justify-center rounded-lg w-8 h-8 bg-gray-2 border border-gray-3 ease-out duration-200 hover:bg-red-light-6 hover:border-red-light-4 hover:text-red"
+          >
+            <svg
+              className="fill-current"
+              width="22"
+              height="22"
+              viewBox="0 0 22 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M9.19509 8.22222C8.92661 7.95374 8.49131 7.95374 8.22282 8.22222C7.95433 8.49071 7.95433 8.92601 8.22282 9.1945L10.0284 11L8.22284 12.8056C7.95435 13.074 7.95435 13.5093 8.22284 13.7778C8.49133 14.0463 8.92663 14.0463 9.19511 13.7778L11.0006 11.9723L12.8061 13.7778C13.0746 14.0463 13.5099 14.0463 13.7784 13.7778C14.0469 13.5093 14.0469 13.074 13.7784 12.8055L11.9729 11L13.7784 9.19451C14.0469 8.92603 14.0469 8.49073 13.7784 8.22224C13.5099 7.95376 13.0746 7.95376 12.8062 8.22224L11.0006 10.0278L9.19509 8.22222Z"
+                fill=""
+              />
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M11.0007 1.14587C5.55835 1.14587 1.14648 5.55773 1.14648 11C1.14648 16.4423 5.55835 20.8542 11.0007 20.8542C16.443 20.8542 20.8548 16.4423 20.8548 11C20.8548 5.55773 16.443 1.14587 11.0007 1.14587ZM2.52148 11C2.52148 6.31713 6.31774 2.52087 11.0007 2.52087C15.6836 2.52087 19.4798 6.31713 19.4798 11C19.4798 15.683 15.6836 19.4792 11.0007 19.4792C6.31774 19.4792 2.52148 15.683 2.52148 11Z"
+                fill=""
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      {/* Desktop: row layout */}
+      <div className="hidden sm:flex flex-row flex-1 w-full items-center">
+        <div className="flex items-center justify-center rounded-[5px] bg-gray-2 w-[80px] h-[80px]">
+          <Image
+            src={
+              item?.imgs?.thumbnails?.[0] ||
+              item?.imgs?.previews?.[0] ||
+              item?.mainImage?.url ||
+              (item?.images && item.images[0]?.url) ||
+              "/default-product.jpg"
+            }
+            alt={item.title || "Produit"}
+            width={80}
+            height={80}
+            className="object-contain w-[80px] h-[80px]"
+          />
+        </div>
+        <div className="flex-1 ml-5.5">
+          <h3 className="text-dark ease-out duration-200 hover:text-blue text-lg">
+            <span>{item.title}</span>
+          </h3>
+        </div>
+        <div className="min-w-[100px] md:min-w-[180px] lg:min-w-[205px] flex items-center justify-center">
+          <p className="text-dark text-center w-full">
+            {Number(item.discountedPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+          </p>
+        </div>
+        <div className="min-w-[120px] md:min-w-[220px] lg:min-w-[265px] flex items-center justify-center">
+          <div className="flex items-center gap-1.5">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M9.99935 14.7917C10.3445 14.7917 10.6243 14.5119 10.6243 14.1667V9.16669C10.6243 8.82151 10.3445 8.54169 9.99935 8.54169C9.65417 8.54169 9.37435 8.82151 9.37435 9.16669V14.1667C9.37435 14.5119 9.65417 14.7917 9.99935 14.7917Z"
+                fill={inStock ? "#22C55E" : "#F23030"}
+              />
+              <path
+                d="M9.99935 5.83335C10.4596 5.83335 10.8327 6.20645 10.8327 6.66669C10.8327 7.12692 10.4596 7.50002 9.99935 7.50002C9.53911 7.50002 9.16602 7.12692 9.16602 6.66669C9.16602 6.20645 9.53911 5.83335 9.99935 5.83335Z"
+                fill={inStock ? "#22C55E" : "#F23030"}
+              />
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M1.04102 10C1.04102 5.05247 5.0518 1.04169 9.99935 1.04169C14.9469 1.04169 18.9577 5.05247 18.9577 10C18.9577 14.9476 14.9469 18.9584 9.99935 18.9584C5.0518 18.9584 1.04102 14.9476 1.04102 10ZM9.99935 2.29169C5.74215 2.29169 2.29102 5.74283 2.29102 10C2.29102 14.2572 5.74215 17.7084 9.99935 17.7084C14.2565 17.7084 17.7077 14.2572 17.7077 10C17.7077 5.74283 14.2565 2.29169 9.99935 2.29169Z"
+                fill={inStock ? "#22C55E" : "#F23030"}
+              />
+            </svg>
+            {inStock ? (
+              <span className="text-green-600">En stock</span>
+            ) : (
+              <span className="text-red">Rupture de stock</span>
+            )}
+          </div>
+        </div>
+        <div className="min-w-[80px] md:min-w-[150px] flex items-center justify-end">
+          <button
+            onClick={handleAddToCart}
+            className="inline-flex text-dark hover:text-white bg-gray-1 border border-gray-3 py-1.5 px-4 text-sm rounded-md ease-out duration-200 hover:bg-blue hover:border-gray-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!inStock}
+            aria-disabled={!inStock}
+            aria-label={inStock ? "Ajouter au panier" : "Indisponible"}
+          >
+            Ajouter au panier
+          </button>
+        </div>
+        <div className="flex justify-end items-center ml-4">
+          <button
+            onClick={handleRemoveFromWishlist}
+            aria-label="Supprimer le produit de la liste de souhaits"
+            className="flex items-center justify-center rounded-lg w-9 h-9 bg-gray-2 border border-gray-3 ease-out duration-200 hover:bg-red-light-6 hover:border-red-light-4 hover:text-red"
+          >
+            <svg
+              className="fill-current"
+              width="22"
+              height="22"
+              viewBox="0 0 22 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M9.19509 8.22222C8.92661 7.95374 8.49131 7.95374 8.22282 8.22222C7.95433 8.49071 7.95433 8.92601 8.22282 9.1945L10.0284 11L8.22284 12.8056C7.95435 13.074 7.95435 13.5093 8.22284 13.7778C8.49133 14.0463 8.92663 14.0463 9.19511 13.7778L11.0006 11.9723L12.8061 13.7778C13.0746 14.0463 13.5099 14.0463 13.7784 13.7778C14.0469 13.5093 14.0469 13.074 13.7784 12.8055L11.9729 11L13.7784 9.19451C14.0469 8.92603 14.0469 8.49073 13.7784 8.22224C13.5099 7.95376 13.0746 7.95376 12.8062 8.22224L11.0006 10.0278L9.19509 8.22222Z"
+                fill=""
+              />
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M11.0007 1.14587C5.55835 1.14587 1.14648 5.55773 1.14648 11C1.14648 16.4423 5.55835 20.8542 11.0007 20.8542C16.443 20.8542 20.8548 16.4423 20.8548 11C20.8548 5.55773 16.443 1.14587 11.0007 1.14587ZM2.52148 11C2.52148 6.31713 6.31774 2.52087 11.0007 2.52087C15.6836 2.52087 19.4798 6.31713 19.4798 11C19.4798 15.683 15.6836 19.4792 11.0007 19.4792C6.31774 19.4792 2.52148 15.683 2.52148 11Z"
+                fill=""
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   );

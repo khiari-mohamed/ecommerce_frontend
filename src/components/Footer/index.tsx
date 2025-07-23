@@ -197,10 +197,11 @@ function Footer() {
             <div>
               <h4 className="font-bold mb-3 text-base sm:text-lg">Services & Ventes</h4>
               <ul className="space-y-2 text-sm sm:text-base">
-                <li><Link href="#" className="hover:underline">Conditions générale de ventes</Link></li>
-                <li><Link href="#" className="hover:underline">Politique de remboursement</Link></li>
-                <li><Link href="#" className="hover:underline">Politique des cookies</Link></li>
-                <li><Link href="#" className="hover:underline">Qui somme nous</Link></li>
+                <li><Link href="/pages/conditions-generale-de-ventes-protein.tn" className="hover:underline">Conditions générale de ventes</Link></li>
+                <li><Link href="/pages/politique-de-remboursement" className="hover:underline">Politique de remboursement</Link></li>
+                <li><Link href="/pages/politique-des-cookies" className="hover:underline">Politique des cookies</Link></li>
+                <li><Link href="/pages/qui-sommes-nous" className="hover:underline">Qui somme nous</Link></li>
+                <li><Link href="/faq" className="hover:underline">FAQ</Link></li>
               </ul>
             </div>
             <div>
@@ -220,20 +221,6 @@ function Footer() {
         <div className="w-full md:w-1/4 lg:w-1/4 mb-8 md:mb-6 flex flex-col items-end pl-0 md:pl-8 lg:pl-16">
           <div className="w-full max-w-md">
             <h4 className="font-bold mb-4">ENTREPRISE</h4>
-            <ul className="space-y-2 mb-4">
-              <li>
-                <Link href="/" className="hover:underline">À PROPOS DE NOUS</Link>
-              </li>
-              <li>
-                <Link href="/" className="hover:underline">POLITIQUE DE CONFIDENTIALITÉ</Link>
-              </li>
-              <li>
-                <Link href="/" className="hover:underline">CONDITIONS DUTILISATION</Link>
-              </li>
-              <li>
-                <Link href="/" className="hover:underline">POLITIQUE DE RETOUR ET DE REMBOURSEMENT</Link>
-              </li>
-            </ul>
             <h4 className="font-bold mb-4 mt-6">TÉLÉCHARGER NOTRE APPLICATION</h4>
             <div className="flex flex-row gap-3 mb-4 items-center justify-center">
               <Link href={coordonnees.playstore_link} target="_blank" className="flex items-center">
@@ -281,6 +268,16 @@ function Footer() {
         </div>
       </div>
 
+      <div className="w-full flex justify-center items-center mt-6">
+        <Image
+          src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://protein.tn"
+          alt="QR Code"
+          width={100}
+          height={100}
+          className="mx-auto rounded shadow"
+          style={{ width: '80px', height: '80px', maxWidth: '120px', maxHeight: '120px' }}
+        />
+      </div>
       <Link href="/" className="text-center text-sm mt-6 block" style={{ color: '#FF4500', textDecoration: 'none' }}>
         <span>© 2025 SOBITAS-PROTEINE TUNISIE</span><br />
         <strong>Tous droits réservés</strong>

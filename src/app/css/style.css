@@ -769,3 +769,47 @@
 .icon-white svg, .icon-white img {
   filter: brightness(0) invert(1);
 }
+
+
+/* QuiSommesNous page only: force all text in the description to black */
+.prose.about_content,
+.prose.about_content h1,
+.prose.about_content h2,
+.prose.about_content h3,
+.prose.about_content h4,
+.prose.about_content h5,
+.prose.about_content h6,
+.prose.about_content strong,
+.prose.about_content p,
+.prose.about_content li,
+.prose.about_content span,
+.qui-sommes-nous-contact {
+  color: #000 !important;
+}
+
+
+/* FAQ page: force all FAQ text to black */
+.faq-black,
+.faq-black * {
+  color: #000 !important;
+}
+
+
+/* Always force FAQ separator lines to be thin and consistent */
+.faq-black hr,
+.faq-black .faq-separator,
+.faq-black hr.faq-separator {
+  height: 1px !important;
+  border: none !important;
+  border-bottom: 1px solid #FF4500 !important;
+  background: none !important;
+  margin-top: 0.25rem !important;
+  margin-bottom: 0.25rem !important;
+  box-sizing: content-box !important;
+}
+
+
+/* Only remove top padding from .shadow-breadcrumb on FAQ page */
+.faq-page .shadow-breadcrumb {
+  padding-top: 12px !important;
+}

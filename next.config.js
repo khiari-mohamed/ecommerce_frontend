@@ -15,6 +15,6 @@ const nextConfig = {
 module.exports = {
   ...nextConfig,
   images: {
-    domains: ["localhost", "admin.protein.tn" , "ecommercebackend-production-6915.up.railway.app"],
+    domains: ["localhost", "admin.protein.tn", "ecommercebackend-production-6915.up.railway.app", "api.qrserver.com"],
   },
 };

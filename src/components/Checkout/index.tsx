@@ -102,7 +102,9 @@ const Checkout = () => {
       paymentMethod: selectedPayment,
       cart: cart,
       type: "",
-      pays: "Tunisie" // <-- Add this line
+      pays: "Tunisie", // <-- Add this line
+      billing_localite: billingInfo.localite,
+      gouvernorat: billingInfo.gouvernorat,
     };
 
     try {

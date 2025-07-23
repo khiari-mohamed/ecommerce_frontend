@@ -45,4 +45,6 @@ export interface Order {
   paymentMethod?: string;
   cart?: any; // Adjust type if you have a CartItem type
   type: string;
+  billing_localite?: string;
+  gouvernorat?: string;
 }

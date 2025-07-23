@@ -4,19 +4,16 @@ import QuiSommesNous from '../../../../../components/StaticPages/QuiSommesNous';
 import PolitiquedesCookies from '../../../../../components/StaticPages/PolitiquedesCookies';
 import PolitiquedeRemboursement from '../../../../../components/StaticPages/politiquederemboursement';
 
-interface PageProps {
-  params: { slug: string };
-}
-
-export default async function Page(props: PageProps) {
-  const params = await props.params; // Await params here
-  const page = await fetchPageBySlug(params.slug);
+export default async function Page({ params }: { params: Promise<any> }) {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+  const page = await fetchPageBySlug(slug);
 
   if (!page) {
     return <div>Page non trouvée</div>;
   }
 
-  switch (params.slug) {
+  switch (slug) {
     case 'conditions-generale-de-ventes-protein.tn':
       return <ConditionsVente page={page} />;
     case 'qui-sommes-nous':

@@ -28,7 +28,7 @@ const CountdownBlogGrid = () => {
     });
   }, []);
 
-  // Handler for custom mobile navigation
+  // Handler for custom navigation
   const handlePrev = () => {
     if (swiperRef.current) swiperRef.current.slidePrev();
   };
@@ -50,7 +50,10 @@ const CountdownBlogGrid = () => {
               modules={[Navigation]}
               spaceBetween={24}
               slidesPerView={4}
-              navigation
+              navigation={{
+                nextEl: '.custom-swiper-next',
+                prevEl: '.custom-swiper-prev',
+              }}
               breakpoints={{
                 0: { slidesPerView: 1 },
                 640: { slidesPerView: 2 },
@@ -66,12 +69,12 @@ const CountdownBlogGrid = () => {
                 </SwiperSlide>
               ))}
             </Swiper>
-            {/* Custom mobile nav */}
-            <div className="flex justify-center gap-4 mt-4 sm:hidden">
+            {/* Custom navigation buttons - shown on both mobile and desktop but styled differently */}
+            <div className="flex justify-center gap-4 mt-4">
               <button
                 aria-label="Previous"
                 onClick={handlePrev}
-                className="w-10 h-4 flex items-center justify-center rounded-full bg-gray-300 hover:bg-[#FF4301] transition-colors duration-200"
+                className="custom-swiper-prev w-10 h-10 flex items-center justify-center rounded-full bg-gray-300 hover:bg-[#FF4301] transition-colors duration-200"
               >
                 <span className="sr-only">Previous</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -81,7 +84,7 @@ const CountdownBlogGrid = () => {
               <button
                 aria-label="Next"
                 onClick={handleNext}
-                className="w-10 h-4 flex items-center justify-center rounded-full bg-gray-300 hover:bg-[#FF4301] transition-colors duration-200"
+                className="custom-swiper-next w-10 h-10 flex items-center justify-center rounded-full bg-gray-300 hover:bg-[#FF4301] transition-colors duration-200"
               >
                 <span className="sr-only">Next</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -93,18 +96,20 @@ const CountdownBlogGrid = () => {
         )}
       </div>
       <style global jsx>{`
+        /* Hide default navigation arrows */
         .swiper-button-next,
         .swiper-button-prev {
-          color: #FF4301;
+          display: none !important;
         }
         .swiper-pagination-bullet-active {
           background: #FF4301;
         }
-        /* Hide arrows on mobile */
+        /* Adjust custom button size for mobile */
         @media (max-width: 639px) {
-          .swiper-button-next,
-          .swiper-button-prev {
-            display: none !important;
+          .custom-swiper-prev,
+          .custom-swiper-next {
+            width: 40px !important;
+            height: 40px !important;
           }
         }
       `}</style>

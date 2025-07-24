@@ -73,21 +73,13 @@ const TopPromotionSection = () => {
     <section className="overflow-hidden">
       <div className="w-full mx-auto px-2 sm:px-4 pb-10 sm:pb-15 border-b border-gray-3">
         {/* Section title */}
-        <div className="mb-6 sm:mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="w-full sm:w-auto flex flex-col">
-            <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
-              <Image
-                src="/images/icons/icon-07.svg"
-                alt="icon"
-                width={17}
-                height={17}
-              />
-              Promotions du moment
-            </span>
-            <h2 className="font-semibold text-lg sm:text-xl xl:text-heading-5 text-dark" style={{ color: '#FF4500' }}>
-              Top Promos
-            </h2>
-          </div>
+        <div className="mb-6 sm:mb-10 flex flex-col gap-4">
+          <h2
+            className="font-semibold text-lg sm:text-xl xl:text-heading-5 text-dark text-center w-full"
+            style={{ color: '#FF4500' }}
+          >
+            Top Promos
+          </h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-7.5">
@@ -117,7 +109,8 @@ const TopPromotionSection = () => {
                       loading="lazy"
                       sizes="100vw"
                     />
-                    <div className="absolute right-0 bottom-0 translate-x-full w-full flex flex-row flex-nowrap gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0 overflow-x-auto z-20">
+                   <div className="absolute right-0 -bottom-6 sm:-bottom-6 -bottom-14 translate-x-full w-full flex flex-row flex-nowrap gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0 overflow-x-auto z-20">
+
                       <button
                         aria-label="button for quick view"
                         className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"
@@ -132,7 +125,7 @@ const TopPromotionSection = () => {
                         </svg>
                       </button>
                       <button
-                        className="inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] bg-blue text-white ease-out duration-200 hover:bg-blue-dark"
+                        className="inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] text-white ease-out duration-200" style={{ backgroundColor: '#FF4500' }}
                         tabIndex={-1}
                         type="button"
                         onClick={e => { e.preventDefault(); handleAddToCart(promo); }}

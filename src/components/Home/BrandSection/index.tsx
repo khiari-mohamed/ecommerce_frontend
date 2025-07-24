@@ -27,7 +27,7 @@ const BrandSection: React.FC = () => {
   return (
     <section className="py-8 sm:py-10 bg-white w-full">
       <div className="max-w-7xl w-full mx-auto px-2 sm:px-4 md:px-8 xl:px-0">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-center">Nos Marques</h2>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-center" style={{ color: "#FF4500" }}>Nos Marques</h2>
         <div className="relative overflow-hidden">
           <div
             className="brand-slider flex items-center"

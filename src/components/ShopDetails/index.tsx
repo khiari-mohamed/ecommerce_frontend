@@ -12,7 +12,6 @@ import { addItemToCart } from "@/redux/features/cart-slice";
 import { useRouter } from "next/navigation";
 import ProductFlavors from "@/components/product/ProductFlavors";
 import type { Aroma } from "@/types/aroma";
-import RecentlyViewdItems from "./RecentlyViewd";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useSearchParams } from "next/navigation";
 import type { Product } from "@/types/product";
@@ -885,7 +884,6 @@ const ShopDetails = () => {
               </div>
             </div>
           </section>
-          <RecentlyViewdItems />
         </>
       )}
     </>

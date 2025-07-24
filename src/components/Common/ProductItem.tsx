@@ -132,7 +132,7 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
         )}
         <Image src={imageSrc} alt={item.title || item.designation || ""} width={250} height={250} className="object-contain h-full w-auto max-w-full transition-all duration-500" />
 
-        <div className="absolute right-0 bottom-0 translate-x-full w-full flex flex-row flex-nowrap gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0 overflow-x-auto z-20">
+        <div className="absolute right-0 -bottom-6 sm:-bottom-6 -bottom-14 translate-x-full w-full flex flex-row flex-nowrap gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0 overflow-x-auto z-20">
           <button
             onClick={() => {
               openModal();
@@ -168,7 +168,7 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
 
           <button
             onClick={() => handleAddToCart()}
-            className="inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] bg-blue text-white ease-out duration-200 hover:bg-blue-dark"
+            className="inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] text-white ease-out duration-200" style={{ backgroundColor: '#FF4500' }}
           >
             Ajouter au panier
           </button>

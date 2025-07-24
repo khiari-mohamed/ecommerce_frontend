@@ -46,7 +46,9 @@ const PacksSection: React.FC = () => {
   return (
     <section className="overflow-hidden py-20 bg-gray-2">
       <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-        <h2 className="text-2xl sm:text-3xl font-bold text-dark mb-10 text-center gradient-text">Nos Packs Exclusifs</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-10 text-center" style={{ color: '#FF4500' }}>
+          Nos Packs Exclusifs
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-10">
           {packs.map((pack, idx) => (
             <div key={pack._id} className="bg-white rounded-xl shadow-xl flex flex-col items-center transition-transform hover:scale-105 hover:shadow-2xl duration-300 w-full h-full">
@@ -91,13 +93,6 @@ const PacksSection: React.FC = () => {
           ))}
         </div>
       </div>
-      <style jsx>{`
-        .gradient-text {
-          background: linear-gradient(90deg, #ff8a00, #e52e71);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-      `}</style>
     </section>
   );
 };

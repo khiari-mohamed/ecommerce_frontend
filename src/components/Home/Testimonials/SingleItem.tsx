@@ -2,13 +2,11 @@ import React from "react";
 import { Testimonial } from "@/types/testimonial";
 
 function stringToColor(str: string) {
-  // Simple hash to color
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const color = `hsl(${hash % 360}, 70%, 60%)`;
-  return color;
+  return `hsl(${hash % 360}, 70%, 60%)`;
 }
 
 const SingleItem = ({ testimonial }: { testimonial: Testimonial }) => {
@@ -16,7 +14,6 @@ const SingleItem = ({ testimonial }: { testimonial: Testimonial }) => {
   const bgColor = stringToColor(testimonial.authorName || "A");
   const stars = Number(testimonial.stars) || 5;
 
-  // Calculate percentage for the chart (out of 5 stars)
   const percent = Math.min(Math.max((stars / 5) * 100, 0), 100);
   const radius = 18;
   const stroke = 4;
@@ -26,11 +23,11 @@ const SingleItem = ({ testimonial }: { testimonial: Testimonial }) => {
 
   return (
     <div
-      className="bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow-lg rounded-2xl py-7 px-5 sm:px-8 m-1 flex flex-col gap-5 transition-transform duration-300 hover:scale-[1.025] hover:shadow-2xl"
-      style={{ minHeight: 320 }}
-    >
+  className="bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow-lg rounded-2xl py-7 px-5 sm:px-8 flex flex-col gap-5 transition-transform duration-300 hover:scale-[1.025] hover:shadow-2xl"
+  style={{ height: 360, minHeight: 360, width: "100%" }}
+>
+
       <div className="flex items-center gap-3 mb-2">
-        {/* Chart */}
         <svg height={radius * 2} width={radius * 2} className="block">
           <circle
             stroke="#e5e7eb"
@@ -45,7 +42,7 @@ const SingleItem = ({ testimonial }: { testimonial: Testimonial }) => {
             fill="transparent"
             strokeWidth={stroke}
             strokeLinecap="round"
-            strokeDasharray={circumference + ' ' + circumference}
+            strokeDasharray={`${circumference} ${circumference}`}
             strokeDashoffset={strokeDashoffset}
             r={normalizedRadius}
             cx={radius}
@@ -64,7 +61,7 @@ const SingleItem = ({ testimonial }: { testimonial: Testimonial }) => {
             {stars}/5
           </text>
         </svg>
-        {/* Stars */}
+
         <div className="flex items-center gap-1">
           {[...Array(stars)].map((_, i) => (
             <img
@@ -79,7 +76,11 @@ const SingleItem = ({ testimonial }: { testimonial: Testimonial }) => {
           ))}
         </div>
       </div>
-      <p className="text-dark text-base mb-2 italic leading-relaxed">{testimonial.review}</p>
+
+      <p className="text-dark text-base mb-2 italic leading-relaxed line-clamp-4">
+        {testimonial.review}
+      </p>
+
       <div className="flex items-center gap-4 mt-auto">
         <div
           className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md border-2 border-white"

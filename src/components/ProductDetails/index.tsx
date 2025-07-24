@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import Image from "next/image";
-import RecentlyViewdItems from "../ShopDetails/RecentlyViewd";
+
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useSearchParams } from "next/navigation";
 import type { Product } from "@/types/product";
@@ -634,7 +634,6 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
           </div>  
         </div>
       </section>
-      <RecentlyViewdItems />
     </>
   );
 };

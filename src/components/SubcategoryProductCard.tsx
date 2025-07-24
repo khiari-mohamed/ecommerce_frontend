@@ -144,7 +144,7 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
             >
               <Image
                 className={cn(
-                  "object-contain w-full h-auto max-h-[120px] sm:max-h-[150px] max-w-[90%] mx-auto transition-all duration-500",
+                  "w-full h-full object-cover sm:object-contain sm:w-full sm:h-auto sm:max-h-[150px] max-w-full mx-auto transition-all duration-500",
                   isHovered ? "scale-110" : "scale-100"
                 )}
                 src={imageSrc}
@@ -211,10 +211,10 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
             onClick={handleAddToCart}
             disabled={!product?.inStock || isAddingToCart}
             className={cn(
-              "w-full gap-2 transition-all duration-300",
+              "w-full gap-2 transition-all duration-300 bg-[#FF5700] text-white",
               !product?.inStock
                 ? "bg-gray-200 text-gray-500 cursor-not-allowed hover:bg-gray-200"
-                : "bg-primary hover:bg-primary/90"
+                : "hover:bg-[#FF5700]"
             )}
             size="sm"
           >

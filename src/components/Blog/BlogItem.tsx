@@ -56,7 +56,7 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
     blog.description_cover || blog.meta_description_fr || blog.meta || "";
 
   return (
-    <div className="shadow-1 bg-white rounded-xl px-4 sm:px-5 pt-5 pb-4">
+    <div className="shadow-1 bg-white rounded-xl px-4 sm:px-5 pt-5 pb-4 blog-card-fixed-height">
       <Link href={`/blogs/${blog.slug}`} className="rounded-md overflow-hidden">
         <Image
           src={imageUrl}
@@ -67,7 +67,7 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
           height={210}
         />
       </Link>
-      <div className="mt-5.5">
+      <div className="mt-5.5 flex flex-col h-full">
         <span className="flex items-center gap-3 mb-2.5">
           <span className="text-custom-sm ease-out duration-200 hover:text-blue">
             {date}
@@ -77,12 +77,12 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
             {views} Views
           </span>
         </span>
-        <h2 className="font-medium text-dark text-lg sm:text-xl ease-out duration-200 mb-4 hover:text-blue">
+        <h2 className="font-medium text-dark text-lg sm:text-xl ease-out duration-200 mb-4 hover:text-blue blog-title-ellipsis">
           <Link href={`/blogs/${blog.slug}`}>{title}</Link>
         </h2>
         <Link
           href={`/blogs/${blog.slug}`}
-          className="text-custom-sm inline-flex items-center gap-2 py-2 ease-out duration-200 hover:text-blue"
+          className="text-custom-sm inline-flex items-center gap-2 py-2 ease-out duration-200 hover:text-blue mt-auto"
         >
           En savoir plus
           <svg
@@ -102,6 +102,36 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
           </svg>
         </Link>
       </div>
+      <style jsx>{`
+        .blog-card-fixed-height {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          min-height: 410px;
+          max-height: 430px;
+        }
+        .blog-title-ellipsis {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: normal;
+          min-height: 2.7em;
+        }
+        @media (max-width: 900px) {
+          .blog-card-fixed-height {
+            min-height: 370px;
+            max-height: 390px;
+          }
+        }
+        @media (max-width: 640px) {
+          .blog-card-fixed-height {
+            min-height: 320px;
+            max-height: 340px;
+          }
+        }
+      `}</style>
     </div>
   );
 };

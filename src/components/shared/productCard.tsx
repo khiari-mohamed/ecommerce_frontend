@@ -261,7 +261,7 @@ const ProductCard = memo(
             >
               <Image
                 className={cn(
-                  "object-contain h-full w-auto max-w-full transition-all duration-500",
+                  "w-full h-full object-cover sm:object-contain sm:w-auto max-w-full transition-all duration-500",
                   isHovered ? "scale-110" : "scale-100"
                 )}
                 src={imgSrc}

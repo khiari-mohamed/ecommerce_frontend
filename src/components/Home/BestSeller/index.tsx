@@ -24,23 +24,14 @@ const BestSeller = () => {
     <section className="overflow-hidden">
       <div className="w-full mx-auto px-2 sm:px-4 pb-10 sm:pb-15 border-b border-gray-3">
         {/* <!-- section title --> */}
-        <div className="mb-6 sm:mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="w-full sm:w-auto flex flex-col">
-            <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
-              <Image
-                src="/images/icons/icon-07.svg"
-                alt="icon"
-                width={17}
-                height={17}
-              />
-              Ce mois-ci
-            </span>
-            <h2 className="font-semibold text-lg sm:text-xl xl:text-heading-5 text-dark" style={{ color: '#FF4500' }}>
+        <div className="mb-6 sm:mb-10 flex flex-col gap-4">
+          <h2
+            className="font-semibold text-lg sm:text-xl xl:text-heading-5 text-dark text-center w-full"
+            style={{ color: '#FF4500' }}
+          >
             Meilleures ventes
-            </h2>
-          </div>  
-        </div>
-
+          </h2>
+        </div>  
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 md:gap-x-7.5 gap-y-6 md:gap-y-9">
           {loading ? (
             <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 flex justify-center items-center py-10">

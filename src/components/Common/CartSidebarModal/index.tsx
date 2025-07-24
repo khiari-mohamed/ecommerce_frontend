@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect } from "react";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import {
   removeItemFromCart,
@@ -15,11 +14,9 @@ import EmptyCart from "./EmptyCart";
 const CartSidebarModal = () => {
   const { isCartModalOpen, closeCartModal } = useCartModalContext();
   const cartItems = useAppSelector((state) => state.cartReducer.items);
-
   const totalPrice = useSelector(selectTotalPrice);
 
   useEffect(() => {
-    // closing modal while clicking outside
     function handleClickOutside(event) {
       if (!event.target.closest(".modal-content")) {
         closeCartModal();
@@ -28,23 +25,28 @@ const CartSidebarModal = () => {
 
     if (isCartModalOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = 'hidden';
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = '';
     };
   }, [isCartModalOpen, closeCartModal]);
 
   return (
     <div
-      className={`fixed top-0 left-0 z-99999 overflow-y-auto no-scrollbar w-full h-screen bg-dark/70 ease-linear duration-300 ${
-        isCartModalOpen ? "translate-x-0" : "translate-x-full"
+      className={`fixed inset-0 z-99999 w-full bg-dark/70 ease-linear duration-300 ${
+        isCartModalOpen ? "opacity-100 visible" : "opacity-0 invisible"
       }`}
     >
-      <div className="flex items-center justify-end">
-        {/* Make modal-content scrollable */}
-        <div className="w-full max-w-[500px] shadow-1 bg-white px-4 sm:px-7.5 lg:px-11 relative modal-content z-50 max-h-screen overflow-y-auto h-screen flex flex-col">
-          <div className="sticky top-0 bg-white flex items-center justify-between pb-7 pt-4 sm:pt-7.5 lg:pt-11 border-b border-gray-3 mb-7.5">
+      <div className="flex justify-end h-full">
+        {/* Modal content container */}
+        <div className={`w-full max-w-[500px] bg-white relative modal-content z-50 flex flex-col ${
+          cartItems.length > 3 ? 'h-full md:h-auto' : 'h-auto'
+        }`}>
+          {/* Header */}
+          <div className="sticky top-0 bg-white flex items-center justify-between pb-4 pt-4 sm:pb-7 sm:pt-7.5 lg:pt-11 border-b border-gray-3 px-4 sm:px-7.5 lg:px-11">
             <h2 className="font-medium text-dark text-lg sm:text-2xl">
               Voir le panier
             </h2>
@@ -75,26 +77,28 @@ const CartSidebarModal = () => {
             </button>
           </div>
 
-          {/* Remove overflow-y-auto and h-[66vh] from here */}
-          <div className="flex flex-col gap-6">
-            {/* <!-- cart item --> */}
-            {cartItems.length > 0 ? (
-              cartItems.map((item, key) => (
-                <SingleItem
-                  key={key}
-                  item={item}
-                  removeItemFromCart={removeItemFromCart}
-                />
-              ))
-            ) : (
-              <EmptyCart />
-            )}
+          {/* Scrollable content area */}
+          <div className={`flex-1 ${cartItems.length > 3 ? 'overflow-y-auto' : ''} px-4 sm:px-7.5 lg:px-11 py-4`}>
+            <div className="flex flex-col gap-6">
+              {cartItems.length > 0 ? (
+                cartItems.map((item, key) => (
+                  <SingleItem
+                    key={key}
+                    item={item}
+                    removeItemFromCart={removeItemFromCart}
+                  />
+                ))
+              ) : (
+                <EmptyCart />
+              )}
+            </div>
           </div>
 
-          <div className="border-t border-gray-3 bg-white pt-5 pb-4 sm:pb-7.5 lg:pb-11 mt-7.5 max-[480px]:pt-3 max-[480px]:pb-3 max-[480px]:mt-3">
-            <div className="flex items-center justify-between gap-5 mb-6">
-              <p className="font-medium text-xl text-dark">total:</p>
-              <p className="font-medium text-xl text-dark">
+          {/* Footer with buttons - sticky at bottom */}
+          <div className="sticky bottom-0 bg-white border-t border-gray-3 px-4 sm:px-7.5 lg:px-11 py-4 sm:py-5 lg:py-7.5">
+            <div className="flex items-center justify-between gap-5 mb-4 sm:mb-6">
+              <p className="font-medium text-lg sm:text-xl text-dark">total:</p>
+              <p className="font-medium text-lg sm:text-xl text-dark">
                 {Number(totalPrice).toLocaleString("fr-TN", {
                   style: "currency",
                   currency: "TND",

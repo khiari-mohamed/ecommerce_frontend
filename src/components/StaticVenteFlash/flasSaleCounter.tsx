@@ -16,7 +16,6 @@ const calculateTimeLeft = (endDate: string): TimeLeft => {
     mins: 0,
     secs: 0,
   };
-
   if (difference > 0) {
     timeLeft = {
       jours: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -25,7 +24,6 @@ const calculateTimeLeft = (endDate: string): TimeLeft => {
       secs: Math.floor((difference / 1000) % 60),
     };
   }
-
   return timeLeft;
 };
 
@@ -51,41 +49,40 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ endDate }) => {
 
   if (!mounted) return null;
 
-  // Render the countdown UI
+  // Render the countdown UI with new design
   return (
-    <div className="flex space-x-2 items-center max-w-full">
-      <div className="flex -mx-4 px-1 flex-wrap gap-y-1">
-        <div className="px-1">
-          <div className="bg-white prod_border w-14 h-14 sm:w-[72px] sm:h-[72px] flex items-center justify-center flex-col">
-            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-4 sm:py-2 rounded text-xl sm:text-2xl tracking-wide shadow-md">
-              {timeLeft.jours}
-            </p>
-            <span className="uppercase text-[10px] sm:text-[12px]">jours</span>
+    <div className="bg-gradient-to-r from-[#fff6f6] to-[#fff3e0] p-4 rounded-lg border border-[#fff4f4] w-full" style={{ background: 'linear-gradient(90deg, #fff6f6 0%, #fff3e0 100%)', borderColor: '#fff4f4' }}>
+      <div className="flex items-center justify-center gap-4 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-clock" style={{ color: '#dc2626' }}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <h3 className="text-xl font-bold" style={{ color: '#dc2626' }}>Les offres se terminent dans</h3>
+      </div>
+      <div className="flex justify-center gap-4 flex-wrap">
+        <div className="flex flex-col items-center">
+          <div className="px-3 py-2 rounded-lg font-bold text-lg min-w-[50px] text-center" style={{ background: '#dc2626', color: '#fff', boxShadow: '0 2px 8px 0 rgba(239,68,68,0.15)' }}>
+            {timeLeft.jours.toString().padStart(2, '0')}
           </div>
+          <span className="text-sm text-gray-600 mt-1">jours</span>
         </div>
-        <div className="px-1">
-          <div className="bg-white prod_border w-14 h-14 sm:w-[72px] sm:h-[72px] flex items-center justify-center flex-col">
-            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-4 sm:py-2 rounded text-xl sm:text-2xl tracking-wide shadow-md">
-              {timeLeft.heures}
-            </p>
-            <span className="uppercase text-[10px] sm:text-[12px]">heures</span>
+        <div className="flex items-center text-2xl font-bold" style={{ color: '#dc2626' }}>:</div>
+        <div className="flex flex-col items-center">
+          <div className="px-3 py-2 rounded-lg font-bold text-lg min-w-[50px] text-center" style={{ background: '#dc2626', color: '#fff', boxShadow: '0 2px 8px 0 rgba(239,68,68,0.15)' }}>
+            {timeLeft.heures.toString().padStart(2, '0')}
           </div>
+          <span className="text-sm text-gray-600 mt-1">heures</span>
         </div>
-        <div className="px-1">
-          <div className="bg-white prod_border w-14 h-14 sm:w-[72px] sm:h-[72px] flex items-center justify-center flex-col">
-            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-4 sm:py-2 rounded text-xl sm:text-2xl tracking-wide shadow-md">
-              {timeLeft.mins}
-            </p>
-            <span className="uppercase text-[10px] sm:text-[12px]">mins</span>
+        <div className="flex items-center text-2xl font-bold" style={{ color: '#dc2626' }}>:</div>
+        <div className="flex flex-col items-center">
+          <div className="px-3 py-2 rounded-lg font-bold text-lg min-w-[50px] text-center" style={{ background: '#dc2626', color: '#fff', boxShadow: '0 2px 8px 0 rgba(239,68,68,0.15)' }}>
+            {timeLeft.mins.toString().padStart(2, '0')}
           </div>
+          <span className="text-sm text-gray-600 mt-1">minutes</span>
         </div>
-        <div className="px-1">
-          <div className="bg-white prod_border w-14 h-14 sm:w-[72px] sm:h-[72px] flex items-center justify-center flex-col">
-            <p className="font-bold text-[#ff4000] bg-white px-2 py-0.5 sm:px-4 sm:py-2 rounded text-xl sm:text-2xl tracking-wide shadow-md">
-              {timeLeft.secs}
-            </p>
-            <span className="uppercase text-[10px] sm:text-[12px]">secs</span>
+        <div className="flex items-center text-2xl font-bold" style={{ color: '#dc2626' }}>:</div>
+        <div className="flex flex-col items-center">
+          <div className="px-3 py-2 rounded-lg font-bold text-lg min-w-[50px] text-center" style={{ background: '#dc2626', color: '#fff', boxShadow: '0 2px 8px 0 rgba(239,68,68,0.15)' }}>
+            {timeLeft.secs.toString().padStart(2, '0')}
           </div>
+          <span className="text-sm text-gray-600 mt-1">secondes</span>
         </div>
       </div>
     </div>

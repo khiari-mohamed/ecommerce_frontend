@@ -1,38 +1,32 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Breadcrumb from "../Common/Breadcrumb";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 import Image from "next/image";
-
+import RecentlyViewdItems from "@/components/ShopDetails/RecentlyViewd";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import type { Product } from "@/types/product";
-import { getProductById } from "@/services/products";
-import ProductBrandAroma from "../product/ProductBrandAroma";
+import ProductBrandAroma from "@/components/product/ProductBrandAroma";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { addItemToCart } from "@/redux/features/cart-slice";
 import { useRouter } from "next/navigation";
 import ProductFlavors from "@/components/product/ProductFlavors";
-import type { Aroma } from "@/types/aroma"; // Add this import // <-- import the flavors component
-import ReviewForm from "./ReviewForm";
+import type { Aroma } from "@/types/aroma";
+import ReviewForm from "@/components/ProductDetails/ReviewForm";
+import axiosInstance from "@/lib/axios";
 
 // Helper to ensure only local images or fallback to placeholder
 function getValidImageSrc(src?: string): string {
   if (!src || typeof src !== "string" || src.trim() === "") {
     return "/images/placeholder.png";
   }
-  // Normalize slashes and trim
-  let cleanSrc = src.trim().replace(/\\\\/g, "/").replace(/\\/g, "/");
-  if (cleanSrc.startsWith("http")) {
-    return cleanSrc;
-  }
-  if (!cleanSrc.startsWith("/")) {
-    cleanSrc = "/" + cleanSrc;
-  }
+  let cleanSrc = src.trim().replace(/\\/g, "/").replace(/\\/g, "/");
+  if (cleanSrc.startsWith("http")) return cleanSrc;
+  if (!cleanSrc.startsWith("/")) cleanSrc = "/" + cleanSrc;
   return cleanSrc;
 }
 
-// Define ProductReview type locally
 type ProductReview = {
   user_id: any;
   userAvatar?: string;
@@ -43,7 +37,17 @@ type ProductReview = {
   comment?: string;
 };
 
-const ProductDetails = () => {
+export default function ProductDetailsPage() {
+  const params = useParams();
+  const slug =
+    typeof params?.slug === "string"
+      ? params.slug
+      : Array.isArray(params?.slug)
+      ? params.slug[0]
+      : "";
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [aromas, setAromas] = useState<Aroma[]>([]);
   const [activeFlavor, setActiveFlavor] = useState<string>("");
   const [activeSize, setActiveSize] = useState<string>("");
   const [activeType, setActiveType] = useState<string>("");
@@ -53,9 +57,6 @@ const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState("tabOne");
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [aromas, setAromas] = useState<Aroma[]>([]);
 
   useEffect(() => {
     fetch("/api/aromas")
@@ -72,32 +73,98 @@ const ProductDetails = () => {
       .catch(() => setAromas([]));
   }, []);
 
-  const searchParams = useSearchParams();
-  const id = searchParams?.get("id") ?? "";
-
   useEffect(() => {
-    if (!id) {
+    if (!slug) {
       setProduct(null);
       setLoading(false);
       return;
     }
     setLoading(true);
-    getProductById(id)
-      .then((data) => {
-        const productData = (data && typeof data === 'object' && 'data' in data && typeof data.data === 'object') ? data.data : data;
-        setProduct(productData as Product);
-       // ...existing code...
-if ((productData as Product)?.features?.length) setActiveFlavor(String((productData as Product).features?.[0] ?? ""));
-if ((productData as any)?.sizes?.length) setActiveSize(String((productData as any).sizes?.[0] ?? ""));
-if ((productData as any)?.types?.length) setActiveType(String((productData as any).types?.[0] ?? ""));
-// ...existing code...
-        setPreviewImg(0);
+    axiosInstance
+      .get(`/products/slug/${slug}`)
+      .then((res) => {
+        let response = res.data;
+        let rawProduct = response?.product?.data || response?.product || response;
+        if (rawProduct && rawProduct.product) {
+          rawProduct = rawProduct.product;
+        }
+        if (!rawProduct) {
+          setProduct(null);
+          return;
+        }
+        setProduct(normalizeProduct(rawProduct));
       })
-      .catch(() => {})
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [id]);
+      .catch(() => setProduct(null))
+      .finally(() => setLoading(false));
+  }, [slug]);
+
+  function normalizeProduct(raw: any): Product {
+    return {
+      title: raw.title || raw.designation_fr || raw.designation || "",
+      price: Number(raw.price ?? raw.prix ?? 0),
+      discountedPrice:
+        Number(raw.discountedPrice ?? raw.promo ?? raw.promo_ht ?? raw.price ?? raw.prix ?? 0),
+      id: Number(raw.id ?? raw._id ?? 0),
+      imgs: {
+        thumbnails:
+          raw.images?.map((img: any) => img.url) ||
+          (raw.mainImage?.url ? [raw.mainImage.url] : []),
+        previews:
+          raw.images?.map((img: any) => img.url) ||
+          (raw.mainImage?.url ? [raw.mainImage.url] : []),
+      },
+      currency: raw.currency || "TND",
+      _id: raw._id || "",
+      designation: raw.designation || "",
+      slug: raw.slug || "",
+      oldPrice: Number(raw.oldPrice ?? raw.prix_ht ?? raw.promo ?? 0) || undefined,
+      mainImage: raw.mainImage || { url: "" },
+      images: raw.images || [],
+      inStock: raw.inStock ?? (raw.rupture === "0" ? true : false),
+      reviews: raw.reviews || [],
+      features: raw.features || [],
+      aroma_ids: raw.aroma_ids || [],
+      brand: raw.brand || "",
+      smallDescription: raw.smallDescription || raw.description_cover || "",
+      description: raw.description || raw.description_fr || "",
+      meta_description_fr: raw.meta_description_fr || "",
+      category: raw.category || "",
+      subCategory: raw.subCategory || [],
+      venteflashDate: raw.venteflashDate || undefined,
+      isFlashSale: raw.isFlashSale || false,
+      discountPercentage: raw.discountPercentage || undefined,
+      type: raw.type || "",
+      isNewProduct:
+        raw.isNewProduct !== undefined
+          ? raw.isNewProduct
+          : raw.isNewArrival !== undefined
+          ? raw.isNewArrival
+          : raw.new_product === "1",
+      isBestSeller:
+        raw.isBestSeller !== undefined
+          ? raw.isBestSeller
+          : raw.bestSellerSection !== undefined
+          ? raw.bestSellerSection
+          : raw.best_seller === "1",
+      isOutOfStock: raw.isOutOfStock ?? (raw.rupture === "1" ? true : false),
+      isPublished:
+        raw.isPublished !== undefined ? raw.isPublished : raw.publier === "1",
+      aggregateRating: raw.aggregateRating ?? (raw.note ? Number(raw.note) : undefined),
+      promoExpirationDate: raw.promoExpirationDate ?? raw.promo_expiration_date ?? undefined,
+      sous_categorie_id:
+        raw.sous_categorie_id ?? raw.sousCategorieId ?? raw.subCategoryId ?? "",
+      cover: raw.cover || raw.mainImage?.url || "",
+      nutrition_values: raw.nutrition_values || "",
+      questions: raw.questions || "",
+      zone1: raw.zone1 || "",
+      zone2: raw.zone2 || "",
+      zone3: raw.zone3 || "",
+      zone4: raw.zone4 || "",
+      content_seo: raw.content_seo || raw.contentSeo || "",
+      meta: raw.meta || "",
+      pack: raw.pack || "",
+    };
+  }
 
   const tabs = [
     { id: "tabOne", title: "Description" },
@@ -105,6 +172,13 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
     { id: "tabQuestions", title: "Questions" },
     { id: "tabThree", title: "Avis" },
   ];
+
+  if (loading) {
+    return <div className="flex justify-center items-center min-h-[400px]">Chargement...</div>;
+  }
+  if (!product) {
+    return <div className="flex justify-center items-center min-h-[400px] text-red-600">Produit introuvable.</div>;
+  }
 
   const imageCandidates = [
     ...(product?.imgs?.previews || []),
@@ -136,21 +210,14 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
       : 0;
 
   const flavors = product?.features || ["Vanilla", "Chocolate", "Strawberry"];
-  
-  if (loading) {
-  return <div className="flex justify-center items-center min-h-[400px]">Chargement...</div>;
-  }
-  
-  let priceA = 0, priceB = 0, oldPrice = 0, promoPrice = 0, hasDiscount = false, discount = 0;
-  if (product) {
-  priceA = Number(product.prix);
-  priceB = Number(product.promo);
-  oldPrice = priceA > priceB ? priceA : priceB;
-  promoPrice = priceA > priceB ? priceB : priceA;
-  hasDiscount = priceA !== priceB;
-  discount = hasDiscount ? Math.round(100 - (promoPrice / oldPrice) * 100) : 0;
-  }
-  
+
+  let priceA = Number(product.price);
+  let priceB = Number(product.discountedPrice);
+  let oldPrice = priceA > priceB ? priceA : priceB;
+  let promoPrice = priceA > priceB ? priceB : priceA;
+  let hasDiscount = priceA !== priceB;
+  let discount = hasDiscount && oldPrice > 0 ? Math.round(100 - (promoPrice / oldPrice) * 100) : 0;
+
   return (
     <>
       <Breadcrumb title={"Détails du produit"} pages={["product details"]} />
@@ -179,9 +246,9 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
                         fillRule="evenodd"
                         clipRule="evenodd"
                         d="M9.11493 1.14581L9.16665 1.14581C9.54634 1.14581 9.85415 1.45362 9.85415 1.83331C9.85415 2.21301 9.54634 2.52081 9.16665 2.52081C7.41873 2.52081 6.17695 2.52227 5.23492 2.64893C4.31268 2.77292 3.78133 3.00545 3.39339 3.39339C3.00545 3.78133 2.77292 4.31268 2.64893 5.23492C2.52227 6.17695 2.52081 7.41873 2.52081 9.16665C2.52081 9.54634 2.21301 9.85415 1.83331 9.85415C1.45362 9.85415 1.14581 9.54634 1.14581 9.16665L1.14581 9.11493C1.1458 7.43032 1.14579 6.09599 1.28619 5.05171C1.43068 3.97699 1.73512 3.10712 2.42112 2.42112C3.10712 1.73512 3.97699 1.43068 5.05171 1.28619C6.09599 1.14579 7.43032 1.1458 9.11493 1.14581ZM16.765 2.64893C15.823 2.52227 14.5812 2.52081 12.8333 2.52081C12.4536 2.52081 12.1458 2.21301 12.1458 1.83331C12.1458 1.45362 12.4536 1.14581 12.8333 1.14581L12.885 1.14581C14.5696 1.1458 15.904 1.14579 16.9483 1.28619C18.023 1.43068 18.8928 1.73512 19.5788 2.42112C20.2648 3.10712 20.5693 3.97699 20.7138 5.05171C20.8542 6.09599 20.8542 7.43032 20.8541 9.11494V9.16665C20.8541 9.54634 20.5463 9.85415 20.1666 9.85415C19.787 9.85415 19.4791 9.54634 19.4791 9.16665C19.4791 7.41873 19.4777 6.17695 19.351 5.23492C19.227 4.31268 18.9945 3.78133 18.6066 3.39339C18.2186 3.00545 17.6873 2.77292 16.765 2.64893ZM1.83331 12.1458C2.21301 12.1458 2.52081 12.4536 2.52081 12.8333C2.52081 14.5812 2.52227 15.823 2.64893 16.765C2.77292 17.6873 3.00545 18.2186 3.39339 18.6066C3.78133 18.9945 4.31268 19.227 5.23492 19.351C6.17695 19.4777 7.41873 19.4791 9.16665 19.4791C9.54634 19.4791 9.85415 19.787 9.85415 20.1666C9.85415 20.5463 9.54634 20.8541 9.16665 20.8541H9.11494C7.43032 20.8542 6.09599 20.8542 5.05171 20.7138C3.97699 20.5693 3.10712 20.2648 2.42112 19.5788C1.73512 18.8928 1.43068 18.023 1.28619 16.9483C1.14579 15.904 1.1458 14.5696 1.14581 12.885L1.14581 12.8333C1.14581 12.4536 1.45362 12.1458 1.83331 12.1458ZM20.1666 12.1458C20.5463 12.1458 20.8541 12.4536 20.8541 12.8333V12.885C20.8542 14.5696 20.8542 15.904 20.7138 16.9483C20.5693 18.023 20.2648 18.8928 19.5788 19.5788C18.8928 20.2648 18.023 20.5693 16.9483 20.7138C15.904 20.8542 14.5696 20.8542 12.885 20.8541H12.8333C12.4536 20.8541 12.1458 20.5463 12.1458 20.1666C12.1458 19.787 12.4536 19.4791 12.8333 19.4791C14.5812 19.4791 15.823 19.4777 16.765 19.351C17.6873 19.227 18.2186 18.9945 18.6066 18.6066C18.9945 18.2186 19.227 17.6873 19.351 16.765C19.4777 15.823 19.4791 14.5812 19.4791 12.8333C19.4791 12.4536 19.787 12.1458 20.1666 12.1458Z"
-                        fill=""
-                      />
-                    </svg>
+                      fill=""
+                    />
+                  </svg>
                   </button>
                   <Image
                     src={getValidImageSrc((previews && previews[previewImg]) ?? "")}
@@ -198,8 +265,8 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
                   <button
                     type="button"
                     onClick={(e) => {
-                      e.preventDefault(); // Prevent any default action
-                      setPreviewImg(key); // Only update preview index
+                      e.preventDefault();
+                      setPreviewImg(key);
                     }}
                     key={key}
                     className={`flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 overflow-hidden rounded-lg bg-gray-2 shadow-1 ease-out duration-200 border-2 hover:border-[#ff6600] ${
@@ -221,20 +288,16 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
             </div>
             <div className="w-full max-w-xl">
               <div className="flex items-center justify-between mb-3">
-              <h2 className="font-semibold text-xl sm:text-2xl xl:text-custom-3 text-dark">
-              {product?.title || ""}
-              </h2>
-              {hasDiscount && discount > 0 && (
-              <div className="inline-flex font-medium text-custom-sm text-white bg-blue rounded py-0.5 px-2.5">
-              {discount}% OFF
+                <h2 className="font-semibold text-xl sm:text-2xl xl:text-custom-3 text-dark">
+                  {product?.title || ""}
+                </h2>
+                {hasDiscount && discount > 0 && (
+                  <div className="inline-flex font-medium text-custom-sm text-white bg-blue rounded py-0.5 px-2.5">
+                    {discount}% OFF
+                  </div>
+                )}
               </div>
-              )}
-              </div>
-              
               <ProductBrandAroma brandId={typeof product?.brand === "string" ? product?.brand : (product?.brand as any)?._id || ""} />
-              {/* --- FLAVORS/AROMAS BADGES --- */}
-              
-              {/* --- END FLAVORS/AROMAS BADGES --- */}
               <div className="flex flex-row flex-wrap items-center gap-5.5 mb-4.5">
                 <div className="flex items-center gap-2.5">
                   <div className="flex items-center gap-1">
@@ -281,28 +344,28 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
                 </div>
               </div>
               <h3 className="font-medium text-custom-1 mb-4.5">
-              <span className="text-sm sm:text-base text-dark">
-              Prix: {product?.oldPrice && product?.oldPrice > product?.price ? (
-              <>
-              <span className="mr-2">{product?.oldPrice} {product?.currency || "TND"}</span>
-              <span className="line-through font-bold text-blue-700">{product?.price} {product?.currency || "TND"}</span>
-              </>
-              ) : (
-              <>
-              <span className="line-through font-bold text-blue-700">{product?.price} {product?.currency || "TND"}</span>
-              {product?.oldPrice && product?.oldPrice < product?.price && (
-              <span className="mr-2">{product?.oldPrice} {product?.currency || "TND"}</span>
-              )}
-              </>
-              )}
-              </span>
+                <span className="text-sm sm:text-base text-dark">
+                  Prix: {product?.oldPrice && product?.oldPrice > product?.price ? (
+                    <>
+                      <span className="mr-2">{product?.oldPrice} {product?.currency || "TND"}</span>
+                      <span className="line-through font-bold text-blue-700">{product?.price} {product?.currency || "TND"}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="line-through font-bold text-blue-700">{product?.price} {product?.currency || "TND"}</span>
+                      {product?.oldPrice && product?.oldPrice < product?.price && (
+                        <span className="mr-2">{product?.oldPrice} {product?.currency || "TND"}</span>
+                      )}
+                    </>
+                  )}
+                </span>
               </h3>
               {product?.meta_description_fr ? (
-              <div className="mb-4" dangerouslySetInnerHTML={{ __html: product?.meta_description_fr }} />
+                <div className="mb-4" dangerouslySetInnerHTML={{ __html: product?.meta_description_fr }} />
               ) : (
-              <p className="mb-4">
-              Découvrez notre sélection de compléments protéinés de haute qualité, idéals pour soutenir la croissance musculaire, la récupération et la performance sportive. Nos produits sont adaptés aussi bien aux débutants qu’aux athlètes confirmés.
-              </p>
+                <p className="mb-4">
+                  Découvrez notre sélection de compléments protéinés de haute qualité, idéals pour soutenir la croissance musculaire, la récupération et la performance sportive. Nos produits sont adaptés aussi bien aux débutants qu’aux athlètes confirmés.
+                </p>
               )}
               <ul className="flex flex-col gap-2">
                 <li className="flex items-center gap-2.5">
@@ -313,39 +376,40 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
+                 
                   </svg>
                 </li>
                 <li className="flex items-center gap-2.5">
+                  {/* SVG icon for discount */}
                 </li>
               </ul>
               <form onSubmit={(e) => e.preventDefault()}>
                 <div className="flex flex-col gap-4.5 border-y border-gray-3 mt-7.5 mb-9 py-9">
-
                   {/* Flavor */}
-                 {product && Array.isArray(product.aroma_ids) && product.aroma_ids.length > 0 && aromas.length > 0 && (
-  (() => {
-    const matchedAromas = product?.aroma_ids
-      ?.map((id: string) => aromas.find((aroma) => String(aroma?.id ?? "") === String(id ?? "")))
-      .filter(Boolean) ?? [];
-    if (matchedAromas.length === 0) return null;
-    return (
-      <div className="flex items-center gap-4">
-        <div className="min-w-[65px]">
-          <h4 className="font-medium text-dark">saveur:</h4>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <ProductFlavors
-            aroma_ids={product.aroma_ids}
-            aromas={aromas}
-            activeFlavor={activeFlavor}
-            setActiveFlavor={setActiveFlavor}
-          />
-        </div>
-      </div>
-    );
-  })()
-)}
-                                  </div>
+                  {product && Array.isArray(product.aroma_ids) && product.aroma_ids.length > 0 && aromas.length > 0 && (
+                    (() => {
+                      const matchedAromas = product?.aroma_ids
+                        ?.map((id: string) => aromas.find((aroma) => String(aroma?.id ?? "") === String(id ?? "")))
+                        .filter(Boolean) ?? [];
+                      if (matchedAromas.length === 0) return null;
+                      return (
+                        <div className="flex items-center gap-4">
+                          <div className="min-w-[65px]">
+                            <h4 className="font-medium text-dark">saveur:</h4>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            <ProductFlavors
+                              aroma_ids={product.aroma_ids}
+                              aromas={aromas}
+                              activeFlavor={activeFlavor}
+                              setActiveFlavor={setActiveFlavor}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })()
+                  )}
+                </div>
                 <div className="flex flex-row flex-wrap items-center gap-4.5">
                   <div className="flex items-center rounded-md border border-gray-3">
                     <button aria-label="button for remove product" className="flex items-center justify-center w-12 h-12 ease-out duration-200 hover:text-[#ff6600]" onClick={() => quantity > 1 && setQuantity(quantity - 1)}>
@@ -378,7 +442,7 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
                           image: imageSrc,
                         })
                       );
-                      router.push("/cart"); // or "/panier" if thats your cart route
+                      router.push("/cart");
                     }}
                     className="inline-flex font-medium text-white py-3 px-7 rounded-md ease-out duration-200" style={{background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)'}}
                   >
@@ -516,20 +580,20 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
                 <h2 className="font-medium text-2xl text-dark mb-7">Caractéristiques:</h2>
                 <p className="mb-6" dangerouslySetInnerHTML={{ __html: product?.description || "Aucune description disponible." }} />
                 {product?.features?.length ? (
-                <ul className="list-disc ml-5">
-                {product?.features.map((feature, idx) => (
-                <li key={idx}>{feature}</li>
-                ))}
-                </ul>
+                  <ul className="list-disc ml-5">
+                    {product?.features.map((feature, idx) => (
+                      <li key={idx}>{feature}</li>
+                    ))}
+                  </ul>
                 ) : null}
-                </div>
-                <div className="w-full max-w-lg">
+              </div>
+              <div className="w-full max-w-lg">
                 <h2 className="font-medium text-2xl text-dark mb-7">Marque et détails :</h2>
                 <p className="mb-6">{product?.brand || "voir l'étiquette pour la marque."}</p>
                 {product?.smallDescription ? (
-                <div className="mb-6" dangerouslySetInnerHTML={{ __html: product?.smallDescription }} />
+                  <div className="mb-6" dangerouslySetInnerHTML={{ __html: product?.smallDescription }} />
                 ) : (
-                <p className="mb-6">voir létiquette pour la marque.</p>
+                  <p className="mb-6">voir létiquette pour la marque.</p>
                 )}
               </div>
             </div>
@@ -538,9 +602,9 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
           <div>
             <div className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === "tabNutrition" ? "block" : "hidden"}`}>
               {product?.nutrition_values ? (
-              <div dangerouslySetInnerHTML={{ __html: product?.nutrition_values }} />
+                <div dangerouslySetInnerHTML={{ __html: product?.nutrition_values }} />
               ) : (
-              <div>Aucune information nutritionnelle disponible.</div>
+                <div>Aucune information nutritionnelle disponible.</div>
               )}
             </div>
           </div>
@@ -548,13 +612,13 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
           <div>
             <div className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === "tabQuestions" ? "block" : "hidden"}`}>
               {product?.questions ? (
-              <div dangerouslySetInnerHTML={{ __html: product?.questions }} />
+                <div dangerouslySetInnerHTML={{ __html: product?.questions }} />
               ) : (
-              <div>Aucune question disponible.</div>
+                <div>Aucune question disponible.</div>
               )}
             </div>
           </div>
-                    {/* Reviews */}
+          {/* Reviews */}
           <div>
             <div className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${activeTab === "tabThree" ? "flex" : "hidden"}`}>
               <div className="w-full max-w-xl">
@@ -565,10 +629,14 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
                       <div className="rounded-xl bg-white shadow-1 p-4 sm:p-6" key={idx}>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{backgroundColor: 'rgb(255, 236, 212)'}}>
-                              <span style={{color: 'rgb(255, 128, 0)', fontWeight: 'bold'}}>
-                                {review.userName ? review.userName.charAt(0).toUpperCase() : (review.user_id ? String(review.user_id).charAt(0).toUpperCase() : 'U')}
-                              </span>
+                            <div className="w-12 h-12 rounded-full overflow-hidden">
+                              <Image
+                                src={review.userAvatar || "/images/users/user-01.jpg"}
+                                alt={review.userName ? `Avatar de ${review.userName}` : "Avatar utilisateur"}
+                                className="w-full h-auto rounded-full overflow-hidden"
+                                width={50}
+                                height={50}
+                              />
                             </div>
                             <div>
                               <h3 className="font-medium text-dark">{review.user_id ? `Utilisateur #${review.user_id}` : "Anonymous"}</h3>
@@ -576,11 +644,11 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
                             </div>
                           </div>
                           <div className="flex items-center gap-1">
-                          {[...Array(5)].map((_, i) => (
-                          <span key={i} className={`cursor-pointer ${i < (parseInt(review.stars ?? "0", 10) || 0) ? "text-[#FBB040]" : "text-gray-5"}`}>
-                          <svg className="fill-current" width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.6604 5.90785L9.97461 5.18335L7.85178 0.732874C7.69645 0.422375 7.28224 0.422375 7.12691 0.732874L5.00407 5.20923L0.344191 5.90785C0.0076444 5.9596 -0.121797 6.39947 0.137085 6.63235L3.52844 10.1255L2.72591 15.0158C2.67413 15.3522 3.01068 15.6368 3.32134 15.4298L7.54112 13.1269L11.735 15.4298C12.0198 15.5851 12.3822 15.3263 12.3046 15.0158L11.502 10.1255L14.8934 6.63235C15.1005 6.39947 14.9969 5.9596 14.6604 5.90785Z" fill=""/></svg>
-                          </span>
-                          ))}
+                            {[...Array(5)].map((_, i) => (
+                              <span key={i} className={`cursor-pointer ${i < (parseInt(review.stars ?? "0", 10) || 0) ? "text-[#FBB040]" : "text-gray-5"}`}>
+                                <svg className="fill-current" width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.6604 5.90785L9.97461 5.18335L7.85178 0.732874C7.69645 0.422375 7.28224 0.422375 7.12691 0.732874L5.00407 5.20923L0.344191 5.90785C0.0076444 5.9596 -0.121797 6.39947 0.137085 6.63235L3.52844 10.1255L2.72591 15.0158C2.67413 15.3522 3.01068 15.6368 3.32134 15.4298L7.54112 13.1269L11.735 15.4298C12.0198 15.5851 12.3822 15.3263 12.3046 15.0158L11.502 10.1255L14.8934 6.63235C15.1005 6.39947 14.9969 5.9596 14.6604 5.90785Z" fill=""/></svg>
+                              </span>
+                            ))}
                           </div>
                         </div>
                         <p className="text-dark mt-6">{review.comment}</p>
@@ -595,11 +663,10 @@ if ((productData as any)?.types?.length) setActiveType(String((productData as an
                 <ReviewForm productId={String(product?.id ?? product?._id ?? "")} />
               </div>
             </div>
-          </div>  
+          </div>
         </div>
       </section>
+      <RecentlyViewdItems />
     </>
   );
-};
-
-export default ProductDetails;
+}

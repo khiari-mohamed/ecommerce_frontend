@@ -1,15 +1,19 @@
 "use client";
 import Image from "next/image";
 import Rate from "antd/es/rate";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Heart, Eye } from "lucide-react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "@/redux/features/cart-slice";
+import { updateQuickView } from "@/redux/features/quickView-slice";
+import { addItemToWishlist } from "@/redux/features/wishlist-slice";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/formattedPrice";
+import { useModalContext } from "@/app/context/QuickViewModalContext";
 
 // Utility to generate a consistent fake rating and review count per product
 function getFakeReviewData(id: string | number) {
@@ -23,6 +27,7 @@ function getFakeReviewData(id: string | number) {
 }
 
 export default function SubcategoryProductCard({ product }: { product: any }) {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -66,6 +71,55 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
   const discountPercentage =
     oldPrice > price ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
+  // Modal context for Quick View
+  const { openModal } = useModalContext();
+
+  // Helper to get the correct image URL from cover
+  // Helper to get the correct image URL from cover (local public/produits support)
+  const getProductImageUrl = (product: any) => {
+    let cover = product.cover;
+    if (cover && typeof cover === 'string' && cover.trim() !== '') {
+      if (cover.startsWith('http')) return cover;
+      if (cover.startsWith('produits/')) return `/${cover.replace(/^\/+/, '')}`;
+      return cover;
+    }
+    return '/images/placeholder.png';
+  };
+
+  // Normalize product for quick view/wishlist
+  const normalizeProduct = (product: any) => {
+    const imageUrl = getProductImageUrl(product);
+    return {
+      ...product,
+      price: Number(product.price ?? product.prix) || 0,
+      discountedPrice: Number(product.discountedPrice ?? product.promo ?? product.price ?? product.prix) || 0,
+      title: product.title ?? product.designation_fr ?? product.designation ?? product.name ?? "Produit",
+      designation: product.designation ?? product.designation_fr ?? product.title ?? product.name ?? "Produit",
+      cover: product.cover ?? imageUrl,
+      imgs: { thumbnails: [imageUrl], previews: [imageUrl] },
+      mainImage: { url: imageUrl },
+      images: [],
+      _id: product._id ?? product.id,
+      inStock: product.inStock,
+      brand: product.brand,
+      slug: product.slug,
+    };
+  };
+
+  // Heart (wishlist) and Eye (quick view) handlers
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    dispatch(addItemToWishlist({ ...normalizeProduct(product), status: "available", quantity: 1 }));
+    toast({ title: "Ajouté aux favoris", description: `${name} a été ajouté à vos favoris`, variant: "default" });
+  };
+  const handleQuickView = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    dispatch(updateQuickView(normalizeProduct(product)));
+    openModal();
+  };
+
   const handleAddToCart = useCallback(() => {
     if (isAddingToCart || !product?.inStock) return;
     setIsAddingToCart(true);
@@ -101,134 +155,138 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
   return (
     <div
       className={cn(
-        "relative flex flex-col h-full bg-white rounded-md overflow-hidden border transition-all duration-300",
-        isHovered ? "border-primary/40 shadow-lg -translate-y-1" : "border-gray-200",
-        "hover:border-primary/20 hover:shadow-lg group",
-        "w-full min-w-0" // Ensure card never overflows grid
+        "group relative overflow-hidden h-full flex flex-col shadow-none bg-white rounded-xl",
       )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        border: '1.5px solid #fff',
+        transition: 'border-color 0.3s, border-width 0.3s',
+      }}
+      onMouseEnter={e => {
+        setIsHovered(true);
+        (e.currentTarget as HTMLDivElement).style.borderColor = '#ff6600';
+        (e.currentTarget as HTMLDivElement).style.borderWidth = '2px';
+      }}
+      onMouseLeave={e => {
+        setIsHovered(false);
+        (e.currentTarget as HTMLDivElement).style.borderColor = '#fff';
+        (e.currentTarget as HTMLDivElement).style.borderWidth = '1.5px';
+      }}
       aria-label={`${name} card`}
     >
-      <div className="absolute top-0 left-0 right-0 z-20 flex justify-between p-2">
-        <div className="space-y-1 text-white">
-          {discountPercentage > 0 && (
-            <span className="py-0.5 px-1 text-xs sm:text-sm font-medium bg-[#ef837b] rounded-sm block">
-              -{discountPercentage}%
-            </span>
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-col flex-1 min-w-0">
-        <Link
-          href={`/products/${product?.slug}`}
-          className="flex flex-col flex-1 h-full min-w-0"
-          aria-label={`View details for ${name}`}
-        >
-          {/* Image at the top */}
-          <div className="relative flex items-center justify-center p-2 sm:p-4 aspect-square bg-gray-50 min-w-0">
-            {!product?.inStock && (
-              <div className="absolute inset-0 z-30 flex items-center justify-center bg-white/60 backdrop-blur-[2px]">
-                <div className="w-full px-4 py-1.5 text-sm font-medium text-center text-white shadow-md bg-[#FF4301] md:text-base transform rotate-[-5deg]">
-                  Rupture de Stock
-                </div>
-              </div>
-            )}
-            <div
-              className={cn(
-                "transition-all duration-500 h-full w-full flex items-center justify-center",
-                isImageLoaded ? "opacity-100" : "opacity-0",
-                !product?.inStock && "opacity-40"
-              )}
-            >
-              <Image
-                className={cn(
-                  "w-full h-full object-cover sm:object-contain sm:w-full sm:h-auto sm:max-h-[150px] max-w-full mx-auto transition-all duration-500",
-                  isHovered ? "scale-110" : "scale-100"
-                )}
-                src={imageSrc}
-                alt={name}
-                width={300}
-                height={300}
-                onLoad={() => setIsImageLoaded(true)}
-                onError={() => setIsImageLoaded(true)}
-                loading="lazy"
-                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                placeholder="blur"
-                blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjFmMWYxIi8+PC9zdmc+"
-              />
-            </div>
-            {!isImageLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-8 h-8 border-2 rounded-full sm:w-12 sm:h-12 border-primary/30 border-t-primary animate-spin"></div>
-              </div>
-            )}
-          </div>
-
-          {/* Stars and reviews under image */}
-          <div className="flex flex-row flex-nowrap items-center justify-center mt-2 mb-2">
-            <Rate
-              value={stars}
-              count={5}
-              disabled
-              allowHalf={false}
-              style={{ color: "#FFD700", fontSize: 18 }}
-              className="text-yellow-400"
-            />
-            <span className="ml-2 text-xs text-gray-500">
-              ({reviewsCount})
-            </span>
-          </div>
-
-          {/* Price under stars */}
-          <div className="flex flex-row flex-nowrap items-center justify-center gap-2 mb-2">
-            <span className="text-base font-semibold text-[#EF837B]">
-              {formatCurrency(isNaN(price) ? 0 : price)}
-            </span>
-            {oldPrice > price && !isNaN(oldPrice) && (
-              <span className="mt-1 text-sm text-gray-400 line-through">
-                {formatCurrency(oldPrice)}
-              </span>
-            )}
-          </div>
-
-          {/* Title and brand under price */}
-          {product?.brand && (
-            <div className="mb-1.5">
-              <span className="text-xs font-medium tracking-wider text-gray-500 uppercase">
-                {product.brand}
-              </span>
-            </div>
-          )}
-          <h3 className="mb-2 text-sm font-medium text-center w-full transition-colors sm:text-base line-clamp-2 group-hover:text-primary">
-            {name}
-          </h3>
-        </Link>
-        {/* Button always at the bottom, not overlapping */}
-        <div className="mt-auto px-2 sm:px-3 pb-2 sm:pb-3 pt-2">
-          <Button
-            onClick={handleAddToCart}
-            disabled={!product?.inStock || isAddingToCart}
-            className={cn(
-              "w-full gap-2 transition-all duration-300 bg-[#FF5700] text-white",
-              !product?.inStock
-                ? "bg-gray-200 text-gray-500 cursor-not-allowed hover:bg-gray-200"
-                : "hover:bg-[#FF5700]"
-            )}
-            size="sm"
+      {/* Badges */}
+      <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+        {discountPercentage > 0 && (
+          <span
+            style={{
+              background: 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)',
+              color: '#fff',
+              borderRadius: '9999px',
+              fontWeight: 700,
+              fontSize: '0.75rem',
+              boxShadow: '0 2px 8px 0 rgba(239,68,68,0.15)',
+              zIndex: 20,
+              position: 'relative',
+              display: 'inline-block',
+            }}
+            className="text-xs font-bold px-2 py-1"
           >
-            <ShoppingCart
-              className={cn(
-                "size-4",
-                isHovered && product?.inStock && !isAddingToCart && "animate-bounce"
-              )}
-            />
-            <span className="text-xs sm:text-sm">
-              {isAddingToCart ? "Ajout en cours..." : product?.inStock ? "Ajouter au panier" : "Indisponible"}
-            </span>
-          </Button>
+            -{discountPercentage}%
+          </span>
+        )}
+      </div>
+      {/* Action buttons */}
+      <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <button
+          className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full flex items-center justify-center"
+          onClick={handleWishlist}
+          aria-label="Ajouter aux favoris"
+        >
+          <Heart className="w-4 h-4 text-orange-500" />
+        </button>
+        <button
+          className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full flex items-center justify-center"
+          onClick={handleQuickView}
+          aria-label="Aperçu rapide"
+        >
+          <Eye className="w-4 h-4 text-orange-500" />
+        </button>
+      </div>
+      <div className="p-4 flex flex-col h-full">
+        {/* Product Image */}
+        <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
+          <Image
+            src={imageSrc}
+            alt={name}
+            width={250}
+            height={250}
+            className="w-full h-full object-cover"
+            onLoad={() => setIsImageLoaded(true)}
+            onError={() => setIsImageLoaded(true)}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {!product?.inStock && (
+            <div className="absolute inset-0 z-30 flex items-center justify-center bg-white/60 backdrop-blur-[2px]">
+              <div className="w-full px-4 py-1.5 text-sm font-medium text-center text-white shadow-md bg-[#FF4301] md:text-base transform rotate-[-5deg]">
+                Rupture de Stock
+              </div>
+            </div>
+          )}
+          {!isImageLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-8 h-8 border-2 rounded-full sm:w-12 sm:h-12 border-primary/30 border-t-primary animate-spin"></div>
+            </div>
+          )}
         </div>
+        {/* Stars and reviews under image */}
+        <div className="flex flex-row flex-nowrap items-center justify-center mt-2 mb-2">
+          <Rate
+            value={stars}
+            count={5}
+            disabled
+            allowHalf={false}
+            style={{ color: "#FFD700", fontSize: 18 }}
+            className="text-yellow-400"
+          />
+          <span className="ml-2 text-xs text-gray-500">
+            ({reviewsCount})
+          </span>
+        </div>
+        {/* Price under stars */}
+        <div className="flex items-center gap-2 mb-4 justify-center">
+          <span style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent', fontWeight: 700, fontSize: '1.25rem' }}>
+            {formatCurrency(isNaN(price) ? 0 : price)}
+          </span>
+          {oldPrice > price && !isNaN(oldPrice) && (
+            <span className="text-sm text-gray-500 line-through">
+              {formatCurrency(oldPrice)}
+            </span>
+          )}
+        </div>
+        {/* Title and brand under price */}
+        {product?.brand && (
+          <div className="mb-1.5">
+            <span className="text-xs font-medium tracking-wider text-gray-500 uppercase">
+              {product.brand}
+            </span>
+          </div>
+        )}
+        <h3
+          className="mb-2 text-sm font-medium text-center w-full transition-colors sm:text-base group-hover:text-primary line-clamp-2"
+          style={{ minHeight: '3.4em', maxHeight: '3.4em', overflow: 'hidden', display: 'block' }}
+        >
+          <Link
+            href={`/products/${product?.slug}`}
+            className="hover:text-orange-600 transition-colors duration-200 w-full block"
+            style={{ textOverflow: 'ellipsis', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', whiteSpace: 'normal' }}
+          >
+            {name}
+          </Link>
+        </h3>
+        {/* Add to Cart Button */}
+        <button className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} onClick={handleAddToCart} disabled={!product?.inStock || isAddingToCart}>
+          <ShoppingCart className="w-4 h-4 mr-2 text-white" />
+          {isAddingToCart ? "Ajout en cours..." : product?.inStock ? "Ajouter au panier" : "Indisponible"}
+        </button>
       </div>
     </div>
   );

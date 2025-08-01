@@ -6,15 +6,11 @@ type Product = {
   _id?: string;
   title: string;
   price: number | string;
-  imgs?: {
-    thumbnails?: string[];
-  };
+  cover?: string;
   slug?: string;
-  alt_img?: string;
+  alt_cover?: string;
   meta?: string;
 };
-
-const PRODUCT_IMAGE_BASE = "/uploads/"; // Adjust if your CDN/static path is different
 
 const LatestProducts = ({ products }: { products: Product[] }) => {
   return (
@@ -27,27 +23,19 @@ const LatestProducts = ({ products }: { products: Product[] }) => {
         <div className="flex flex-col gap-6">
           {/* <!-- product item --> */}
           {products.slice(0, 3).map((product, key) => {
-            // Normalize image URL for /produits/...
             let imageUrl = "";
-            if (product.imgs?.thumbnails?.[0]) {
-              const url = product.imgs.thumbnails[0];
-              if (url.startsWith("http") || url.startsWith("/produits/")) {
-                imageUrl = url;
-              } else if (url.includes("produits/")) {
-                imageUrl = "/" + url.slice(url.indexOf("produits/"));
+            if (product.cover) {
+              if (product.cover.startsWith("http")) {
+                imageUrl = product.cover;
               } else {
-                imageUrl = "/" + url.replace(/^public[\\/]/, "");
+                imageUrl = "/" + product.cover.replace(/^\/+/, "");
               }
             }
             if (!imageUrl) {
-            imageUrl = "/images/placeholder.png";
-            } else if (!imageUrl.startsWith("http") && !imageUrl.startsWith("/")) {
-            imageUrl = "/" + imageUrl.replace(/^\/+/g, "");
-            } else if (imageUrl.startsWith("//")) {
-            imageUrl = imageUrl.replace(/^\/+/g, "/");
+              imageUrl = "/images/placeholder.png";
             }
 
-            const imageAlt = product.alt_img || product.title || "product";
+            const imageAlt = product.alt_cover || product.title || "product";
             const seoTitle = product.meta || product.title;
             const productLink = product.slug
               ? `/products/${product.slug}`
@@ -55,18 +43,18 @@ const LatestProducts = ({ products }: { products: Product[] }) => {
 
             return (
               <Link href={productLink} key={product._id || key} className="flex items-center gap-6 group">
-                <div className="flex items-center justify-center rounded-[10px] bg-gray-3 max-w-[90px] w-full h-22.5">
+                <div className="flex items-center justify-center rounded-[10px] h-[106px] max-w-[106px] w-full sm:bg-gray-3 sm:max-w-[90px] sm:h-22.5">
                   <Image
                     src={imageUrl}
                     alt={imageAlt}
                     title={seoTitle}
-                    width={74}
-                    height={74}
-                    className="rounded-[10px] w-full"
+                    width={106}
+                    height={106}
+                    className="rounded-[10px] object-cover block"
                   />
                 </div>
                 <div>
-                  <h3 className="font-medium text-dark mb-1 ease-out duration-200 group-hover:text-blue">
+                  <h3 className="font-medium text-dark mb-1 ease-out duration-200 group-hover:text-[#ff6600]">
                     {product.title}
                   </h3>
                   <p className="text-custom-sm">

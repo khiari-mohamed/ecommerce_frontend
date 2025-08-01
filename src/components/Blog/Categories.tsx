@@ -33,12 +33,9 @@ const Categories = ({ categories }: CategoriesProps) => {
             <a
               key={category._id}
               href={`/categories/${category.slug}`}
-              className="group flex items-center justify-between ease-out duration-200 text-dark hover:text-blue"
+              className="group flex items-center justify-between ease-out duration-200 text-dark hover:text-[#ff6600]"
             >
               {category.designation_fr || category.designation}
-              <span className="inline-flex rounded-[30px] bg-gray-2 text-custom-xs px-1.5 ease-out duration-200 group-hover:text-white group-hover:bg-blue">
-                {category.products?.length || 0}
-              </span>
             </a>
           ))}
         </div>

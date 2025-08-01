@@ -23,20 +23,16 @@ const SingleItem = ({ item }: { item: Product }) => {
   const [rerender, setRerender] = useState(0);
   const handleAddToCart = () => {
     // Always use a numeric id for cart consistency
-    let numericId = item.id;
-    if (typeof numericId !== "number") {
-      if (typeof item._id === "string" && !isNaN(Number(item._id))) {
-        numericId = Number(item._id);
-      } else if (typeof item._id === "number") {
-        numericId = item._id;
-      } else if (typeof item.id === "string" && !isNaN(Number(item.id))) {
-        numericId = Number(item.id);
-      }
-    }
+    const numericId =
+      typeof item._id === "number" ? item._id :
+      typeof item._id === "string" && !isNaN(Number(item._id)) ? Number(item._id) :
+      typeof item.id === "number" ? item.id :
+      typeof item.id === "string" && !isNaN(Number(item.id)) ? Number(item.id) :
+      Date.now();
     dispatch(
       addItemToCart({
         ...item,
-        id: numericId,
+        id: String(numericId), // ensure id is always a string
         quantity: 1,
         image: imageSrc
       })

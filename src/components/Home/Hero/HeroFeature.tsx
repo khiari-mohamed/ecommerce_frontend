@@ -1,45 +1,60 @@
 import React from "react";
-import Image from "next/image";
+import { Truck, Shield, Award, Phone } from 'lucide-react';
 
 const featureData = [
   {
-    img: "/images/icons/icon-01.svg",
+    icon: Truck,
     title: "Livraison Rapide",
     description: "LIVRAISON SOUS 24 HEURES",
+    bgColor: "#2c74ec"
   },
   {
-    img: "/images/icons/icon-02.svg",
+    icon: Award,
     title: "Produits Certifiés",
     description: "CERTIFIÉ PAR LE MINSTÈRE DE SANTÉ",
+    bgColor: "#7c3aed"
   },
   {
-    img: "/images/icons/icon-03.svg",
+    icon: Shield,
     title: "Paiement à la livraison",
     description: "PAIEMENT SÉCURISÉ",
+    bgColor: "#1cb45c"
   },
   {
-    img: "/images/icons/icon-04.svg",
+    icon: Phone,
     title: "Service SOBITAS",
-    description: "27 612 500",
+    description: "73 200 169",
+    bgColor: "#ff8000"
   },
 ];
 
 const HeroFeature = () => {
   return (
-    <div className="max-w-[1060px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-      <div className="flex flex-wrap items-center gap-2 xl:gap-4 mt-10">
-        {featureData.map((item, key) => (
-          <div className="flex items-center gap-2" key={key}>
-            <Image src={item.img} alt={item.title} width={40} height={41} loading="lazy" sizes="40px" />
-
-            <div>
-              <h3 className="font-medium text-lg text-dark">{item.title}</h3>
-              <p className="text-sm">{item.description}</p>
-            </div>
-          </div>
-        ))}
+    <section className="py-10 bg-gradient-to-b from-gray-50 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {featureData.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <div key={index} className="text-center group">
+                <div
+                  className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: item.bgColor }}
+                >
+                  <Icon className="w-12 h-12" style={{ color: '#fff' }} />
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-3">
+                  {item.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed max-w-xs mx-auto text-base">
+                  {item.description}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

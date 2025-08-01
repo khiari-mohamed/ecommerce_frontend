@@ -28,22 +28,14 @@ export const wishlist = createSlice({
   initialState,
   reducers: {
     addItemToWishlist: (state, action: PayloadAction<WishListItem>) => {
-      const { id, title, price, quantity, imgs, discountedPrice, status } =
-        action.payload;
+      const { id, quantity } = action.payload;
       const existingItem = state.items.find((item) => item.id === id);
 
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
-        state.items.push({
-          id,
-          title,
-          price,
-          quantity,
-          imgs,
-          discountedPrice,
-          status,
-        });
+        // Store the full product object to preserve all fields (including images)
+        state.items.push({ ...action.payload });
       }
     },
     removeItemFromWishlist: (state, action: PayloadAction<number>) => {

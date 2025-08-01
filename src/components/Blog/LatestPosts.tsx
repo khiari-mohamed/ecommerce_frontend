@@ -64,7 +64,7 @@ const LatestPosts = ({ blogs }: { blogs: Blog[] }) => {
               <div className="flex items-center gap-4" key={blog._id}>
                 <Link
                   href={`/blogs/${blog.slug}`}
-                  className="max-w-[110px] w-full rounded-[10px] overflow-hidden"
+                  className="w-[110px] h-[80px] flex-shrink-0 rounded-[10px] overflow-hidden flex items-center justify-center"
                 >
                   <Image
                     src={imageUrl}
@@ -76,17 +76,17 @@ const LatestPosts = ({ blogs }: { blogs: Blog[] }) => {
                 </Link>
 
                 <div>
-                  <h3 className="text-dark leading-[22px] ease-out duration-200 mb-1.5 hover:text-blue">
+                  <h3 className="text-dark leading-[22px] ease-out duration-200 mb-1.5 hover:text-[#ff6600]">
                     <Link href={`/blogs/${blog.slug}`}>{title}</Link>
                   </h3>
 
                   <span className="flex items-center gap-3">
-                    <span className="text-custom-xs ease-out duration-200 hover:text-blue">
+                    <span className="text-custom-xs ease-out duration-200 hover:text-[#ff6600]">
                       {date}
                     </span>
                     {/* <!-- divider --> */}
                     <span className="block w-px h-4 bg-gray-4"></span>
-                    <span className="text-custom-xs ease-out duration-200 hover:text-blue">
+                    <span className="text-custom-xs ease-out duration-200 hover:text-[#ff6600]">
                       {views} Vues
                     </span>
                   </span>

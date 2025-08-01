@@ -1,4 +1,5 @@
 export type TopPromotion = {
+  isNew: any;
   _id: string;
   productId: string; // or Types.ObjectId if you want to be more specific
   designation_fr: string;

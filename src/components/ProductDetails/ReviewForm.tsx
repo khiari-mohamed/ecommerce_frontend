@@ -111,7 +111,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ productId }) => {
         </div>
         <button
           type="submit"
-          className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
+          className="inline-flex font-medium text-white py-3 px-7 rounded-md ease-out duration-200"
+          style={{background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)'}}
           disabled={loading}
         >
           {loading ? "Envoi..." : "Soumettre des avis"}

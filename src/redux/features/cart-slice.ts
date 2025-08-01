@@ -6,7 +6,7 @@ type InitialState = {
 };
 
 type CartItem = {
-  id: number;
+  id: string;
   title: string;
   price: number;
   discountedPrice: number;
@@ -44,52 +44,38 @@ export const cart = createSlice({
   initialState,
   reducers: {
     addItemToCart: (state, action: PayloadAction<CartItem>) => {
-      const { id, title, price, quantity, discountedPrice, imgs, type, image } = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
-
-      if (existingItem) {
-        existingItem.quantity += quantity;
-      } else {
-        state.items.push({
-          id,
-          title,
-          price,
-          quantity,
-          discountedPrice,
-          imgs,
-          type,
-          image,
-          cover: action.payload.cover,
-          mainImage: action.payload.mainImage,
-          images: action.payload.images,
-          designation_fr: action.payload.designation_fr,
-          designation: action.payload.designation,
-        });
-      }
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cartItems", JSON.stringify(state.items));
-      }
+    const { id } = action.payload;
+    const existingItem = state.items.find((item) => item.id === id);
+    
+    if (existingItem) {
+    existingItem.quantity += action.payload.quantity;
+    } else {
+    state.items.push(action.payload);
+    }
+    if (typeof window !== "undefined") {
+    localStorage.setItem("cartItems", JSON.stringify(state.items));
+    }
     },
-    removeItemFromCart: (state, action: PayloadAction<number>) => {
-      const itemId = action.payload;
-      state.items = state.items.filter((item) => item.id !== itemId);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cartItems", JSON.stringify(state.items));
-      }
+    removeItemFromCart: (state, action: PayloadAction<string>) => {
+    const itemId = action.payload;
+    state.items = state.items.filter((item) => item.id !== itemId);
+    if (typeof window !== "undefined") {
+    localStorage.setItem("cartItems", JSON.stringify(state.items));
+    }
     },
     updateCartItemQuantity: (
-      state,
-      action: PayloadAction<{ id: number; quantity: number }>
+    state,
+    action: PayloadAction<{ id: string; quantity: number }>
     ) => {
-      const { id, quantity } = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
-
-      if (existingItem) {
-        existingItem.quantity = quantity;
-      }
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cartItems", JSON.stringify(state.items));
-      }
+    const { id, quantity } = action.payload;
+    const existingItem = state.items.find((item) => item.id === id);
+    
+    if (existingItem) {
+    existingItem.quantity = quantity;
+    }
+    if (typeof window !== "undefined") {
+    localStorage.setItem("cartItems", JSON.stringify(state.items));
+    }
     },
 
     removeAllItemsFromCart: (state) => {

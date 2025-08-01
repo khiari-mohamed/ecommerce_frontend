@@ -39,12 +39,12 @@ const SearchForm: React.FC<SearchFormProps> = ({
               onChange={(e) => setQuery(e.target.value)}
               placeholder={placeholder}
               aria-label={placeholder}
-              className="w-full rounded-md border border-gray-3 py-3 pl-5 pr-13 outline-none ease-out duration-200 placeholder:text-dark-5 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+              className="w-full rounded-md border border-gray-3 py-3 pl-5 pr-13 outline-none ease-out duration-200 placeholder:text-dark-5 focus:border-transparent focus:[box-shadow:0_0_0_2px_#ff6600] focus:ring-2 focus:ring-[#ff6600]/20"
               autoComplete="off"
             />
             <button
               type="submit"
-              className="text-dark-2 absolute right-0 top-0 px-4 py-3.5 ease-out duration-200 hover:text-blue"
+              className="text-dark-2 absolute right-0 top-0 px-4 py-3.5 ease-out duration-200 hover:text-[#ff6600]"
               aria-label="Submit search"
             >
               <svg

@@ -1,25 +1,9 @@
 "use client";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-import { useCallback, useRef } from "react";
 import { useTestimonials } from '../../../services/useTestimonials';
-import "swiper/css/navigation";
-import "swiper/css";
-import SingleItem from "./SingleItem";
+import { Star, Quote } from 'lucide-react';
 
 const Testimonials = () => {
-  const sliderRef = useRef<any>(null);
   const { testimonials, loading } = useTestimonials();
-
-  const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slidePrev();
-  }, []);
-
-  const handleNext = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slideNext();
-  }, []);
 
   // Deduplicate testimonials by review + authorName without changing type or logic
   const filteredTestimonials = (() => {
@@ -34,71 +18,93 @@ const Testimonials = () => {
     });
   })();
 
+  // Render stars
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <Star
+        key={i}
+        className={`h-4 w-4`}
+        style={i < rating ? { color: '#FFD600', fill: '#FFD600' } : { color: '#D1D5DB', fill: '#D1D5DB' }}
+      />
+    ));
+  };
+
   return (
-    <section className="overflow-hidden pb-10 sm:pb-14 md:pb-16.5 pt-8 sm:pt-12 md:pt-16 bg-white w-full">
-      <div className="max-w-[1170px] w-full mx-auto px-2 sm:px-4 md:px-8 xl:px-0">
-        <div className="swiper testimonial-carousel common-carousel p-2 sm:p-5 w-full">
-          <div className="mb-8 sm:mb-10 flex flex-col gap-4">
-            <h2
-              className="font-semibold text-xl sm:text-xl xl:text-heading-5 text-center w-full"
-              style={{ color: '#FF4500' }}
-            >
-              Commentaires des utilisateurs
-            </h2>
-          </div>
-
-          <div className="flex items-center gap-3 justify-center sm:justify-end w-full sm:w-auto">
-            <div onClick={handlePrev} className="swiper-button-prev cursor-pointer">
-              <svg className="fill-current" width="24" height="24" viewBox="0 0 24 24">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M15.4881 4.43057C15.8026 4.70014 15.839 5.17361 15.5694 5.48811L9.98781 12L15.5694 18.5119C15.839 18.8264 15.8026 19.2999 15.4881 19.5695C15.1736 19.839 14.7001 19.8026 14.4306 19.4881L8.43056 12.4881C8.18981 12.2072 8.18981 11.7928 8.43056 11.5119L14.4306 4.51192C14.7001 4.19743 15.1736 4.161 15.4881 4.43057Z"
-                />
-              </svg>
+    <section className="py-16 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section title */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4" style={{ color: 'rgb(255, 69, 0)' }}>
+            💬 Avis de nos clients
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Découvrez ce que pensent nos clients de PROTEINE TUNISIE.
+            Plus de 15 ans d'expérience au service de votre performance.
+          </p>
+          <div className="flex items-center justify-center gap-2 mt-4">
+            <div className="flex">
+              {renderStars(5)}
             </div>
-            <div onClick={handleNext} className="swiper-button-next cursor-pointer">
-              <svg className="fill-current" width="24" height="24" viewBox="0 0 24 24">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M8.51192 4.43057C8.82641 4.161 9.29989 4.19743 9.56946 4.51192L15.5695 11.5119C15.8102 11.7928 15.8102 12.2072 15.5695 12.4881L9.56946 19.4881C9.29989 19.8026 8.82641 19.839 8.51192 19.5695C8.19743 19.2999 8.161 18.8264 8.43057 18.5119L14.0122 12L8.43057 5.48811C8.161 5.17361 8.19743 4.70014 8.51192 4.43057Z"
-                />
-              </svg>
-            </div>
+            <span className="text-lg font-semibold text-gray-800">4.9/5</span>
+            <span className="text-gray-600">(680 avis)</span>
           </div>
+        </div>
 
-          {loading ? (
-            <div className="text-center py-10">Chargement...</div>
-          ) : (
-            <Swiper
-              ref={sliderRef}
-              slidesPerView={1}
-              spaceBetween={24}
-              autoplay={{ delay: 2500, disableOnInteraction: false }}
-              modules={[Autoplay]}
-              direction="horizontal"
-              loop={false}
-              style={{ width: '100%' }}
-              breakpoints={{
-                0: { slidesPerView: 1 },
-                480: { slidesPerView: 1.1 },
-                600: { slidesPerView: 1.2 },
-                800: { slidesPerView: 2 },
-                1100: { slidesPerView: 3 },
-                1400: { slidesPerView: 4 },
-              }}
-              className="!pb-8 md:!pb-10"
-            >
-              {filteredTestimonials.map((item, key) => (
-                <SwiperSlide key={key} style={{ display: 'flex', height: '100%', minWidth: 0 }}>
-                  <div className="w-full max-w-[300px] mx-auto">
-                    <SingleItem testimonial={item} />
+        {loading ? (
+          <div className="text-center py-10">Chargement...</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredTestimonials.slice(0, 6).map((review, idx) => (
+              <div 
+                key={idx} 
+                className="bg-white rounded-lg shadow-md p-6 border border-gray-200 flex flex-col h-full"
+                style={{ borderWidth: '1px', borderColor: '#e5e7eb' }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div 
+                      className="w-10 h-10 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: '#ffecd4' }}
+                    >
+                      <span style={{ color: '#FF8000', fontWeight: 'bold' }}>
+                        {review.authorName?.charAt(0)}
+                      </span>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800">{review.authorName}</h4>
+                      {review.authorRole && isNaN(Number(review.authorRole)) && (
+                        <p className="text-sm text-gray-500">{review.authorRole}</p>
+                      )}
+                    </div>
                   </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          )}
+                  <span 
+                    className="px-2 py-1 rounded-full text-xs font-semibold text-green-800"
+                    style={{ backgroundColor: '#e0fce4' }}
+                  >
+                    Vérifié
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 mb-3">
+                  {renderStars(Number(review.stars) || 5)}
+                </div>
+                <div className="relative flex-grow">
+                  <Quote 
+                  className="h-6 w-6 absolute -top-2 -left-1 text-yellow-400"
+                  style={{ color: '#FFD600' }}
+                  />
+                  <p className="text-gray-700 leading-relaxed pl-4">
+                    {review.review}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="text-center mt-12">
+          <button className="bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors">
+            Voir tous les avis
+          </button>
         </div>
       </div>
     </section>

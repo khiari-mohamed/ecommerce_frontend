@@ -235,23 +235,11 @@ const ShopWithoutSidebar = () => {
                   };
                   return productStyle === "grid" ? (
                     <div key={key}>
-                      <SingleGridItem item={normalized} />
-                      <div className="mt-2 flex items-center gap-2">
-                        <StarRating rating={getRandomRating(key)} />
-                        <span className="text-xs text-gray-500">
-                          ({getRandomReviews(key)} avis)
-                        </span>
-                      </div>
+                      <SingleGridItem item={normalized} rating={getRandomRating(key)} reviewsCount={getRandomReviews(key)} />
                     </div>
                   ) : (
                     <div key={key}>
-                      <SingleListItem item={normalized} />
-                      <div className="mt-2 flex items-center gap-2">
-                        <StarRating rating={getRandomRating(key)} />
-                        <span className="text-xs text-gray-500">
-                          ({getRandomReviews(key)} avis)
-                        </span>
-                      </div>
+                      <SingleListItem item={normalized} rating={getRandomRating(key)} reviewsCount={getRandomReviews(key)} />
                     </div>
                   );
                 })}

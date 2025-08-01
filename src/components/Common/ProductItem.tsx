@@ -64,11 +64,12 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
   };
   const handleItemToWishList = () => {
     dispatch(
-      addItemToWishlist({
-        ...item,
-        status: "available",
-        quantity: 1,
-      })
+    addItemToWishlist({
+    ...item,
+    id: String(item.id),
+    status: "available",
+    quantity: 1,
+    })
     );
   };
   const handleProductDetails = () => {

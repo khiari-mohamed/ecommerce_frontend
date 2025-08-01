@@ -109,14 +109,16 @@ const CartSidebarModal = () => {
               <Link
                 onClick={() => closeCartModal()}
                 href="/cart"
-                className="w-full flex justify-center font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark text-base sm:text-lg"
+                className="w-full flex justify-center font-medium text-white py-3 px-6 rounded-md ease-out duration-200 text-base sm:text-lg"
+                style={{ background: '#ff4500' }}
               >
                 Voir le panier
               </Link>
               <Link
                 onClick={() => closeCartModal()}
                 href="/checkout"
-                className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-md ease-out duration-200 hover:bg-opacity-95 text-base sm:text-lg"
+                className="w-full flex justify-center font-medium text-white py-3 px-6 rounded-md ease-out duration-200 text-base sm:text-lg"
+                style={{ background: '#ff944d' }}
               >
                 Vérifier
               </Link>

@@ -57,7 +57,8 @@ return (
 {/* <!-- checkout button --> */}
 <button
 type="button"
-className="w-full flex justify-center font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark mt-7.5"
+className="w-full flex justify-center font-medium text-white py-3 px-6 rounded-md ease-out duration-200 mt-7.5"
+style={{ background: '#ff4500' }}
 onClick={() => router.push("/checkout")}
 >
 Processus de paiement

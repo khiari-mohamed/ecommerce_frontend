@@ -89,7 +89,8 @@ const NewArrival = () => {
     dispatch(addItemToCart({ ...normalized, id: stringId, quantity: 1, image: normalized.cover }));
   };
   const handleItemToWishList = (item: Product) => {
-    dispatch(addItemToWishlist({ ...normalizeProduct(item), status: "available", quantity: 1 }));
+    const normalized = normalizeProduct(item);
+    dispatch(addItemToWishlist({ ...normalized, id: String(normalized.id), status: "available", quantity: 1 }));
   };
 
   // Stable fake review count based on product id

@@ -71,6 +71,7 @@ const SingleListItem = ({ item, rating, reviewsCount }: SingleListItemProps) => 
     dispatch(
       addItemToWishlist({
         ...item,
+        id: String(item.id),
         status: "available",
         quantity: 1,
       })

@@ -85,52 +85,30 @@ const CategoriesClient: React.FC<CategoriesClientProps> = ({
     router.replace(`?${params.toString()}`);
   };
 
-  // Sidebar modal scroll/escape
-  useEffect(() => {
-    if (!showSidebar) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setShowSidebar(false);
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [showSidebar]);
-
   return (
     <div className="max-w-[1400px] mx-auto px-2 sm:px-4 py-4 sm:py-8 pt-[70px] sm:pt-[100px] md:pt-[120px] lg:pt-[130px]">
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         {/* Sidebar Filters (client component for responsiveness) */}
-        {/* Mobile filter button and modal */}
-        <div className="block lg:hidden w-full mb-4 flex justify-center">
+        {/* Mobile filter button and inline filter content */}
+        <div className="block lg:hidden w-full mb-4 flex flex-col items-center">
           <button
-            className="bg-[#FF4301] text-white rounded-md px-8 py-3 text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-[#FF4301]/50"
-            onClick={() => setShowSidebar(true)}
+            className="bg-[#FF4301] text-white rounded-md px-8 py-3 text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-[#FF4301]/50 mb-2"
+            onClick={() => setShowSidebar((v) => !v)}
           >
             Filtrer
           </button>
-        </div>
-        {showSidebar && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 lg:hidden"
-            onClick={() => setShowSidebar(false)}
-          >
-            <div
-              className="w-full max-w-[95vw] sm:max-w-sm mx-2 bg-white rounded-2xl shadow-lg p-3 sm:p-6 animate-slideInUp max-h-[90vh] overflow-y-auto relative mt-16"
-              onClick={e => e.stopPropagation()}
-            >
-              <button
-                className="absolute top-2 right-2 w-10 h-10 flex items-center justify-center rounded-full bg-[#FF4301] text-white text-2xl font-bold hover:bg-[#e04a0a] focus:outline-none focus:ring-2 focus:ring-[#FF4301]/50 z-10"
-                onClick={() => setShowSidebar(false)}
-                aria-label="Fermer"
-                type="button"
-              >
-                ×
-              </button>
-              <div className="flex justify-between items-center mb-4 pr-10">
+          {showSidebar && (
+            <div className="w-full max-w-[95vw] sm:max-w-sm mx-2 bg-white rounded-none shadow-lg p-3 sm:p-6 animate-slideInUp border border-[#FF4301]">
+              <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-bold text-gray-800">Filtrer</h2>
+                <button
+                  className="ml-auto text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none"
+                  onClick={() => setShowSidebar(false)}
+                  aria-label="Fermer"
+                  type="button"
+                >
+                  ×
+                </button>
               </div>
               {/* Categories (always open) */}
               <div className="mb-4 border-b border-gray-200">
@@ -165,8 +143,8 @@ const CategoriesClient: React.FC<CategoriesClientProps> = ({
               <SidebarBrandDropdown brands={brands} value={selectedBrand} onChange={handleBrandChange} />
               <SidebarKeywords value={selectedKeywords} onChange={handleKeywordsChange} />
             </div>
-          </div>
-        )}
+          )}
+        </div>
         {/* Desktop sidebar */}
         <aside className="hidden lg:block w-full lg:w-[320px] xl:w-[360px] flex-shrink-0 bg-white rounded-lg shadow-md p-4 xl:p-6 mb-8 lg:mb-0">
           <h2 className="text-lg font-bold mb-4 text-gray-800">Filtrer</h2>

@@ -157,11 +157,10 @@ function Footer() {
             <span className="nom">nos conseils et nos promotions</span>
           </p>
           <form
-            className="flex flex-col sm:flex-row items-center bg-white rounded-md overflow-hidden shadow vvv w-full max-w-md"
-            onSubmit={handleSubscribe}
-            style={{ transform: "skewX(-8deg)" }}
-          >
-            <div style={{ transform: "skewX(8deg)" }} className="flex flex-col sm:flex-row items-center w-full">
+  className="flex flex-col sm:flex-row items-center bg-white rounded-md overflow-hidden shadow w-full max-w-md transform sm:-skew-x-6"
+  onSubmit={handleSubscribe}
+>
+            <div className="flex flex-col sm:flex-row items-center w-full transform sm:skew-x-6">
               <input
                 type="email"
                 placeholder="Votre adresse e-mail"

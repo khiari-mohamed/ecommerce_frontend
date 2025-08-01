@@ -90,6 +90,7 @@ const SingleGridItem = ({ item, rating, reviewsCount }: SingleGridItemProps) => 
     dispatch(
       addItemToWishlist({
         ...item,
+        id: String(item.id),
         status: "available",
         quantity: 1,
         title: item.designation,

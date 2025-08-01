@@ -176,7 +176,7 @@ const MusculationProducts = () => {
     e.preventDefault();
     dispatch(addItemToWishlist({
       ...item, status: "available", quantity: 1,
-      id: 0,
+      id: String(item._id || item.id || `${Date.now()}-${Math.random()}`),
       title: "",
       discountedPrice: 0
     }));

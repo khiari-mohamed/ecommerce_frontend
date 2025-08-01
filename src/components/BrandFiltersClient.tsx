@@ -1,7 +1,7 @@
 "use client";
 import SidebarBrandDropdown from '@/components/SidebarBrandDropdown';
 import SidebarKeywords from '@/components/SidebarKeywords';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 // Helper to check if a category or subcategory is populated
@@ -21,7 +21,7 @@ export default function BrandFiltersClient({
   const searchParams = useSearchParams();
   const initialBrandId = searchParams?.get('brand') || '';
   const [selectedBrand, setSelectedBrand] = useState(initialBrandId);
-    const initialKeywords = (searchParams?.get('keywords') || '').split(',').filter(Boolean);
+  const initialKeywords = (searchParams?.get('keywords') || '').split(',').filter(Boolean);
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>(initialKeywords);
 
   // Update URL when brand changes
@@ -45,7 +45,6 @@ export default function BrandFiltersClient({
     router.replace(`?${params.toString()}`);
   };
 
-  
   // Update URL when keywords change
   const handleKeywordsChange = (keywords: string[]) => {
     setSelectedKeywords(keywords);
@@ -58,50 +57,28 @@ export default function BrandFiltersClient({
     router.replace(`?${params.toString()}`);
   };
 
-  // Close modal on Escape key and prevent background scroll
-  useEffect(() => {
-    if (!showSidebar) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setShowSidebar(false);
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [showSidebar]);
-
   return (
     <>
-      {/* Mobile filter button and modal */}
-      <div className="block lg:hidden w-full mb-4 flex justify-center mt-4">
+      {/* Mobile filter button and inline filter content */}
+      <div className="block lg:hidden w-full mb-4 flex flex-col items-center mt-4">
         <button
-          className="bg-[#FF4301] text-white rounded-md px-6 py-2 text-sm sm:text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-[#FF4301]/50"
-          onClick={() => setShowSidebar(true)}
+          className="bg-[#FF4301] text-white rounded-md px-6 py-2 text-sm sm:text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-[#FF4301]/50 mb-2"
+          onClick={() => setShowSidebar((v) => !v)}
         >
           Filtrer
         </button>
-      </div>
-      {showSidebar && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 lg:hidden"
-          onClick={() => setShowSidebar(false)}
-        >
-          <div
-            className="w-full max-w-[98vw] sm:max-w-sm mx-1 bg-white rounded-2xl shadow-lg p-2 sm:p-4 animate-slideInUp max-h-[92vh] overflow-y-auto relative mt-24"
-            onClick={e => e.stopPropagation()}
-          >
-            <button
-              className="absolute top-2 right-2 w-10 h-10 flex items-center justify-center rounded-full bg-[#FF4301] text-white text-2xl font-bold hover:bg-[#e04a0a] focus:outline-none focus:ring-2 focus:ring-[#FF4301]/50 z-10"
-              onClick={() => setShowSidebar(false)}
-              aria-label="Fermer"
-              type="button"
-            >
-              ×
-            </button>
-            <div className="flex justify-between items-center mb-4 pr-10">
+        {showSidebar && (
+          <div className="w-full max-w-[98vw] sm:max-w-sm mx-1 bg-white rounded-none shadow-lg p-2 sm:p-4 animate-slideInUp border border-[#FF4301]">
+            <div className="flex justify-between items-center mb-4">
               <h2 className="text-base sm:text-lg font-bold text-gray-800">Filtrer</h2>
+              <button
+                className="ml-auto text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none"
+                onClick={() => setShowSidebar(false)}
+                aria-label="Fermer"
+                type="button"
+              >
+                ×
+              </button>
             </div>
             {/* Categories (always open) */}
             <div className="mb-4 border-b border-gray-200">
@@ -138,8 +115,8 @@ export default function BrandFiltersClient({
             {/* Mots clés (dynamic keywords filter) */}
             <SidebarKeywords value={selectedKeywords} onChange={handleKeywordsChange} />
           </div>
-        </div>
-      )}
+        )}
+      </div>
       {/* Desktop sidebar */}
       <aside className="hidden lg:block w-full lg:w-[320px] xl:w-[360px] flex-shrink-0 bg-white rounded-lg shadow-md p-4 xl:p-6 mb-8 lg:mb-0 mt-8">
         <h2 className="text-lg font-bold mb-4 text-gray-800">Filtrer</h2>

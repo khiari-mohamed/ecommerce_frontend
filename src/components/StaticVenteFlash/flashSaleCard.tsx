@@ -177,9 +177,9 @@ function FlashSaleCard({ product }: { product: any }) {
       </CardContent>
       {/* Review Popup */}
       {showReview && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-lg shadow-lg max-w-full w-[95vw] sm:w-[400px] p-4 relative">
-            <button
+      <div className="fixed inset-0 z-50 flex items-start md:items-center justify-center bg-black bg-opacity-40 overflow-y-auto pt-8 pb-8">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-[95vw] sm:max-w-[400px] p-4 relative max-h-[70vh] overflow-y-auto mx-2 mt-16 md:mt-0">
+      <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-xl font-bold"
               onClick={() => setShowReview(false)}
               aria-label="Fermer"

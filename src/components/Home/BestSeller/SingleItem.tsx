@@ -44,6 +44,7 @@ const SingleItem = ({ item }: { item: Product }) => {
     dispatch(
       addItemToWishlist({
         ...item,
+        id: String(item.id),
         status: "available",
         quantity: 1,
       })

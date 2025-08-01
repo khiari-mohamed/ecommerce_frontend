@@ -155,8 +155,7 @@ const Header = () => {
     if (!suggestion.slug) return;
     setSearchQuery(suggestion.name || "");
     setShowSuggestions(false);
-    //router.push(`/product-details?id=${suggestion.id || suggestion._id}`);
-    router.push(`/product-details?id=${suggestion._id}`);
+    router.push(`/shop/${suggestion.slug}`);
   };
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {

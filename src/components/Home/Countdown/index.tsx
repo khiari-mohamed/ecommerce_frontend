@@ -51,7 +51,7 @@ const CountdownBlogGrid = () => {
             Blog & FAQ
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Découvrez nos conseils d'experts et trouvez les réponses à vos questions sur la nutrition sportive
+            Découvrez nos conseils dexperts et trouvez les réponses à vos questions sur la nutrition sportive
           </p>
         </div>
         {loading ? (

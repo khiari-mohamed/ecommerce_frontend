@@ -125,7 +125,7 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
     setIsAddingToCart(true);
     dispatch(
       addItemToCart({
-        id: Number(product.id || product._id),
+        id: String(product.id ?? product._id ?? ""),
         title: name,
         price,
         discountedPrice: price,
@@ -275,7 +275,7 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
           style={{ minHeight: '3.4em', maxHeight: '3.4em', overflow: 'hidden', display: 'block' }}
         >
           <Link
-            href={`/products/${product?.slug}`}
+            href={`/shop/${product?.slug}`}
             className="hover:text-orange-600 transition-colors duration-200 w-full block"
             style={{ textOverflow: 'ellipsis', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', whiteSpace: 'normal' }}
           >

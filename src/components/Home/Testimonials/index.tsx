@@ -39,7 +39,7 @@ const Testimonials = () => {
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Découvrez ce que pensent nos clients de PROTEINE TUNISIE.
-            Plus de 15 ans d'expérience au service de votre performance.
+            Plus de 15 ans d&apos;expérience au service de votre performance.
           </p>
           <div className="flex items-center justify-center gap-2 mt-4">
             <div className="flex">

@@ -164,7 +164,7 @@ const ProductCard = memo(
 
           dispatch(
             addItemToCart({
-              id: Number(normalizedProduct._id),
+               id: String(normalizedProduct._id ?? ""),
               title: normalizedProduct.designation,
               price: normalizedProduct.price,
               discountedPrice: normalizedProduct.oldPrice && normalizedProduct.oldPrice > normalizedProduct.price ? normalizedProduct.price : normalizedProduct.price,

@@ -122,7 +122,7 @@ function FlashSaleCard({ product }: { product: any }) {
       <CardContent className="flex flex-col h-full p-4">
         {/* Product Image */}
         <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
-          <Link href={`/products/${product.slug}`}>
+          <Link href={`/shop/${product.slug}`}>
             <Image
               fill
               alt={product.alt_cover || product.designation_fr}
@@ -140,7 +140,7 @@ function FlashSaleCard({ product }: { product: any }) {
         </div>
         {/* Product Info */}
         <div className="flex-grow flex flex-col">
-          <Link href={`/products/${product.slug}`} className="displaylink">
+          <Link href={`/shop/${product.slug}`} className="displaylink">
             <h1 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
               {product.designation_fr}
             </h1>

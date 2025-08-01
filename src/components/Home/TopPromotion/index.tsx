@@ -159,7 +159,7 @@ const TopPromotionSection = () => {
                   {/* Product Info */}
                   <div className="flex-grow flex flex-col">
                     <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
-                      <Link href={`/product-details?id=${normalizeProduct(promo)._id}`}>{normalizeProduct(promo).title || normalizeProduct(promo).designation || promo.designation_fr || "Produit"}</Link>
+                      <Link href={`/shop/${normalizeProduct(promo).slug}`}>{normalizeProduct(promo).title || normalizeProduct(promo).designation || promo.designation_fr || "Produit"}</Link>
                     </h3>
                     {/* Price */}
                     <div className="flex items-center gap-2 mb-4 justify-center">

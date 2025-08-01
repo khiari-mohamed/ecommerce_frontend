@@ -56,6 +56,7 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
     dispatch(
       addItemToCart({
         ...item,
+        id: String(item.id ?? item._id ?? ""),
         quantity: 1,
         image: ""
       })
@@ -160,7 +161,7 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
         {/* Product Info */}
         <div className="flex-grow flex flex-col">
           <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center" onClick={() => handleProductDetails()}>
-            <Link href={`/product-details?id=${item._id || item.id}`}>{item.title || item.designation || item.designation_fr || "Produit"}</Link>
+            <Link href={`/shop/${item.slug}`}>{item.title || item.designation || item.designation_fr || "Produit"}</Link>
           </h3>
           {/* Price */}
           <div className="flex items-center gap-2 mb-4 justify-center">

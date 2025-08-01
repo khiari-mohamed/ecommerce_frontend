@@ -51,7 +51,12 @@ const AllProductsClient = () => {
       {products.length === 0 && !loading && <div>Aucun produit trouvé.</div>}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {products.map(product => (
-          <SingleGridItem item={product} key={product._id} />
+          <SingleGridItem
+            item={product}
+            key={product._id}
+            rating={product.aggregateRating || 0}
+            reviewsCount={product.reviews?.length || 0}
+          />
         ))}
       </div>
     </div>

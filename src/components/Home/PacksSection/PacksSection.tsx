@@ -134,7 +134,7 @@ const PacksSection: React.FC = () => {
                     <div className="text-xs sm:text-sm text-gray-500 mb-2 text-center">{pack.description_cover}</div>
                   </div>
                   {/* Voir le pack Button */}
-                  <Link href={`/shop-details?packId=${pack._id}`} className="w-full mt-auto">
+                  <Link href={`/shop/${pack.slug}`} className="w-full mt-auto">
                     <Button className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #a21caf 0%, #8b5cf6 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }}>
                       Voir le pack
                     </Button>

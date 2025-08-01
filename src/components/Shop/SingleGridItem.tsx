@@ -71,6 +71,7 @@ const SingleGridItem = ({ item, rating, reviewsCount }: SingleGridItemProps) => 
     dispatch(
       addItemToCart({
         ...item,
+         id: String(item.id ?? item._id ?? ""),
         quantity: 1,
         title: item.designation,
         discountedPrice: item.price,

@@ -180,7 +180,7 @@ const NewArrival = () => {
                     {/* Product Info */}
                     <div className="flex-grow flex flex-col">
                       <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
-                        <Link href={`/product-details?id=${normalized._id || normalized.id}`}>{normalized.title || normalized.designation || "Produit"}</Link>
+                        <Link href={`/shop/${normalized.slug}`}>{normalized.title || normalized.designation || "Produit"}</Link>
                       </h3>
                       {/* Reviews */}
                       <div className="flex flex-row flex-nowrap items-center justify-center gap-2 mb-2">

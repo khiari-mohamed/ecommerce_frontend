@@ -83,12 +83,13 @@ const QuickViewModal = () => {
     );
 
     dispatch(
-      addItemToCart({
-        ...product,
-        quantity,
-        image: imageSrc,
-      })
-    );
+  addItemToCart({
+    ...product,
+    id: String(product.id ?? product._id ?? ""),
+    quantity,
+    image: imageSrc,
+  })
+);
 
     closeModal();
   };

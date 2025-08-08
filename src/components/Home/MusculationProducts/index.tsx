@@ -286,19 +286,7 @@ const MusculationProducts = () => {
             return (
               <Card
                 key={normalized._id || idx}
-                className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white"
-                style={{
-                  border: '1.5px solid #fff',
-                  transition: 'border-color 0.3s, border-width 0.3s',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = '#ff6600';
-                  e.currentTarget.style.borderWidth = '2px';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = '#fff';
-                  e.currentTarget.style.borderWidth = '1.5px';
-                }}
+                className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0"
               >
                 {/* Badges */}
                 <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">

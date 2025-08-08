@@ -155,21 +155,13 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
   return (
     <div
       className={cn(
-        "group relative overflow-hidden h-full flex flex-col shadow-none bg-white rounded-xl",
+        "group relative overflow-hidden h-full flex flex-col shadow-none bg-white rounded-xl border-0",
       )}
-      style={{
-        border: '1.5px solid #fff',
-        transition: 'border-color 0.3s, border-width 0.3s',
-      }}
       onMouseEnter={e => {
         setIsHovered(true);
-        (e.currentTarget as HTMLDivElement).style.borderColor = '#ff6600';
-        (e.currentTarget as HTMLDivElement).style.borderWidth = '2px';
       }}
       onMouseLeave={e => {
         setIsHovered(false);
-        (e.currentTarget as HTMLDivElement).style.borderColor = '#fff';
-        (e.currentTarget as HTMLDivElement).style.borderWidth = '1.5px';
       }}
       aria-label={`${name} card`}
     >
@@ -237,8 +229,28 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
             </div>
           )}
         </div>
-        {/* Stars and reviews under image */}
-        <div className="flex flex-row flex-nowrap items-center justify-center mt-2 mb-2">
+        {/* Title and brand first */}
+        {product?.brand && (
+          <div className="mb-1.5">
+            <span className="text-xs font-medium tracking-wider text-gray-500 uppercase">
+              {product.brand}
+            </span>
+          </div>
+        )}
+        <h3
+          className="mb-3 text-sm font-medium text-center w-full transition-colors sm:text-base group-hover:text-primary line-clamp-2"
+          style={{ minHeight: '3.4em', maxHeight: '3.4em', overflow: 'hidden', display: 'block' }}
+        >
+          <Link
+            href={`/shop/${product?.slug}`}
+            className="hover:text-orange-600 transition-colors duration-200 w-full block"
+            style={{ textOverflow: 'ellipsis', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', whiteSpace: 'normal' }}
+          >
+            {name}
+          </Link>
+        </h3>
+        {/* Stars and reviews second */}
+        <div className="flex flex-row flex-nowrap items-center justify-center mb-2">
           <Rate
             value={stars}
             count={5}
@@ -251,7 +263,7 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
             ({reviewsCount})
           </span>
         </div>
-        {/* Price under stars */}
+        {/* Price third */}
         <div className="flex items-center gap-2 mb-4 justify-center">
           <span style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent', fontWeight: 700, fontSize: '1.25rem' }}>
             {formatCurrency(isNaN(price) ? 0 : price)}
@@ -262,26 +274,6 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
             </span>
           )}
         </div>
-        {/* Title and brand under price */}
-        {product?.brand && (
-          <div className="mb-1.5">
-            <span className="text-xs font-medium tracking-wider text-gray-500 uppercase">
-              {product.brand}
-            </span>
-          </div>
-        )}
-        <h3
-          className="mb-2 text-sm font-medium text-center w-full transition-colors sm:text-base group-hover:text-primary line-clamp-2"
-          style={{ minHeight: '3.4em', maxHeight: '3.4em', overflow: 'hidden', display: 'block' }}
-        >
-          <Link
-            href={`/shop/${product?.slug}`}
-            className="hover:text-orange-600 transition-colors duration-200 w-full block"
-            style={{ textOverflow: 'ellipsis', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', whiteSpace: 'normal' }}
-          >
-            {name}
-          </Link>
-        </h3>
         {/* Add to Cart Button */}
         <button className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} onClick={handleAddToCart} disabled={!product?.inStock || isAddingToCart}>
           <ShoppingCart className="w-4 h-4 mr-2 text-white" />

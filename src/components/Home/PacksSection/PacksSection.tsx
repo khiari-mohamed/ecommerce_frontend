@@ -48,14 +48,14 @@ const PacksSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-purple-50">
+    <section className="py-20 bg-gradient-to-b from-white to-yellow-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section title */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full mb-6 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full mb-6 shadow-lg">
             <span className="text-2xl">🎁</span>
           </div>
-          <h2 className="text-4xl font-bold mb-4" style={{ color: '#8b5cf6' }}>
+          <h2 className="text-4xl font-bold mb-4" style={{ color: 'rgb(255, 69, 0)' }}>
             Nos Packs Exclusifs
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
@@ -71,28 +71,16 @@ const PacksSection: React.FC = () => {
             return (
               <Card
                 key={pack._id}
-                className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white"
-                style={{
-                  border: '1.5px solid #fff',
-                  transition: 'border-color 0.3s, border-width 0.3s',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = '#a855f7';
-                  e.currentTarget.style.borderWidth = '2px';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = '#fff';
-                  e.currentTarget.style.borderWidth = '1.5px';
-                }}
+                className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0"
               >
                 {/* Badges */}
                 <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
                   {hasPromo && (
-                    <Badge style={{ background: 'linear-gradient(90deg, #a21caf 0%, #8b5cf6 100%)', color: '#fff', borderRadius: '9999px', fontWeight: 700, fontSize: '0.75rem', boxShadow: '0 2px 8px 0 rgba(139,92,246,0.15)' }} className="text-xs font-bold px-2 py-1">
+                    <Badge style={{ background: 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)', color: '#fff', borderRadius: '9999px', fontWeight: 700, fontSize: '0.75rem', boxShadow: '0 2px 8px 0 rgba(239,68,68,0.15)' }} className="text-xs font-bold px-2 py-1">
                       {prixNum > 0 ? `-${Math.round(((prixNum - promoNum) / prixNum) * 100)}%` : ''}
                     </Badge>
                   )}
-                  <Badge style={{ background: '#a855f7', color: '#fff', borderRadius: '9999px', fontWeight: 700, fontSize: '0.75rem', boxShadow: '0 2px 8px 0 rgba(139,92,246,0.15)' }} className="text-xs font-bold px-2 py-1 mt-1">
+                  <Badge style={{ background: '#1cac54', color: '#fff', borderRadius: '9999px', fontWeight: 700, fontSize: '0.75rem', boxShadow: '0 2px 8px 0 rgba(28,172,84,0.15)' }} className="text-xs font-bold px-2 py-1 mt-1">
                     Pack
                   </Badge>
                 </div>
@@ -117,25 +105,25 @@ const PacksSection: React.FC = () => {
                   </div>
                   {/* Product Info */}
                   <div className="flex-grow flex flex-col">
-                    <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-purple-600 transition-colors duration-300 min-h-[2.5rem] text-center">
+                    <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
                       {pack.designation_fr}
                     </h3>
                     {/* Price */}
                     <div className="flex items-center gap-2 mb-4 justify-center">
                       {hasPromo ? (
                         <>
-                          <span style={{ background: 'linear-gradient(90deg, #a21caf 0%, #8b5cf6 100%)', WebkitBackgroundClip: 'text', color: 'transparent', fontWeight: 700, fontSize: '1.25rem' }}>{pack.promo} TND</span>
+                          <span style={{ color: '#ea580c', fontWeight: 700, fontSize: '1.25rem' }}>{pack.promo} TND</span>
                           <span className="text-sm text-gray-500 line-through">{pack.prix} TND</span>
                         </>
                       ) : (
-                        <span className="text-purple-700 font-bold text-xl mb-4 block text-center">{pack.prix} TND</span>
+                        <span style={{ color: '#ea580c', fontWeight: 700, fontSize: '1.25rem' }}>{pack.prix} TND</span>
                       )}
                     </div>
                     <div className="text-xs sm:text-sm text-gray-500 mb-2 text-center">{pack.description_cover}</div>
                   </div>
                   {/* Voir le pack Button */}
                   <Link href={`/shop/${pack.slug}`} className="w-full mt-auto">
-                    <Button className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #a21caf 0%, #8b5cf6 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }}>
+                    <Button className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }}>
                       Voir le pack
                     </Button>
                   </Link>

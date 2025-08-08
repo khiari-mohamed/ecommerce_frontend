@@ -26,20 +26,40 @@ const Home = () => {
   return (
     <main>
       <Hero />
-      <Categories />
-      <TopPromotionSection />
-       <BestSeller />
-        <NewArrival />
-      <StaticVenteFlash products={ventesFlash} />
-       <PacksSection />
-      <div className="mb-8">
-      <MusculationProducts />
+      <div className="-mt-16">
+        <Categories />
       </div>
-       <CountdownBlogGrid />
-      <Testimonials />
-      <BrandSection />
-      <HeroFeature />
-      </main>
+      <div className="-mt-24">
+        <TopPromotionSection />
+      </div>
+      <div className="-mt-24">
+        <BestSeller />
+      </div>
+      <div className="-mt-24">
+        <NewArrival />
+      </div>
+      <div className="-mt-24">
+        <StaticVenteFlash products={ventesFlash} />
+      </div>
+      <div className="-mt-24">
+        <PacksSection />
+      </div>
+      <div className="-mt-24">
+        <MusculationProducts />
+      </div>
+      <div className="-mt-10">
+        <CountdownBlogGrid />
+      </div>
+      <div className="-mt-24">
+        <Testimonials />
+      </div>
+      <div className="-mt-24">
+        <BrandSection />
+      </div>
+      <div className="-mt-14">
+        <HeroFeature />
+      </div>
+    </main>
   );
 };
 

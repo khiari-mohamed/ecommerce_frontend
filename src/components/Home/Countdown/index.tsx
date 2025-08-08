@@ -105,7 +105,7 @@ const CountdownBlogGrid = () => {
                 const description = blog.description_cover || blog.meta_description_fr || blog.meta || "";
                 return (
                   <SwiperSlide key={key}>
-                    <div className="group bg-white rounded-xl px-5 pt-5 pb-4 mt-3 flex flex-col h-full min-h-[310px] max-h-[340px] w-full transition-all duration-500 border border-white hover:border-[#FF4500] hover:shadow-2xl hover:-translate-y-2" style={{ boxShadow: '0 2px 16px 0 rgba(0,0,0,0.06)' }}>
+                    <div className="group bg-white rounded-xl px-5 pt-5 pb-4 mt-3 flex flex-col h-full min-h-[310px] max-h-[340px] w-full transition-all duration-500 border-0 hover:shadow-2xl hover:-translate-y-2" style={{ boxShadow: '0 2px 16px 0 rgba(0,0,0,0.06)' }}>
                       <Link href={`/blogs/${blog.slug}`} className="rounded-md overflow-hidden block mb-4">
                         <img
                           src={imageUrl}

@@ -109,19 +109,7 @@ const ProductItem = ({ item, aromas: aromasProp = [] }: ProductItemProps) => {
 
   return (
     <div
-      className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white rounded-xl"
-      style={{
-        border: '1.5px solid #fff',
-        transition: 'border-color 0.3s, border-width 0.3s',
-      }}
-      onMouseEnter={e => {
-        (e.currentTarget as HTMLDivElement).style.borderColor = '#ff6600';
-        (e.currentTarget as HTMLDivElement).style.borderWidth = '2px';
-      }}
-      onMouseLeave={e => {
-        (e.currentTarget as HTMLDivElement).style.borderColor = '#fff';
-        (e.currentTarget as HTMLDivElement).style.borderWidth = '1.5px';
-      }}
+      className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white rounded-xl border-0"
     >
       {/* Badges */}
       <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">

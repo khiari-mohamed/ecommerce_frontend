@@ -135,6 +135,7 @@ function Footer() {
             </Link>
           </div>
           <h4 className="text-base font-semibold mb-4">AVEZ-VOUS APPRÉCIÉ?</h4>
+          <GoogleReviewsPill />
           <div className="flex flex-col items-start mt-2">
             <Image
               src={`/${coordonnees.logo}`}

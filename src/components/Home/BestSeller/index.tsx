@@ -17,6 +17,7 @@ import { ShoppingCart, Heart, Eye } from 'lucide-react';
 
 const BestSeller = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [config, setConfig] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const { openModal } = useModalContext();
   const dispatch = useDispatch<AppDispatch>();
@@ -24,7 +25,8 @@ const BestSeller = () => {
   useEffect(() => {
     getTopProductsFeature()
       .then((data) => {
-        setProducts(data);
+        setProducts(data.products || []);
+        setConfig(data.config || {});
       })
       .finally(() => setLoading(false));
   }, []);
@@ -106,6 +108,11 @@ const BestSeller = () => {
     return (hash % 90) + 10;
   }
 
+  // Don't render if showOnFrontend is false
+  if (config?.showOnFrontend === false) {
+    return null;
+  }
+
   return (
     <section className="py-20 bg-gradient-to-b from-white to-yellow-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -116,20 +123,20 @@ const BestSeller = () => {
           </div>
           <div className="text-center">
             <h2 className="text-4xl font-bold mb-4" style={{ color: 'rgb(255, 69, 0)' }}>
-              Meilleures ventes
+              {config?.sectionTitle || 'Meilleures ventes'}
             </h2>
           </div>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Découvrez nos meilleures ventes du moment sur une sélection de produits !
+            {config?.sectionDescription || 'Découvrez nos meilleures ventes du moment sur une sélection de produits !'}
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
           {loading ? (
             <div className="col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-4 flex justify-center items-center py-10">
               <span>Chargement...</span>
             </div>
           ) : (
-            products.slice(0, 4).map((item, key) => {
+            products.slice(0, config?.maxDisplay || 4).map((item, key) => {
               const normalized = normalizeProduct(item);
               return (
                 <Card
@@ -158,12 +165,12 @@ const BestSeller = () => {
                   </div>
                   <CardContent className="flex flex-col h-full p-4">
                     {/* Product Image */}
-                    <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
+                    <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
                       <Image
                         src={getImageUrl(normalized)}
                         alt={normalized.title || normalized.designation || "Produit"}
                         fill
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-cover"
                         loading="lazy"
                         sizes="100vw"
                       />
@@ -171,38 +178,37 @@ const BestSeller = () => {
                     </div>
                     {/* Product Info */}
                     <div className="flex-grow flex flex-col">
-                      <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
+                      <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
                         <Link href={`/shop/${normalized.slug}`}>{normalized.title || normalized.designation || "Produit"}</Link>
                       </h3>
-                      {/* Reviews */}
-                      <div className="flex flex-row flex-nowrap items-center justify-center gap-2 mb-2">
-                        <div className="flex flex-row flex-nowrap items-center gap-1">
-                          {[...Array(5)].map((_, i) => (
-                            <Image key={i} src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
-                          ))}
-                          <span className="text-custom-sm ml-1">
-                            {normalized.reviews?.length && normalized.reviews.length > 0
-                              ? `(${normalized.reviews.length})`
-                              : `(${getFakeReviewCount(normalized._id || normalized.id)})`}
-                          </span>
-                        </div>
+                      {/* Stars */}
+                      <div className="flex items-center justify-center mb-2">
+                        {[...Array(5)].map((_, i) => (
+                          <Image key={i} src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
+                        ))}
+                        <span className="text-xs text-gray-500 ml-1">
+                          {normalized.reviews?.length && normalized.reviews.length > 0
+                            ? `(${normalized.reviews.length})`
+                            : `(${getFakeReviewCount(normalized._id || normalized.id)})`}
+                        </span>
                       </div>
                       {/* Price */}
-                      <div className="flex items-center gap-2 mb-4 justify-center">
-                        <span style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent', fontWeight: 700, fontSize: '1.25rem' }}>
+                      <div className="flex flex-col items-center gap-1 mb-3 justify-center">
+                        <span className="text-sm sm:text-lg font-bold text-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>
                           {Number(normalized.discountedPrice ?? normalized.price).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
                         </span>
                         {normalized.discountedPrice && normalized.discountedPrice < normalized.price && (
-                          <span className="text-sm text-gray-500 line-through">
+                          <span className="text-xs sm:text-sm text-gray-500 line-through text-center">
                             {Number(normalized.price).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
                           </span>
                         )}
                       </div>
                     </div>
                     {/* Add to Cart Button */}
-                    <Button className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} onClick={e => { e.preventDefault(); handleAddToCart(item); }}>
-                      <ShoppingCart className="w-4 h-4 mr-2 text-white" />
-                      Ajouter au panier
+                    <Button className="w-full font-medium py-2 sm:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-xs sm:text-sm" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600 }} onClick={e => { e.preventDefault(); handleAddToCart(item); }}>
+                      <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-white" />
+                      <span className="hidden sm:inline">Ajouter au panier</span>
+                      <span className="sm:hidden">Ajouter</span>
                     </Button>
                   </CardContent>
                 </Card>

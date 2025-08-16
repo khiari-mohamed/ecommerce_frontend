@@ -161,69 +161,69 @@ const getCacheKey = (endpoint: string, params?: string) => {
   return `products-${endpoint}${params ? `-${params}` : ''}`;
 };
 
-export async function getTopProductsFeature(): Promise<Product[]> {
-  const cacheKey = getCacheKey('top-products');
+export async function getTopProductsFeature(): Promise<{products: Product[], config: any}> {
   try {
-    if (typeof window !== 'undefined') {
-      const cached = sessionStorage.getItem(cacheKey);
-      if (cached) return JSON.parse(cached);
-    }
-
     const controller = new AbortController();
     const response = await axiosInstance.get("/products/store/top", {
       signal: controller.signal
     });
 
     const { products } = extractProductData(response.data);
-    const result = products.map(raw => {
-      const product = normalizeProduct(raw);
-      return {
-        ...product,
-        imgs: transformImages(product),
-        ...calculateReviews(product)
-      };
-    });
+    const config = response.data?.config || {};
+    
+    const result = {
+      products: products.map(raw => {
+        const product = normalizeProduct(raw);
+        return {
+          ...product,
+          imgs: transformImages(product),
+          ...calculateReviews(product)
+        };
+      }),
+      config
+    };
 
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem(cacheKey, JSON.stringify(result));
-    }
     return result;
   } catch (error) {
     console.error("Error fetching top products:", error);
-    return [];
+    return { products: [], config: {} };
   }
 }
 
-export async function getNewProductsFeature(): Promise<Product[]> {
-  const cacheKey = getCacheKey('new-products');
+export async function getNewProductsFeature(): Promise<{products: Product[], config: any}> {
   try {
-    if (typeof window !== 'undefined') {
-      const cached = sessionStorage.getItem(cacheKey);
-      if (cached) return JSON.parse(cached);
-    }
-
     const controller = new AbortController();
-    const response = await axiosInstance.get("/products/store/new-arrivals", {
-      signal: controller.signal
+    const response = await axiosInstance.get("/products/store/new-arrivals?t=" + Date.now(), {
+      signal: controller.signal,
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
     });
+
+    console.log('New arrivals API response:', response.data);
 
     const { products } = extractProductData(response.data);
-    const result = products.map(raw => {
-      const product = normalizeProduct(raw);
-      return {
-        ...product,
-        imgs: transformImages(product),
-        ...calculateReviews(product)
-      };
-    });
+    const config = response.data?.config || {};
+    
+    console.log('Extracted config:', config);
+    
+    const result = {
+      products: products.map(raw => {
+        const product = normalizeProduct(raw);
+        return {
+          ...product,
+          imgs: transformImages(product),
+          ...calculateReviews(product)
+        };
+      }),
+      config
+    };
 
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem(cacheKey, JSON.stringify(result));
-    }
     return result;
   } catch (error) {
     console.error("Error fetching new products:", error);
-    return [];
+    return { products: [], config: {} };
   }
 }
 export async function getVenteFlashProductFeature(): Promise<FlashSaleProduct[]> {
@@ -580,5 +580,67 @@ export async function getProductById(productId: string): Promise<Product | null>
   } catch (error) {
     console.error("Error fetching product by ID:", error);
     return null;
+  }
+}
+
+// Best Seller Configuration Functions
+export async function getBestSellerConfig(): Promise<any> {
+  try {
+    const response = await axiosInstance.get('/products/admin/bestseller-config');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching best seller config:', error);
+    return null;
+  }
+}
+
+export async function updateBestSellerConfig(config: any): Promise<any> {
+  try {
+    const response = await axiosInstance.post('/products/admin/bestseller-config', config);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating best seller config:', error);
+    throw error;
+  }
+}
+
+export async function updateBestSellerOrder(productOrder: string[]): Promise<any> {
+  try {
+    const response = await axiosInstance.put('/products/admin/bestseller-order', { productOrder });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating best seller order:', error);
+    throw error;
+  }
+}
+
+// New Arrival Configuration Functions
+export async function getNewArrivalConfig(): Promise<any> {
+  try {
+    const response = await axiosInstance.get('/products/admin/newarrival-config');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching new arrival config:', error);
+    return null;
+  }
+}
+
+export async function updateNewArrivalConfig(config: any): Promise<any> {
+  try {
+    const response = await axiosInstance.post('/products/admin/newarrival-config', config);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating new arrival config:', error);
+    throw error;
+  }
+}
+
+export async function updateNewArrivalOrder(productOrder: string[]): Promise<any> {
+  try {
+    const response = await axiosInstance.put('/products/admin/newarrival-order', { productOrder });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating new arrival order:', error);
+    throw error;
   }
 }

@@ -1,25 +1,12 @@
 import { notFound } from 'next/navigation';
 import { SubCategory } from '@/types/subcategory';
-//import { isPopulatedProduct, isPopulatedSubCategory } from '@/types/category';
+import { getSubCategoryBySlug } from '@/services/subcategories';
 import axios from '@/lib/axios';
 import parse from 'html-react-parser';
 import Image from 'next/image';
 import { Metadata } from "next";
 import SubcategoryProductCard from "@/components/SubcategoryProductCard";
 import SubcategoryFiltersClient from "@/components/SubcategoryFiltersClient";
-async function getSubCategoryBySlug(slug: string): Promise<SubCategory | null> {
-  try {
-    const res = await axios.get(`/sub-categories?slug=${slug}`);
-    if (res.data && res.data.data && res.data.data.length > 0) {
-      // Filter for the subcategory with the exact slug
-      const filtered = res.data.data.find((subcat: SubCategory) => subcat.slug === slug);
-      return filtered || null;
-    }
-    return null;
-  } catch (error) {
-    return null;
-  }
-}
 
 
 export async function generateMetadata({ params }: { params: Promise<any> }) {
@@ -27,8 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<any> }) {
   const slug = resolvedParams.slug;
   if (!slug) return {};
   try {
-    const res = await axios.get(`/sub-categories?slug=${encodeURIComponent(slug)}`);
-    const subcat = res.data?.data?.find((sc: SubCategory) => sc.slug === slug);
+    const subcat = await getSubCategoryBySlug(slug);
     if (!subcat) return {};
     return {
       title: subcat.name || subcat.designation_fr || subcat.designation,
@@ -50,7 +36,12 @@ export default async function SubcategoryPage({ params, searchParams }: { params
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const slug = resolvedParams.slug;
   if (!slug) notFound();
-  const subcategory = await getSubCategoryBySlug(slug);
+  let subcategory;
+  try {
+    subcategory = await getSubCategoryBySlug(slug);
+  } catch (error) {
+    notFound();
+  }
   if (!subcategory) notFound();
 
   // Fetch categories and subcategories for sidebar (dynamic)

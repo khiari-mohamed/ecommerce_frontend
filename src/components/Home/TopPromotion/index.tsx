@@ -51,9 +51,9 @@ const TopPromotionSection = () => {
       // Fallbacks from promo if missing in product
       price: product.price ?? promo.prix ?? 0,
       discountedPrice: product.discountedPrice ?? promo.promo ?? product.price ?? promo.prix ?? 0,
-      title: product.title ?? product.designation ?? promo.designation_fr ?? "Produit",
-      designation: product.designation ?? promo.designation_fr ?? product.title ?? "Produit",
-      cover: product.cover ?? promo.cover ?? imageUrl,
+      title: promo.designation_fr ?? "Produit",
+      designation: promo.designation_fr ?? "Produit",
+      cover: imageUrl,
       imgs: product.imgs ?? { thumbnails: [imageUrl], previews: [imageUrl] },
       mainImage: product.mainImage ?? { url: imageUrl },
       images: product.images ?? [{ url: imageUrl }],
@@ -99,7 +99,7 @@ const TopPromotionSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
           {loading ? (
             <div className="col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-4 flex justify-center items-center py-10">
               <span>Chargement...</span>
@@ -146,23 +146,31 @@ const TopPromotionSection = () => {
                   </div>
                   {/* Product Info */}
                   <div className="flex-grow flex flex-col">
-                    <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
+                    <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
                       <Link href={`/shop/${normalizeProduct(promo).slug}`}>{normalizeProduct(promo).title || normalizeProduct(promo).designation || promo.designation_fr || "Produit"}</Link>
                     </h3>
+                    {/* Stars */}
+                    <div className="flex items-center justify-center mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Image key={i} src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
+                      ))}
+                      <span className="text-xs text-gray-500 ml-1">({((key + 1) * 13 % 90) + 10})</span>
+                    </div>
                     {/* Price */}
-                    <div className="flex items-center gap-2 mb-4 justify-center">
-                      <span style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent', fontWeight: 700, fontSize: '1.25rem' }}>
+                    <div className="flex flex-col items-center gap-1 mb-3 justify-center">
+                      <span className="text-sm sm:text-lg font-bold text-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>
                         {Number(promo.promo).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
                       </span>
-                      <span className="text-sm text-gray-500 line-through">
+                      <span className="text-xs sm:text-sm text-gray-500 line-through text-center">
                         {Number(promo.prix).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
                       </span>
                     </div>
                   </div>
                   {/* Add to Cart Button */}
-                  <Button className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} onClick={e => { e.preventDefault(); handleAddToCart(promo); }}>
-                    <ShoppingCart className="w-4 h-4 mr-2 text-white" />
-                    Ajouter au panier
+                  <Button className="w-full font-medium py-2 sm:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-xs sm:text-sm" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600 }} onClick={e => { e.preventDefault(); handleAddToCart(promo); }}>
+                    <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-white" />
+                    <span className="hidden sm:inline">Ajouter au panier</span>
+                    <span className="sm:hidden">Ajouter</span>
                   </Button>
                 </CardContent>
               </Card>

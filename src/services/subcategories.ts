@@ -30,3 +30,9 @@ export const deleteSubCategory = async (id: string) => {
   const res = await axios.delete(`/admin/subcategories/delete/${id}`);
   return res.data;
 };
+
+// Get subcategory by slug
+export const getSubCategoryBySlug = async (slug: string): Promise<SubCategory> => {
+  const res = await axios.get(`/subcategories/slug/${slug}`);
+  return res.data;
+};

@@ -354,10 +354,27 @@
     }
     .hero-carousel,
     .hero-carousel .swiper-slide > div {
-    height: 90vh !important;
-    min-height: 90vh !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
     max-height: 100vh !important;
     }
+    /* Fix mobile hero section spacing */
+    section:first-child + div {
+      margin-top: 0 !important;
+    }
+    /* Force hero to be full height */
+    section[class*="overflow-hidden"] {
+      height: 100vh !important;
+      min-height: 100vh !important;
+      padding-top: 0 !important;
+    }
+    /* Ensure mobile carousel is full height */
+    .hero-carousel .swiper,
+    .hero-carousel .swiper-wrapper,
+    .hero-carousel .swiper-slide {
+      height: 100vh !important;
+    }
+
     table, .table, .overflow-x-auto {
     display: block !important;
     width: 100% !important;
@@ -833,6 +850,15 @@
     padding-top: 70px !important;
   }
 }
+
+/* Reduce gap between header and promotions page section on mobile */
+@media (max-width: 767px) {
+  section.py-20.bg-gradient-to-b {
+    padding-top: 0.25rem !important;
+  }
+}
+
+
 
 
 

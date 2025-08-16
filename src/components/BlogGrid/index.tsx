@@ -1,11 +1,22 @@
 "use client";
-import React from "react";
+import React, { useState, useMemo } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import { useBlogData } from "./blogData";
 import BlogItem from "../Blog/BlogItem";
 
 const BlogGrid = () => {
   const blogData = useBlogData();
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 10;
+  
+  const { currentBlogs, totalPages } = useMemo(() => {
+    const startIndex = (currentPage - 1) * blogsPerPage;
+    const endIndex = startIndex + blogsPerPage;
+    return {
+      currentBlogs: blogData.slice(startIndex, endIndex),
+      totalPages: Math.ceil(blogData.length / blogsPerPage)
+    };
+  }, [blogData, currentPage]);
 
   return (
     <>
@@ -14,7 +25,7 @@ const BlogGrid = () => {
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-7.5">
             {/* <!-- blog item --> */}
-            {blogData.map((blog, key) => (
+            {currentBlogs.map((blog, key) => (
               <BlogItem blog={blog} key={key} />
             ))}
           </div>
@@ -25,11 +36,11 @@ const BlogGrid = () => {
               <ul className="flex items-center">
                 <li>
                   <button
-                    id="paginationLeft"
-                    aria-label="button for pagination left"
+                    aria-label="Previous page"
                     type="button"
-                    disabled
-                    className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px disabled:text-gray-4"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] disabled:text-gray-4 hover:text-white hover:bg-blue"
                   >
                     <svg
                       className="fill-current"
@@ -47,74 +58,25 @@ const BlogGrid = () => {
                   </button>
                 </li>
 
-                <li>
-                  <a
-                    href="#"
-                    className="flex py-1.5 px-3.5 duration-200 rounded-[3px] bg-blue text-white hover:text-white hover:bg-blue"
-                  >
-                    1
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                  >
-                    2
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                  >
-                    3
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                  >
-                    4
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                  >
-                    5
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                  >
-                    ...
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                  >
-                    10
-                  </a>
-                </li>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <li key={page}>
+                    <button
+                      onClick={() => setCurrentPage(page)}
+                      className={`flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue ${
+                        currentPage === page ? 'bg-blue text-white' : ''
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  </li>
+                ))}
 
                 <li>
                   <button
-                    id="paginationLeft"
-                    aria-label="button for pagination left"
+                    aria-label="Next page"
                     type="button"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] hover:text-white hover:bg-blue disabled:text-gray-4"
                   >
                     <svg

@@ -10,14 +10,14 @@ const SingleItem = ({ item }: { item: Category }) => {
       className="group flex flex-col items-center"
       passHref
     >
-      <div className="w-[150px] h-[150px] rounded-full flex items-center justify-center mb-4 bg-[#FF4500] shadow-lg transition-transform duration-300 group-hover:bounce-custom">
+      <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] rounded-full flex items-center justify-center mb-3 sm:mb-4 bg-[#FF4500] shadow-lg transition-transform duration-300 group-hover:bounce-custom">
         {item.image?.url ? (
           <img
             src={item.image.url}
             alt={item.designation}
             width={90}
             height={90}
-            className="icon-white w-[90px] h-[90px] object-contain"
+            className="icon-white w-[70px] h-[70px] sm:w-[90px] sm:h-[90px] object-contain"
             loading="lazy"
             decoding="async"
           />

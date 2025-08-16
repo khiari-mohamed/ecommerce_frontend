@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import React from "react";
 import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
@@ -90,7 +90,7 @@ const SingleListItem = ({ item, rating, reviewsCount }: SingleListItemProps) => 
             className="w-full h-full object-contain"
             priority={false}
           />
-          {/* Action buttons overlay */}
+          {/* Action buttons overlay 
           <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full" onClick={e => { e.preventDefault(); handleItemToWishList(); }}>
               <Heart className="w-4 h-4 text-orange-500" />
@@ -102,12 +102,12 @@ const SingleListItem = ({ item, rating, reviewsCount }: SingleListItemProps) => 
         </div>
         <div className="w-full flex flex-col gap-5 sm:flex-row sm:items-center justify-center sm:justify-between py-5 px-4 sm:px-7.5 lg:pl-11 lg:pr-12">
           <div className="flex-1 min-w-0">
-            {/* Brand and Aromas */}
+            {/* Brand and Aromas 
             <ProductBrandAroma brandId={item.brand?.['_id'] || item.brand || ""} />
             <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
               <Link href={`/product-details?id=${item._id || item.id}`}>{item.designation}</Link>
             </h3>
-            {/* Stars and Reviews */}
+            {/* Stars and Reviews 
             <div className="flex items-center gap-2.5 mb-2">
               <StarRating rating={rating} />
               <span className="text-xs text-gray-500">({reviewsCount} avis)</span>
@@ -119,7 +119,7 @@ const SingleListItem = ({ item, rating, reviewsCount }: SingleListItemProps) => 
               )}
             </span>
           </div>
-          {/* Add to Cart Button */}
+          {/* Add to Cart Button 
           <div className="flex items-center">
             <Button className="font-medium py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} onClick={e => { e.preventDefault(); handleAddToCart(); }}>
               <ShoppingCart className="w-4 h-4 mr-2 text-white" />
@@ -133,3 +133,5 @@ const SingleListItem = ({ item, rating, reviewsCount }: SingleListItemProps) => 
 };
 
 export default SingleListItem;
+
+*/

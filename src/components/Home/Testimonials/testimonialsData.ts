@@ -1,4 +1,4 @@
-import { Testimonial } from "@/types/testimonial";
+/*import { Testimonial } from "@/types/testimonial";
 
 export const userImages = [
   "/images/users/user-01.jpg",
@@ -52,3 +52,4 @@ const testimonialsData: Testimonial[] = [
 ];
 
 export default testimonialsData;
+*/

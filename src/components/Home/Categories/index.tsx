@@ -1,8 +1,5 @@
 "use client";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef, useEffect, useState } from "react";
-import "swiper/css/navigation";
-import "swiper/css";
+import { useEffect, useState } from "react";
 import SingleItem from "./SingleItem";
 import { getCategories } from "@/services/categories";
 import { Category } from "@/types/category";
@@ -14,17 +11,6 @@ const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const sliderRef = useRef<any>(null);
-
-  const handlePrev = useCallback(() => {
-    if (!sliderRef.current || !('swiper' in sliderRef.current)) return;
-    sliderRef.current.swiper.slidePrev();
-  }, []);
-
-  const handleNext = useCallback(() => {
-    if (!sliderRef.current || !('swiper' in sliderRef.current)) return;
-    sliderRef.current.swiper.slideNext();
-  }, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -75,7 +61,7 @@ const Categories = () => {
               <Skeleton circle width={40} height={40} />
             </div>
           </div>
-          <div className="flex gap-4">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="flex flex-col items-center">
                 <Skeleton circle width={130} height={130} />
@@ -110,89 +96,22 @@ const Categories = () => {
 
   return (
     <section className="overflow-hidden pt-17.5">
-      <div className="w-full mx-auto px-2 sm:px-4 pb-10 sm:pb-15 border-b border-gray-3">
-        <div className="swiper categories-carousel common-carousel">
-          <div className="mb-6 sm:mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
-            <div className="w-full flex justify-center">
-              <h2
-                className="font-semibold text-xl xl:text-heading-5 w-full text-center !flex !justify-center"
-                style={{ color: '#FF4500', display: 'flex', justifyContent: 'center', width: '100%' }}
-              >
-                Parcourir par catégorie
-              </h2>
-            </div>
-            <div className="flex items-center gap-3">
-              <button onClick={handlePrev} className="swiper-button-prev">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M16.875 10H3.125"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M8.75 4.375L3.125 10L8.75 15.625"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-              <button onClick={handleNext} className="swiper-button-next">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3.125 10H16.875"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M11.25 4.375L16.875 10L11.25 15.625"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <Swiper
-            ref={sliderRef}
-            spaceBetween={32}
-            slidesPerView={1}
-            breakpoints={{
-              0: { slidesPerView: 1 },
-              480: { slidesPerView: 2 },
-              768: { slidesPerView: 3 },
-              1024: { slidesPerView: 4 },
-              1280: { slidesPerView: 6 },
-              1536: { slidesPerView: 6 },
-            }}
-            style={{ width: "100%" }}
+      <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0 pb-16 sm:pb-15 border-b border-gray-3">
+        <div className="mb-6 sm:mb-10">
+          <h2
+            className="font-semibold text-xl xl:text-heading-5 text-center"
+            style={{ color: '#FF4500' }}
           >
-            {categories.map((category) => (
-              <SwiperSlide key={category._id}>
-                <SingleItem item={category} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+            Parcourir par catégorie
+          </h2>
+        </div>
+        
+        <div className="grid grid-cols-2 lg:grid-cols-6 gap-2 sm:gap-6 lg:gap-8">
+          {categories.map((category) => (
+            <div key={category._id} className="w-full">
+              <SingleItem item={category} />
+            </div>
+          ))}
         </div>
       </div>
     </section>

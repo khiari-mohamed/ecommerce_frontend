@@ -34,3 +34,14 @@ export const deletePack = async (id: string) => {
   return res.data;
 };
 
+// Get frontend pack configuration (ordered packs + settings)
+export const getFrontendPackConfig = async () => {
+  try {
+    const res = await axios.get('/admin/packs/frontend/config');
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching frontend pack config:', error);
+    throw error;
+  }
+};
+

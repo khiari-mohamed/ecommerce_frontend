@@ -191,13 +191,13 @@ const MusculationProducts = () => {
   return (
     <div className="w-full mt-16 sm:mt-20 md:mt-24">
       {/* Section Header - transformed to match other sections */}
-      <div className="w-full mx-auto max-w-screen-2xl">
+      <section className="w-full mx-auto max-w-screen-2xl" aria-labelledby="musculation-title">
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full mb-6 shadow-lg">
-            <span className="text-2xl">🏋️‍♂️</span>
+            <span className="text-2xl">🏋️♂️</span>
           </div>
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4" style={{ color: 'rgb(255, 69, 0)' }}>
+            <h2 id="musculation-title" className="text-4xl font-bold mb-4" style={{ color: 'rgb(255, 69, 0)' }}>
               Matériel de Musculation
             </h2>
           </div>
@@ -205,7 +205,7 @@ const MusculationProducts = () => {
             Découvrez notre gamme complète de matériel musculation, fitness et cardio pour équiper votre salle de sport.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* Banner Image Section (unchanged) */}
       <div className="relative w-full min-h-[220px] h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] overflow-hidden flex items-center justify-center">
@@ -266,8 +266,9 @@ const MusculationProducts = () => {
             >
               <Link
                 href="/musculation-products"
-                className="musculation-savoir-plus-btn inline-flex font-medium text-white text-xs sm:text-base rounded-md bg-dark py-2 px-4 sm:py-3 sm:px-9 ease-out duration-200 hover:bg-blue mt-4 sm:mt-8"
+                className="musculation-savoir-plus-btn inline-flex font-medium text-white text-xs sm:text-base rounded-md bg-dark py-2 px-4 sm:py-3 sm:px-9 ease-out duration-200 hover:bg-blue mt-4 sm:mt-8 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:outline-none"
                 style={{ position: 'relative', zIndex: 20 }}
+                aria-label="En savoir plus sur le matériel de musculation"
               >
                 <span className="text-xs sm:text-sm font-medium md:text-base">
                   en savoir plus
@@ -279,14 +280,21 @@ const MusculationProducts = () => {
       </div>
 
       {/* Sample Products Grid - transformed cards */}
-      <div className="w-full mx-auto max-w-screen-2xl px-2 sm:px-4 md:px-8 mt-6 sm:mt-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-6 sm:mt-10">
+        <div className={`grid gap-8 ${
+          sampleProducts.length === 1 ? 'grid-cols-1 max-w-sm mx-auto' :
+          sampleProducts.length === 2 ? 'grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto' :
+          sampleProducts.length === 3 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto' :
+          'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+        }`}>
           {sampleProducts.map((product, idx) => {
             const normalized = mapToProductCard(product, idx);
             return (
               <Card
                 key={normalized._id || idx}
-                className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0"
+                className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0 focus-within:ring-2 focus-within:ring-orange-500 focus-within:ring-offset-2 rounded-lg"
+                role="article"
+                aria-label={`Produit: ${normalized.designation || "Produit"}`}
               >
                 {/* Badges */}
                 <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
@@ -300,39 +308,65 @@ const MusculationProducts = () => {
                   </Badge>
                 </div>
                 {/* Action buttons */}
-                <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full" onClick={e => handleItemToWishList(normalized, e)}>
-                    <Heart className="w-4 h-4" />
+                <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300">
+                  <Button 
+                    size="sm" 
+                    variant="ghost" 
+                    className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:ring-2 focus:ring-orange-500 focus:ring-offset-2" 
+                    onClick={e => handleItemToWishList(normalized, e)}
+                    aria-label={`Ajouter ${normalized.designation || "ce produit"} à la liste de souhaits`}
+                  >
+                    <Heart className="w-4 h-4" aria-hidden="true" />
                   </Button>
-                  <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full" onClick={e => handleQuickViewUpdate(normalized, e)}>
-                    <Eye className="w-4 h-4" />
+                  <Button 
+                    size="sm" 
+                    variant="ghost" 
+                    className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:ring-2 focus:ring-orange-500 focus:ring-offset-2" 
+                    onClick={e => handleQuickViewUpdate(normalized, e)}
+                    aria-label={`Aperçu rapide de ${normalized.designation || "ce produit"}`}
+                  >
+                    <Eye className="w-4 h-4" aria-hidden="true" />
                   </Button>
                 </div>
                 <CardContent className="flex flex-col h-full p-4">
                   {/* Product Image */}
                   <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
-                    <Image
-                      src={getImageUrl(normalized)}
-                      alt={normalized.designation || "Produit"}
-                      fill
-                      className="w-full h-full object-contain"
-                      loading="lazy"
-                      sizes="100vw"
-                    />
+                    <Link 
+                      href={`/musculation-products/${normalized.slug}`}
+                      className="block w-full h-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg"
+                      aria-label={`Voir les détails de ${normalized.designation || "ce produit"}`}
+                    >
+                      <Image
+                        src={getImageUrl(normalized)}
+                        alt={`Image de ${normalized.designation || "produit de musculation"}`}
+                        fill
+                        className="w-full h-full object-contain"
+                        loading="lazy"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                      />
+                    </Link>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 transition-opacity duration-300" />
                   </div>
                   {/* Product Info */}
                   <div className="flex-grow flex flex-col">
                     <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
-                      <Link href={`/musculation-products/${normalized.slug}`}>{normalized.designation || "Produit"}</Link>
+                      <Link 
+                        href={`/musculation-products/${normalized.slug}`}
+                        className="focus:outline-none focus:underline focus:text-orange-600"
+                        aria-label={`Voir les détails de ${normalized.designation || "ce produit"}`}
+                      >
+                        {normalized.designation || "Produit"}
+                      </Link>
                     </h3>
                     {/* Reviews */}
-                    <div className="flex flex-row flex-nowrap items-center justify-center gap-2 mb-2">
+                    <div className="flex flex-row flex-nowrap items-center justify-center gap-2 mb-2" role="group" aria-label="Évaluation du produit">
                       <div className="flex flex-row flex-nowrap items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Image key={i} src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
-                        ))}
-                        <span className="text-custom-sm ml-1">
+                        <div className="flex" role="img" aria-label="5 étoiles sur 5">
+                          {[...Array(5)].map((_, i) => (
+                            <Image key={i} src="/images/icons/icon-star.svg" alt="" width={14} height={14} loading="lazy" sizes="14px" aria-hidden="true" />
+                          ))}
+                        </div>
+                        <span className="text-custom-sm ml-1" aria-label={`${normalized.reviews?.length && normalized.reviews.length > 0 ? normalized.reviews.length : getFakeReviewCount(normalized._id)} avis`}>
                           {normalized.reviews?.length && normalized.reviews.length > 0
                             ? `(${normalized.reviews.length})`
                             : `(${getFakeReviewCount(normalized._id)})`}
@@ -340,20 +374,32 @@ const MusculationProducts = () => {
                       </div>
                     </div>
                     {/* Price */}
-                    <div className="flex items-center gap-2 mb-4 justify-center">
-                      <span style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent', fontWeight: 700, fontSize: '1.25rem' }}>
+                    <div className="flex items-center gap-2 mb-4 justify-center" role="group" aria-label="Prix du produit">
+                      <span 
+                        style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent', fontWeight: 700, fontSize: '1.25rem' }}
+                        aria-label={`Prix actuel: ${Number(normalized.price).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}`}
+                      >
                         {Number(normalized.price).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
                       </span>
                       {normalized.oldPrice && normalized.oldPrice > normalized.price && (
-                        <span className="text-sm text-gray-500 line-through">
+                        <span 
+                          className="text-sm text-gray-500 line-through"
+                          aria-label={`Prix original: ${Number(normalized.oldPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}`}
+                        >
                           {Number(normalized.oldPrice).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
                         </span>
                       )}
                     </div>
                   </div>
                   {/* Add to Cart Button */}
-                  <Button className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} onClick={e => handleAddToCart(normalized, e)} disabled={isAddingToCart === normalized._id || !normalized.inStock}>
-                    <ShoppingCart className="w-4 h-4 mr-2 text-white" />
+                  <Button 
+                    className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 flex items-center justify-center" 
+                    style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} 
+                    onClick={e => handleAddToCart(normalized, e)} 
+                    disabled={isAddingToCart === normalized._id || !normalized.inStock}
+                    aria-label={`${isAddingToCart === normalized._id ? "Ajout en cours" : normalized.inStock ? `Ajouter ${normalized.designation || "ce produit"} au panier` : "Produit indisponible"}`}
+                  >
+                    <ShoppingCart className="w-4 h-4 mr-2 text-white" aria-hidden="true" />
                     {isAddingToCart === normalized._id ? "Ajout en cours..." : normalized.inStock ? "Ajouter au panier" : "Indisponible"}
                   </Button>
                 </CardContent>

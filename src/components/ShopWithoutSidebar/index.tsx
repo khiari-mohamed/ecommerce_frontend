@@ -2,8 +2,7 @@
 import React, { useState, useEffect, JSX } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import SingleGridItem from "../Shop/SingleGridItem";
-import SingleListItem from "../Shop/SingleListItem";
-import CustomSelect from "../ShopWithSidebar/CustomSelect";
+
 import { getProductListPage } from "@/services/products";
 import StarRating from "@/components/Common/StarRating";
 
@@ -32,7 +31,7 @@ const ShopWithoutSidebar = () => {
       setLoading(true);
       try {
         // Pass page and sort as query params
-        const response = await getProductListPage(`page=${currentPage}&sort=${selectedSort}`);
+        const response = await getProductListPage(`page=${currentPage}`);
         // Use the normalized product object directly!
         setShopData(response.products);
 
@@ -52,7 +51,7 @@ const ShopWithoutSidebar = () => {
     };
 
     fetchProducts();
-  }, [currentPage, selectedSort]);
+  }, [currentPage, 0]);
 
   // Pagination rendering logic with ellipsis
   const renderPagination = (): JSX.Element[] => {
@@ -73,7 +72,7 @@ const ShopWithoutSidebar = () => {
         <li key={1}>
           <button
             onClick={() => setCurrentPage(1)}
-            className={`flex py-1.5 px-3.5 duration-200 rounded-[3px] ${currentPage === 1 ? "bg-blue text-white" : "hover:text-white hover:bg-blue"}`}
+            className={`flex py-1 px-2 sm:py-1.5 sm:px-3.5 duration-200 rounded-[3px] text-xs sm:text-sm ${currentPage === 1 ? "bg-blue text-white" : "hover:text-white hover:bg-blue"}`}
             disabled={currentPage === 1}
           >
             1
@@ -96,7 +95,7 @@ const ShopWithoutSidebar = () => {
         <li key={i}>
           <button
             onClick={() => setCurrentPage(i)}
-            className={`flex py-1.5 px-3.5 duration-200 rounded-[3px] ${currentPage === i ? "bg-blue text-white" : "hover:text-white hover:bg-blue"}`}
+            className={`flex py-1 px-2 sm:py-1.5 sm:px-3.5 duration-200 rounded-[3px] text-xs sm:text-sm ${currentPage === i ? "bg-blue text-white" : "hover:text-white hover:bg-blue"}`}
             disabled={currentPage === i}
           >
             {i}
@@ -118,7 +117,7 @@ const ShopWithoutSidebar = () => {
         <li key={totalPages}>
           <button
             onClick={() => setCurrentPage(totalPages)}
-            className={`flex py-1.5 px-3.5 duration-200 rounded-[3px] ${currentPage === totalPages ? "bg-blue text-white" : "hover:text-white hover:bg-blue"}`}
+            className={`flex py-1 px-2 sm:py-1.5 sm:px-3.5 duration-200 rounded-[3px] text-xs sm:text-sm ${currentPage === totalPages ? "bg-blue text-white" : "hover:text-white hover:bg-blue"}`}
             disabled={currentPage === totalPages}
           >
             {totalPages}
@@ -130,9 +129,8 @@ const ShopWithoutSidebar = () => {
     return pages;
   };
 
-  const staticRatings = [3, 3.5, 4, 5];
   function getRandomRating(idx: number) {
-    return staticRatings[idx % staticRatings.length];
+    return 5;
   }
   function getRandomReviews(idx: number) {
     return 7 + ((idx * 13) % 114); // 7 to 120 reviews, deterministic per idx
@@ -153,65 +151,25 @@ const ShopWithoutSidebar = () => {
         pages={["shop", "/", "shop without sidebar"]}
       />
       <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28 bg-[#f3f4f6]">
-        <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
+        <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-8 xl:px-6">
           <div className="flex gap-7.5">
             <div className="w-full">
-              <div className="rounded-lg bg-white shadow-1 pl-3 pr-2.5 py-2.5 mb-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-wrap items-center gap-4">
-                    <CustomSelect options={options} value={selectedSort} onChange={handleSortChange} />
-
-                    <p>
-                      Showing <span className="text-dark">{shopData.length} of {totalProducts}</span>{" "}
-                      Products
-                    </p>
-                  </div>
-
-                  {/* <!-- top bar right --> */}
-                  <div className="flex items-center gap-2.5">
-                    <button
-                      onClick={() => setProductStyle("grid")}
-                      aria-label="button for product grid tab"
-                      className={`${
-                        productStyle === "grid"
-                          ? "bg-blue border-blue text-white"
-                          : "text-dark bg-gray-1 border-gray-3"
-                      } flex items-center justify-center w-10.5 h-9 rounded-[5px] border ease-out duration-200 hover:bg-blue hover:border-blue hover:text-white`}
-                    >
-                      {/* grid icon */}
-                      {/* ...svg omitted... */}
-                    </button>
-
-                    <button
-                      onClick={() => setProductStyle("list")}
-                      aria-label="button for product list tab"
-                      className={`${
-                        productStyle === "list"
-                          ? "bg-blue border-blue text-white"
-                          : "text-dark bg-gray-1 border-gray-3"
-                      } flex items-center justify-center w-10.5 h-9 rounded-[5px] border ease-out duration-200 hover:bg-blue hover:border-blue hover:text-white`}
-                    >
-                      {/* list icon */}
-                      {/* ...svg omitted... */}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* <!-- Products Grid Tab Content Start --> */}
-              <div
-                className={`${
-                  productStyle === "grid"
-                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-7.5 gap-y-9"
-                    : "flex flex-col gap-7.5"
-                }`}
-              >
+              {/* <!-- Products Grid Content Start --> */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
                 {shopData.map((item, key) => {
                   // Robust normalization logic
                   const normalized = {
                     ...item,
-                    designation: item.designation || item.designation_fr || item.title || "",
-                    title: item.title || item.designation || item.designation_fr || "",
+                    designation: item.designation || item.designation_fr || item.title || "Produit",
+                    title: item.title || item.designation || item.designation_fr || "Produit",
+                    price: Number(item.price ?? item.prix ?? item.discountedPrice ?? item.promo ?? 0),
+                    oldPrice: Number(
+                      item.oldPrice ??
+                      (item.price && item.discountedPrice && item.price > item.discountedPrice ? item.price :
+                      item.prix && item.promo && item.prix > item.promo ? item.prix : 0)
+                    ) || null,
+                    discountedPrice: Number(item.discountedPrice ?? item.promo ?? item.price ?? item.prix ?? 0),
+                    slug: item.slug ?? item._id ?? item.id ?? 'product',
                     imgs: item.imgs && item.imgs.thumbnails?.length > 0 && item.imgs.previews?.length > 0
                       ? item.imgs
                       : {
@@ -230,16 +188,20 @@ const ShopWithoutSidebar = () => {
                               : []
                           ),
                         },
-                    mainImage: item.mainImage || { url: item.cover || "" },
-                    cover: item.cover || item.mainImage?.url || "",
+                    mainImage: item.mainImage ?? { url: item.cover ?? "" },
+                    cover: item.cover ?? item.mainImage?.url ?? "",
                   };
-                  return productStyle === "grid" ? (
-                    <div key={key}>
+
+                  // Ensure all required fields for rendering
+                  normalized.designation = normalized.designation || "Produit";
+                  normalized.price = typeof normalized.price === "number" ? normalized.price : 0;
+                  normalized.oldPrice = typeof normalized.oldPrice === "number" ? normalized.oldPrice : null;
+                  normalized.slug = normalized.slug || "product";
+                  normalized.cover = normalized.cover || "/placeholder.svg";
+
+                  return (
+                    <div key={key} className="bg-white rounded-lg shadow-none border-0 flex flex-col" style={{height: '450px'}}>
                       <SingleGridItem item={normalized} rating={getRandomRating(key)} reviewsCount={getRandomReviews(key)} />
-                    </div>
-                  ) : (
-                    <div key={key}>
-                      <SingleListItem item={normalized} rating={getRandomRating(key)} reviewsCount={getRandomReviews(key)} />
                     </div>
                   );
                 })}
@@ -247,9 +209,9 @@ const ShopWithoutSidebar = () => {
               {/* <!-- Products Grid Tab Content End --> */}
 
               {/* <!-- Products Pagination Start --> */}
-              <div className="flex justify-center mt-15">
-                <div className="bg-white shadow-1 rounded-md p-2">
-                  <ul className="flex items-center">
+              <div className="flex justify-center mt-8 sm:mt-15">
+                <div className="bg-white shadow-1 rounded-md p-1 sm:p-2">
+                  <ul className="flex items-center flex-wrap justify-center">
                     {/* Previous Button */}
                     <li>
                       <button
@@ -258,7 +220,7 @@ const ShopWithoutSidebar = () => {
                         type="button"
                         onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                         disabled={currentPage === 1}
-                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] disabled:text-gray-4 hover:text-white hover:bg-blue"
+                        className="flex items-center justify-center w-6 h-7 sm:w-8 sm:h-9 ease-out duration-200 rounded-[3px] disabled:text-gray-4 hover:text-white hover:bg-blue text-xs sm:text-sm"
                       >
                         <svg
                           className="fill-current"
@@ -285,7 +247,7 @@ const ShopWithoutSidebar = () => {
                         type="button"
                         onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                         disabled={currentPage === totalPages}
-                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] hover:text-white hover:bg-blue disabled:text-gray-4"
+                        className="flex items-center justify-center w-6 h-7 sm:w-8 sm:h-9 ease-out duration-200 rounded-[3px] hover:text-white hover:bg-blue disabled:text-gray-4 text-xs sm:text-sm"
                       >
                         <svg
                           className="fill-current"

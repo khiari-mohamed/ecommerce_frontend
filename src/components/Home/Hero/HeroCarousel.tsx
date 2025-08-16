@@ -82,17 +82,9 @@ const HeroCarousal = () => {
       </div>
 
       {/* Mobile Swiper - only shows on mobile */}
-      <div
-        className="block sm:hidden w-full"
-        style={{
-          minHeight: "100vh",
-          height: "100vh",
-          boxSizing: "border-box",
-          background: "var(--background)",
-        }}
-      >
+      <div className="block sm:hidden w-full h-screen">
         <Swiper
-          spaceBetween={30}
+          spaceBetween={0}
           centeredSlides={true}
           autoplay={{
             delay: 2500,
@@ -102,35 +94,35 @@ const HeroCarousal = () => {
             clickable: true,
           }}
           modules={[Autoplay, Pagination]}
-          className="hero-carousel"
+          className="hero-carousel h-full"
         >
-          <SwiperSlide>
-            <div className="relative w-full h-full">
+          <SwiperSlide className="h-screen">
+            <div className="relative w-full h-screen">
               <img
                 src="/images/hero/slides/1m.webp"
                 alt="slide 1 mobile"
-                className="object-cover w-full h-full"
-                style={{ minHeight: "100vh", height: "100vh" }}
+                className="object-cover w-full h-screen"
+                style={{ minHeight: '100vh', height: '100vh' }}
               />
             </div>
           </SwiperSlide>
-          <SwiperSlide>
-            <div className="relative w-full h-full">
+          <SwiperSlide className="h-screen">
+            <div className="relative w-full h-screen">
               <img
                 src="/images/hero/slides/2m.webp"
                 alt="slide 2 mobile"
-                className="object-cover w-full h-full"
-                style={{ minHeight: "100vh", height: "100vh" }}
+                className="object-cover w-full h-screen"
+                style={{ minHeight: '100vh', height: '100vh' }}
               />
             </div>
           </SwiperSlide>
-          <SwiperSlide>
-            <div className="relative w-full h-full">
+          <SwiperSlide className="h-screen">
+            <div className="relative w-full h-screen">
               <img
                 src="/images/hero/slides/4m.webp"
                 alt="slide 4 mobile"
-                className="object-cover w-full h-full"
-                style={{ minHeight: "100vh", height: "100vh" }}
+                className="object-cover w-full h-screen"
+                style={{ minHeight: '100vh', height: '100vh' }}
               />
             </div>
           </SwiperSlide>

@@ -106,17 +106,14 @@ const SingleGridItem = ({ item, rating, reviewsCount }: SingleGridItemProps) => 
 
   
   return (
-    <div>
-      <Card
-      className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0"
-      >
+    <div className="group relative overflow-hidden w-full h-full flex flex-col shadow-none border-0" style={{height: '100%'}}>
       {/* Badges */}
-      <div className="absolute top-3 left-3 z-20 flex flex-col gap-2">
+      <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
         {(
           (typeof item.oldPrice === 'number' && typeof item.price === 'number' && item.oldPrice > item.price) ||
           (typeof item.price === 'number' && typeof item.discountedPrice === 'number' && item.price > item.discountedPrice)
         ) && (
-          <Badge style={{ background: 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)', color: '#fff', borderRadius: '9999px', fontWeight: 700, fontSize: '0.75rem', boxShadow: '0 2px 8px 0 rgba(239,68,68,0.15)', minWidth: 48, textAlign: 'center', padding: '0.25rem 0.5rem', display: 'inline-block' }} className="text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+          <Badge style={{ background: 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)', color: '#fff', borderRadius: '9999px', fontWeight: 700, fontSize: '0.75rem', boxShadow: '0 2px 8px 0 rgba(239,68,68,0.15)' }} className="text-xs font-bold px-2 py-1">
             -{
               typeof item.oldPrice === 'number' && typeof item.price === 'number' && item.oldPrice > item.price
                 ? Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100)
@@ -124,58 +121,63 @@ const SingleGridItem = ({ item, rating, reviewsCount }: SingleGridItemProps) => 
             }%
           </Badge>
         )}
+        <Badge style={{ background: '#1cac54', color: '#fff', borderRadius: '9999px', fontWeight: 700, fontSize: '0.75rem', boxShadow: '0 2px 8px 0 rgba(28,172,84,0.15)' }} className="text-xs font-bold px-2 py-1 mt-1">
+          New
+        </Badge>
       </div>
       {/* Action buttons */}
       <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-      <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full" onClick={e => { e.preventDefault(); handleItemToWishList(); }}>
-      <Heart className="w-4 h-4 text-orange-500" />
-      </Button>
-      <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full" onClick={e => { e.preventDefault(); openModal(); handleQuickViewUpdate(); }}>
-      <Eye className="w-4 h-4 text-orange-500" />
-      </Button>
+        <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full" onClick={e => { e.preventDefault(); handleItemToWishList(); }}>
+          <Heart className="w-4 h-4" />
+        </Button>
+        <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full" onClick={e => { e.preventDefault(); openModal(); handleQuickViewUpdate(); }}>
+          <Eye className="w-4 h-4" />
+        </Button>
       </div>
-      <CardContent className="flex flex-col h-full p-4">
       {/* Product Image */}
-      <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
-      <Image
-      src={getProductImageSrc(item)}
-      alt={item.designation || item.title || "Product image"}
-      width={250}
-      height={250}
-      className="w-full h-full object-cover"
-      priority={false}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg m-4 mb-2 overflow-hidden group-hover:scale-105 transition-transform duration-300">
+        <Image
+          src={getProductImageSrc(item)}
+          alt={item.designation || item.title || "Product image"}
+          fill
+          className="w-full h-full object-cover"
+          loading="lazy"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 transition-opacity duration-300" />
       </div>
       {/* Product Info */}
-      <div className="flex-grow flex flex-col">
-      <h3 className="font-semibold text-gray-800 mb-1 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
-      <Link href={`/shop/${item.slug}`}>{item.designation}</Link>
-      </h3>
-      {/* Stars and Reviews */}
-      <div className="flex items-center gap-2.5 justify-center mb-2">
-        <StarRating rating={rating} />
-        <span className="text-xs text-gray-500">({reviewsCount} avis)</span>
+      <div className="flex-grow flex flex-col px-4 pb-4">
+        <div className="flex-grow">
+          <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
+            <Link href={`/shop/${item.slug}`}>{item.designation}</Link>
+          </h3>
+          {/* Stars */}
+          <div className="flex items-center justify-center mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Image key={i} src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
+            ))}
+            <span className="text-xs text-gray-500 ml-1">({reviewsCount})</span>
+          </div>
+          {/* Price */}
+          <div className="flex flex-col items-center gap-1 mb-3 justify-center">
+            <span className="text-sm sm:text-lg font-bold text-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>
+              {formatCurrency(item.price)}
+            </span>
+            {item.oldPrice && (
+              <span className="text-xs sm:text-sm text-gray-500 line-through text-center">
+                {formatCurrency(item.oldPrice)}
+              </span>
+            )}
+          </div>
+        </div>
+        {/* Add to Cart Button */}
+        <Button className="w-full font-medium py-2 sm:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-xs sm:text-sm mt-auto" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600 }} onClick={e => { e.preventDefault(); handleAddToCart(); }}>
+          <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-white" />
+          <span className="hidden sm:inline">Ajouter au panier</span>
+          <span className="sm:hidden">Ajouter</span>
+        </Button>
       </div>
-      {/* Price */}
-      <div className="flex items-center gap-2 mb-4 justify-center">
-      <span style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent', fontWeight: 700, fontSize: '1.25rem' }}>
-      {formatCurrency(item.price)}
-      </span>
-      {item.oldPrice && (
-      <span className="text-sm text-gray-500 line-through">
-      {formatCurrency(item.oldPrice)}
-      </span>
-      )}
-      </div>
-      </div>
-      {/* Add to Cart Button */}
-      <Button className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} onClick={e => { e.preventDefault(); handleAddToCart(); }}>
-      <ShoppingCart className="w-4 h-4 mr-2 text-white" />
-      Ajouter au panier
-      </Button>
-      </CardContent>
-      </Card>
     </div>
   );
 };

@@ -16,7 +16,7 @@ export const menuData: Menu[] = [
       },
       {
         id: 22,
-        title: "Boutique sans barre latérale",
+        title: "Boutique",
         newTab: false,
         path: "/shop-without-sidebar",
         showBadge: undefined

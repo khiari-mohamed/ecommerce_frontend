@@ -60,7 +60,7 @@ export default function BrandFiltersClient({
   return (
     <>
       {/* Mobile filter button and inline filter content */}
-      <div className="block lg:hidden w-full mb-4 flex flex-col items-center mt-4">
+      <div className="block lg:hidden w-full mb-4 flex flex-col items-center">
         <button
           className="bg-[#FF4301] text-white rounded-md px-6 py-2 text-sm sm:text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-[#FF4301]/50 mb-2"
           onClick={() => setShowSidebar((v) => !v)}

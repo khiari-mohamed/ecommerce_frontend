@@ -10,7 +10,7 @@ import { ReduxProvider } from "@/redux/provider";
 import QuickViewModal from "@/components/Common/QuickViewModal";
 import CartSidebarModal from "@/components/Common/CartSidebarModal";
 import { PreviewSliderProvider } from "../context/PreviewSliderContext";
-import PreviewSliderModal from "@/components/Common/PreviewSlider";
+//import PreviewSliderModal from "@/components/Common/PreviewSlider";
 import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
 import { AuthProvider } from "@/context/authContext";
@@ -48,7 +48,7 @@ export default function ClientLayout({
                       </div>
                       <QuickViewModal />
                       <CartSidebarModal />
-                      <PreviewSliderModal />
+                 
                     </PreviewSliderProvider>
                   </ModalProvider>
                 </CartModalProvider>

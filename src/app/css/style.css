@@ -858,6 +858,44 @@
   }
 }
 
+/* Fix excessive top padding on brand pages */
+@media (max-width: 767px) {
+  .max-w-\[1400px\] {
+    padding-top: 1rem !important;
+  }
+}
+
+/* Responsive spacing for TopPromotion section on different mobile devices */
+/* iPhone SE and very small devices (320px-374px) */
+@media (max-width: 374px) {
+  main > div:nth-child(3) {
+    margin-top: -10rem !important;
+  }
+  main > div:nth-child(n+4) {
+    margin-top: -4rem !important;
+  }
+}
+
+/* Small mobile devices (375px-413px) */
+@media (min-width: 375px) and (max-width: 413px) {
+  main > div:nth-child(3) {
+    margin-top: -16rem !important;
+  }
+  main > div:nth-child(n+4) {
+    margin-top: -4rem !important;
+  }
+}
+
+/* Larger mobile devices like iPhone XR, Pro Max, Samsung S20 (414px-767px) */
+@media (min-width: 414px) and (max-width: 767px) {
+  main > div:nth-child(3) {
+    margin-top: -20rem !important;
+  }
+  main > div:nth-child(n+4) {
+    margin-top: -4rem !important;
+  }
+}
+
 
 
 

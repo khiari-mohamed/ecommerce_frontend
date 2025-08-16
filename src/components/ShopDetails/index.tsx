@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import React, { useEffect, useState } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import Image from "next/image";
@@ -291,7 +291,7 @@ const ShopDetails = () => {
           <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28">
             <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
               <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-17.5">
-                {/* Image Gallery */}
+                {/* Image Gallery 
                 <div className="lg:max-w-[570px] w-full">
                   <div className="lg:min-h-[512px] rounded-lg shadow-1 bg-gray-2 p-4 sm:p-7.5 relative flex items-center justify-center">
                     <div>
@@ -300,7 +300,7 @@ const ShopDetails = () => {
                         aria-label="button for zoom"
                         className="gallery__Image w-11 h-11 rounded-[5px] bg-gray-1 shadow-1 flex items-center justify-center ease-out duration-200 text-dark hover:text-blue absolute top-4 lg:top-6 right-4 lg:right-6 z-50"
                       >
-                        {/* SVG icon */}
+                        {/* SVG icon 
                         <svg
                           className="fill-current"
                           width="22"
@@ -359,7 +359,7 @@ const ShopDetails = () => {
                       </div>
                     )}
                   </div>
-                   {/* Brand and Aromas */}
+                   {/* Brand and Aromas 
   <ProductBrandAroma brandId={
   typeof product.brand === "string"
     ? product.brand
@@ -367,7 +367,7 @@ const ShopDetails = () => {
 } />
                   <div className="flex flex-row flex-wrap items-center gap-5.5 mb-4.5">
                     <div className="flex items-center gap-2.5">
-                      {/* Stars */}
+                      {/* Stars 
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <svg
@@ -447,7 +447,7 @@ const ShopDetails = () => {
                   )}
                   <ul className="flex flex-col gap-2">
                     <li className="flex items-center gap-2.5">
-                      {/* Free delivery icon */}
+                      {/* Free delivery icon 
                       <svg
                         width="20"
                         height="20"
@@ -481,12 +481,12 @@ const ShopDetails = () => {
                       </svg>
                       {product.discountPercentage || 0}% Off
 
-                      */}
+                      
                     </li>
                   </ul>
                   <form onSubmit={(e) => e.preventDefault()}>
                     <div className="flex flex-col gap-4.5 border-y border-gray-3 mt-7.5 mb-9 py-9">
-                      {/* Flavor */}
+                      {/* Flavor 
                       {product.aroma_ids && product.aroma_ids.length > 0 && aromas.length > 0 && (
                         (() => {
                           const matchedAromas = product.aroma_ids
@@ -520,7 +520,7 @@ const ShopDetails = () => {
                             quantity > 1 && setQuantity(quantity - 1)
                           }
                         >
-                          {/* Minus icon */}
+                          {/* Minus icon 
                           <svg
                             className="fill-current"
                             width="20"
@@ -543,7 +543,7 @@ const ShopDetails = () => {
                           aria-label="button for add product"
                           className="flex items-center justify-center w-12 h-12 ease-out duration-200 hover:text-blue"
                         >
-                          {/* Plus icon */}
+                          {/* Plus icon 
                           <svg
                             className="fill-current"
                             width="20"
@@ -595,7 +595,7 @@ const ShopDetails = () => {
                         href="#"
                         className="flex items-center justify-center w-12 h-12 rounded-md border border-[#ff6600] text-[#ff6600] ease-out duration-200 hover:text-white hover:bg-[#ff6600] hover:border-[#ff6600]"
                       >
-                        {/* Heart icon */}
+                        {/* Heart icon 
                         <svg
                         className="fill-current"
                         width="24"
@@ -615,9 +615,9 @@ const ShopDetails = () => {
                       </a>
                     </div>
                   </form>
-                  {/* Social Share & Copy Link */}
+                  {/* Social Share & Copy Link 
                   <div className="mt-8 flex flex-row flex-wrap items-center gap-3">
-                    {/* Facebook */}
+                    {/* Facebook 
                     <button
                       aria-label="Partager sur Facebook"
                       className="flex items-center justify-center w-11 h-11 rounded-full border border-[#ff6600] text-[#ff6600] bg-white shadow-sm hover:bg-[#ff6600] hover:text-white transition-all duration-150"
@@ -631,7 +631,7 @@ const ShopDetails = () => {
                     >
                       <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/></svg>
                     </button>
-                    {/* Twitter */}
+                    {/* Twitter 
                     <button
                       aria-label="Partager sur Twitter"
                       className="flex items-center justify-center w-11 h-11 rounded-full border border-[#ff6600] text-[#ff6600] bg-white shadow-sm hover:bg-[#ff6600] hover:text-white transition-all duration-150"
@@ -645,7 +645,7 @@ const ShopDetails = () => {
                     >
                       <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557a9.83 9.83 0 0 1-2.828.775 4.932 4.932 0 0 0 2.165-2.724c-.951.564-2.005.974-3.127 1.195a4.916 4.916 0 0 0-8.38 4.482C7.691 8.095 4.066 6.13 1.64 3.161c-.542.929-.856 2.01-.857 3.17 0 2.188 1.115 4.117 2.823 5.254a4.904 4.904 0 0 1-2.229-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.936 4.936 0 0 1-2.224.084c.627 1.956 2.444 3.377 4.6 3.417A9.867 9.867 0 0 1 0 21.543a13.94 13.94 0 0 0 7.548 2.209c9.058 0 14.009-7.496 14.009-13.986 0-.21-.005-.423-.015-.634A9.936 9.936 0 0 0 24 4.557z"/></svg>
                     </button>
-                    {/* WhatsApp */}
+                    {/* WhatsApp 
                     <button
                       aria-label="Partager sur WhatsApp"
                       className="flex items-center justify-center w-11 h-11 rounded-full border border-[#ff6600] text-[#ff6600] bg-white shadow-sm hover:bg-[#ff6600] hover:text-white transition-all duration-150"
@@ -659,7 +659,7 @@ const ShopDetails = () => {
                     >
                       <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.363.709.306 1.262.489 1.694.626.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.617h-.001a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.991c-.003 5.451-4.437 9.885-9.888 9.885m8.413-18.297A11.815 11.815 0 0 0 12.05.001C5.495.001.001 5.495 0 12.049c0 2.124.557 4.199 1.615 6.032L.057 23.944a1.001 1.001 0 0 0 1.212 1.212l5.814-1.557a11.96 11.96 0 0 0 5.006 1.104h.005c6.554 0 11.848-5.393 11.85-11.947a11.821 11.821 0 0 0-3.482-8.627"/></svg>
                     </button>
-                    {/* LinkedIn */}
+                    {/* LinkedIn 
                     <button
                       aria-label="Partager sur LinkedIn"
                       className="flex items-center justify-center w-11 h-11 rounded-full border border-[#ff6600] text-[#ff6600] bg-white shadow-sm hover:bg-[#ff6600] hover:text-white transition-all duration-150"
@@ -673,7 +673,7 @@ const ShopDetails = () => {
                     >
                       <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.025-3.063-1.868-3.063-1.868 0-2.154 1.459-2.154 2.967v5.7h-3v-10h2.881v1.367h.041c.401-.761 1.379-1.563 2.841-1.563 3.039 0 3.6 2.001 3.6 4.601v5.595z"/></svg>
                     </button>
-                    {/* Reddit */}
+                    {/* Reddit 
                     <button
                       aria-label="Partager sur Reddit"
                       className="flex items-center justify-center w-11 h-11 rounded-full border border-[#ff6600] text-[#ff6600] bg-white shadow-sm hover:bg-[#ff6600] hover:text-white transition-all duration-150"
@@ -687,7 +687,7 @@ const ShopDetails = () => {
                     >
                       <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 6.627 5.373 12 12 12s12-5.373 12-12zm-17.25 2.25c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm8.5 0c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm-4.25 2.25c0 1.104 2.239 2 5 2s5-.896 5-2v-1h-10v1zm10.5-2.25c0-2.485-2.015-4.5-4.5-4.5s-4.5 2.015-4.5 4.5h9zm-9.5-2.25c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm8.5 0c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm-4.25-2.25c0-1.104-2.239-2-5-2s-5 .896-5 2v1h10v-1zm-10.5 2.25c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5h-9zm9.5-2.25c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm8.5 0c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm-4.25-2.25c0-1.104-2.239-2-5-2s-5 .896-5 2v1h10v-1zm-10.5 2.25c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5h-9zm9.5-2.25c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75zm8.5 0c0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75-.784 1.75-1.75 1.75-1.75-.784-1.75-1.75z"/></svg>
                     </button>
-                    {/* Instagram (opens profile, as Instagram does not support direct share links) */}
+                    {/* Instagram (opens profile, as Instagram does not support direct share links) 
                     <button
                       aria-label="Voir sur Instagram"
                       className="flex items-center justify-center w-11 h-11 rounded-full border border-[#ff6600] text-[#ff6600] bg-white shadow-sm hover:bg-[#ff6600] hover:text-white transition-all duration-150"
@@ -701,7 +701,7 @@ const ShopDetails = () => {
                     >
                       <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.974.974 1.246 2.241 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.974-2.241 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.974-.974-1.246-2.241-1.308-3.608C2.175 15.647 2.163 15.267 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608.974-.974 2.241-1.246 3.608-1.308C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.013 7.052.072 5.771.131 4.659.363 3.678 1.344c-.98.98-1.213 2.092-1.272 3.373C2.013 8.332 2 8.741 2 12c0 3.259.013 3.668.072 4.948.059 1.281.292 2.393 1.272 3.373.98.98 2.092 1.213 3.373 1.272C8.332 23.987 8.741 24 12 24s3.668-.013 4.948-.072c1.281-.059 2.393-.292 3.373-1.272.98-.98 1.213-2.092 1.272-3.373.059-1.28.072-1.689.072-4.948 0-3.259-.013-3.668-.072-4.948-.059-1.281-.292-2.393-1.272-3.373-.98-.98-2.092-1.213-3.373-1.272C15.668.013 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998 3.999 3.999 0 0 1 0 7.998zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
                     </button>
-                    {/* Copy Link */}
+                    {/* Copy Link 
                     <button
                       aria-label="Copier le lien"
                       className="flex items-center justify-center w-11 h-11 rounded-full border border-[#ff6600] text-[#ff6600] bg-white shadow-sm hover:bg-[#ff6600] hover:text-white transition-all duration-150"
@@ -719,12 +719,12 @@ const ShopDetails = () => {
           </section>
 
 
-          {/* Tabs, Reviews, Newsletter, etc. */}
-          {/* ... rest of your code remains unchanged ... */}
+          {/* Tabs, Reviews, Newsletter, etc. 
+          {/* ... rest of your code remains unchanged ... 
 
           <section className="overflow-hidden bg-gray-2 py-20">
             <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-              {/* Tab header */}
+              {/* Tab header 
               <div className="flex flex-wrap items-center bg-white rounded-[10px] shadow-1 gap-5 xl:gap-12.5 py-4.5 px-4 sm:px-6">
                 {tabs.map((item, key) => (
                   <button
@@ -740,8 +740,8 @@ const ShopDetails = () => {
                   </button>
                 ))}
               </div>
-              {/* Tab content */}
-              {/* Description */}
+              {/* Tab content
+              {/* Description 
               <div>
                 <div
                   className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${
@@ -779,7 +779,7 @@ const ShopDetails = () => {
                   </div>
                 </div>
               </div>
-              {/* Nutrition Fact Tab */}
+              {/* Nutrition Fact Tab
               <div>
                 <div className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === "tabNutrition" ? "block" : "hidden"}`}>
                   {product.nutrition_values ? (
@@ -789,7 +789,7 @@ const ShopDetails = () => {
                   )}
                 </div>
               </div>
-              {/* Questions Tab */}
+              {/* Questions Tab 
               <div>
                 <div className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === "tabQuestions" ? "block" : "hidden"}`}>
                   {product.questions ? (
@@ -799,7 +799,7 @@ const ShopDetails = () => {
                   )}
                 </div>
               </div>
-                            {/* Reviews */}
+                            {/* Reviews
               <div>
                 <div
                   className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${
@@ -885,3 +885,6 @@ const ShopDetails = () => {
 };
 
 export default ShopDetails;
+
+
+*/

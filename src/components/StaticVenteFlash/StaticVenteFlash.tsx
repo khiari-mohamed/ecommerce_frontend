@@ -25,7 +25,7 @@ function StaticVenteFlash({ products }: { products: any[] }) {
         </div>
         {/* Timer container */}
         <div className="flex flex-col items-center justify-center mb-12">
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">Profitez de nos offres exclusives avant qu'il ne soit trop tard!</p>
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg">Profitez de nos offres exclusives avant qu&apos;il ne soit trop tard!</p>
           {soonestEndDate && <CountdownTimer endDate={soonestEndDate} />}
         </div>
         {/* Product cards grid */}

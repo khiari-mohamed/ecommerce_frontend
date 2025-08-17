@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef } from 'react';
-import { useTestimonials } from '../../../services/useTestimonials';
+import { useTestimonialsWithConfig } from '../../../services/useTestimonialsWithConfig';
 import { Star, Quote } from 'lucide-react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -8,7 +8,10 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 
 const Testimonials = () => {
-  const { testimonials, loading } = useTestimonials();
+  const { testimonials, config, loading, showSection } = useTestimonialsWithConfig();
+  
+  // Don't render if section is disabled
+  if (!showSection) return null;
   const swiperRef = useRef<any>(null);
 
   // Handler for custom navigation
@@ -19,18 +22,8 @@ const Testimonials = () => {
     if (swiperRef.current) swiperRef.current.slideNext();
   };
 
-  // Deduplicate testimonials by review + authorName without changing type or logic
-  const filteredTestimonials = (() => {
-    const seen = new Set<string>();
-    return testimonials.filter(item => {
-      const review = item.review?.trim();
-      const name = item.authorName?.trim().toLowerCase();
-      const key = `${name}-${review}`;
-      if (!review || review.length < 4 || !name || seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-  })();
+  // Get all testimonials up to maxDisplay limit
+  const filteredTestimonials = testimonials.slice(0, config.maxDisplay);
 
   // Render stars
   const renderStars = (rating: number) => {
@@ -49,11 +42,10 @@ const Testimonials = () => {
         {/* Section title */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4" style={{ color: 'rgb(255, 69, 0)' }}>
-            💬 Avis de nos clients
+            💬 {config.sectionTitle}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Découvrez ce que pensent nos clients de PROTEINE TUNISIE.
-            Plus de 15 ans d&apos;expérience au service de votre performance.
+            {config.sectionDescription}
           </p>
           <div className="flex items-center justify-center gap-2 mt-4">
             <div className="flex">

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getFrontendPackConfig } from "@/services/pack";
+import { usePacksWithConfig } from '../../../services/usePacksWithConfig';
 import { Pack } from "@/types/pack";
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
@@ -16,43 +16,11 @@ const fallbackImages = [
 ];
 
 const PacksSection: React.FC = () => {
-  const [packs, setPacks] = useState<Pack[]>([]);
-  const [config, setConfig] = useState({
-    sectionTitle: 'Nos Packs Exclusifs',
-    sectionDescription: 'Profitez de nos packs exclusifs pour faire des économies sur vos achats !',
-    maxDisplay: 4,
-    showOnFrontend: true
-  });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getPacksConfig = async () => {
-      try {
-        const response = await getFrontendPackConfig();
-        if (response?.data) {
-          const { packs: packsData, config: configData } = response.data;
-          setPacks(packsData || []);
-          if (configData) {
-            setConfig({
-              sectionTitle: configData.sectionTitle || 'Nos Packs Exclusifs',
-              sectionDescription: configData.sectionDescription || 'Profitez de nos packs exclusifs pour faire des économies sur vos achats !',
-              maxDisplay: configData.maxDisplay || 4,
-              showOnFrontend: configData.showOnFrontend !== undefined ? configData.showOnFrontend : true
-            });
-          }
-        }
-      } catch (e) {
-        console.error("Failed to fetch packs config:", e);
-        setPacks([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getPacksConfig();
-  }, []);
+  const { packs, config, loading, showSection } = usePacksWithConfig();
+  
+  if (!showSection) return null;
 
   if (loading) return <div>Chargement des packs...</div>;
-  if (!config.showOnFrontend) return null;
   if (!packs.length) return null;
 
   const getImageSrc = (pack: Pack, index: number) => {
@@ -73,9 +41,6 @@ const PacksSection: React.FC = () => {
     return fallbackImages[index % fallbackImages.length];
   };
 
-  // Get displayed packs based on configuration
-  const displayedPacks = packs.slice(0, config.maxDisplay);
-
   return (
     <section className="py-20 bg-gradient-to-b from-white to-yellow-50" aria-labelledby="packs-title">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -93,12 +58,12 @@ const PacksSection: React.FC = () => {
         </div>
         {/* Packs grid */}
         <div className={`grid gap-8 ${
-          displayedPacks.length === 1 ? 'grid-cols-1 max-w-sm mx-auto' :
-          displayedPacks.length === 2 ? 'grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto' :
-          displayedPacks.length === 3 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto' :
+          packs.length === 1 ? 'grid-cols-1 max-w-sm mx-auto' :
+          packs.length === 2 ? 'grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto' :
+          packs.length === 3 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto' :
           'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
         }`}>
-          {displayedPacks.map((pack, idx) => {
+          {packs.map((pack, idx) => {
             const prixNum = Number(pack.prix || pack.price) || 0;
             const promoNum = Number(pack.promo || pack.oldPrice) || 0;
             const hasPromo = !!promoNum && promoNum < prixNum;

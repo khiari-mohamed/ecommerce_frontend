@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import BlogItem from "../../Blog/BlogItem";
-import { getLandingPageBlogs, getBlogs } from "@/services/blog.service";
+import { useBlogsWithConfig } from '../../../services/useBlogsWithConfig';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -13,23 +13,10 @@ import { ArrowRight, Calendar, Clock } from 'lucide-react';
 import Link from 'next/link';
 
 const CountdownBlogGrid = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { blogs, config, loading, showSection } = useBlogsWithConfig();
   const swiperRef = useRef<any>(null);
-
-  useEffect(() => {
-    getLandingPageBlogs().then((data) => {
-      if (Array.isArray(data) && data.length > 0) {
-        setBlogs(data);
-        setLoading(false);
-      } else {
-        getBlogs().then((fallback) => {
-          setBlogs(Array.isArray(fallback) ? fallback : []);
-          setLoading(false);
-        });
-      }
-    });
-  }, []);
+  
+  if (!showSection) return null;
 
   // Handler for custom navigation
   const handlePrev = () => {
@@ -48,10 +35,10 @@ const CountdownBlogGrid = () => {
             <span className="text-2xl">📚</span>
           </div>
           <h2 className="text-4xl font-bold mb-4" style={{ color: '#FF4500' }}>
-            Blog & FAQ
+            {config.sectionTitle}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Découvrez nos conseils dexperts et trouvez les réponses à vos questions sur la nutrition sportive
+            {config.sectionDescription}
           </p>
         </div>
         {loading ? (

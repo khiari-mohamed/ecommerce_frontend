@@ -1,6 +1,17 @@
 "use client";
 import { useState } from "react";
 import { storage } from "./const/url";
+
+// Get dashboard URL dynamically
+const getDashboardUrl = () => {
+  if (typeof window !== 'undefined') {
+    const currentUrl = window.location.origin;
+    // Try different possible dashboard ports/URLs
+    const dashboardPorts = ['3000', '3001', '4000', '5000'];
+    return currentUrl.replace(/:\d+/, '') + ':3000'; // Default to 3000, adjust as needed
+  }
+  return 'http://localhost:3000';
+};
 import Image from "next/image";
 import Link from "next/link";
 import ReviewForm from "../ProductDetails/ReviewForm";
@@ -26,9 +37,31 @@ function FlashSaleCard({ product }: { product: any }) {
   // Helper to get image URL
   const getImageUrl = () => {
     if (product.cover) {
-      return product.cover.startsWith("http") ? product.cover : storage + product.cover;
+      // Handle absolute URLs
+      if (product.cover.startsWith('http')) {
+        return product.cover;
+      }
+      // Handle new dashboard uploads (starts with /)
+      if (product.cover.startsWith('/')) {
+        // Try multiple sources until one works
+        return product.cover; // First try relative path
+      }
+      // Handle old storage paths
+      return storage + product.cover;
     }
     return "/images/placeholder.png";
+  };
+
+  // Fallback image handler
+  const handleImageError = (e: any) => {
+    const img = e.target;
+    if (product.cover?.startsWith('/') && !img.src.includes('localhost:3000')) {
+      // Try dashboard URL as fallback
+      img.src = getDashboardUrl() + product.cover;
+    } else if (!img.src.includes('placeholder')) {
+      // Final fallback to placeholder
+      img.src = "/images/placeholder.png";
+    }
   };
 
   // Stable fake review count based on product id
@@ -100,9 +133,9 @@ function FlashSaleCard({ product }: { product: any }) {
     >
       {/* Badges */}
       <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
-        {product.prix > product.promo && (
+        {product.prix && product.promo && Number(product.prix) > Number(product.promo) && (
           <Badge style={{ background: 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)', color: '#fff', borderRadius: '9999px', fontWeight: 700, fontSize: '0.75rem', boxShadow: '0 2px 8px 0 rgba(239,68,68,0.15)' }} className="text-xs font-bold px-2 py-1">
-            -{productPromoPercentage}%
+            -{Math.ceil(((Number(product.prix) - Number(product.promo)) / Number(product.prix)) * 100)}%
           </Badge>
         )}
         <Badge style={{ background: '#ff6b35', color: '#fff', borderRadius: '9999px', fontWeight: 700, fontSize: '0.75rem', boxShadow: '0 2px 8px 0 rgba(255,107,53,0.15)' }} className="text-xs font-bold px-2 py-1 mt-1">
@@ -138,14 +171,24 @@ function FlashSaleCard({ product }: { product: any }) {
             className="block w-full h-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg"
             aria-label={`Voir les détails de ${product.designation_fr || "ce produit"}`}
           >
-            <Image
-              src={getImageUrl()}
-              alt={`Image de ${product.designation_fr || "produit flash"}`}
-              fill
-              className="w-full h-full object-contain"
-              loading="lazy"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-            />
+            {product.cover?.startsWith('/') ? (
+              <img
+                src={getDashboardUrl() + product.cover}
+                alt={`Image de ${product.designation_fr || "produit flash"}`}
+                className="w-full h-full object-contain"
+                loading="lazy"
+                onError={handleImageError}
+              />
+            ) : (
+              <Image
+                src={getImageUrl()}
+                alt={`Image de ${product.designation_fr || "produit flash"}`}
+                fill
+                className="w-full h-full object-contain"
+                loading="lazy"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+              />
+            )}
           </Link>
           <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 transition-opacity duration-300" />
         </div>
@@ -153,7 +196,7 @@ function FlashSaleCard({ product }: { product: any }) {
         <div className="flex-grow flex flex-col">
           <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
             <Link 
-              href={`/shop/${product.slug}`}
+              href={`/shop/${product.slug || 'product'}`}
               className="focus:outline-none focus:underline focus:text-orange-600"
               aria-label={`Voir les détails de ${product.designation_fr || "ce produit"}`}
             >
@@ -173,19 +216,31 @@ function FlashSaleCard({ product }: { product: any }) {
           </div>
           {/* Price */}
           <div className="flex flex-col items-center gap-1 mb-3 justify-center" role="group" aria-label="Prix du produit">
-            <span 
-              className="text-sm sm:text-lg font-bold text-center" 
-              style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}
-              aria-label={`Prix actuel: ${Number(product.promo).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}`}
-            >
-              {Number(product.promo).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
-            </span>
-            <span 
-              className="text-xs sm:text-sm text-gray-500 line-through text-center"
-              aria-label={`Prix original: ${Number(product.prix).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}`}
-            >
-              {Number(product.prix).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
-            </span>
+            {product.promo && product.prix && Number(product.promo) < Number(product.prix) ? (
+              <>
+                <span 
+                  className="text-sm sm:text-lg font-bold text-center" 
+                  style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}
+                  aria-label={`Prix flash: ${Number(product.promo).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}`}
+                >
+                  {Number(product.promo).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+                </span>
+                <span 
+                  className="text-xs sm:text-sm text-gray-500 line-through text-center"
+                  aria-label={`Prix original: ${Number(product.prix).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}`}
+                >
+                  {Number(product.prix).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+                </span>
+              </>
+            ) : (
+              <span 
+                className="text-sm sm:text-lg font-bold text-center" 
+                style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}
+                aria-label={`Prix: ${Number(product.prix || 0).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}`}
+              >
+                {Number(product.prix || 0).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
+              </span>
+            )}
           </div>
         </div>
         {/* Add to Cart Button */}

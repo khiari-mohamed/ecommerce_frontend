@@ -23,13 +23,24 @@ const NewArrival = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    const fetchData = () => {
-      getNewProductsFeature()
-        .then((data) => {
-          setProducts(data.products || []);
-          setConfig(data.config || {});
-        })
-        .finally(() => setLoading(false));
+    const fetchData = async () => {
+      try {
+        // Get products and config from backend
+        const data = await getNewProductsFeature();
+        setProducts(data.products || []);
+        setConfig(data.config || {
+          sectionTitle: "Nouveautés",
+          sectionDescription: "Découvrez nos nouveaux produits fraîchement arrivés !",
+          maxDisplay: 100,
+          showOnFrontend: true
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setProducts([]);
+        setConfig({});
+      } finally {
+        setLoading(false);
+      }
     };
     
     fetchData();

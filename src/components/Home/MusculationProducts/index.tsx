@@ -106,9 +106,31 @@ const MusculationProducts = () => {
     return () => clearTimeout(timeout);
   }, [current]);
 
+  const [config, setConfig] = useState<any>({
+    sectionTitle: "Matériel de Musculation",
+    sectionDescription: "Découvrez notre gamme complète de matériel musculation, fitness et cardio pour équiper votre salle de sport.",
+    maxDisplay: 4,
+    showOnFrontend: true
+  });
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        // Try to get products with configuration from backend
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/products/store/materiel-de-musculation`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.products && data.products.length > 0) {
+            setSampleProducts(data.products.slice(0, data.config?.maxDisplay || 4));
+            if (data.config) {
+              setConfig(data.config);
+            }
+            return;
+          }
+        }
+        
+        // Fallback: get products from musculation service
         const products = await fetchMusculationProducts();
         setSampleProducts(products.slice(10, 14));
       } catch (e) {
@@ -117,6 +139,11 @@ const MusculationProducts = () => {
     };
     fetchProducts();
   }, []);
+
+  // Don't render if showOnFrontend is false
+  if (config?.showOnFrontend === false) {
+    return null;
+  }
 
   // Helper to get the image URL from the product
   const getImageUrl = (item: Product) => {
@@ -198,11 +225,11 @@ const MusculationProducts = () => {
           </div>
           <div className="text-center">
             <h2 id="musculation-title" className="text-4xl font-bold mb-4" style={{ color: 'rgb(255, 69, 0)' }}>
-              Matériel de Musculation
+              {config?.sectionTitle || "Matériel de Musculation"}
             </h2>
           </div>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Découvrez notre gamme complète de matériel musculation, fitness et cardio pour équiper votre salle de sport.
+            {config?.sectionDescription || "Découvrez notre gamme complète de matériel musculation, fitness et cardio pour équiper votre salle de sport."}
           </p>
         </div>
       </section>

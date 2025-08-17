@@ -29,13 +29,20 @@ const TopPromotionSection = () => {
 
   // Helper to get the image URL from the cover field
   const getImageUrl = (promo: TopPromotion) => {
-    if (promo.product && promo.product.cover) {
-      // Remove any leading slashes and use relative path
-      const coverPath = promo.product.cover.startsWith('/')
-        ? promo.product.cover.slice(1)
-        : promo.product.cover;
-      return `/produits/${coverPath.split('/').slice(1).join('/')}`;
-    }
+    const formatImageUrl = (url: string) => {
+      if (!url) return "/images/placeholder.png";
+      if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/')) {
+        return url;
+      }
+      return `/${url}`;
+    };
+
+    // Try different possible image sources
+    if (promo.cover) return formatImageUrl(promo.cover);
+    if (promo.product?.cover) return formatImageUrl(promo.product.cover);
+    if (promo.product?.mainImage?.url) return formatImageUrl(promo.product.mainImage.url);
+    if (promo.product?.images?.[0]?.url) return formatImageUrl(promo.product.images[0].url);
+    if (promo.product?.imgs?.previews?.[0]) return formatImageUrl(promo.product.imgs.previews[0]);
     return "/images/placeholder.png";
   };
 
@@ -198,5 +205,3 @@ const TopPromotionSection = () => {
 };
 
 export default TopPromotionSection;
-
-

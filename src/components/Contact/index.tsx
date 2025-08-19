@@ -3,14 +3,14 @@ import Breadcrumb from "../Common/Breadcrumb";
 
 const Contact = () => {
   return (
-    <>
+    <div className="contact-page">
       <Breadcrumb title={"Contact"} pages={["contact"]} />
 
-      <section className="overflow-hidden py-20 bg-gray-2">
-        <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
+      <section className="pt-4 pb-20 bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
           <div className="flex flex-col xl:flex-row gap-7.5">
-            <div className="xl:max-w-[370px] w-full bg-white rounded-xl shadow-1">
-              <div className="py-5 px-4 sm:px-7.5 border-b border-gray-3">
+            <div className="xl:max-w-[370px] w-full bg-white rounded-xl shadow-1 border border-gray-3" style={{borderWidth: '1.5px'}}>
+              <div className="py-5 px-4 sm:px-7.5 border-b border-gray-3" style={{borderBottomWidth: '1.5px'}}>
                 <p className="font-medium text-xl text-dark">
                 Coordonnées
                 </p>
@@ -86,7 +86,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 p-4 sm:p-7.5 xl:p-10">
+            <div className="xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 border border-gray-3 p-4 sm:p-7.5 xl:p-10" style={{borderWidth: '1.5px'}}>
               <form>
                 <div className="flex flex-col lg:flex-row gap-5 sm:gap-8 mb-5">
                   <div className="w-full">
@@ -164,7 +164,8 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
+                  className="inline-flex font-medium text-white py-3 px-7 rounded-md ease-out duration-200"
+                  style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', fontWeight: 600 }}
                 >
                   Envoyer un message
                 </button>
@@ -173,7 +174,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

@@ -154,7 +154,7 @@ const TopPromotionSection = () => {
                   {/* Product Info */}
                   <div className="flex-grow flex flex-col">
                     <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
-                      <Link href={`/shop/${normalizeProduct(promo).slug}`}>{normalizeProduct(promo).title || normalizeProduct(promo).designation || promo.designation_fr || "Produit"}</Link>
+                      <Link href={`/topromotions?id=${promo._id}`}>{normalizeProduct(promo).title || normalizeProduct(promo).designation || promo.designation_fr || "Produit"}</Link>
                     </h3>
                     {/* Stars */}
                     <div className="flex items-center justify-center mb-2">

@@ -7,6 +7,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useModalContext } from "@/app/context/QuickViewModalContext";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { updateQuickView } from "@/redux/features/quickView-slice";
+import { addItemToWishlist } from "@/redux/features/wishlist-slice";
+import { addItemToCart } from "@/redux/features/cart-slice";
+import { Heart, Eye, ShoppingCart } from 'lucide-react';
 
 const fallbackImages = [
   "/images/packs/pack.webp",
@@ -17,6 +24,8 @@ const fallbackImages = [
 
 const PacksSection: React.FC = () => {
   const { packs, config, loading, showSection } = usePacksWithConfig();
+  const { openModal } = useModalContext();
+  const dispatch = useDispatch<AppDispatch>();
   
   if (!showSection) return null;
 
@@ -39,6 +48,42 @@ const PacksSection: React.FC = () => {
     
     // Fallback to default images
     return fallbackImages[index % fallbackImages.length];
+  };
+
+  // Normalize pack for quick view and wishlist
+  const normalizePack = (pack: Pack) => {
+    const imageUrl = getImageSrc(pack, 0);
+    return {
+      ...pack,
+      price: pack.prix || pack.price || 0,
+      discountedPrice: pack.promo || pack.oldPrice || pack.prix || pack.price || 0,
+      title: pack.designation_fr || pack.designation || "Pack",
+      designation: pack.designation_fr || pack.designation || "Pack",
+      cover: imageUrl,
+      imgs: { thumbnails: [imageUrl], previews: [imageUrl] },
+      mainImage: { url: imageUrl },
+      images: [{ url: imageUrl }],
+      _id: pack._id,
+    };
+  };
+
+  // Handlers
+  const handleQuickViewUpdate = (pack: Pack) => {
+    dispatch(updateQuickView(normalizePack(pack)));
+  };
+  const handleItemToWishList = (pack: Pack) => {
+    const normalized = normalizePack(pack);
+    const stringId = String(normalized._id || pack._id || `${Date.now()}-${Math.random()}`);
+    dispatch(addItemToWishlist({ ...normalized, id: stringId, status: "available", quantity: 1 }));
+  };
+  const handleAddToCart = (pack: Pack) => {
+    const normalized = normalizePack(pack);
+    const stringId = String(
+      normalized._id ||
+      pack._id ||
+      `${Date.now()}-${Math.random()}`
+    );
+    dispatch(addItemToCart({ ...normalized, id: stringId, quantity: 1, image: normalized.cover }));
   };
 
   return (
@@ -70,7 +115,7 @@ const PacksSection: React.FC = () => {
             return (
               <Card
                 key={pack._id}
-                className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0 focus-within:ring-2 focus-within:ring-orange-500 focus-within:ring-offset-2 rounded-lg"
+                className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0 rounded-lg"
                 role="article"
                 aria-label={`Pack: ${pack.designation_fr || pack.designation || 'Pack sans nom'}`}
               >
@@ -85,12 +130,21 @@ const PacksSection: React.FC = () => {
                     Pack
                   </Badge>
                 </div>
+                {/* Action buttons */}
+                <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" onClick={e => { e.preventDefault(); handleItemToWishList(pack); }}>
+                    <Heart className="w-4 h-4" />
+                  </Button>
+                  <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" onClick={e => { e.preventDefault(); handleQuickViewUpdate(pack); openModal(); }}>
+                    <Eye className="w-4 h-4" />
+                  </Button>
+                </div>
                 <CardContent className="flex flex-col h-full p-4">
                   {/* Product Image */}
                   <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
                     <Link 
                       href={`/shop/${pack.slug}`}
-                      className="block w-full h-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg"
+                      className="block w-full h-full focus:outline-none rounded-lg"
                       aria-label={`Voir les détails du ${pack.designation_fr || pack.designation || 'pack'}`}
                     >
                       <Image
@@ -115,7 +169,7 @@ const PacksSection: React.FC = () => {
                     <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
                       <Link 
                         href={`/shop/${pack.slug}`}
-                        className="focus:outline-none focus:underline focus:text-orange-600"
+                        className="focus:outline-none"
                         aria-label={`Voir les détails du ${pack.designation_fr || pack.designation || 'pack'}`}
                       >
                         {pack.designation_fr || pack.designation || 'Pack sans nom'}
@@ -153,16 +207,17 @@ const PacksSection: React.FC = () => {
                       )}
                     </div>
                   </div>
-                  {/* Voir le pack Button */}
-                  <Link href={`/shop/${pack.slug}`} className="w-full mt-auto">
-                    <Button 
-                      className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 flex items-center justify-center" 
-                      style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }}
-                      aria-label={`Voir les détails du ${pack.designation_fr || pack.designation || 'pack'}`}
-                    >
-                      Voir le pack
-                    </Button>
-                  </Link>
+                  {/* Add to Cart Button */}
+                  <Button 
+                    className="w-full font-medium py-2 sm:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-xs sm:text-sm" 
+                    style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600 }}
+                    onClick={e => { e.preventDefault(); handleAddToCart(pack); }}
+                    aria-label={`Ajouter ${pack.designation_fr || pack.designation || 'pack'} au panier`}
+                  >
+                    <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-white" />
+                    <span className="hidden sm:inline">Ajouter au panier</span>
+                    <span className="sm:hidden">Ajouter</span>
+                  </Button>
                 </CardContent>
               </Card>
             );

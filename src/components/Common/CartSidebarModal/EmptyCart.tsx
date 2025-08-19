@@ -43,7 +43,8 @@ const EmptyCart = () => {
       <Link
         onClick={() => closeCartModal()}
         href="/shop-with-sidebar"
-        className="w-full lg:w-10/12 mx-auto flex justify-center font-medium text-white bg-dark py-[13px] px-6 rounded-md ease-out duration-200 hover:bg-opacity-95"
+        className="w-full lg:w-10/12 mx-auto flex justify-center font-medium text-white py-[13px] px-6 rounded-md ease-out duration-200"
+        style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', fontWeight: 600 }}
       >
         Continuer vos achats
       </Link>

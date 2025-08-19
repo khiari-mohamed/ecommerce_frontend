@@ -325,7 +325,7 @@ const Header = () => {
         </div>
       </div>
       {/* Main header row */}
-      <div className="flex items-center justify-between w-full px-2 sm:px-4 xl:px-16 min-h-[70px] h-[70px] xl:min-h-[80px] xl:h-[80px] bg-white overflow-visible" style={{overflow: 'visible'}}>
+      <div className="flex items-center justify-between w-full px-2 sm:px-4 xl:px-16 min-h-[60px] h-[60px] xl:min-h-[80px] xl:h-[80px] bg-white overflow-visible" style={{overflow: 'visible'}}>
         {/* Logo + Dropdown + Search bar (desktop/tablet only) */}
         <div className="flex items-center min-w-0 w-auto overflow-visible h-[60px] xl:h-[80px]">
           {/* Logo */}

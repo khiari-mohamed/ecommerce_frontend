@@ -293,7 +293,7 @@ const MusculationProducts = () => {
             >
               <Link
                 href="/musculation-products"
-                className="musculation-savoir-plus-btn inline-flex font-medium text-white text-xs sm:text-base rounded-md bg-dark py-2 px-4 sm:py-3 sm:px-9 ease-out duration-200 hover:bg-blue mt-4 sm:mt-8 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:outline-none"
+                className="musculation-savoir-plus-btn inline-flex font-medium text-white text-xs sm:text-base rounded-md bg-dark py-2 px-4 sm:py-3 sm:px-9 ease-out duration-200 hover:bg-blue mt-4 sm:mt-8 focus:outline-none"
                 style={{ position: 'relative', zIndex: 20 }}
                 aria-label="En savoir plus sur le matériel de musculation"
               >
@@ -319,7 +319,7 @@ const MusculationProducts = () => {
             return (
               <Card
                 key={normalized._id || idx}
-                className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0 focus-within:ring-2 focus-within:ring-orange-500 focus-within:ring-offset-2 rounded-lg"
+                className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0 rounded-lg"
                 role="article"
                 aria-label={`Produit: ${normalized.designation || "Produit"}`}
               >
@@ -339,7 +339,7 @@ const MusculationProducts = () => {
                   <Button 
                     size="sm" 
                     variant="ghost" 
-                    className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:ring-2 focus:ring-orange-500 focus:ring-offset-2" 
+                    className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" 
                     onClick={e => handleItemToWishList(normalized, e)}
                     aria-label={`Ajouter ${normalized.designation || "ce produit"} à la liste de souhaits`}
                   >
@@ -348,7 +348,7 @@ const MusculationProducts = () => {
                   <Button 
                     size="sm" 
                     variant="ghost" 
-                    className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:ring-2 focus:ring-orange-500 focus:ring-offset-2" 
+                    className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" 
                     onClick={e => handleQuickViewUpdate(normalized, e)}
                     aria-label={`Aperçu rapide de ${normalized.designation || "ce produit"}`}
                   >
@@ -359,8 +359,8 @@ const MusculationProducts = () => {
                   {/* Product Image */}
                   <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
                     <Link 
-                      href={`/musculation-products/${normalized.slug}`}
-                      className="block w-full h-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg"
+                      href={`/musculation-products/${normalized.slug || normalized._id || 'product'}`}
+                      className="block w-full h-full focus:outline-none rounded-lg"
                       aria-label={`Voir les détails de ${normalized.designation || "ce produit"}`}
                     >
                       <Image
@@ -378,8 +378,8 @@ const MusculationProducts = () => {
                   <div className="flex-grow flex flex-col">
                     <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
                       <Link 
-                        href={`/musculation-products/${normalized.slug}`}
-                        className="focus:outline-none focus:underline focus:text-orange-600"
+                        href={`/musculation-products/${normalized.slug || normalized._id || 'product'}`}
+                        className="focus:outline-none"
                         aria-label={`Voir les détails de ${normalized.designation || "ce produit"}`}
                       >
                         {normalized.designation || "Produit"}
@@ -420,7 +420,7 @@ const MusculationProducts = () => {
                   </div>
                   {/* Add to Cart Button */}
                   <Button 
-                    className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 flex items-center justify-center" 
+                    className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl focus:outline-none transition-all duration-300 transform hover:scale-105 flex items-center justify-center" 
                     style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} 
                     onClick={e => handleAddToCart(normalized, e)} 
                     disabled={isAddingToCart === normalized._id || !normalized.inStock}

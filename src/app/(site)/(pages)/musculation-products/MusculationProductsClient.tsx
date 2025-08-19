@@ -64,42 +64,6 @@ const MusculationProductsClient = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { openModal } = useModalContext();
 
-  // Dynamic header offset for mobile/desktop (robust React way, matches other pages)
-  function ClientHeaderOffset() {
-  React.useEffect(() => {
-  let lastHeight = 0;
-  let animationFrame;
-  function setOffset() {
-  const header = document.querySelector('header');
-  if (header) {
-  const rect = header.getBoundingClientRect();
-  if (rect.height !== lastHeight) {
-  document.documentElement.style.setProperty('--header-offset-musc', rect.height + 'px');
-  lastHeight = rect.height;
-  }
-  } else {
-  document.documentElement.style.setProperty('--header-offset-musc', '8rem');
-  lastHeight = 0;
-  }
-  animationFrame = requestAnimationFrame(setOffset);
-  }
-  setOffset();
-  window.addEventListener('resize', setOffset);
-  window.addEventListener('orientationchange', setOffset);
-  const header = document.querySelector('header');
-  if (header) {
-  header.addEventListener('transitionend', setOffset);
-  }
-  return () => {
-  window.removeEventListener('resize', setOffset);
-  window.removeEventListener('orientationchange', setOffset);
-  if (header) header.removeEventListener('transitionend', setOffset);
-  cancelAnimationFrame(animationFrame);
-  };
-  }, []);
-  return null;
-  }
-
   useEffect(() => {
     const fetchProducts = async () => {
       const products = await fetchMusculationProducts();
@@ -110,8 +74,7 @@ const MusculationProductsClient = () => {
 
   return (
   <>
-  <ClientHeaderOffset />
-  <div className="w-full" style={{ marginTop: 'var(--header-offset-musc, 8rem)' }}>
+  <div className="w-full">
   <div className="w-full mx-auto max-w-screen-2xl">
           <motion.div
             className="max-w-screen-xl px-4 mx-auto md:px-8"
@@ -124,7 +87,7 @@ const MusculationProductsClient = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center text-black3 uppercase font-bold rubik mb-4"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center text-black3 uppercase font-bold rubik mb-8"
             >
               Materiel de Musculation
             </motion.h3>
@@ -133,7 +96,7 @@ const MusculationProductsClient = () => {
 
         <div className="w-full mx-auto max-w-screen-2xl">
           <motion.div
-            className="max-w-screen-xl px-4 mx-auto mt-16 mb-24 md:px-8"
+            className="max-w-screen-xl px-4 mx-auto mb-24 md:px-8"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -150,15 +113,12 @@ const MusculationProductsClient = () => {
                 1024: { slidesPerView: 3 },
                 1280: { slidesPerView: 4 },
               }}
-              className="pt-8 pb-16 sm:pb-20 md:pb-24"
+              className="pb-16 sm:pb-20 md:pb-24"
+              style={{ height: 'auto' }}
               onSwiper={swiper => (swiperRef.current = swiper)}
             >
               {productsData.map((product, idx) => {
                 const mapped = mapToProductCard(product, idx);
-                // Hooks moved to top-level
-                // const dispatch = useDispatch<AppDispatch>();
-                // const { openModal } = useModalContext();
-                // Normalize for cart/wishlist/quickview
                 const normalized = {
                   ...mapped,
                   price: mapped.price,
@@ -186,20 +146,9 @@ const MusculationProductsClient = () => {
                 };
                 return (
                   <SwiperSlide key={product._id || idx}>
+                    <div className="h-full">
                     <Card
-                      className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white"
-                      style={{
-                        border: '1.5px solid #fff',
-                        transition: 'border-color 0.3s, border-width 0.3s',
-                      }}
-                      onMouseEnter={e => {
-                        e.currentTarget.style.borderColor = '#ff6600';
-                        e.currentTarget.style.borderWidth = '2px';
-                      }}
-                      onMouseLeave={e => {
-                        e.currentTarget.style.borderColor = '#fff';
-                        e.currentTarget.style.borderWidth = '1.5px';
-                      }}
+                      className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0"
                     >
                       {/* Badges */}
                       <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
@@ -236,28 +185,37 @@ const MusculationProductsClient = () => {
                         </div>
                         {/* Product Info */}
                         <div className="flex-grow flex flex-col">
-                          <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
+                          <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
                             <Link href={`/shop/${mapped.slug}`}>{mapped.designation}</Link>
                           </h3>
+                          {/* Stars */}
+                          <div className="flex items-center justify-center mb-2">
+                            {[...Array(5)].map((_, i) => (
+                              <Image key={i} src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
+                            ))}
+                            <span className="text-xs text-gray-500 ml-1">({((idx + 1) * 13 % 90) + 10})</span>
+                          </div>
                           {/* Price */}
-                          <div className="flex items-center gap-2 mb-4 justify-center">
-                            <span style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent', fontWeight: 700, fontSize: '1.25rem' }}>
+                          <div className="flex flex-col items-center gap-1 mb-3 justify-center">
+                            <span className="text-sm sm:text-lg font-bold text-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>
                               {Number(mapped.oldPrice ?? mapped.price).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
                             </span>
                             {mapped.oldPrice && (
-                              <span className="text-sm text-gray-500 line-through">
+                              <span className="text-xs sm:text-sm text-gray-500 line-through text-center">
                                 {Number(mapped.price).toLocaleString("fr-TN", { style: "currency", currency: "TND" })}
                               </span>
                             )}
                           </div>
                         </div>
                         {/* Add to Cart Button */}
-                        <Button className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} onClick={e => { e.preventDefault(); handleAddToCart(); }}>
-                          <ShoppingCart className="w-4 h-4 mr-2 text-white" />
-                          Ajouter au panier
+                        <Button className="w-full font-medium py-2 sm:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-xs sm:text-sm" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600 }} onClick={e => { e.preventDefault(); handleAddToCart(); }}>
+                          <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-white" />
+                          <span className="hidden sm:inline">Ajouter au panier</span>
+                          <span className="sm:hidden">Ajouter</span>
                         </Button>
                       </CardContent>
                     </Card>
+                    </div>
                   </SwiperSlide>
                 );
               })}
@@ -293,11 +251,27 @@ const MusculationProductsClient = () => {
               .swiper-pagination-bullet-active {
                 background: #FF4301;
               }
+              .swiper-slide {
+                height: auto;
+                display: flex;
+              }
+              .swiper-slide > div {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+              }
+              .swiper-slide .group {
+                height: 100%;
+                min-height: 450px;
+              }
               @media (max-width: 639px) {
                 .custom-swiper-prev,
                 .custom-swiper-next {
                   width: 40px !important;
                   height: 40px !important;
+                }
+                .swiper-slide .group {
+                  min-height: 400px;
                 }
               }
             `}</style>

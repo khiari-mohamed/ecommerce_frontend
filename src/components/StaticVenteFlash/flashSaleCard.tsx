@@ -127,7 +127,7 @@ function FlashSaleCard({ product }: { product: any }) {
 
   return (
     <Card
-      className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0 focus-within:ring-2 focus-within:ring-orange-500 focus-within:ring-offset-2 rounded-lg"
+      className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0 rounded-lg"
       role="article"
       aria-label={`Produit: ${product.designation_fr || "Produit"}`}
     >
@@ -147,7 +147,7 @@ function FlashSaleCard({ product }: { product: any }) {
         <Button 
           size="sm" 
           variant="ghost" 
-          className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:ring-2 focus:ring-orange-500 focus:ring-offset-2" 
+          className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" 
           onClick={handleWishlist}
           aria-label={`Ajouter ${product.designation_fr || "ce produit"} à la liste de souhaits`}
         >
@@ -156,7 +156,7 @@ function FlashSaleCard({ product }: { product: any }) {
         <Button 
           size="sm" 
           variant="ghost" 
-          className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:ring-2 focus:ring-orange-500 focus:ring-offset-2" 
+          className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" 
           onClick={handleEye}
           aria-label={`Aperçu rapide de ${product.designation_fr || "ce produit"}`}
         >
@@ -168,7 +168,7 @@ function FlashSaleCard({ product }: { product: any }) {
         <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
           <Link 
             href={`/shop/${product.slug}`}
-            className="block w-full h-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg"
+            className="block w-full h-full focus:outline-none rounded-lg"
             aria-label={`Voir les détails de ${product.designation_fr || "ce produit"}`}
           >
             {product.cover?.startsWith('/') ? (
@@ -197,7 +197,7 @@ function FlashSaleCard({ product }: { product: any }) {
           <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
             <Link 
               href={`/shop/${product.slug || 'product'}`}
-              className="focus:outline-none focus:underline focus:text-orange-600"
+              className="focus:outline-none"
               aria-label={`Voir les détails de ${product.designation_fr || "ce produit"}`}
             >
               {product.designation_fr || "Produit"}
@@ -245,7 +245,7 @@ function FlashSaleCard({ product }: { product: any }) {
         </div>
         {/* Add to Cart Button */}
         <Button 
-          className="w-full font-medium py-2 sm:py-3 rounded-lg shadow-lg hover:shadow-xl focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-xs sm:text-sm" 
+          className="w-full font-medium py-2 sm:py-3 rounded-lg shadow-lg hover:shadow-xl focus:outline-none transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-xs sm:text-sm" 
           style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600 }} 
           onClick={handleAddToCart}
           aria-label={`Ajouter ${product.designation_fr || "ce produit"} au panier`}
@@ -260,7 +260,7 @@ function FlashSaleCard({ product }: { product: any }) {
         <div className="fixed inset-0 z-50 flex items-start md:items-center justify-center bg-black bg-opacity-40 overflow-y-auto pt-8 pb-8">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-[95vw] sm:max-w-[400px] p-4 relative max-h-[70vh] overflow-y-auto mx-2 mt-16 md:mt-0">
             <button
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-xl font-bold focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded"
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-xl font-bold focus:outline-none rounded"
               onClick={() => setShowReview(false)}
               aria-label="Fermer"
             >

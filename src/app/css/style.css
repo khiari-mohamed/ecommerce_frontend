@@ -901,3 +901,106 @@
 
 
 
+/* Fix excessive spacing on product details page */
+.product-details-page .shadow-breadcrumb {
+  padding-top: 0px !important;
+}
+@media (min-width: 640px) {
+  .product-details-page .shadow-breadcrumb {
+    padding-top: 5px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .product-details-page .shadow-breadcrumb {
+    padding-top: 20px !important;
+  }
+}
+@media (min-width: 1280px) {
+  .product-details-page .shadow-breadcrumb {
+    padding-top: 25px !important;
+  }
+}
+/* Fix excessive spacing on promotions page */
+.promotions-page .shadow-breadcrumb {
+  padding-top: 0px !important;
+}
+@media (min-width: 640px) {
+  .promotions-page .shadow-breadcrumb {
+    padding-top: 5px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .promotions-page .shadow-breadcrumb {
+    padding-top: 20px !important;
+  }
+}
+@media (min-width: 1280px) {
+  .promotions-page .shadow-breadcrumb {
+    padding-top: 25px !important;
+  }
+}
+/* Fix excessive spacing on blog page */
+.blog-page .shadow-breadcrumb {
+  padding-top: 0px !important;
+}
+@media (min-width: 640px) {
+  .blog-page .shadow-breadcrumb {
+    padding-top: 5px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .blog-page .shadow-breadcrumb {
+    padding-top: 20px !important;
+  }
+}
+@media (min-width: 1280px) {
+  .blog-page .shadow-breadcrumb {
+    padding-top: 25px !important;
+  }
+}
+/* Fix excessive spacing on contact page */
+.contact-page .shadow-breadcrumb {
+  padding-top: 0px !important;
+}
+@media (min-width: 640px) {
+  .contact-page .shadow-breadcrumb {
+    padding-top: 5px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .contact-page .shadow-breadcrumb {
+    padding-top: 20px !important;
+  }
+}
+@media (min-width: 1280px) {
+  .contact-page .shadow-breadcrumb {
+    padding-top: 25px !important;
+  }
+}
+/* Fix excessive spacing on all static pages */
+.w-full.max-w-9xl.bg-white.shadow-md {
+  margin-top: 0 !important;
+}
+/* Remove gray margin between header and static pages */
+.bg-\[\#F2F2F2\] .w-full.max-w-9xl.bg-white.shadow-md {
+  margin-top: 0 !important;
+}
+/* Fix excessive spacing on wishlist page */
+.wishlist-page .shadow-breadcrumb {
+  padding-top: 0px !important;
+}
+@media (min-width: 640px) {
+  .wishlist-page .shadow-breadcrumb {
+    padding-top: 5px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .wishlist-page .shadow-breadcrumb {
+    padding-top: 20px !important;
+  }
+}
+@media (min-width: 1280px) {
+  .wishlist-page .shadow-breadcrumb {
+    padding-top: 25px !important;
+  }
+}

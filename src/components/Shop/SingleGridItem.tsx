@@ -106,7 +106,7 @@ const SingleGridItem = ({ item, rating, reviewsCount }: SingleGridItemProps) => 
 
   
   return (
-    <div className="group relative overflow-hidden w-full h-full flex flex-col shadow-none border-0" style={{height: '100%'}}>
+    <div className="group relative overflow-hidden h-full flex flex-col shadow-none border-0">
       {/* Badges */}
       <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
         {(
@@ -127,30 +127,30 @@ const SingleGridItem = ({ item, rating, reviewsCount }: SingleGridItemProps) => 
       </div>
       {/* Action buttons */}
       <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full" onClick={e => { e.preventDefault(); handleItemToWishList(); }}>
+        <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" onClick={e => { e.preventDefault(); handleItemToWishList(); }}>
           <Heart className="w-4 h-4" />
         </Button>
-        <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full" onClick={e => { e.preventDefault(); openModal(); handleQuickViewUpdate(); }}>
+        <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" onClick={e => { e.preventDefault(); openModal(); handleQuickViewUpdate(); }}>
           <Eye className="w-4 h-4" />
         </Button>
       </div>
-      {/* Product Image */}
-      <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg m-4 mb-2 overflow-hidden group-hover:scale-105 transition-transform duration-300">
-        <Image
-          src={getProductImageSrc(item)}
-          alt={item.designation || item.title || "Product image"}
-          fill
-          className="w-full h-full object-cover"
-          loading="lazy"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 transition-opacity duration-300" />
-      </div>
-      {/* Product Info */}
-      <div className="flex-grow flex flex-col px-4 pb-4">
-        <div className="flex-grow">
+      <div className="flex flex-col h-full p-4">
+        {/* Product Image */}
+        <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
+          <Image
+            src={getProductImageSrc(item)}
+            alt={item.designation || item.title || "Product image"}
+            fill
+            className="w-full h-full object-cover"
+            loading="lazy"
+            sizes="100vw"
+          />
+
+        </div>
+        {/* Product Info */}
+        <div className="flex-grow flex flex-col">
           <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
-            <Link href={`/shop/${item.slug}`}>{item.designation}</Link>
+            <Link href={`/shop/${item.slug}`} className="focus:outline-none">{item.designation}</Link>
           </h3>
           {/* Stars */}
           <div className="flex items-center justify-center mb-2">
@@ -172,7 +172,7 @@ const SingleGridItem = ({ item, rating, reviewsCount }: SingleGridItemProps) => 
           </div>
         </div>
         {/* Add to Cart Button */}
-        <Button className="w-full font-medium py-2 sm:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-xs sm:text-sm mt-auto" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600 }} onClick={e => { e.preventDefault(); handleAddToCart(); }}>
+        <Button className="w-full font-medium py-2 sm:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-xs sm:text-sm focus:outline-none" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600 }} onClick={e => { e.preventDefault(); handleAddToCart(); }}>
           <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-white" />
           <span className="hidden sm:inline">Ajouter au panier</span>
           <span className="sm:hidden">Ajouter</span>

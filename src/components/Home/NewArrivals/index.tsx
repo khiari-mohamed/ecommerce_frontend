@@ -56,13 +56,19 @@ const NewArrival = () => {
 
   // Helper to get the image URL from the product
   const getImageUrl = (item: Product) => {
-    let src =
-      (item.cover && typeof item.cover === 'string' && item.cover.trim() !== '') ? item.cover :
+    // For new arrivals, prioritize cover field from API
+    if (item.cover && typeof item.cover === 'string' && item.cover.trim() !== '') {
+      return item.cover.startsWith('/') ? item.cover : '/' + item.cover;
+    }
+    
+    // Fallback logic for other product types
+    let src = 
       item.imgs?.previews?.[0] ? item.imgs.previews[0] :
       item.imgs?.thumbnails?.[0] ? item.imgs.thumbnails[0] :
       (item.mainImage && typeof item.mainImage === "object" && item.mainImage.url) ? item.mainImage.url :
       (Array.isArray(item.images) && item.images.length > 0 && item.images[0]?.url) ? item.images[0].url :
       "/images/placeholder.png";
+    
     // Ensure leading slash for relative paths
     if (src && typeof src === 'string' && !src.startsWith('/') && !src.startsWith('http')) {
       src = '/' + src;
@@ -72,31 +78,21 @@ const NewArrival = () => {
 
   // Normalize product for cart/preview/wishlist
   const normalizeProduct = (item: Product) => {
-    const imageUrl = getImageUrl(item);
+    // For new arrivals, directly use the cover field from API
+    const finalImageUrl = item.cover && typeof item.cover === 'string' && item.cover.trim() !== '' 
+      ? (item.cover.startsWith('/') ? item.cover : '/' + item.cover)
+      : '/images/placeholder.png';
+    
     return {
       ...item,
       id: typeof item._id === "string" ? Number(item._id) : item._id ?? item.id,
-      imgs: item.imgs && item.imgs.thumbnails.length > 0 && item.imgs.previews.length > 0
-        ? item.imgs
-        : {
-            thumbnails: (
-              item.images && Array.isArray(item.images) && item.images.length > 0
-                ? item.images.map((img: any) => img.url)
-                : item.mainImage?.url
-                ? [item.mainImage.url]
-                : []
-            ),
-            previews: (
-              item.images && Array.isArray(item.images) && item.images.length > 0
-                ? item.images.map((img: any) => img.url)
-                : item.mainImage?.url
-                ? [item.mainImage.url]
-                : []
-            ),
-          },
-      cover: item.cover ?? imageUrl,
-      mainImage: item.mainImage ?? { url: imageUrl },
-      images: item.images ?? [{ url: imageUrl }],
+      imgs: {
+        thumbnails: [finalImageUrl],
+        previews: [finalImageUrl],
+      },
+      cover: item.cover ?? finalImageUrl,
+      mainImage: item.mainImage ?? { url: finalImageUrl },
+      images: item.images ?? [{ url: finalImageUrl }],
     };
   };
 
@@ -170,7 +166,7 @@ const NewArrival = () => {
               return (
                 <Card
                   key={normalized.id || key}
-                  className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0 focus-within:ring-2 focus-within:ring-orange-500 focus-within:ring-offset-2 rounded-lg"
+                  className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0 rounded-lg"
                   role="article"
                   aria-label={`Produit: ${normalized.title || normalized.designation || "Produit"}`}
                 >
@@ -190,7 +186,7 @@ const NewArrival = () => {
                     <Button 
                       size="sm" 
                       variant="ghost" 
-                      className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:ring-2 focus:ring-orange-500 focus:ring-offset-2" 
+                      className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" 
                       onClick={e => { e.preventDefault(); handleItemToWishList(item); }}
                       aria-label={`Ajouter ${normalized.title || normalized.designation || "ce produit"} à la liste de souhaits`}
                     >
@@ -199,7 +195,7 @@ const NewArrival = () => {
                     <Button 
                       size="sm" 
                       variant="ghost" 
-                      className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:ring-2 focus:ring-orange-500 focus:ring-offset-2" 
+                      className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" 
                       onClick={e => { e.preventDefault(); handleQuickViewUpdate(item); openModal(); }}
                       aria-label={`Aperçu rapide de ${normalized.title || normalized.designation || "ce produit"}`}
                     >
@@ -210,8 +206,8 @@ const NewArrival = () => {
                     {/* Product Image */}
                     <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
                       <Link 
-                        href={`/shop/${normalized.slug}`}
-                        className="block w-full h-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg"
+                        href={`/shop/${normalized.slug || normalized._id || normalized.id || 'product'}`}
+                        className="block w-full h-full focus:outline-none rounded-lg"
                         aria-label={`Voir les détails de ${normalized.title || normalized.designation || "ce produit"}`}
                       >
                         <Image
@@ -229,8 +225,8 @@ const NewArrival = () => {
                     <div className="flex-grow flex flex-col">
                       <h3 className="font-semibold text-gray-800 mb-3 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
                         <Link 
-                          href={`/shop/${normalized.slug}`}
-                          className="focus:outline-none focus:underline focus:text-orange-600"
+                          href={`/shop/${normalized.slug || normalized._id || normalized.id || 'product'}`}
+                          className="focus:outline-none"
                           aria-label={`Voir les détails de ${normalized.title || normalized.designation || "ce produit"}`}
                         >
                           {normalized.title || normalized.designation || "Produit"}
@@ -271,7 +267,7 @@ const NewArrival = () => {
                     </div>
                     {/* Add to Cart Button */}
                     <Button 
-                      className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 flex items-center justify-center" 
+                      className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl focus:outline-none transition-all duration-300 transform hover:scale-105 flex items-center justify-center" 
                       style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} 
                       onClick={e => { e.preventDefault(); handleAddToCart(item); }}
                       aria-label={`Ajouter ${normalized.title || normalized.designation || "ce produit"} au panier`}
@@ -288,7 +284,7 @@ const NewArrival = () => {
         <div className="text-center mt-8 sm:mt-12.5">
           <Link
             href="/shop-without-sidebar"
-            className="inline-flex font-medium text-custom-sm py-3 px-5 sm:px-7 md:px-12.5 rounded-md border-gray-3 border bg-gray-1 text-dark ease-out duration-200 w-full sm:w-auto text-center justify-center promo-gradient-hover focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:outline-none"
+            className="inline-flex font-medium text-custom-sm py-3 px-5 sm:px-7 md:px-12.5 rounded-md border-gray-3 border bg-gray-1 text-dark ease-out duration-200 w-full sm:w-auto text-center justify-center promo-gradient-hover focus:outline-none"
             aria-label="Voir tous les nouveaux produits"
           >
             Tout voir

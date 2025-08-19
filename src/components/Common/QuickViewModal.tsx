@@ -11,14 +11,20 @@ import { updateproductDetails } from "@/redux/features/product-details";
 // Robust image selection for all product shapes
 const getValidImageSrc = (product, idx = 0) => {
   let src = "";
+  
+  // Try thumbnails first (for normalized products)
   if (product?.imgs?.thumbnails && product.imgs.thumbnails.length > 0)
     src = product.imgs.thumbnails[idx] || product.imgs.thumbnails[0];
+  // Try previews (for normalized products)
   else if (product?.imgs?.previews && product.imgs.previews.length > 0)
     src = product.imgs.previews[idx] || product.imgs.previews[0];
-  else if (product?.cover !== undefined && product?.cover !== null) {
-    if (typeof product.cover === "string" && product.cover.trim() !== "") src = product.cover;
-    else if (typeof product.cover === "object" && product.cover.url) src = product.cover.url;
-  }
+  // Try cover field (for new arrivals API response)
+  else if (product?.cover && typeof product.cover === "string" && product.cover.trim() !== "")
+    src = product.cover;
+  // Try cover as object
+  else if (product?.cover && typeof product.cover === "object" && product.cover.url)
+    src = product.cover.url;
+  // Try mainImage
   else if (product?.mainImage && typeof product.mainImage === "object" && product.mainImage.url)
     src = product.mainImage.url;
   else
@@ -33,22 +39,29 @@ const getValidImageSrc = (product, idx = 0) => {
 
 // Helper to get all preview images for the modal
 function getPreviewImages(product: any): string[] {
+  // Try thumbnails first (for normalized products)
   if (product?.imgs?.thumbnails && product.imgs.thumbnails.length > 0) {
     return product.imgs.thumbnails;
   }
+  // Try previews (for normalized products)
   if (product?.imgs?.previews && product.imgs.previews.length > 0) {
     return product.imgs.previews;
   }
-  const cover = product?.cover;
-  if (cover !== undefined && cover !== null) {
-    if (typeof cover === "string" && cover.trim() !== "") return [cover];
-    if (typeof cover === "object" && cover.url) return [cover.url];
+  // Try cover field (for new arrivals API response)
+  if (product?.cover && typeof product.cover === "string" && product.cover.trim() !== "") {
+    return [product.cover];
   }
+  // Try cover as object
+  if (product?.cover && typeof product.cover === "object" && product.cover.url) {
+    return [product.cover.url];
+  }
+  // Try mainImage
   if (product?.mainImage && typeof product.mainImage === "object" && product.mainImage.url) {
     return [product.mainImage.url];
   }
-  if (product?.images) {
-    return [product.images];
+  // Try images array
+  if (product?.images && Array.isArray(product.images) && product.images.length > 0) {
+    return product.images.map(img => typeof img === "string" ? img : img?.url).filter(Boolean);
   }
   return ["/images/placeholder.png"];
 }
@@ -117,14 +130,13 @@ const QuickViewModal = () => {
     <div
       className={`${
         isModalOpen ? "z-99999" : "hidden"
-      } fixed top-0 left-0 overflow-y-auto no-scrollbar w-full h-screen sm:py-20 xl:py-25 2xl:py-[230px] bg-dark/70 sm:px-8 px-4 py-5`}
+      } fixed inset-0 overflow-y-auto no-scrollbar w-full h-screen bg-black/50 backdrop-blur-sm p-2 sm:p-4 md:p-8 flex items-center justify-center`}
     >
-      <div className="flex items-center justify-center ">
-        <div className="w-full max-w-[1100px] rounded-xl shadow-3 bg-white p-7.5 relative modal-content max-h-screen overflow-y-auto sm:max-h-[90vh]">
+        <div className="w-full max-w-[1100px] rounded-xl shadow-2xl bg-white p-3 sm:p-6 md:p-8 relative modal-content max-h-[95vh] overflow-y-auto">
           <button
             onClick={() => closeModal()}
             aria-label="button for close modal"
-            className="absolute top-0 right-0 sm:top-6 sm:right-6 flex items-center justify-center w-10 h-10 rounded-full ease-in duration-150 bg-meta text-body hover:text-dark"
+            className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-6 md:right-6 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full ease-in duration-150 bg-white shadow-lg border border-gray-200 text-gray-600 hover:text-red-500 hover:bg-red-50 z-50"
           >
             <svg
               className="fill-current"
@@ -143,7 +155,7 @@ const QuickViewModal = () => {
             </svg>
           </button>
 
-          <div className="flex flex-wrap items-center gap-12.5">
+          <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-12.5">
             <div className="max-w-[526px] w-full">
               <div className="flex gap-5">
                 <div className="flex flex-col gap-5">
@@ -151,9 +163,12 @@ const QuickViewModal = () => {
                   <button
                   onClick={() => setActivePreview(key)}
                   key={key}
-                  className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${
-                  activePreview === key && "border-2 border-blue"
+                  className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 ${
+                  activePreview === key ? "border-2" : ""
                   }`}
+                  style={{
+                    borderColor: activePreview === key ? '#ea580c' : 'transparent'
+                  }}
                   >
                   <Image
                   src={getValidImageSrc(product, key)}
@@ -201,30 +216,6 @@ const QuickViewModal = () => {
             </div>
 
             <div className="max-w-[445px] w-full">
-              {/* Dynamic Discount Label */}
-              {(() => {
-                // Helper to generate a pseudo-random but fixed discount per product
-                function getFixedDiscount(product) {
-                  // Use id, title, or fallback to 0
-                  const key = product?.id || product?.title || 0;
-                  if (!key) return 0;
-                  // Simple hash function
-                  let hash = 0;
-                  const str = String(key);
-                  for (let i = 0; i < str.length; i++) {
-                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-                  }
-                  // Range 7-25
-                  const discount = 7 + (Math.abs(hash) % 19); // 7 to 25
-                  return discount;
-                }
-                const discount = getFixedDiscount(product);
-                return (
-                  <span className="inline-block text-custom-xs font-medium text-white py-1 px-3 bg-green mb-6.5">
-                    SOLDES {discount}% DE RÉDUCTION
-                  </span>
-                );
-              })()}
 
               <h3 className="font-semibold text-xl xl:text-heading-5 text-dark mb-4">
                 {product.title}
@@ -475,14 +466,15 @@ const QuickViewModal = () => {
                 <button
                   disabled={quantity === 0 && true}
                   onClick={() => handleAddToCart()}
-                  className={`inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark
-                  `}
+                  className="inline-flex font-medium text-white py-3 px-7 rounded-md ease-out duration-200"
+                  style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', fontWeight: 600 }}
                 >
                   Ajouter au panier
                 </button>
 
                 <button
-                  className={`inline-flex items-center gap-2 font-medium text-white bg-dark py-3 px-6 rounded-md ease-out duration-200 hover:bg-opacity-95 `}
+                  className="inline-flex items-center gap-2 font-medium text-white py-3 px-6 rounded-md ease-out duration-200"
+                  style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', fontWeight: 600 }}
                 >
                   <svg
                     className="fill-current"
@@ -506,7 +498,8 @@ const QuickViewModal = () => {
                 {/* Facebook */}
                 <button
                   aria-label="Partager sur Facebook"
-                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-blue-600 hover:text-white transition-all duration-150"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 text-white shadow-sm transition-all duration-150"
+                  style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)' }}
                   onClick={() => {
                     window.open(
                       `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
@@ -529,7 +522,8 @@ const QuickViewModal = () => {
                 {/* Twitter */}
                 <button
                   aria-label="Partager sur Twitter"
-                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-blue-400 hover:text-white transition-all duration-150"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 text-white shadow-sm transition-all duration-150"
+                  style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)' }}
                   onClick={() => {
                     window.open(
                       `https://twitter.com/intent/tweet?url=${encodeURIComponent(
@@ -552,7 +546,8 @@ const QuickViewModal = () => {
                 {/* WhatsApp */}
                 <button
                   aria-label="Partager sur WhatsApp"
-                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-green-500 hover:text-white transition-all duration-150"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 text-white shadow-sm transition-all duration-150"
+                  style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)' }}
                   onClick={() => {
                     window.open(
                       `https://api.whatsapp.com/send?text=${encodeURIComponent(
@@ -575,7 +570,8 @@ const QuickViewModal = () => {
                 {/* LinkedIn */}
                 <button
                   aria-label="Partager sur LinkedIn"
-                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-blue-700 hover:text-white transition-all duration-150"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 text-white shadow-sm transition-all duration-150"
+                  style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)' }}
                   onClick={() => {
                     window.open(
                       `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
@@ -598,7 +594,8 @@ const QuickViewModal = () => {
                 {/* Reddit */}
                 <button
                   aria-label="Partager sur Reddit"
-                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-orange-500 hover:text-white transition-all duration-150"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 text-white shadow-sm transition-all duration-150"
+                  style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)' }}
                   onClick={() => {
                     window.open(
                       `https://www.reddit.com/submit?url=${encodeURIComponent(
@@ -621,7 +618,8 @@ const QuickViewModal = () => {
                 {/* Instagram (opens profile, as Instagram does not support direct share links) */}
                 <button
                   aria-label="Voir sur Instagram"
-                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-pink-500 hover:text-white transition-all duration-150"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 text-white shadow-sm transition-all duration-150"
+                  style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)' }}
                   onClick={() => {
                     window.open(
                       `https://www.instagram.com/`,
@@ -642,7 +640,8 @@ const QuickViewModal = () => {
                 {/* Copy Link */}
                 <button
                   aria-label="Copier le lien"
-                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 bg-white shadow-sm hover:bg-gray-300 transition-all duration-150"
+                  className="flex items-center justify-center w-11 h-11 rounded-full border border-gray-3 text-white shadow-sm transition-all duration-150"
+                  style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)' }}
                   onClick={() => {
                     navigator.clipboard.writeText(window.location.href);
                     alert("Lien copié !");
@@ -661,7 +660,6 @@ const QuickViewModal = () => {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 };

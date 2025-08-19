@@ -36,11 +36,7 @@ const RecentlyViewdItems = () => {
     sliderRef.current.slideNext(); // <-- Use slideNext directly
   }, []);
 
-  return (
-  <div>
-    <h2>No products available</h2>
-  </div>
-);
+  return null;
 };
 
 export default RecentlyViewdItems;

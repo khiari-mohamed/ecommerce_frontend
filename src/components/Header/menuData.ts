@@ -8,24 +8,10 @@ export const menuData: Menu[] = [
     path: "/shop-with-sidebar",
     submenu: [
       {
-        id: 21,
-        title: "Boutique avec barre latérale",
-        newTab: false,
-        path: "/shop-with-sidebar",
-        showBadge: undefined
-      },
-      {
         id: 22,
         title: "Boutique",
         newTab: false,
         path: "/shop-without-sidebar",
-        showBadge: undefined
-      },
-      {
-        id: 23,
-        title: "Détails du produit",
-        newTab: false,
-        path: "/shop-details",
         showBadge: undefined
       },
       {

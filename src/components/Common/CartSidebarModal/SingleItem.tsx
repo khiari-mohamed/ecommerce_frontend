@@ -32,7 +32,8 @@ function normalizeProduct(item: any) {
 
 function getProductImageSrc(item: any): string {
   let src = "";
-  if (typeof item.cover === "string" && item.cover.trim() !== "") src = item.cover;
+  if (typeof item.image === "string" && item.image.trim() !== "") src = item.image;
+  else if (typeof item.cover === "string" && item.cover.trim() !== "") src = item.cover;
   else if (item.imgs?.previews?.[0]) src = item.imgs.previews[0];
   else if (item.imgs?.thumbnails?.[0]) src = item.imgs.thumbnails[0];
   else if (item.mainImage && typeof item.mainImage === "object" && item.mainImage.url) src = item.mainImage.url;

@@ -67,7 +67,7 @@ const SingleItem = ({ item }: { item: Product }) => {
   const productName = item.designation || item.title || "Produit";
 
   return (
-    <Link href={`/shop/${item.slug}`} className="group block">
+    <Link href={`/shop/${item.slug || item._id || item.id || 'product'}`} className="group block">
       <div className="relative overflow-hidden rounded-lg bg-[#F6F7FB] min-h-[260px] sm:min-h-[320px] md:min-h-[360px] lg:min-h-[403px]">
         <div className="text-center px-2 sm:px-4 py-5 sm:py-7.5">
           <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 mb-2">

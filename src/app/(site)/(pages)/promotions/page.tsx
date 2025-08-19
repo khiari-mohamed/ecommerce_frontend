@@ -14,6 +14,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart, Heart, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import Breadcrumb from "@/components/Common/Breadcrumb";
 
 interface ProductItem {
   _id?: string;
@@ -131,22 +132,10 @@ const PromotionsPage = () => {
   const currentProducts = products.slice(startIndex, startIndex + productsPerPage);
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-yellow-50">
+    <div className="promotions-page">
+      <Breadcrumb title={"Promotions"} pages={["promotions"]} />
+      <section className="pt-4 pb-20 bg-gradient-to-b from-white to-yellow-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section title */}
-        <div className="text-center" style={{ marginBottom: '1rem' }}>
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full mb-2 sm:mb-6 shadow-lg">
-            <span className="text-2xl">🎉</span>
-          </div>
-          <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4" style={{ color: 'rgb(255, 69, 0)' }}>
-              Toutes les Promotions
-            </h2>
-          </div>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Découvrez toutes nos offres exceptionnelles sur une large sélection de produits !
-          </p>
-        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
           {loading ? (
@@ -195,7 +184,7 @@ const PromotionsPage = () => {
                   {/* Product Info */}
                   <div className="flex-grow flex flex-col">
                     <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
-                      <Link href={`/shop/${item._id || item.id || 'product'}`}>{normalizeProduct(item).title || normalizeProduct(item).designation || item.designation_fr || "Produit"}</Link>
+                      <Link href={`/shop/${item.slug || item._id || item.id || 'product'}`}>{normalizeProduct(item).title || normalizeProduct(item).designation || item.designation_fr || "Produit"}</Link>
                     </h3>
                     {/* Stars */}
                     <div className="flex items-center justify-center mb-2">
@@ -366,6 +355,7 @@ const PromotionsPage = () => {
         )}
       </div>
     </section>
+    </div>
   );
 };
 

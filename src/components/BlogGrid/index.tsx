@@ -8,99 +8,80 @@ const BlogGrid = () => {
   const blogData = useBlogData();
   const [currentPage, setCurrentPage] = useState(1);
   const blogsPerPage = 10;
-  
+
   const { currentBlogs, totalPages } = useMemo(() => {
     const startIndex = (currentPage - 1) * blogsPerPage;
     const endIndex = startIndex + blogsPerPage;
     return {
       currentBlogs: blogData.slice(startIndex, endIndex),
-      totalPages: Math.ceil(blogData.length / blogsPerPage)
+      totalPages: Math.ceil(blogData.length / blogsPerPage),
     };
   }, [blogData, currentPage]);
 
   return (
-    <>
+    <div className="blog-page overflow-x-hidden"> {/* 🚑 Prevent horizontal scroll */}
       <Breadcrumb title={"Blog Grid"} pages={["blog grid"]} />
-      <section className="overflow-hidden py-20 bg-gray-2">
-        <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-7.5">
-            {/* <!-- blog item --> */}
+      <section className="pt-4 pb-20 bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentBlogs.map((blog, key) => (
               <BlogItem blog={blog} key={key} />
             ))}
           </div>
 
-          {/* <!-- Blog Pagination Start --> */}
-          <div className="flex justify-center mt-15">
-            <div className="bg-white shadow-1 rounded-md p-2">
-              <ul className="flex items-center">
-                <li>
-                  <button
-                    aria-label="Previous page"
-                    type="button"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                    className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] disabled:text-gray-4 hover:text-white hover:bg-blue"
-                  >
-                    <svg
-                      className="fill-current"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12.1782 16.1156C12.0095 16.1156 11.8407 16.0594 11.7282 15.9187L5.37197 9.45C5.11885 9.19687 5.11885 8.80312 5.37197 8.55L11.7282 2.08125C11.9813 1.82812 12.3751 1.82812 12.6282 2.08125C12.8813 2.33437 12.8813 2.72812 12.6282 2.98125L6.72197 9L12.6563 15.0187C12.9095 15.2719 12.9095 15.6656 12.6563 15.9187C12.4876 16.0312 12.347 16.1156 12.1782 16.1156Z"
-                        fill=""
-                      />
-                    </svg>
-                  </button>
-                </li>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                  <li key={page}>
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-16"> {/* fixed mt-15 → mt-16 */}
+              <div className="bg-white shadow rounded-md p-2">
+                <ul className="flex flex-wrap items-center gap-1">
+                  {/* Previous Button */}
+                  <li>
                     <button
-                      onClick={() => setCurrentPage(page)}
-                      className={`flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue ${
-                        currentPage === page ? 'bg-blue text-white' : ''
-                      }`}
+                      aria-label="button for pagination left"
+                      type="button"
+                      onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                      disabled={currentPage === 1}
+                      className="flex items-center justify-center w-8 h-9 rounded disabled:text-gray-400 hover:text-white hover:bg-blue transition"
                     >
-                      {page}
+                      ◀
                     </button>
                   </li>
-                ))}
 
-                <li>
-                  <button
-                    aria-label="Next page"
-                    type="button"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                    className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] hover:text-white hover:bg-blue disabled:text-gray-4"
-                  >
-                    <svg
-                      className="fill-current"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                  {/* Page Numbers */}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <li key={page}>
+                      <button
+                        onClick={() => setCurrentPage(page)}
+                        className={`flex py-1 px-3 rounded transition ${
+                          currentPage === page
+                            ? "bg-blue text-white"
+                            : "hover:bg-blue hover:text-white"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    </li>
+                  ))}
+
+                  {/* Next Button */}
+                  <li>
+                    <button
+                      aria-label="button for pagination right"
+                      type="button"
+                      onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                      disabled={currentPage === totalPages}
+                      className="flex items-center justify-center w-8 h-9 rounded hover:text-white hover:bg-blue disabled:text-gray-400 transition"
                     >
-                      <path
-                        d="M5.82197 16.1156C5.65322 16.1156 5.5126 16.0594 5.37197 15.9469C5.11885 15.6937 5.11885 15.3 5.37197 15.0469L11.2782 9L5.37197 2.98125C5.11885 2.72812 5.11885 2.33437 5.37197 2.08125C5.6251 1.82812 6.01885 1.82812 6.27197 2.08125L12.6282 8.55C12.8813 8.80312 12.8813 9.19687 12.6282 9.45L6.27197 15.9187C6.15947 16.0312 5.99072 16.1156 5.82197 16.1156Z"
-                        fill=""
-                      />
-                    </svg>
-                  </button>
-                </li>
-              </ul>
+                      ▶
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-          {/* <!-- Blog Pagination End --> */}
+          )}
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Rate from "antd/es/rate";
 import { ShoppingCart, Heart, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -10,8 +9,9 @@ import { addItemToCart } from "@/redux/features/cart-slice";
 import { updateQuickView } from "@/redux/features/quickView-slice";
 import { addItemToWishlist } from "@/redux/features/wishlist-slice";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { toast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/formattedPrice";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 
@@ -153,10 +153,8 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
   }, [dispatch, product, name, price, imageSrc, isAddingToCart]);
 
   return (
-    <div
-      className={cn(
-        "group relative overflow-hidden h-full flex flex-col shadow-none bg-white rounded-xl border-0",
-      )}
+    <Card
+      className="group relative overflow-hidden h-full flex flex-col shadow-none bg-white border-0"
       onMouseEnter={e => {
         setIsHovered(true);
       }}
@@ -168,54 +166,38 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
       {/* Badges */}
       <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
         {discountPercentage > 0 && (
-          <span
-            style={{
-              background: 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)',
-              color: '#fff',
-              borderRadius: '9999px',
-              fontWeight: 700,
-              fontSize: '0.75rem',
-              boxShadow: '0 2px 8px 0 rgba(239,68,68,0.15)',
-              zIndex: 20,
-              position: 'relative',
-              display: 'inline-block',
-            }}
-            className="text-xs font-bold px-2 py-1"
-          >
+          <Badge style={{ background: 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)', color: '#fff', borderRadius: '9999px', fontWeight: 700, fontSize: '0.75rem', boxShadow: '0 2px 8px 0 rgba(239,68,68,0.15)' }} className="text-xs font-bold px-2 py-1">
             -{discountPercentage}%
-          </span>
+          </Badge>
         )}
+        <Badge style={{ background: '#1cac54', color: '#fff', borderRadius: '9999px', fontWeight: 700, fontSize: '0.75rem', boxShadow: '0 2px 8px 0 rgba(28,172,84,0.15)' }} className="text-xs font-bold px-2 py-1 mt-1">
+          New
+        </Badge>
       </div>
       {/* Action buttons */}
       <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <button
-          className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full flex items-center justify-center"
-          onClick={handleWishlist}
-          aria-label="Ajouter aux favoris"
-        >
-          <Heart className="w-4 h-4 text-orange-500" />
-        </button>
-        <button
-          className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full flex items-center justify-center"
-          onClick={handleQuickView}
-          aria-label="Aperçu rapide"
-        >
-          <Eye className="w-4 h-4 text-orange-500" />
-        </button>
+        <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" onClick={handleWishlist}>
+          <Heart className="w-4 h-4" />
+        </Button>
+        <Button size="sm" variant="ghost" className="w-8 h-8 p-0 bg-white/90 hover:bg-white shadow-lg rounded-full focus:outline-none" onClick={handleQuickView}>
+          <Eye className="w-4 h-4" />
+        </Button>
       </div>
-      <div className="p-4 flex flex-col h-full">
+      <CardContent className="flex flex-col h-full p-4">
         {/* Product Image */}
         <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
           <Image
             src={imageSrc}
             alt={name}
-            width={250}
-            height={250}
+            fill
             className="w-full h-full object-cover"
+            loading="lazy"
+            sizes="100vw"
             onLoad={() => setIsImageLoaded(true)}
             onError={() => setIsImageLoaded(true)}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {/* Overlay gradient removed on hover */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 transition-opacity duration-300" />
           {!product?.inStock && (
             <div className="absolute inset-0 z-30 flex items-center justify-center bg-white/60 backdrop-blur-[2px]">
               <div className="w-full px-4 py-1.5 text-sm font-medium text-center text-white shadow-md bg-[#FF4301] md:text-base transform rotate-[-5deg]">
@@ -229,57 +211,39 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
             </div>
           )}
         </div>
-        {/* Title and brand first */}
-        {product?.brand && (
-          <div className="mb-1.5">
-            <span className="text-xs font-medium tracking-wider text-gray-500 uppercase">
-              {product.brand}
-            </span>
+        {/* Product Info */}
+        <div className="flex-grow flex flex-col">
+          <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 text-sm leading-relaxed group-hover:text-orange-600 transition-colors duration-300 min-h-[2.5rem] text-center">
+            <Link href={`/shop/${product?.slug}`} className="focus:outline-none">
+              {name}
+            </Link>
+          </h3>
+          {/* Stars */}
+          <div className="flex items-center justify-center mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Image key={i} src="/images/icons/icon-star.svg" alt="star icon" width={14} height={14} loading="lazy" sizes="14px" />
+            ))}
+            <span className="text-xs text-gray-500 ml-1">({reviewsCount})</span>
           </div>
-        )}
-        <h3
-          className="mb-3 text-sm font-medium text-center w-full transition-colors sm:text-base group-hover:text-primary line-clamp-2"
-          style={{ minHeight: '3.4em', maxHeight: '3.4em', overflow: 'hidden', display: 'block' }}
-        >
-          <Link
-            href={`/shop/${product?.slug}`}
-            className="hover:text-orange-600 transition-colors duration-200 w-full block"
-            style={{ textOverflow: 'ellipsis', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', whiteSpace: 'normal' }}
-          >
-            {name}
-          </Link>
-        </h3>
-        {/* Stars and reviews second */}
-        <div className="flex flex-row flex-nowrap items-center justify-center mb-2">
-          <Rate
-            value={stars}
-            count={5}
-            disabled
-            allowHalf={false}
-            style={{ color: "#FFD700", fontSize: 18 }}
-            className="text-yellow-400"
-          />
-          <span className="ml-2 text-xs text-gray-500">
-            ({reviewsCount})
-          </span>
-        </div>
-        {/* Price third */}
-        <div className="flex items-center gap-2 mb-4 justify-center">
-          <span style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent', fontWeight: 700, fontSize: '1.25rem' }}>
-            {formatCurrency(isNaN(price) ? 0 : price)}
-          </span>
-          {oldPrice > price && !isNaN(oldPrice) && (
-            <span className="text-sm text-gray-500 line-through">
-              {formatCurrency(oldPrice)}
+          {/* Price */}
+          <div className="flex flex-col items-center gap-1 mb-3 justify-center">
+            <span className="text-sm sm:text-lg font-bold text-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>
+              {formatCurrency(isNaN(price) ? 0 : price)}
             </span>
-          )}
+            {oldPrice > price && !isNaN(oldPrice) && (
+              <span className="text-xs sm:text-sm text-gray-500 line-through text-center">
+                {formatCurrency(oldPrice)}
+              </span>
+            )}
+          </div>
         </div>
         {/* Add to Cart Button */}
-        <button className="w-full font-medium py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600, fontSize: '1rem' }} onClick={handleAddToCart} disabled={!product?.inStock || isAddingToCart}>
-          <ShoppingCart className="w-4 h-4 mr-2 text-white" />
-          {isAddingToCart ? "Ajout en cours..." : product?.inStock ? "Ajouter au panier" : "Indisponible"}
-        </button>
-      </div>
-    </div>
+        <Button className="w-full font-medium py-2 sm:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-xs sm:text-sm focus:outline-none" style={{ background: 'linear-gradient(90deg, #ea580c 0%, #f59e42 100%)', color: '#fff', fontWeight: 600 }} onClick={handleAddToCart} disabled={!product?.inStock || isAddingToCart}>
+          <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-white" />
+          <span className="hidden sm:inline">{isAddingToCart ? "Ajout en cours..." : product?.inStock ? "Ajouter au panier" : "Indisponible"}</span>
+          <span className="sm:hidden">{isAddingToCart ? "Ajout..." : product?.inStock ? "Ajouter" : "Indisponible"}</span>
+        </Button>
+      </CardContent>
+    </Card>
   );
 }

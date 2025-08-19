@@ -1004,3 +1004,34 @@
     padding-top: 25px !important;
   }
 }
+
+/* Fix specific problematic dimensions */
+@media (width: 360px) and (height: 667px) {
+  main > div[style*="clamp"] {
+    margin-top: -8rem !important;
+  }
+}
+
+@media (width: 375px) and (height: 667px) {
+  main > div[style*="clamp"] {
+    margin-top: -14rem !important;
+  }
+}
+
+@media (width: 768px) and (height: 1024px) {
+  main > div[style*="clamp"] {
+    margin-top: -6rem !important;
+  }
+}
+
+@media (width: 820px) and (height: 1180px) {
+  main > div[style*="clamp"] {
+    margin-top: -4rem !important;
+  }
+}
+
+@media (width: 1024px) and (height: 1366px) {
+  main > div[style*="clamp"] {
+    margin-top: -8rem !important;
+  }
+}

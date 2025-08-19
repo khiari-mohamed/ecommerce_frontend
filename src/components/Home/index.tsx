@@ -19,7 +19,6 @@ import TopPromotionSection from "./TopPromotion";
 const Home = () => {
 
    const [ventesFlash, setVentesFlash] = useState<import("@/types/venteFlash").VenteFlash[]>([]);
-
   useEffect(() => {
     getVenteFlashList().then(setVentesFlash);
   }, []);
@@ -29,7 +28,7 @@ const Home = () => {
       <div className="mt-4 sm:-mt-16">
         <Categories />
       </div>
-      <div className="-mt-24 sm:-mt-24">
+      <div className="-mt-16 sm:-mt-24">
         <TopPromotionSection />
       </div>
       <div className="-mt-16 sm:-mt-24">

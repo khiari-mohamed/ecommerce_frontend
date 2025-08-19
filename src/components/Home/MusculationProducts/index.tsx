@@ -140,11 +140,6 @@ const MusculationProducts = () => {
     fetchProducts();
   }, []);
 
-  // Don't render if showOnFrontend is false
-  if (config?.showOnFrontend === false) {
-    return null;
-  }
-
   // Helper to get the image URL from the product
   const getImageUrl = (item: Product) => {
     let src =
@@ -214,6 +209,11 @@ const MusculationProducts = () => {
     dispatch(updateQuickView(item));
     openModal();
   };
+
+  // Don't render if showOnFrontend is false
+  if (config?.showOnFrontend === false) {
+    return null;
+  }
 
   return (
     <div className="w-full mt-16 sm:mt-20 md:mt-24">

@@ -9,10 +9,10 @@ import { Navigation } from "swiper/modules";
 
 const Testimonials = () => {
   const { testimonials, config, loading, showSection } = useTestimonialsWithConfig();
+  const swiperRef = useRef<any>(null);
   
   // Don't render if section is disabled
   if (!showSection) return null;
-  const swiperRef = useRef<any>(null);
 
   // Handler for custom navigation
   const handlePrev = () => {

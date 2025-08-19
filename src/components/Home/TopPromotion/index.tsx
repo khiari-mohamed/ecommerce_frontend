@@ -18,6 +18,26 @@ import { ShoppingCart, Heart, Eye } from 'lucide-react';
 const TopPromotionSection = () => {
   const [promotions, setPromotions] = useState<TopPromotion[]>([]);
   const [loading, setLoading] = useState(true);
+  const [topPadding, setTopPadding] = useState('5rem');
+
+  useEffect(() => {
+    const calculatePadding = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      
+      if (width === 375 && height === 667) {
+        setTopPadding('12rem');
+      } else if (width === 1024 && height === 1366) {
+        setTopPadding('8rem');
+      } else {
+        setTopPadding('5rem');
+      }
+    };
+    
+    calculatePadding();
+    window.addEventListener('resize', calculatePadding);
+    return () => window.removeEventListener('resize', calculatePadding);
+  }, []);
 
   useEffect(() => {
     getTopPromotions()
@@ -89,7 +109,7 @@ const TopPromotionSection = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-yellow-50">
+    <section className="bg-gradient-to-b from-white to-yellow-50" style={{ paddingTop: topPadding, paddingBottom: '5rem' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section title */}
         <div className="text-center mb-16">

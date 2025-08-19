@@ -9,8 +9,10 @@ interface BrandProductGridProps {
 const BrandProductGrid: React.FC<BrandProductGridProps> = ({ products }) => {
   const safeProducts = Array.isArray(products) ? products : [];
   return (
-  <div className="mt-[180px] md:mt-10">
-  <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">Produits de la marque</h2>
+    <div>
+      <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-6 text-gray-800">
+        Produits de la marque
+      </h2>
       {safeProducts.length === 0 ? (
         <div className="text-center text-gray-400">Aucun produit trouvé pour cette marque.</div>
       ) : (

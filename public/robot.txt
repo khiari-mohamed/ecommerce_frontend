@@ -1,0 +1,34 @@
+# ===================================================================
+# Fichier robots.txt optimisé pour https://www.protein.tn
+# Ce fichier guide les robots d'exploration pour un SEO efficace.
+# ===================================================================
+
+User-agent: *
+Allow: /
+
+# --- Interdire l'accès aux sections non publiques ou sans valeur SEO ---
+# Panneaux d'administration et pages de développement
+Disallow: /admin/
+Disallow: /dashboard/
+
+# Pages transactionnelles et personnelles des utilisateurs (pas de valeur SEO)
+Disallow: /cart
+Disallow: /checkout
+Disallow: /my-account
+Disallow: /wishlist
+Disallow: /order-confirmation
+Disallow: /signin
+Disallow: /signup
+
+# Pages fonctionnelles sans contenu unique à indexer
+Disallow: /mail-success
+Disallow: /error
+Disallow: /product-details # Page générique, les slugs spécifiques sont dans le sitemap
+Disallow: /shop-details   # Idem
+
+# --- Interdire l'accès aux routes API et fichiers internes ---
+Disallow: /api/
+Disallow: /_next/
+
+# --- Emplacement du sitemap dynamique ---
+Sitemap: https://www.protein.tn/sitemap.xml

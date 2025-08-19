@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Erreur | Sobitas",
     description: "Une erreur s'est produite sur Sobitas. Veuillez réessayer ou contacter le support.",
-    url: "https://yourdomain.com/error",
+    url: "https://protein.tn/error",
     siteName: "Sobitas",
     images: [
       {
-        url: "https://yourdomain.com/og-image.jpg",
+        url: "https://protein.tn/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Sobitas - Erreur",
@@ -25,10 +25,12 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Erreur | Sobitas",
     description: "Une erreur s'est produite sur Sobitas. Veuillez réessayer ou contacter le support.",
-    images: ["https://yourdomain.com/og-image.jpg"],
+    images: ["https://protein.tn/og-image.jpg"],
   },
+ 
   robots: "noindex, nofollow",
-  // canonical: "https://yourdomain.com/error", // Uncomment if you want to set canonical
+  // ✅ Optional canonical (not necessary for error pages, but possible)
+  // canonical: "https://protein.tn/error",
 };
 
 const ErrorPage = () => {

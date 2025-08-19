@@ -1,6 +1,4 @@
-
 import { Metadata } from "next";
-import PromotionsClient from "./PromotionsClient";
 
 export const metadata: Metadata = {
   title: "Promotions - Compléments Alimentaires en Tunisie | Protein.tn",
@@ -46,9 +44,3 @@ export const metadata: Metadata = {
     "max-video-preview": -1,
   },
 };
-
-const PromotionsPage = () => {
-  return <PromotionsClient />;
-};
-
-export default PromotionsPage;

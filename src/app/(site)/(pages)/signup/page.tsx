@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Créer un compte | Sobitas",
     description: "Inscrivez-vous sur Sobitas pour profiter de nos offres et gérer vos commandes.",
-    url: "https://yourdomain.com/signup",
+    url: "https://protein.tn/signup",
     siteName: "Sobitas",
     images: [
       {
-        url: "https://yourdomain.com/og-image.jpg",
+        url: "https://protein.tn/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Sobitas - Créer un compte",
@@ -25,10 +25,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Créer un compte | Sobitas",
     description: "Inscrivez-vous sur Sobitas pour profiter de nos offres et gérer vos commandes.",
-    images: ["https://yourdomain.com/og-image.jpg"],
+    images: ["https://protein.tn/og-image.jpg"],
   },
   robots: "index, follow",
-  // canonical: "https://yourdomain.com/signup", // Uncomment if you want to set canonical
+  // canonical: "https://protein.tn/signup", // Uncomment if you want to set canonical
 };
 
 const SignupPage = () => {

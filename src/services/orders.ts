@@ -43,12 +43,24 @@ export async function deleteOrder(id: string) {
   return res.json();
 }
 
+export async function fetchOrdersForUser(token: string) {
+  const res = await fetch(`${API_URL}/user`, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) throw new Error("Failed to fetch user orders");
+  return res.json();
+}
+
 const orderService = {
   fetchOrders,
   fetchOrderById,
   createOrder,
   updateOrder,
   deleteOrder,
+  fetchOrdersForUser,
 };
 
 export default orderService;

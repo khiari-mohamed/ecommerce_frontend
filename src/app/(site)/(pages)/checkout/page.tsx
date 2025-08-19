@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Paiement | Sobitas",
     description: "Finalisez votre commande et procédez au paiement sur Sobitas.",
-    url: "https://yourdomain.com/checkout",
+    url: "https://protein.tn/checkout",
     siteName: "Sobitas",
     images: [
       {
-        url: "https://yourdomain.com/og-image.jpg",
+        url: "https://protein.tn/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Sobitas - Paiement",
@@ -25,10 +25,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Paiement | Sobitas",
     description: "Finalisez votre commande et procédez au paiement sur Sobitas.",
-    images: ["https://yourdomain.com/og-image.jpg"],
+    images: ["https://protein.tn/og-image.jpg"],
   },
   robots: "index, follow",
-  // canonical: "https://yourdomain.com/checkout", // Uncomment if you want to set canonical
+  keywords: ["paiement Sobitas", "finaliser commande", "acheter en ligne Tunisie", "checkout Protein.tn"],
+  // canonical: "https://protein.tn/checkout",
 };
 
 const CheckoutPage = () => {

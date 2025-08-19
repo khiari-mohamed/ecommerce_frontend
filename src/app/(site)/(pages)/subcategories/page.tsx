@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Sous-catégories | Sobitas",
     description: "Découvrez toutes les sous-catégories de produits disponibles sur Sobitas.",
-    url: "https://yourdomain.com/subcategories",
+    url: "https://protein.tn/subcategories",
     siteName: "Sobitas",
     images: [
       {
-        url: "https://yourdomain.com/og-image.jpg",
+        url: "https://protein.tn/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Sobitas - Sous-catégories",
@@ -24,10 +24,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sous-catégories | Sobitas",
     description: "Découvrez toutes les sous-catégories de produits disponibles sur Sobitas.",
-    images: ["https://yourdomain.com/og-image.jpg"],
+    images: ["https://protein.tn/og-image.jpg"],
   },
   robots: "index, follow",
-  // canonical: "https://yourdomain.com/subcategories", // Uncomment if you want to set canonical
+  // canonical: "https://protein.tn/subcategories", // Uncomment if you want to set canonical
 };
 
 export default function SubcategoriesPage() {

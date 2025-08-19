@@ -3,32 +3,25 @@ import Cart from "@/components/Cart";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Panier | Sobitas",
-  description: "Consultez et gérez les produits dans votre panier sur Sobitas avant de passer à la commande.",
+  title: "Votre Panier d'Achat | Protein.tn",
+  description: "Vérifiez les articles dans votre panier avant de finaliser votre commande de compléments alimentaires et matériel de sport sur Protein.tn.",
   openGraph: {
-    title: "Panier | Sobitas",
-    description: "Consultez et gérez les produits dans votre panier sur Sobitas avant de passer à la commande.",
-    url: "https://yourdomain.com/cart",
-    siteName: "Sobitas",
+    title: "Votre Panier d'Achat | Protein.tn",
+    description: "Vérifiez les articles dans votre panier avant de finaliser votre commande.",
+    url: "https://www.protein.tn/cart",
+    siteName: "Sobitas - Protein.tn",
     images: [
       {
-        url: "https://yourdomain.com/og-image.jpg",
+        url: "https://www.protein.tn/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Sobitas - Panier",
+        alt: "Panier d'achat sur Protein.tn",
       },
     ],
     locale: "fr_FR",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Panier | Sobitas",
-    description: "Consultez et gérez les produits dans votre panier sur Sobitas avant de passer à la commande.",
-    images: ["https://yourdomain.com/og-image.jpg"],
-  },
-  robots: "index, follow",
-  // canonical: "https://yourdomain.com/cart", // Uncomment if you want to set canonical
+  robots: "noindex, follow", // Important pour les pages de panier
 };
 
 const CartPage = () => {

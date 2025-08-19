@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+Allow: /sitemap.xml
+Allow: /_next/static/
+Allow: /_next/image/
+Allow: /public/
+
+# Protéger les pages privées
+Disallow: /signin
+Disallow: /signup
+Disallow: /orders
+Disallow: /wishlist
+Disallow: /account
+Disallow: /dashboard/
+Disallow: /api/
+
+# Optimisations pour les crawlers spécifiques
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Googlebot-Image
+Allow: /public/images/
+Allow: /public/products/
+Allow: /_next/image/
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Localisation du sitemap
+Sitemap: https://www.protein.tn/sitemap.xml

@@ -2,32 +2,34 @@ import Home from "@/components/Home";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sobitas | Home",
-  description: "Sobitas e-commerce store - Discover the best products, deals, and more.",
+  title: "Vente de Compléments Alimentaires & Matériel Musculation | Protein.tn",
+  description: "Spécialiste en compléments alimentaires et matériel de musculation en Tunisie. Whey, Créatine, BCAA, et plus. Livraison rapide sur toute la Tunisie.",
   openGraph: {
-    title: "Sobitas | Home",
-    description: "Sobitas e-commerce store - Discover the best products, deals, and more.",
-    url: "https://yourdomain.com/",
-    siteName: "Sobitas",
+    title: "Vente de Compléments Alimentaires & Matériel Musculation | Protein.tn",
+    description: "Spécialiste en compléments alimentaires et matériel de musculation en Tunisie. Whey, Créatine, BCAA, et plus. Livraison rapide sur toute la Tunisie.",
+    url: "https://www.protein.tn/",
+    siteName: "Sobitas - Protein.tn",
     images: [
       {
-        url: "https://yourdomain.com/og-image.jpg",
+        url: "https://www.protein.tn/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Sobitas e-commerce store",
+        alt: "Boutique e-commerce Protein.tn",
       },
     ],
-    locale: "en_US",
+    locale: "fr_FR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sobitas | Home",
-    description: "Sobitas e-commerce store - Discover the best products, deals, and more.",
-    images: ["https://yourdomain.com/og-image.jpg"],
+    title: "Vente de Compléments Alimentaires & Matériel Musculation | Protein.tn",
+    description: "Spécialiste en compléments alimentaires et matériel de musculation en Tunisie. Whey, Créatine, BCAA, et plus. Livraison rapide sur toute la Tunisie.",
+    images: ["https://www.protein.tn/og-image.jpg"],
   },
   robots: "index, follow",
-  // canonical: "https://yourdomain.com/", // Uncomment if you want to set canonical
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function HomePage() {

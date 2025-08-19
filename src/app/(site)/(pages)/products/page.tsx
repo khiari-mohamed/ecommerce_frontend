@@ -2,16 +2,17 @@ import { Metadata } from "next";
 import AllProductsClient from "./AllProductsClient";
 
 export const metadata: Metadata = {
-  title: "Tous les produits | Sobitas",
-  description: "Découvrez tous les produits disponibles sur Sobitas. Parcourez notre large sélection de marques et de catégories.",
+  title: "Acheter Whey, Créatine, BCAA & Compléments Alimentaires en Tunisie | Protein.tn",
+  description: "Découvrez notre gamme complète de compléments alimentaires : whey, créatine, BCAA, vitamines et accessoires sportifs. Livraison express partout en Tunisie.",
+  keywords: ["acheter complément alimentaire Tunisie", "whey Tunisie", "créatine Tunisie", "BCAA Tunisie", "nutrition sportive Tunisie", "protéines en ligne Tunisie"],
   openGraph: {
-    title: "Tous les produits | Sobitas",
-    description: "Découvrez tous les produits disponibles sur Sobitas. Parcourez notre large sélection de marques et de catégories.",
-    url: "https://yourdomain.com/products",
+    title: "Acheter Whey, Créatine, BCAA & Compléments Alimentaires en Tunisie | Protein.tn",
+    description: "Découvrez notre gamme complète de compléments alimentaires : whey, créatine, BCAA, vitamines et accessoires sportifs. Livraison express partout en Tunisie.",
+    url: "https://protein.tn/products",
     siteName: "Sobitas",
     images: [
       {
-        url: "https://yourdomain.com/og-image.jpg",
+        url: "https://protein.tn/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Sobitas - Tous les produits",
@@ -24,10 +25,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Tous les produits | Sobitas",
     description: "Découvrez tous les produits disponibles sur Sobitas. Parcourez notre large sélection de marques et de catégories.",
-    images: ["https://yourdomain.com/og-image.jpg"],
+    images: ["https://protein.tn/og-image.jpg"],
   },
   robots: "index, follow",
-  // canonical: "https://yourdomain.com/products", // Uncomment if you want to set canonical
+  
 };
 
 export default function ProductsPage() {

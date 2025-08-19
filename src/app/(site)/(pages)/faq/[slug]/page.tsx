@@ -1,66 +1,89 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-// Update the import path if the file is located elsewhere, for example:
 import FAQDetail from '@/components/FAQ/FAQDetail';
-// Or ensure that '../components/FAQ/FAQDetail.tsx' exists and is correctly named.
 import Breadcrumb from '@/components/Common/Breadcrumb';
 import { fetchFaqs, findFaqByCustomId } from '@/services/faq';
 import { FAQ } from '@/types/faq';
 
 interface FAQSlugPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-// Generate static params for all FAQs (optional - for better performance)
+// ✅ Génération des slugs statiques (SEO-friendly + perf)
 export async function generateStaticParams() {
   try {
     const faqs = await fetchFaqs();
-    return faqs.map((faq) => ({
-      slug: faq.id,
+    return (faqs || []).map((faq) => ({
+      slug: String(faq.id),
     }));
   } catch (error) {
-    console.error('Error generating static params for FAQs:', error);
+    console.warn('Error generating static params for FAQs, using empty array:', error);
     return [];
   }
 }
 
-// Generate metadata for SEO
+// ✅ SEO dynamique
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   try {
     const faq = await findFaqByCustomId(slug);
+
     if (!faq) {
       return {
-        title: 'FAQ non trouvée',
-        description: 'La question demandée n\'existe pas.',
+        title: 'FAQ non trouvée | Sobitas',
+        description: 'La question demandée n’existe pas sur Sobitas.',
+        robots: 'noindex, follow',
       };
     }
+
+    // Nettoyer la réponse pour la description SEO (max 160 chars)
     const cleanAnswer = faq.answer.replace(/<[^>]*>/g, '').substring(0, 160);
+
     return {
-      title: `${faq.question} | FAQ`,
+      title: `${faq.question} | FAQ Sobitas`,
       description: cleanAnswer,
-      keywords: `FAQ, ${faq.question}, aide, support`,
+      keywords: `FAQ, ${faq.question}, aide, support, Sobitas`,
       openGraph: {
         title: faq.question,
         description: cleanAnswer,
+        url: `https://protein.tn/faq/${faq.id}`,
+        siteName: 'Sobitas',
+        images: [
+          {
+            url: 'https://protein.tn/og-image.jpg',
+            width: 1200,
+            height: 630,
+            alt: `Sobitas - FAQ : ${faq.question}`,
+          },
+        ],
+        locale: 'fr_FR',
         type: 'article',
       },
+      twitter: {
+        card: 'summary_large_image',
+        title: faq.question,
+        description: cleanAnswer,
+        images: ['https://protein.tn/og-image.jpg'],
+      },
       alternates: {
-        canonical: `/faq/${faq.id}`,
+        canonical: `https://protein.tn/faq/${faq.id}`,
       },
     };
   } catch (error) {
     return {
       title: 'FAQ | Erreur',
       description: 'Erreur lors du chargement de la FAQ',
+      robots: 'noindex, nofollow',
     };
   }
 }
 
 export default async function FAQSlugPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   let faq: FAQ | null = null;
   let error: string | null = null;
 
@@ -96,11 +119,9 @@ export default async function FAQSlugPage({ params }: { params: Promise<{ slug: 
 
   return (
     <>
-      <Breadcrumb 
-        title={faq!.question} 
-        pages={[
-          { href: '/faq', label: 'FAQ' }
-        ]}
+      <Breadcrumb
+        title={faq!.question}
+        pages={[{ href: '/faq', label: 'FAQ' }]}
       />
       <FAQDetail faq={faq!} />
     </>

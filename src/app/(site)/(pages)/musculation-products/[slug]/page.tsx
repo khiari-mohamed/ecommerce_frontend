@@ -6,18 +6,79 @@ import { getReviewsByProduct } from "@/services/reviews";
 import StarRating from "@/components/Common/StarRating";
 import ReviewList from "@/components/Reviews/ReviewList";
 import { Review } from "@/types/reviews";
+import { Metadata } from "next";
 
 const FALLBACK_IMAGE = "/placeholder.svg";
 
 // Accept params as Promise<any> to match the broken .next/types
-export async function generateMetadata({ params }: { params: Promise<any> }) {
+export async function generateMetadata({ params }: { params: Promise<any> }): Promise<Metadata> {
   const resolvedParams = await params;
+  const product = await fetchMusculationProductBySlug(resolvedParams.slug);
+
+  if (!product) {
+    return { title: "Produit non trouvé | Protein.tn" };
+  }
+
+  const productName = product.designation_fr || "Matériel de Musculation";
+  const title = `${productName} - Matériel de Musculation | Protein.tn`;
+  const description = `Achetez ${productName.toLowerCase()} en Tunisie sur Protein.tn. ${product.description_fr ? product.description_fr.replace(/<[^>]*>/g, '').substring(0, 150) : 'Matériel de musculation de qualité professionnelle'}. Livraison rapide en Tunisie.`;
+  const imageUrl = product.cover ? (product.cover.startsWith("/") ? `https://www.protein.tn${product.cover}` : `https://www.protein.tn/${product.cover}`) : "https://www.protein.tn/default-product.jpg";
+  const price = product.prix ? Number(product.prix) : null;
+  const availability = product.qte && Number(product.qte) > 0 ? "InStock" : "OutOfStock";
+
   return {
-    title: `Produit: ${resolvedParams.slug}`,
+    title,
+    description,
+    keywords: [
+      `${productName.toLowerCase()} Tunisie`,
+      "matériel musculation",
+      "équipement fitness",
+      "protein.tn",
+      "livraison Tunisie",
+      product.brand_id || "fitness"
+    ],
+    alternates: {
+      canonical: `https://www.protein.tn/musculation-products/${resolvedParams.slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://www.protein.tn/musculation-products/${resolvedParams.slug}`,
+      type: "website",
+      images: [
+        {
+          url: imageUrl,
+          width: 800,
+          height: 600,
+          alt: productName,
+        }
+      ],
+      siteName: "Protein.tn",
+      locale: "fr_TN",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [imageUrl],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+    other: {
+      ...(price && { "product:price:amount": price.toString() }),
+      "product:price:currency": "TND",
+      "product:availability": availability,
+      ...(product.brand_id && { "product:brand": product.brand_id }),
+    },
   };
 }
 
-export default async function SubcategoryPage({ params }: { params: Promise<any> }) {
+export default async function MusculationProductPage({ params }: { params: Promise<any> }) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
 

@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Mail envoyé avec succès | Sobitas",
     description: "Votre message a été envoyé avec succès à l'équipe Sobitas.",
-    url: "https://yourdomain.com/mail-success",
+    url: "https://protein.tn/mail-success",
     siteName: "Sobitas",
     images: [
       {
-        url: "https://yourdomain.com/og-image.jpg",
+        url: "https://protein.tn/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Sobitas - Mail envoyé avec succès",
@@ -25,10 +25,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Mail envoyé avec succès | Sobitas",
     description: "Votre message a été envoyé avec succès à l'équipe Sobitas.",
-    images: ["https://yourdomain.com/og-image.jpg"],
+    images: ["https://protein.tn/og-image.jpg"],
   },
   robots: "noindex, nofollow",
-  // canonical: "https://yourdomain.com/mail-success", // Uncomment if you want to set canonical
+  // canonical: "https://protein.tn/mail-success", // inutile pour ce type de page
 };
 
 const MailSuccessPage = () => {

@@ -3,19 +3,20 @@ import BlogGrid from "@/components/BlogGrid";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog | Sobitas",
-  description: "Découvrez tous les articles, conseils et actualités sur le blog Sobitas.",
+  title: "Blog Musculation & Nutrition Sportive Tunisie – Conseils & Guides | Protein.tn",
+  description: "Lisez nos articles experts sur la musculation, la nutrition sportive, la prise de masse, la sèche et la santé. Astuces pratiques et informations fiables pour progresser.",
+  keywords: ["blog musculation Tunisie", "conseils nutrition sportive", "guide prise de masse", "programme sèche", "santé fitness Tunisie", "récupération sportive"],
   openGraph: {
-    title: "Blog | Sobitas",
-    description: "Découvrez tous les articles, conseils et actualités sur le blog Sobitas.",
-    url: "https://yourdomain.com/blogs/blog-grid",
-    siteName: "Sobitas",
+    title: "Blog Musculation & Nutrition Sportive Tunisie – Conseils & Guides | Protein.tn",
+    description: "Lisez nos articles experts sur la musculation, la nutrition sportive, la prise de masse, la sèche et la santé. Astuces pratiques et informations fiables pour progresser.",
+    url: "https://www.protein.tn/blogs/blog-grid",
+    siteName: "Sobitas - Protein.tn",
     images: [
       {
-        url: "https://yourdomain.com/og-image.jpg",
+        url: "https://www.protein.tn/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Sobitas - Blog",
+        alt: "Blog Protein.tn",
       },
     ],
     locale: "fr_FR",
@@ -23,12 +24,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog | Sobitas",
-    description: "Découvrez tous les articles, conseils et actualités sur le blog Sobitas.",
-    images: ["https://yourdomain.com/og-image.jpg"],
+    title: "Blog Nutrition Sportive & Musculation | Protein.tn",
+    description: "Découvrez tous nos articles, conseils et actualités sur la nutrition sportive.",
+    images: ["https://www.protein.tn/og-image.jpg"],
   },
   robots: "index, follow",
-  // canonical: "https://yourdomain.com/blogs/blog-grid", // Uncomment if you want to set canonical
+  alternates: {
+    canonical: "/blogs/blog-grid",
+  },
 };
 
 const BlogGridPage = () => {

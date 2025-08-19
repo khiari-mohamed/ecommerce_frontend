@@ -2,32 +2,49 @@ import { Metadata } from "next";
 import MusculationProductsClient from "./MusculationProductsClient";
 
 export const metadata: Metadata = {
-  title: "Matériel de Musculation | Sobitas",
-  description: "Découvrez notre sélection de matériel de musculation sur Sobitas. Équipez-vous pour vos entraînements à domicile ou en salle.",
+  title: "Matériel de Musculation en Tunisie | Protein.tn",
+  description: "Découvrez notre gamme complète de matériel de musculation en Tunisie. Équipements de qualité professionnelle, prix compétitifs et livraison rapide sur tout le territoire tunisien.",
+  keywords: [
+    "matériel musculation Tunisie",
+    "équipement fitness Tunisie",
+    "haltères Tunisie",
+    "banc musculation",
+    "protein.tn",
+    "sport Tunisie",
+    "livraison Tunisie"
+  ],
+  alternates: {
+    canonical: "https://www.protein.tn/musculation-products",
+  },
   openGraph: {
-    title: "Matériel de Musculation | Sobitas",
-    description: "Découvrez notre sélection de matériel de musculation sur Sobitas. Équipez-vous pour vos entraînements à domicile ou en salle.",
-    url: "https://yourdomain.com/musculation-products",
-    siteName: "Sobitas",
+    title: "Matériel de Musculation en Tunisie | Protein.tn",
+    description: "Découvrez notre gamme complète de matériel de musculation en Tunisie. Équipements de qualité professionnelle, prix compétitifs et livraison rapide sur tout le territoire tunisien.",
+    url: "https://www.protein.tn/musculation-products",
+    siteName: "Protein.tn",
     images: [
       {
-        url: "https://yourdomain.com/og-image.jpg",
+        url: "https://www.protein.tn/musculation-og.jpg",
         width: 1200,
         height: 630,
-        alt: "Sobitas - Matériel de Musculation",
+        alt: "Protein.tn - Matériel de Musculation en Tunisie",
       },
     ],
-    locale: "fr_FR",
+    locale: "fr_TN",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Matériel de Musculation | Sobitas",
-    description: "Découvrez notre sélection de matériel de musculation sur Sobitas. Équipez-vous pour vos entraînements à domicile ou en salle.",
-    images: ["https://yourdomain.com/og-image.jpg"],
+    title: "Matériel de Musculation en Tunisie | Protein.tn",
+    description: "Découvrez notre gamme complète de matériel de musculation en Tunisie. Équipements de qualité professionnelle, prix compétitifs et livraison rapide.",
+    images: ["https://www.protein.tn/musculation-og.jpg"],
   },
-  robots: "index, follow",
-  // canonical: "https://yourdomain.com/musculation-products", // Uncomment if you want to set canonical
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+  },
 };
 
 export default function MusculationProductsPage() {

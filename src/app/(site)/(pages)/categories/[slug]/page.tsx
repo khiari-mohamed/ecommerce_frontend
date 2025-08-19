@@ -4,12 +4,64 @@ import { getAllSubCategories } from '@/services/subcategories';
 import { getProductListPage } from '@/services/products';
 import CategoriesClient from '@/components/CategoriesClient';
 import React from 'react';
+import { Metadata } from 'next';
 
 // Accept params as Promise<any> to match the broken .next/types
-export async function generateMetadata({ params }: { params: Promise<any> }) {
+export async function generateMetadata({ params }: { params: Promise<any> }): Promise<Metadata> {
   const resolvedParams = await params;
+  const category = await getCategoryBySlug(resolvedParams.slug);
+
+  if (!category) {
+    return { title: "Catégorie non trouvée" };
+  }
+
+  const categoryName = category.designation_fr || category.designation || "Catégorie";
+  const title = `${categoryName} - Compléments Alimentaires en Tunisie | Protein.tn`;
+  const description = `Découvrez notre gamme complète de ${categoryName.toLowerCase()} en Tunisie. Produits authentiques, prix compétitifs et livraison rapide sur tout le territoire.`;
+  const imageUrl = typeof category.cover === 'string' ? category.cover : (category.cover as any)?.url || '/og-default.jpg';
+  const categoryImageUrl = typeof category.image === 'string' ? category.image : (category.image as any)?.url || "https://www.protein.tn/default-category.jpg";
+  
   return {
-    title: `Catégorie: ${resolvedParams.slug}`,
+    title,
+    description,
+    keywords: [
+      `${categoryName.toLowerCase()} Tunisie`,
+      `acheter ${categoryName.toLowerCase()}`,
+      "compléments alimentaires Tunisie",
+      "nutrition sportive",
+      "protein.tn",
+      "livraison Tunisie"
+    ],
+    alternates: {
+      canonical: `https://www.protein.tn/categories/${resolvedParams.slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://www.protein.tn/categories/${resolvedParams.slug}`,
+      type: "website",
+      images: [
+        {
+          url: categoryImageUrl,
+          width: 800,
+          height: 600,
+          alt: categoryName,
+        }
+      ]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [imageUrl],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    }
   };
 }
 

@@ -2,19 +2,20 @@ import Contact from "@/components/Contact";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact | Sobitas",
-  description: "Contactez l'équipe Sobitas pour toute question, demande ou assistance.",
+  title: "Contact Protein.tn – Magasin Musculation à Sousse & Service Client",
+  description: "Contactez-nous par téléphone, email ou visitez notre magasin à Sousse pour conseils et achats de compléments alimentaires et matériel de musculation.",
+  keywords: ["contact protein.tn", "magasin musculation Sousse", "service client protéines", "numéro téléphone Protein.tn", "adresse magasin compléments Tunisie"],
   openGraph: {
-    title: "Contact | Sobitas",
-    description: "Contactez l'équipe Sobitas pour toute question, demande ou assistance.",
-    url: "https://yourdomain.com/contact",
-    siteName: "Sobitas",
+    title: "Contact Protein.tn – Magasin Musculation à Sousse & Service Client",
+    description: "Contactez-nous par téléphone, email ou visitez notre magasin à Sousse pour conseils et achats de compléments alimentaires et matériel de musculation.",
+    url: "https://www.protein.tn/contact",
+    siteName: "Sobitas - Protein.tn",
     images: [
       {
-        url: "https://yourdomain.com/og-image.jpg",
+        url: "https://www.protein.tn/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Sobitas - Contact",
+        alt: "Contactez Protein.tn",
       },
     ],
     locale: "fr_FR",
@@ -22,12 +23,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact | Sobitas",
-    description: "Contactez l'équipe Sobitas pour toute question, demande ou assistance.",
-    images: ["https://yourdomain.com/og-image.jpg"],
+    title: "Contactez-nous | Protein.tn",
+    description: "Contactez l'équipe de Protein.tn pour toute question ou assistance.",
+    images: ["https://www.protein.tn/og-image.jpg"],
   },
   robots: "index, follow",
-  // canonical: "https://yourdomain.com/contact", // Uncomment if you want to set canonical
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 const ContactPage = () => {

@@ -1,25 +1,22 @@
-
 import React from "react";
 import PacksSection from "@/components/Home/PacksSection/PacksSection";
 import type { Metadata } from "next";
 
-// Static metadata export for SEO
 export const metadata: Metadata = {
-  title: "Packs Exclusifs | Protein.tn",
-  description:
-    "Découvrez nos packs exclusifs pour la musculation, la prise de masse, la sèche et plus encore. Profitez des meilleures offres et promotions sur Protein.tn.",
+  title: "Packs Musculation Tunisie – Prise de Masse & Sèche à Prix Réduit | Protein.tn",
+  description: "Découvrez nos packs complets pour prise de masse, sèche et performance sportive. Produits certifiés, tarifs avantageux et livraison express partout en Tunisie.",
   keywords: [
-    "packs musculation",
-    "packs prise de masse",
-    "packs sèche",
-    "nutrition sportive",
-    "Protein.tn",
+    "pack prise de masse Tunisie",
+    "pack sèche musculation",
+    "pack nutrition sportive",
+    "packs fitness Tunisie",
+    "offres groupées protéines",
+    "pack compléments alimentaires Tunisie"
   ],
   openGraph: {
-    title: "Packs Exclusifs | Protein.tn",
-    description:
-      "Découvrez nos packs exclusifs pour la musculation, la prise de masse, la sèche et plus encore. Profitez des meilleures offres et promotions sur Protein.tn.",
-    url: "https://protein.tn/packs",
+    title: "Packs Musculation Tunisie – Prise de Masse & Sèche à Prix Réduit | Protein.tn",
+    description: "Découvrez nos packs complets pour prise de masse, sèche et performance sportive. Produits certifiés, tarifs avantageux et livraison express partout en Tunisie.",
+    url: "https://www.protein.tn/packs",
     siteName: "Protein.tn",
     images: [
       {
@@ -31,6 +28,9 @@ export const metadata: Metadata = {
     ],
     locale: "fr_FR",
     type: "website",
+  },
+  alternates: {
+    canonical: "/packs",
   },
 };
 

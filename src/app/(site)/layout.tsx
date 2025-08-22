@@ -1,5 +1,6 @@
 import ClientLayout from "./ClientLayout";
 import { Metadata } from "next";
+import Script from 'next/script'; // N'oubliez pas cet import en haut de votre fichier
 
 // Métadonnées optimisées pour le SEO de protein.tn
 export const metadata: Metadata = {
@@ -69,10 +70,33 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+
   return (
     <html lang="fr" suppressHydrationWarning={true}>
+      <head>
+        {/* Le <head> reste vide, Next.js gère les scripts placés dans <body> */}
+      </head>
       <body>
-        {/* --- Données Structurées JSON-LD pour l'Organisation --- */}
+        {/* --- Google Analytics (gtag.js) optimisé pour Next.js --- */}
+        {gaId && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics-config" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaId}');
+              `}
+            </Script>
+          </>
+        )}
+
+        {/* --- Données Structurées JSON-LD pour l'Organisation (Votre code original) --- */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -106,6 +130,6 @@ export default function RootLayout({
         />
         <ClientLayout>{children}</ClientLayout>
       </body>
-    </html>
-  );
+    </html>
+  );
 }

@@ -211,12 +211,12 @@ function Footer() {
               <div className="flex-1">
                 <h4 className="font-bold mb-3 text-sm md:text-base">Navigation</h4>
                 <ul className="space-y-1 md:space-y-2 text-xs md:text-sm">
-                  <li><Link href="#" className="hover:underline">Accueil</Link></li>
-                  <li><Link href="#" className="hover:underline">Nos produits</Link></li>
-                  <li><Link href="#" className="hover:underline">Qui somme nous</Link></li>
-                  <li><Link href="#" className="hover:underline">Packs</Link></li>
-                  <li><Link href="#" className="hover:underline">Blog</Link></li>
-                  <li><Link href="#" className="hover:underline">Contacter nous</Link></li>
+                  <li><Link href="/" className="hover:underline">Accueil</Link></li>
+                  <li><Link href="/shop-without-sidebar" className="hover:underline">Nos produits</Link></li>
+                  <li><Link href="/pages/qui-sommes-nous" className="hover:underline">Qui somme nous</Link></li>
+                  <li><Link href="/packs" className="hover:underline">Packs</Link></li>
+                  <li><Link href="/blogs/blog-grid" className="hover:underline">Blog</Link></li>
+                  <li><Link href="/contact" className="hover:underline">Contacter nous</Link></li>
                 </ul>
               </div>
             </div>
@@ -226,29 +226,25 @@ function Footer() {
           <div className="w-full md:w-1/3 flex flex-col items-center md:items-start">
             <h4 className="text-lg font-bold mb-4 text-center md:hidden">TÉLÉCHARGER NOTRE APPLICATION</h4>
             <div className="flex flex-col md:flex-row gap-3 mb-6 items-center">
-              <Link href={coordonnees.playstore_link} target="_blank" className="flex items-center">
-                <div style={{ width: '160px', height: '62px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Image
-                    src="/img/icon/appstore-336-119.webp"
-                    width={160}
-                    height={62}
-                    alt="Disponible sur Google Play"
-                    className="rounded shadow object-contain"
-                    style={{ width: '160px', height: '62px', objectFit: 'contain' }}
-                  />
-                </div>
+              <Link href={coordonnees.playstore_link} target="_blank">
+                <Image
+                  src="/img/icon/fr_badge_web_generic.png"
+                  width={180}
+                  height={70}
+                  alt="Disponible sur Google Play"
+                  className="object-contain"
+                  style={{ width: '180px', height: '70px' }}
+                />
               </Link>
-              <Link href={coordonnees.appstore_link} target="_blank" className="flex items-center">
-                <div style={{ width: '160px', height: '62px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Image
-                    src="/img/icon/fr_badge_web_generic.png"
-                    width={160}
-                    height={62}
-                    alt="Disponible sur App Store"
-                    className="rounded shadow object-contain"
-                    style={{ width: '160px', height: '62px', objectFit: 'contain' }}
-                  />
-                </div>
+              <Link href={coordonnees.appstore_link} target="_blank">
+                <Image
+                  src="/img/icon/appstore-336-119.webp"
+                  width={180}
+                  height={70}
+                  alt="Disponible sur App Store"
+                  className="object-contain"
+                  style={{ width: '180px', height: '70px' }}
+                />
               </Link>
             </div>
             <h4 className="font-bold mb-4">GÉOLOCALISATION</h4>

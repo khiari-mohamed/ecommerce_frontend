@@ -1004,6 +1004,25 @@
     padding-top: 25px !important;
   }
 }
+/* Fix excessive spacing on shop page */
+.shop-page .shadow-breadcrumb {
+  padding-top: 0px !important;
+}
+@media (min-width: 640px) {
+  .shop-page .shadow-breadcrumb {
+    padding-top: 5px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .shop-page .shadow-breadcrumb {
+    padding-top: 20px !important;
+  }
+}
+@media (min-width: 1280px) {
+  .shop-page .shadow-breadcrumb {
+    padding-top: 25px !important;
+  }
+}
 
 /* Fix specific problematic dimensions */
 @media (width: 360px) and (height: 667px) {

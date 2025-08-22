@@ -46,7 +46,7 @@ const ShopWithoutSidebar = () => {
   }
 
   return (
-    <>
+    <div className="shop-page">
       <Breadcrumb
         title={"Explorez tous les produits"}
         pages={["shop", "/", "shop without sidebar"]}
@@ -215,7 +215,7 @@ const ShopWithoutSidebar = () => {
           )}
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

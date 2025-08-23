@@ -51,7 +51,7 @@ const totalTVA = parseFloat((baseTTC - totalHT).toFixed(3));
         numberToFrenchWords(totalTTCDec) +
         " millimes"
       : " TND");
-  const qrValue = `https://votresite.com/commande/${order.numero}`;
+  const qrValue = `https://protein.tn/order-confirmation?orderNumber=${order.numero}`;
   const billing = {
     nom: order.nom,
     prenom: order.prenom,

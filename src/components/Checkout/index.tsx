@@ -118,9 +118,9 @@ const Checkout = () => {
           last_name: billingInfo.lastName,
           email: billingInfo.email,
           phone: billingInfo.phone,
-          return_url: `https://ecommerce-frontend-ruby-eta.vercel.app/order-confirmation?orderNumber=${orderData.numero}`,
-          cancel_url: "https://ecommerce-frontend-ruby-eta.vercel.app/checkout",
-          webhook_url: "https://ecommercebakcned-production.up.railway.app/payments/payme/webhook",
+          return_url: `https://protein.tn/order-confirmation?orderNumber=${orderData.numero}`,
+          cancel_url: "https://protein.tn/checkout",
+          webhook_url: "https://145.223.118.9:5000/payments/payme/webhook",
           order_id: orderData.numero,
         });
 
@@ -132,7 +132,7 @@ const Checkout = () => {
           toast.error("Erreur lors de la génération du lien de paiement Paymee.");
         }
       } else if (selectedPayment === "cash") {
-        window.location.href = `https://ecommerce-frontend-ruby-eta.vercel.app/order-confirmation?orderNumber=${orderData.numero}`;
+        window.location.href = `https://protein.tn/order-confirmation?orderNumber=${orderData.numero}`;
         return;
       }
     } catch (err: any) {
@@ -149,7 +149,7 @@ const Checkout = () => {
   ];
 
   return (
-    <>
+    <div className="checkout-page">
       {/* Site Branding Bar */}
       <div
         className="site-branding w-full bg-white border-b border-[#e5e5e5] flex items-center justify-start px-4 sm:px-8"
@@ -538,7 +538,7 @@ const Checkout = () => {
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

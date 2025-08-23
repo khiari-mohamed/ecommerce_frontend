@@ -1024,6 +1024,23 @@
   }
 }
 
+/* Fix checkout page interference and stacking */
+.checkout-page .flex.flex-col.lg\:flex-row {
+  gap: 1.5rem !important;
+}
+
+@media (min-width: 1024px) {
+  .checkout-page .flex.flex-col.lg\:flex-row {
+    gap: 3rem !important;
+  }
+}
+
+/* Prevent checkout elements from overlapping */
+.checkout-page > * {
+  position: relative !important;
+  z-index: auto !important;
+}
+
 /* Fix specific problematic dimensions */
 @media (width: 360px) and (height: 667px) {
   main > div[style*="clamp"] {
@@ -1052,5 +1069,179 @@
 @media (width: 1024px) and (height: 1366px) {
   main > div[style*="clamp"] {
     margin-top: -8rem !important;
+  }
+}
+
+/* Checkout Page Layout Fixes */
+.checkout-page {
+  min-height: 100vh !important;
+  height: auto !important;
+}
+
+/* Fix checkout section compression */
+.checkout-page section {
+  min-height: auto !important;
+  height: auto !important;
+  padding: 2rem 0 !important;
+}
+
+@media (min-width: 640px) {
+  .checkout-page section {
+    padding: 3rem 0 !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .checkout-page section {
+    padding: 4rem 0 !important;
+  }
+}
+
+/* Fix checkout form layout */
+.checkout-page .flex.flex-col.gap-7\.5 {
+  gap: 2rem !important;
+  min-height: auto !important;
+}
+
+@media (min-width: 1024px) {
+  .checkout-page .flex.flex-col.gap-7\.5 {
+    gap: 3rem !important;
+  }
+}
+
+/* Fix checkout columns */
+.checkout-page .w-full.lg\:max-w-\[670px\] {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin-bottom: 2rem !important;
+}
+
+.checkout-page .w-full.lg\:max-w-\[455px\] {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+@media (min-width: 1024px) {
+  .checkout-page .w-full.lg\:max-w-\[670px\] {
+    max-width: 670px !important;
+    margin-bottom: 0 !important;
+  }
+  
+  .checkout-page .w-full.lg\:max-w-\[455px\] {
+    max-width: 455px !important;
+  }
+}
+
+/* Fix checkout cards */
+.checkout-page .bg-white.shadow-1 {
+  margin-bottom: 1.5rem !important;
+  padding: 1.5rem !important;
+  min-height: auto !important;
+  height: auto !important;
+}
+
+@media (min-width: 640px) {
+  .checkout-page .bg-white.shadow-1 {
+    padding: 2rem !important;
+  }
+}
+
+/* Fix progress bar container */
+.checkout-page .bg-white.py-4 {
+  padding: 1rem 0.5rem !important;
+  min-height: auto !important;
+}
+
+@media (min-width: 640px) {
+  .checkout-page .bg-white.py-4 {
+    padding: 1.5rem 2rem !important;
+  }
+}
+
+/* Fix site branding */
+.checkout-page .site-branding {
+  min-height: 64px !important;
+  height: auto !important;
+  padding: 0.75rem 1rem !important;
+}
+
+@media (min-width: 640px) {
+  .checkout-page .site-branding {
+    padding: 0.75rem 2rem !important;
+  }
+}
+
+/* Fix checkout responsive containers */
+.checkout-page .max-w-full {
+  width: 100% !important;
+  max-width: 100vw !important;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+  box-sizing: border-box !important;
+}
+
+@media (min-width: 640px) {
+  .checkout-page .max-w-full {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .checkout-page .max-w-full {
+    max-width: 768px !important;
+    margin: 0 auto !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .checkout-page .max-w-full {
+    max-width: 1024px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .checkout-page .max-w-full {
+    max-width: 1170px !important;
+  }
+}
+
+/* Fix checkout form elements */
+.checkout-page input,
+.checkout-page select,
+.checkout-page textarea {
+  min-height: 44px !important;
+  padding: 0.75rem 1rem !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+}
+
+/* Fix checkout button */
+.checkout-page button[type="submit"] {
+  min-height: 48px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-size: 1rem !important;
+  width: 100% !important;
+}
+
+/* Fix mobile spacing */
+@media (max-width: 767px) {
+  .checkout-page {
+    padding-top: 0 !important;
+  }
+  
+  .checkout-page .mt-8 {
+    margin-top: 1rem !important;
+  }
+  
+  .checkout-page .mt-3 {
+    margin-top: 0.75rem !important;
+  }
+  
+  .checkout-page .py-10 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
   }
 }

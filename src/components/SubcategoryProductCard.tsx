@@ -75,7 +75,6 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
   const { openModal } = useModalContext();
 
   // Helper to get the correct image URL from cover
-  // Helper to get the correct image URL from cover (local public/produits support)
   const getProductImageUrl = (product: any) => {
     let cover = product.cover;
     if (cover && typeof cover === 'string' && cover.trim() !== '') {
@@ -84,6 +83,17 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
       return cover;
     }
     return '/images/placeholder.png';
+  };
+
+  // Enhanced image URL with backend fallback for new images
+  const getEnhancedImageSrc = (src: string) => {
+    // Check if this is a NEW backend-served image (contains August2025 pattern)
+    if (src && src.includes('August2025')) {
+      const backendUrl = 'http://145.223.118.9:5000';
+      return `${backendUrl}${src}`;
+    }
+    
+    return src;
   };
 
   // Normalize product for quick view/wishlist
@@ -187,7 +197,7 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
         {/* Product Image */}
         <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
           <Image
-            src={imageSrc}
+            src={getEnhancedImageSrc(imageSrc)}
             alt={name}
             fill
             className="w-full h-full object-cover"
@@ -195,6 +205,7 @@ export default function SubcategoryProductCard({ product }: { product: any }) {
             sizes="100vw"
             onLoad={() => setIsImageLoaded(true)}
             onError={() => setIsImageLoaded(true)}
+            unoptimized={imageSrc?.includes('August2025')}
           />
           {/* Overlay gradient removed on hover */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 transition-opacity duration-300" />

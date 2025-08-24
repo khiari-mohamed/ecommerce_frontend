@@ -77,6 +77,20 @@ const PromotionsClient = () => {
     return "/images/placeholder.png";
   };
 
+  // Enhanced image URL with backend fallback for new images
+  const getEnhancedImageUrl = (item: ProductItem) => {
+    if (!item.cover) return "/images/placeholder.png";
+    
+    // Check if this is a NEW backend-served image (contains August2025 pattern)
+    if (item.cover.includes('August2025')) {
+      const backendUrl = 'http://145.223.118.9:5000';
+      return `${backendUrl}${item.cover}`;
+    }
+    
+    // For old images, use the original logic
+    return getImageUrl(item);
+  };
+
   // Handlers
   const handleQuickViewUpdate = (item: ProductItem) => {
     dispatch(updateQuickView(normalizeProduct(item)));
@@ -171,12 +185,13 @@ const PromotionsClient = () => {
                   {/* Product Image */}
                   <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
                     <Image
-                      src={getImageUrl(item)}
+                      src={getEnhancedImageUrl(item)}
                       alt={item.designation_fr || item.title || "Produit"}
                       fill
                       className="w-full h-full object-cover"
                       loading="lazy"
                       sizes="100vw"
+                      unoptimized={item.cover?.includes('August2025')}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 transition-opacity duration-300" />
                   </div>

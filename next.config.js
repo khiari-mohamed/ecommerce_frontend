@@ -16,5 +16,19 @@ module.exports = {
   ...nextConfig,
   images: {
     domains: ["localhost", "admin.protein.tn", "ecommercebackend-production-6915.up.railway.app", "api.qrserver.com"],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5000',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '145.223.118.9',
+        port: '5000',
+        pathname: '/**',
+      },
+    ],
   },
 };

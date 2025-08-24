@@ -13,6 +13,19 @@ const getSafeImageSrc = (src: string | undefined) => {
   return "/" + src;
 };
 
+// Enhanced image URL with backend fallback for new images
+const getEnhancedImageSrc = (src: string | undefined) => {
+  const safeSrc = getSafeImageSrc(src);
+  
+  // Check if this is a NEW backend-served image (contains August2025 pattern)
+  if (safeSrc && safeSrc.includes('August2025')) {
+    const backendUrl = 'http://145.223.118.9:5000';
+    return `${backendUrl}${safeSrc}`;
+  }
+  
+  return safeSrc;
+};
+
 const SingleItem = ({ item }) => {
   const [quantity, setQuantity] = useState(item.quantity);
   const dispatch = useDispatch<AppDispatch>();
@@ -33,7 +46,7 @@ const SingleItem = ({ item }) => {
     }
   };
 
-  const imgSrc = getSafeImageSrc(
+  const imgSrc = getEnhancedImageSrc(
     item.image ||
       (item.cover ? (typeof item.cover === "string" ? item.cover : undefined) : undefined) ||
       item.mainImage?.url ||
@@ -54,6 +67,14 @@ const SingleItem = ({ item }) => {
             alt={item.title || item.name}
             className="object-contain w-full h-full"
             onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }}
+            unoptimized={getSafeImageSrc(
+              item.image ||
+                (item.cover ? (typeof item.cover === "string" ? item.cover : undefined) : undefined) ||
+                item.mainImage?.url ||
+                item.imgs?.previews?.[0] ||
+                item.imgs?.thumbnails?.[0] ||
+                undefined
+            )?.includes('August2025')}
           />
         </div>
         <span className="font-medium text-dark text-sm sm:text-base whitespace-nowrap overflow-hidden text-ellipsis block max-w-[180px] sm:max-w-none">

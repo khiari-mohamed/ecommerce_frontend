@@ -13,6 +13,19 @@ import { formatCurrency } from "@/lib/formattedPrice";
 import ProductBrandAroma from "@/components/product/ProductBrandAroma";
 import StarRating from "../../components/Common/StarRating";
 import { getProductImageSrc } from "@/utils/image";
+
+// Enhanced image URL with backend fallback for new images
+function getEnhancedProductImageSrc(item: any): string {
+  const src = getProductImageSrc(item);
+  
+  // Check if this is a NEW backend-served image (contains August2025 pattern)
+  if (src && src.includes('August2025')) {
+    const backendUrl = 'http://145.223.118.9:5000';
+    return `${backendUrl}${src}`;
+  }
+  
+  return src;
+}
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -138,12 +151,13 @@ const SingleGridItem = ({ item, rating, reviewsCount }: SingleGridItemProps) => 
         {/* Product Image */}
         <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
           <Image
-            src={getProductImageSrc(item)}
+            src={getEnhancedProductImageSrc(item)}
             alt={item.designation || item.title || "Product image"}
             fill
             className="w-full h-full object-cover"
             loading="lazy"
             sizes="100vw"
+            unoptimized={getProductImageSrc(item)?.includes('August2025')}
           />
 
         </div>

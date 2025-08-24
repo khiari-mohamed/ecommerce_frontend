@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { addItemToCart } from "@/redux/features/cart-slice";
 import { AppDispatch } from "@/redux/store";
 import { getProductImageSrc } from "@/utils/image";
+import { resolveImageUrl } from "@/utils/backendImageUtils";
 
 interface Product {
   _id: string;
@@ -85,8 +86,7 @@ const ProductCard = memo(
     const normalizedProduct = normalizeProduct(product);
     const getSafeImageSrc = (src: string | undefined) => {
       if (!src) return "/placeholder.svg";
-      if (src.startsWith("/") || src.startsWith("http")) return src;
-      return "/" + src;
+      return resolveImageUrl(src);
     };
     console.log("Product for image", product);
     console.log("Image src", getProductImageSrc(product));

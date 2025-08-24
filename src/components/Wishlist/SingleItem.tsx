@@ -6,6 +6,19 @@ import { removeItemFromWishlist } from "@/redux/features/wishlist-slice";
 import { addItemToCart } from "@/redux/features/cart-slice";
 import Image from "next/image";
 
+// Enhanced image URL with backend fallback for new images
+const getEnhancedImageSrc = (src: string | undefined) => {
+  if (!src) return "/default-product.jpg";
+  
+  // Check if this is a NEW backend-served image (contains August2025 pattern)
+  if (src.includes('August2025')) {
+    const backendUrl = 'http://145.223.118.9:5000';
+    return `${backendUrl}${src}`;
+  }
+  
+  return src;
+};
+
 const SingleItem = ({ item }) => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -39,17 +52,24 @@ const SingleItem = ({ item }) => {
         <div className="flex justify-center mb-2">
           <div className="flex items-center justify-center rounded-[5px] bg-gray-2 w-16 h-16">
             <Image
-              src={
+              src={getEnhancedImageSrc(
                 item?.imgs?.thumbnails?.[0] ||
                 item?.imgs?.previews?.[0] ||
                 item?.mainImage?.url ||
                 (item?.images && item.images[0]?.url) ||
                 "/default-product.jpg"
-              }
+              )}
               alt={item.title || "Produit"}
               width={64}
               height={64}
               className="object-contain w-16 h-16"
+              unoptimized={(
+                item?.imgs?.thumbnails?.[0] ||
+                item?.imgs?.previews?.[0] ||
+                item?.mainImage?.url ||
+                (item?.images && item.images[0]?.url) ||
+                "/default-product.jpg"
+              )?.includes('August2025')}
             />
           </div>
         </div>
@@ -131,17 +151,24 @@ const SingleItem = ({ item }) => {
       <div className="hidden sm:flex flex-row flex-1 w-full items-center">
         <div className="flex items-center justify-center rounded-[5px] bg-gray-2 w-[80px] h-[80px]">
           <Image
-            src={
+            src={getEnhancedImageSrc(
               item?.imgs?.thumbnails?.[0] ||
               item?.imgs?.previews?.[0] ||
               item?.mainImage?.url ||
               (item?.images && item.images[0]?.url) ||
               "/default-product.jpg"
-            }
+            )}
             alt={item.title || "Produit"}
             width={80}
             height={80}
             className="object-contain w-[80px] h-[80px]"
+            unoptimized={(
+              item?.imgs?.thumbnails?.[0] ||
+              item?.imgs?.previews?.[0] ||
+              item?.mainImage?.url ||
+              (item?.images && item.images[0]?.url) ||
+              "/default-product.jpg"
+            )?.includes('August2025')}
           />
         </div>
         <div className="flex-1 ml-5.5">

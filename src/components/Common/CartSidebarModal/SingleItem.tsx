@@ -48,6 +48,19 @@ function getProductImageSrc(item: any): string {
   return src;
 }
 
+// Enhanced image URL with backend fallback for new images
+function getEnhancedProductImageSrc(item: any): string {
+  const src = getProductImageSrc(item);
+  
+  // Check if this is a NEW backend-served image (contains August2025 pattern)
+  if (src && src.includes('August2025')) {
+    const backendUrl = 'http://145.223.118.9:5000';
+    return `${backendUrl}${src}`;
+  }
+  
+  return src;
+}
+
 const SingleItem = ({ item, removeItemFromCart }) => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -56,7 +69,7 @@ const SingleItem = ({ item, removeItemFromCart }) => {
   };
 
   const normalizedItem = normalizeProduct(item);
-  const imgSrc = getProductImageSrc(normalizedItem);
+  const imgSrc = getEnhancedProductImageSrc(normalizedItem);
 
   return (
     <div className="flex items-center justify-between gap-5">
@@ -69,6 +82,7 @@ const SingleItem = ({ item, removeItemFromCart }) => {
             height={90}
             className="object-contain w-[64px] h-[64px] sm:w-[90px] sm:h-[90px] max-w-full max-h-full"
             priority={false}
+            unoptimized={getProductImageSrc(normalizedItem)?.includes('August2025')}
           />
         </div>
 

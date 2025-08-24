@@ -16,6 +16,17 @@ import Link from "next/link";
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const fraisLivraison = 10;
 
+// Enhanced image URL with backend fallback for new images
+const getEnhancedImageSrc = (src: string) => {
+  // Check if this is a NEW backend-served image (contains August2025 pattern)
+  if (src && src.includes('August2025')) {
+    const backendUrl = 'http://145.223.118.9:5000';
+    return `${backendUrl}${src}`;
+  }
+  
+  return src;
+};
+
 const Checkout = () => {
   const cart = useAppSelector((state) => state.cartReducer.items);
 
@@ -344,7 +355,7 @@ const Checkout = () => {
                       >
                         {/* Cart product image */}
                         <img
-                          src={
+                          src={getEnhancedImageSrc(
                             item.cover && item.cover.startsWith("http")
                               ? item.cover
                               : item.cover
@@ -358,7 +369,7 @@ const Checkout = () => {
                               : item.images && item.images.length > 0 && item.images[0].url
                               ? "/" + item.images[0].url.replace(/^\/+/, "")
                               : "/placeholder.png"
-                          }
+                          )}
                           alt={item.title || item.designation_fr || item.designation || "Produit"}
                           className="w-16 h-16 object-cover rounded"
                         />
@@ -466,7 +477,7 @@ const Checkout = () => {
                         <div className="flex items-center gap-4">
                           {/* Recommendation image */}
                           <img
-                            src={
+                            src={getEnhancedImageSrc(
                               recommended.cover && recommended.cover.startsWith("http")
                                 ? recommended.cover
                                 : recommended.cover
@@ -480,7 +491,7 @@ const Checkout = () => {
                                 : recommended.images && recommended.images.length > 0 && recommended.images[0].url
                                 ? "/" + recommended.images[0].url.replace(/^\/+/, "")
                                 : "/placeholder.png"
-                            }
+                            )}
                             alt={recommended.designation_fr || recommended.designation || "Produit"}
                             className="w-14 h-14 object-cover rounded"
                           />

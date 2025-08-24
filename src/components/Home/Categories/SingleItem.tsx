@@ -2,8 +2,12 @@
 import { Category } from "@/types/category";
 import Image from "next/image";
 import Link from "next/link";
+import { getEnhancedCategoryImageSrc, shouldUnoptimizeNonProductImage } from "@/utils/nonProductImage";
 
 const SingleItem = ({ item }: { item: Category }) => {
+  const categoryImageSrc = getEnhancedCategoryImageSrc(item);
+  const hasImage = categoryImageSrc && categoryImageSrc !== '/images/placeholder.png';
+  
   return (
     <Link
       href={`/categories/${item.slug}`}
@@ -11,9 +15,9 @@ const SingleItem = ({ item }: { item: Category }) => {
       passHref
     >
       <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] rounded-full flex items-center justify-center mb-3 sm:mb-4 bg-[#FF4500] shadow-lg transition-transform duration-300 group-hover:bounce-custom">
-        {item.image?.url ? (
+        {hasImage ? (
           <img
-            src={item.image.url}
+            src={categoryImageSrc}
             alt={item.designation}
             width={90}
             height={90}

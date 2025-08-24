@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
+import { getEnhancedBrandImageSrc, shouldUnoptimizeNonProductImage } from "@/utils/nonProductImage";
 
 const BrandSection: React.FC = () => {
   const router = useRouter();
@@ -13,16 +14,36 @@ const BrandSection: React.FC = () => {
     async function fetchBrands() {
       try {
         const res = await axios.get("/brands");
+        console.log('Brands API response:', res.data);
         setBackendBrands(res.data || []);
-      } catch {
+      } catch (error) {
+        console.error('Failed to fetch brands:', error);
         setBackendBrands([]);
       }
     }
     fetchBrands();
   }, []);
 
-  // Duplicate brands for seamless infinite scroll
-  const brandsToShow = backendBrands.concat(backendBrands);
+  // Generate slug for brands that don't have one and filter valid brands
+  const processedBrands = backendBrands.map(brand => {
+    if (!brand) return null;
+    
+    // Generate slug if missing
+    if (!brand.slug) {
+      const name = brand.designation_fr || brand.designation || brand.name || '';
+      brand.slug = name.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/-+/g, '-') // Replace multiple hyphens with single
+        .trim() || brand.id || brand._id; // Fallback to ID if name is empty
+    }
+    
+    return brand;
+  }).filter(brand => 
+    brand && (brand.designation_fr || brand.designation || brand.name)
+  );
+  
+  const brandsToShow = processedBrands.concat(processedBrands);
 
   return (
     <section className="py-8 sm:py-10 bg-white w-full">
@@ -35,22 +56,23 @@ const BrandSection: React.FC = () => {
           >
             {brandsToShow.map((brand, idx) => (
               <div
-                key={brand.id + '-' + idx}
+                key={(brand.id || brand._id || idx) + '-' + idx}
                 className="cursor-pointer flex items-center justify-center p-2 sm:p-3 md:p-4 transition hover:scale-105 h-20 sm:h-24 md:h-28 min-w-[150px]"
-                onClick={() => router.push(`/brands/${brand.slug}`)}
-                title={brand.designation_fr}
+                onClick={() => {
+                  if (brand.slug) {
+                    router.push(`/brands/${brand.slug}`);
+                  }
+                }}
+                title={brand.designation_fr || brand.designation || brand.name}
               >
                 <Image
-                  src={
-                    brand.logo.startsWith("http")
-                      ? brand.logo
-                      : `/images/brand/${brand.logo}`
-                  }
-                  alt={brand.designation_fr}
+                  src={getEnhancedBrandImageSrc(brand)}
+                  alt={brand.designation_fr || brand.designation || brand.name}
                   width={140}
                   height={64}
                   className="object-contain w-full h-full max-h-16 sm:max-h-20 md:max-h-24"
                   loading="lazy"
+                  unoptimized={shouldUnoptimizeNonProductImage(brand.logo)}
                 />
               </div>
             ))}

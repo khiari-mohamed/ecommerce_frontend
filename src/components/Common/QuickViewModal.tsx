@@ -37,6 +37,19 @@ const getValidImageSrc = (product, idx = 0) => {
   return src;
 };
 
+// Enhanced image URL with backend fallback for new images
+const getEnhancedImageSrc = (product, idx = 0) => {
+  const src = getValidImageSrc(product, idx);
+  
+  // Check if this is a NEW backend-served image (contains August2025 pattern)
+  if (src && src.includes('August2025')) {
+    const backendUrl = 'http://145.223.118.9:5000';
+    return `${backendUrl}${src}`;
+  }
+  
+  return src;
+};
+
 // Helper to get all preview images for the modal
 function getPreviewImages(product: any): string[] {
   // Try thumbnails first (for normalized products)
@@ -171,11 +184,12 @@ const QuickViewModal = () => {
                   }}
                   >
                   <Image
-                  src={getValidImageSrc(product, key)}
+                  src={getEnhancedImageSrc(product, key)}
                   alt="thumbnail"
                   width={61}
                   height={61}
                   className="aspect-square"
+                  unoptimized={getValidImageSrc(product, key)?.includes('August2025')}
                   />
                   </button>
                   ))}
@@ -205,10 +219,11 @@ const QuickViewModal = () => {
                       </svg>
                     </button>
                     <Image
-                      src={getValidImageSrc(product, activePreview)}
+                      src={getEnhancedImageSrc(product, activePreview)}
                       alt="products-details"
                       width={400}
                       height={400}
+                      unoptimized={getValidImageSrc(product, activePreview)?.includes('August2025')}
                     />
                   </div>
                 </div>

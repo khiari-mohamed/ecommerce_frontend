@@ -27,6 +27,19 @@ function getValidImageSrc(src?: string): string {
   return cleanSrc;
 }
 
+// Enhanced image URL with backend fallback for new images
+function getEnhancedImageSrc(src?: string): string {
+  const validSrc = getValidImageSrc(src);
+  
+  // Check if this is a NEW backend-served image (contains August2025 pattern)
+  if (validSrc && validSrc.includes('August2025')) {
+    const backendUrl = 'http://145.223.118.9:5000';
+    return `${backendUrl}${validSrc}`;
+  }
+  
+  return validSrc;
+}
+
 type ProductReview = {
   user_id: any;
   userAvatar?: string;
@@ -251,12 +264,13 @@ export default function ProductDetailsPage() {
                   </svg>
                   </button>
                   <Image
-                    src={getValidImageSrc((previews && previews[previewImg]) ?? "")}
+                    src={getEnhancedImageSrc((previews && previews[previewImg]) ?? "")}
                     alt={product?.title ? `Aperçu de ${product.title}` : "Aperçu produit"}
                     width={500}
                     height={500}
                     className="object-cover w-full max-w-full h-auto rounded"
                     style={{ maxHeight: '400px' }}
+                    unoptimized={getValidImageSrc((previews && previews[previewImg]) ?? "")?.includes('August2025')}
                   />
                 </div>
               </div>
@@ -278,9 +292,10 @@ export default function ProductDetailsPage() {
                     <Image
                       width={50}
                       height={50}
-                      src={getValidImageSrc(item ?? "")}
+                      src={getEnhancedImageSrc(item ?? "")}
                       alt={product?.title ? `Miniature de ${product.title}` : `Miniature produit ${key + 1}`}
                       className="object-cover w-full max-w-full h-auto rounded"
+                      unoptimized={getValidImageSrc(item ?? "")?.includes('August2025')}
                     />
                   </button>
                 ))}

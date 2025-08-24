@@ -2,6 +2,7 @@ import React from "react";
 import type { Blog } from "@/services/blog.service";
 import Image from "next/image";
 import Link from "next/link";
+import { getEnhancedNonProductImageSrc, shouldUnoptimizeNonProductImage } from "@/utils/nonProductImage";
 
 const BLOG_IMAGE_BASE = "/uploads/";
 
@@ -11,11 +12,16 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
 
   if (blog.cover) {
     if (typeof blog.cover === "string") {
-      // Remove any leading slashes
-      const cleanCover = blog.cover.replace(/^\/+/, "");
-      imageUrl = blog.cover.startsWith("http")
-        ? blog.cover
-        : BLOG_IMAGE_BASE + cleanCover;
+      if (blog.cover.startsWith("http")) {
+        imageUrl = blog.cover;
+      } else if (blog.cover.startsWith('/blogs/')) {
+        // New backend blog images - use as is, will be enhanced by utility
+        imageUrl = blog.cover;
+      } else {
+        // Old blog images - add uploads prefix
+        const cleanCover = blog.cover.replace(/^\/+/, "");
+        imageUrl = BLOG_IMAGE_BASE + cleanCover;
+      }
     } else if (blog.cover.url) {
       const cleanCoverUrl = blog.cover.url.replace(/^\/+/, "");
       imageUrl = blog.cover.url.startsWith("http")
@@ -28,6 +34,9 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
   if (!imageUrl) {
     imageUrl = "/images/blog/blog-01.jpg";
   }
+
+  // Apply enhanced image handling for both old and new images
+  const finalImageUrl = getEnhancedNonProductImageSrc(imageUrl);
 
   // Debug: log the cover and the final imageUrl
   if (typeof window !== "undefined") {
@@ -59,12 +68,13 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
     <div className="shadow-1 bg-white rounded-xl px-4 sm:px-5 pt-5 pb-4 blog-card-fixed-height">
       <Link href={`/blogs/${blog.slug}`} className="rounded-md overflow-hidden">
         <Image
-          src={imageUrl}
+          src={finalImageUrl}
           alt={imageAlt}
           title={description}
           className="rounded-md w-full"
           width={330}
           height={210}
+          unoptimized={shouldUnoptimizeNonProductImage(imageUrl)}
         />
       </Link>
       <div className="mt-5.5 flex flex-col h-full">

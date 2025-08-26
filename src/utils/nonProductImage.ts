@@ -4,7 +4,7 @@
  * Works for: blogs, categories, brands, announcements, slides, services, etc.
  */
 
-const BACKEND_URL = 'http://145.223.118.9:5000';
+const BACKEND_URL = 'https://145.223.118.9:5000';
 
 /**
  * Enhanced image URL with backend fallback for new non-product images

@@ -83,7 +83,7 @@ const PromotionsClient = () => {
     
     // Check if this is a NEW backend-served image (contains August2025 pattern)
     if (item.cover.includes('August2025')) {
-      const backendUrl = 'http://145.223.118.9:5000';
+      const backendUrl = 'https://145.223.118.9:5000';
       return `${backendUrl}${item.cover}`;
     }
     

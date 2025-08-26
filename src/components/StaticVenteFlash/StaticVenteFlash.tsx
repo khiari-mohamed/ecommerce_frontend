@@ -51,7 +51,7 @@ function StaticVenteFlash({ products }: { products: any[] }) {
         }`}>
           {displayedProducts.map((product: any) => {
             const safeProduct = { ...product, aroma_ids: Array.isArray(product.aroma_ids) ? product.aroma_ids : [] };
-            return <FlashSaleCard key={product?.id} product={safeProduct} />;
+            return <FlashSaleCard key={product?._id || product?.id || Math.random()} product={safeProduct} />;
           })}
         </div>
       </div>

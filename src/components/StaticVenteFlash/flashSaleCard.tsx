@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { storage } from "./const/url";
+
 
 // Get dashboard URL dynamically
 const getDashboardUrl = () => {
@@ -41,13 +41,17 @@ function FlashSaleCard({ product }: { product: any }) {
       if (product.cover.startsWith('http')) {
         return product.cover;
       }
-      // Handle new dashboard uploads (starts with /)
+      // Handle paths that already start with /
       if (product.cover.startsWith('/')) {
-        // Try multiple sources until one works
-        return product.cover; // First try relative path
+        return product.cover;
       }
-      // Handle old storage paths
-      return storage + product.cover;
+      // Handle old storage paths - check if already contains produits
+      if (product.cover.includes('produits/')) {
+        // Fix May2025 to May2024 issue
+        const correctedPath = product.cover.replace('May2025', 'May2024');
+        return "/" + correctedPath;
+      }
+      return "/produits/" + product.cover;
     }
     return "/images/placeholder.png";
   };
@@ -55,12 +59,20 @@ function FlashSaleCard({ product }: { product: any }) {
   // Fallback image handler
   const handleImageError = (e: any) => {
     const img = e.target;
+    console.log('Image error for:', product.designation_fr, 'Original src:', img.src);
     if (product.cover?.startsWith('/') && !img.src.includes('localhost:3000')) {
       // Try dashboard URL as fallback
       img.src = getDashboardUrl() + product.cover;
+      console.log('Trying dashboard URL:', img.src);
+    } else if (product.cover?.includes('May2025')) {
+      // Try May2024 instead of May2025
+      const fallbackPath = "/" + product.cover.replace('May2025', 'May2024');
+      img.src = fallbackPath;
+      console.log('Trying May2024 fallback:', img.src);
     } else if (!img.src.includes('placeholder')) {
       // Final fallback to placeholder
       img.src = "/images/placeholder.png";
+      console.log('Using placeholder image');
     }
   };
 

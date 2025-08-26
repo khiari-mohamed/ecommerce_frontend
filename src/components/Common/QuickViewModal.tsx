@@ -39,7 +39,12 @@ const getValidImageSrc = (product, idx = 0) => {
 
 // Enhanced image URL with backend fallback for new images
 const getEnhancedImageSrc = (product, idx = 0) => {
-  const src = getValidImageSrc(product, idx);
+  let src = getValidImageSrc(product, idx);
+  
+  // Fix May2025 to May2024 issue
+  if (src && src.includes('May2025')) {
+    src = src.replace('May2025', 'May2024');
+  }
   
   // Check if this is a NEW backend-served image (contains August2025 pattern)
   if (src && src.includes('August2025')) {
